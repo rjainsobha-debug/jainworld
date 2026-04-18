@@ -3,13 +3,14 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 app.use(express.json());
 
-function loadData(file) {
-  return JSON.parse(fs.readFileSync(`./data/${file}`, 'utf-8'));
+// Load JSON safely
+function load(file) {
+  return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', file)));
 }
 
 // ROUTES
@@ -26,9 +27,27 @@ app.get('/detail/:type/:id', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/detail.html'));
 });
 
-// SEARCH API
+app.get('/community', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views/community.html'));
+});
+
+app.get('/search', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views/search.html'));
+});
+
+// API: GET CATEGORY DATA
+app.get('/api/:type', (req, res) => {
+  try {
+    const data = load(req.params.type + '.json');
+    res.json(data);
+  } catch {
+    res.json([]);
+  }
+});
+
+// API: SEARCH
 app.get('/api/search', (req, res) => {
-  const q = req.query.q.toLowerCase();
+  const q = req.query.q?.toLowerCase() || '';
 
   const files = [
     'tirthankaras',
@@ -43,12 +62,16 @@ app.get('/api/search', (req, res) => {
   let results = [];
 
   files.forEach(file => {
-    const data = loadData(file + '.json');
+    const data = load(file + '.json');
+
     data.forEach(item => {
-      if (
-        item.title?.toLowerCase().includes(q) ||
-        item.content?.toLowerCase().includes(q)
-      ) {
+      const text =
+        (item.title_hi || '') +
+        (item.title_en || '') +
+        (item.content_hi || '') +
+        (item.content_en || '');
+
+      if (text.toLowerCase().includes(q)) {
         results.push({ ...item, type: file });
       }
     });
@@ -58,5 +81,5 @@ app.get('/api/search', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`✅ JainWorld running on port ${PORT}`);
 });
