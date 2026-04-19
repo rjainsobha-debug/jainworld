@@ -1,0 +1,82 @@
+[
+  {
+    "id": "navkar-mantra",
+    "title": "Navkar Mantra — The Universal Jain Prayer",
+    "type": "Prayer",
+    "language": "Ardhamagadhi / Prakrit",
+    "category": "Devotional",
+    "content": "The Navkar Mantra (also Namokar Mantra) is the most sacred prayer in Jainism. Unlike most prayers, it does not name any deity or individual — it salutes qualities and spiritual states.\n\nNamo Arihantanam — I bow to the Arihantas (perfected souls who have destroyed all inner enemies)\nNamo Siddhanam — I bow to the Siddhas (liberated souls who have attained moksha)\nNamo Ayariyanam — I bow to the Acharyas (spiritual leaders of the Jain order)\nNamo Uvajjhayanam — I bow to the Upadhyayas (teachers of Jain scriptures)\nNamo Loe Savva Sahunam — I bow to all the Sadhus (ascetics and monks) in the world\n\nEso Panch Namokkaro — These five salutations\nSavva Pavappanasano — Destroy all sins\nMangalanam cha Savvesim — And among all auspicious things\nPadhamam Havai Mangalam — This is the most auspicious one\n\nThe five categories saluted are known as Pancha Parameshthi — the five supreme beings. Reciting the Navkar Mantra with understanding and devotion is believed to destroy negative karma and awaken spiritual awareness. It can be recited by anyone, regardless of caste, gender, or background.",
+    "excerpt": "The most sacred prayer in Jainism, saluting the five supreme spiritual beings. Contains no individual name — only qualities.",
+    "tags": ["Prayer", "Navkar", "Pancha Parameshthi", "Devotional"]
+  },
+  {
+    "id": "acharanga-sutra",
+    "title": "Acharanga Sutra — First Anga Agama",
+    "type": "Agama",
+    "language": "Ardhamagadhi",
+    "category": "Canonical Scripture",
+    "content": "The Acharanga Sutra (Ayaramga Sutta) is the oldest and most important of the twelve Anga Agamas — the primary canonical texts of Shvetambara Jainism. It is divided into two Shrutaskandhas (books).\n\nBOOK ONE (Saptama Adhyaya): Contains 9 chapters describing the rules of ascetic conduct, the nature of living beings, the doctrine of ahimsa, and the biography of Mahavira's 12.5 years of penance.\n\nBOOK TWO (Dutiya Shrutaskandha): Contains 16 chapters describing the life story of Lord Mahavira, including his birth, royal life, renunciation, and attainment of Kevala Jnana.\n\nThe text is remarkable for its directness and psychological insight. The opening lines declare: 'One who knows living beings, knows suffering. One who knows suffering, knows the causes of suffering. One who knows the causes of suffering, knows the cessation of suffering.'\n\nThe Acharanga Sutra is considered by scholars to be one of the oldest texts in any Indian language, providing a rare window into the religious and social world of northern India in the 5th century BCE.",
+    "excerpt": "The oldest Jain Agama, containing the code of conduct for monks and the biography of Mahavira's extraordinary penance.",
+    "tags": ["Agama", "Mahavira", "Ascetic Conduct", "Ardhamagadhi", "Canonical"]
+  },
+  {
+    "id": "tattvartha-sutra",
+    "title": "Tattvartha Sutra — The Universal Jain Text",
+    "type": "Philosophical Text",
+    "language": "Sanskrit",
+    "category": "Philosophy",
+    "content": "The Tattvartha Sutra (also Tattvarthadhigama Sutra) was composed by the Jain scholar Umasvati (or Umasvami) approximately in the 2nd century CE. It is the only Jain philosophical text accepted by all major sects — Digambara, Shvetambara, and others.\n\nWritten in the terse aphoristic (sutra) style, the text consists of 10 chapters and 357 sutras covering the entire Jain worldview:\n\nChapter 1: Right Knowledge (Samyag Jnana)\nChapter 2: The Soul and Its Attributes\nChapter 3: The Lower and Middle Worlds\nChapter 4: The Heavenly Beings (Devas)\nChapter 5: Non-living Substances (Ajiva)\nChapter 6: Influx of Karma (Asrava)\nChapter 7: Vows and Ethical Conduct\nChapter 8: Bondage of Karma (Bandha)\nChapter 9: Stopping Influx and Shedding Karma\nChapter 10: Liberation (Moksha)\n\nThe first sutra — 'Samyagdarshanajnanacharitranimokshamargah' — encapsulates the entire Jain path: Right perception, right knowledge, and right conduct together constitute the path to liberation.\n\nThe Tattvartha Sutra remains the most systematic and concise exposition of Jain philosophy ever written, and is still studied daily by monks, nuns, and serious Jain practitioners.",
+    "excerpt": "The only Jain text accepted by all sects. Written by Umasvati, it covers the complete Jain worldview in 357 terse sutras.",
+    "tags": ["Philosophy", "Umasvati", "Sanskrit", "Moksha", "Canonical"]
+  },
+  {
+    "id": "samayasara",
+    "title": "Samayasara — Essence of the Self",
+    "type": "Philosophical Text",
+    "language": "Prakrit (Sauraseni)",
+    "category": "Philosophy",
+    "content": "The Samayasara, composed by the great Digambara philosopher-monk Kundakunda (approximately 1st–2nd century CE), is considered the most spiritually advanced text in all of Jain literature. Its name means 'Essence of the Self' or 'Essence of the True State.'\n\nThe text consists of 415 gathas (verses) organized into 9 chapters. Its central message is radical and liberating: the pure soul (Paramatman) has no karmic bondage, no attachment, and no agency. What appears to be the soul acting is only the material body's actions. The soul, in its purest nature, is eternally pure, free, and blissful.\n\nThis nishchaya naya (absolute standpoint) perspective distinguishes Samayasara from texts that focus on the conventional (vyavahara) perspective of ascetic conduct and external practice.\n\nKundakunda writes: 'The soul is always the experiencer of only its own states. It never experiences the states of matter. Therefore the soul never does, nor has it ever done, any karma.'\n\nThis text is treasured by advanced Jain meditators and philosophers as a guide to direct experience of the pure self beyond all external identifications.",
+    "excerpt": "Kundakunda's radical masterpiece on the pure nature of the soul — considered the most spiritually advanced text in Jain literature.",
+    "tags": ["Kundakunda", "Digambara", "Moksha", "Soul", "Advanced Philosophy"]
+  },
+  {
+    "id": "mahavira-life",
+    "title": "The Life of Lord Mahavira — A Narrative Account",
+    "type": "Biography / Story",
+    "language": "English (adapted from Kalpa Sutra)",
+    "category": "Biography",
+    "content": "Prince Vardhamana was born in Kundagrama (present-day Vaishali, Bihar) to King Siddhartha of the Ikshvaku clan and Queen Trishala, sister of the Lichchhavi chieftain Chetaka. His birth was accompanied by auspicious dreams and signs — fourteen in the Shvetambara tradition, sixteen in the Digambara — foretelling a great soul.\n\nFrom his earliest years, Vardhamana displayed extraordinary qualities: calm in the face of danger, compassionate toward all beings, and uninterested in the pleasures of royalty. Stories tell of young Vardhamana remaining fearless when demons and serpents tested him, earning him the epithet 'Mahavira' (Great Hero).\n\nAt the age of 30, after the passing of his parents (who themselves died as ascetics through Santhara — voluntary fasting unto death), Mahavira renounced the world. In a grand ceremony, he gave away all his possessions, pulled out his hair by the roots in five handfuls (kesh-lochan), and entered the forest alone.\n\nFor twelve years and six months, Mahavira practiced the most intense spiritual discipline ever described. He wandered on foot, often covering thousands of miles. He spoke no words. He endured attacks from dogs, humans, and insects without reacting. He stood in meditation for hours in burning heat and freezing cold. He ate rarely, accepting only food that had been prepared without violence and offered with pure intention.\n\nAt last, on a summer evening on the banks of the Rijupalika River near the village of Jrimbhikagrama, under a sala tree, in a seated meditation posture — the last of his karmas dissolved. Kevala Jnana arose: infinite, perfect, direct knowledge of all things, all time, all space simultaneously.\n\nFor the remaining 30 years of his life, Mahavira traveled, taught, and organized the fourfold Sangha of monks, nuns, laymen, and laywomen. His teachings were memorized and transmitted by his eleven chief disciples (Ganadharas), of whom only Indrabhuti Gautama survived him.\n\nAt the age of 72, in the town of Pawapuri, in the early hours before dawn, Mahavira sat in meditation and shed his final traces of existence. He attained Moksha — complete liberation. The Jain tradition marks this night, Kartika Krishna Chaturdashi, with lamps of knowledge — the origin of the Jain observance of Diwali.",
+    "excerpt": "A narrative retelling of the extraordinary life of Lord Mahavira — from royal birth through 12 years of penance to final liberation at Pawapuri.",
+    "tags": ["Mahavira", "Biography", "Kevala Jnana", "Moksha", "Kalpa Sutra"]
+  },
+  {
+    "id": "rishabha-story",
+    "title": "The Story of Rishabhanatha — Civilization's First Teacher",
+    "type": "Story",
+    "language": "English (adapted from Jain sources)",
+    "category": "Tirthankara Stories",
+    "content": "At the beginning of the current half-cycle of time (Avasarpini), when the world was in a state of gradual decline from perfection, the Kalpavrikshas — wish-fulfilling trees — began to wane. People who had lived without need of effort, sustained by nature's abundance, now faced want for the first time.\n\nIn this age of transition, Rishabha was born as a prince in the city of Ayodhya. He grew to be a great king, and seeing the suffering of his people as the old world faded, he took upon himself the task of teaching civilization.\n\nRishabha taught the 72 arts to men — including agriculture, animal husbandry, fire-making, pottery, weaving, mathematics, music, and trade. He taught the 64 arts to women. He established the system of governance, law, and social organization. He showed his children how to cultivate the land and store grain. He taught the people writing.\n\nHis son Bharata, who gave India its ancient name Bharatavarsha, became the first Chakravartin (universal emperor). His daughter Brahmi became the first grammarian and is said to have given the Brahmi script to the world.\n\nAfter establishing civilization and ensuring his people could sustain themselves, Rishabha felt the call of the spirit. He renounced everything — his kingdom, his family, his royal robes. He walked naked into the forest and began the long path of spiritual discipline.\n\nFor one thousand years (in mythological time), he wandered without receiving proper alms, because the people of the world, not yet knowing the tradition of giving to monks, offered him gifts inappropriate for an ascetic.\n\nFinally, his grandson Shreyansa — remembering in a flash of memory the traditions of a previous age — offered him sugarcane juice, the first proper alms. This day is celebrated by Jains as Akshaya Tritiya, the auspicious third day of Vaishakha.\n\nRishabha attained Kevala Jnana on Mount Kailash (Ashtapada) and finally attained Nirvana there. He is revered as Adinatha — the First Lord — and his image, distinguished by long locks of hair, is among the most ancient in Jain iconography.",
+    "excerpt": "The first Tirthankara taught humanity civilization itself — agriculture, arts, writing — before renouncing the world to attain liberation.",
+    "tags": ["Rishabhanatha", "Adinatha", "Story", "Civilization", "First Tirthankara"]
+  },
+  {
+    "id": "ahimsa-philosophy",
+    "title": "Ahimsa — The Supreme Principle of Jainism",
+    "type": "Philosophy",
+    "language": "English",
+    "category": "Philosophy",
+    "content": "Ahimsa (Sanskrit: अहिंसा) — non-violence — is not merely one principle among many in Jainism. It is the cornerstone, the root, and the flowering of the entire ethical and spiritual system. Mahavira declared: 'Ahimsa is the supreme religion' (Ahimsa paramo dharmah).\n\nIn Jain understanding, every living being (Jiva) possesses a soul that feels pain and seeks happiness. To cause harm to any soul — even the smallest organism — is to generate negative karma that binds the attacker's own soul. Non-violence is therefore not only an ethical injunction but a metaphysical necessity for anyone seeking liberation.\n\nJainism extends ahimsa to five categories of action:\n1. Physical violence (Sthool Himsa)\n2. Verbal violence — harsh speech, lies, gossip\n3. Mental violence — ill will, jealousy, hatred\n4. Violence by indirect means — commissioning or approving of harm\n5. Negligent violence — harming beings through carelessness\n\nMonks practice extreme forms of ahimsa: covering the mouth to avoid inhaling insects, carrying a soft broom to gently sweep the path before stepping, straining water to protect microscopic organisms, and avoiding eating after sunset.\n\nFor laypeople, ahimsa is expressed through vegetarianism, avoidance of cruel occupations, minimizing the use of resources, and cultivating compassion in all relationships.\n\nMahatma Gandhi acknowledged that his concept of non-violent resistance (Satyagraha) was directly inspired by Jain philosophy, particularly through his friendship with Raychandbhai Mehta, a devout Jain merchant-philosopher.\n\nThe philosophical brilliance of ahimsa is that it is simultaneously a personal spiritual practice and a social ethic. Its modern relevance extends to animal rights, environmental ethics, conflict resolution, and political philosophy.",
+    "excerpt": "Ahimsa is the supreme religion in Jainism — extending beyond physical violence to thought, speech, and the most microscopic forms of harm.",
+    "tags": ["Ahimsa", "Non-violence", "Philosophy", "Ethics", "Gandhi"]
+  },
+  {
+    "id": "anekantavada",
+    "title": "Anekantavada — The Jain Doctrine of Many-Sidedness",
+    "type": "Philosophy",
+    "language": "English",
+    "category": "Philosophy",
+    "content": "Anekantavada (Sanskrit: अनेकान्तवाद) is one of Jainism's most original and profound contributions to world philosophy. It holds that truth and reality are complex, multifaceted, and cannot be fully captured by any single statement or perspective.\n\nThe word itself means: aneka (many) + anta (aspects) + vada (doctrine). It is also called the doctrine of non-absolutism or many-sidedness of truth.\n\nANEKANTAVADA IN PRACTICE:\nImagine the famous parable of the blind men and the elephant. One man feels the trunk and declares 'An elephant is like a snake.' Another feels the leg and says 'An elephant is like a tree.' Each is correct from their perspective, but none has the full truth. Anekantavada says: they are all partially right, and we need all perspectives to approach the full truth.\n\nSYADVADA — CONDITIONAL PREDICATION:\nAnekantavada is applied logically through Syadvada, a system of conditional predication using the word 'syat' (perhaps, in some respect). The classic seven-fold predication (Saptabhangi) is:\n1. Syad asti — In some respect, it is\n2. Syad nasti — In some respect, it is not\n3. Syad asti nasti — In some respect, it both is and is not\n4. Syad avaktavya — In some respect, it is inexpressible\n5. Syad asti avaktavya — In some respect, it is and is inexpressible\n6. Syad nasti avaktavya — In some respect, it is not and is inexpressible\n7. Syad asti nasti avaktavya — In some respect, it is, is not, and is inexpressible\n\nNAYAVADA — STANDPOINTS:\nNayavada is the epistemological complement — the doctrine of standpoints. It says that every statement is made from a particular perspective (naya) and is only partially valid. Valid standpoints include: naigama (teleological), sangraha (generic), vyavahara (practical), rijusutra (linear time), shabda (linguistic), samabhirudha (etymological), and evambhuta (actual use).\n\nMODERN RELEVANCE:\nAnekantavada has profound relevance in modern pluralist democracies, scientific epistemology, interfaith dialogue, and conflict resolution. It demands intellectual humility — the recognition that one's own truth is partial and that the 'other' may be seeing an aspect of reality we cannot see from our position.",
+    "excerpt": "Jainism's great epistemological doctrine: no single perspective can capture the full truth of reality. A foundation for intellectual humility and pluralism.",
+    "tags": ["Anekantavada", "Syadvada", "Nayavada", "Epistemology", "Philosophy", "Pluralism"]
+  }
+]
