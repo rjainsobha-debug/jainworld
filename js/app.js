@@ -476,3 +476,35 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Pre-build search index in background
   setTimeout(buildSearchIndex, 2000);
 });
+async function loadBlogs() {
+  try {
+    const res = await fetch('https://jainworld.rjain-sobha.workers.dev/api/blogs');
+    const data = await res.json();
+
+    const container = document.getElementById('blogs-list');
+    container.innerHTML = '';
+
+    if (!data.length) {
+      container.innerHTML = "<p>No blogs available</p>";
+      return;
+    }
+
+    data.slice(0, 5).forEach(blog => {
+      const div = document.createElement('div');
+      div.style.borderBottom = "1px solid #ddd";
+      div.style.padding = "10px 0";
+
+      div.innerHTML = `
+        <h3 style="margin:0;">${blog.title}</h3>
+        <p style="margin:5px 0; font-size:14px; color:#666;">
+          ${blog.summary || ''}
+        </p>
+      `;
+
+      container.appendChild(div);
+    });
+
+  } catch (err) {
+    console.error("Blog error:", err);
+  }
+}
