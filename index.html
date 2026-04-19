@@ -3,581 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JanhWorld — Jain Knowledge, News & Community</title>
-<meta name="description" content="JanhWorld is the largest Jain digital ecosystem — knowledge library, news, blogs, and community network for Jains worldwide.">
+<title>JainWorld — Jain Knowledge, News & Community | jainworld.in</title>
+<meta name="description" content="JainWorld is the largest Jain digital ecosystem — knowledge library, daily news, long-form blogs, and a community network for Jains worldwide.">
+<meta property="og:title" content="JainWorld — Jain Knowledge, News & Community">
+<meta property="og:description" content="The largest Jain digital platform. 24 Tirthankaras, literature, philosophy, daily news, blogs, and Jain community network.">
+<meta property="og:url" content="https://jainworld.in">
+<meta property="og:type" content="website">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://jainworld.in">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..900;1,8..60,300..900&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
-<style>
-  /* ============================================================
-     CSS VARIABLES & RESET
-  ============================================================ */
-  :root {
-    --bg: #fdfcf8;
-    --bg2: #f5f3ec;
-    --border: #e0dbd0;
-    --text: #1a1714;
-    --text2: #4a4540;
-    --text3: #7a756e;
-    --accent: #8b4513;
-    --accent2: #c67c2b;
-    --accent-light: #fdf0e0;
-    --link: #1a5276;
-    --link-hover: #8b4513;
-    --green: #2d6a4f;
-    --radius: 2px;
-    --max: 1100px;
-    --sidebar: 220px;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { font-size: 16px; scroll-behavior: smooth; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.65;
-    font-size: 0.97rem;
-  }
-  a { color: var(--link); text-decoration: none; }
-  a:hover { color: var(--link-hover); text-decoration: underline; }
-  img { max-width: 100%; }
-  h1, h2, h3, h4 { font-family: 'Source Serif 4', serif; font-weight: 600; line-height: 1.3; }
-  h1 { font-size: 1.9rem; }
-  h2 { font-size: 1.4rem; }
-  h3 { font-size: 1.15rem; }
-  h4 { font-size: 1rem; }
-  p { margin-bottom: 0.85em; }
-  ul, ol { padding-left: 1.4em; margin-bottom: 0.85em; }
-  li { margin-bottom: 0.25em; }
-  hr { border: none; border-top: 1px solid var(--border); margin: 1.2em 0; }
-
-  /* ============================================================
-     LAYOUT HELPERS
-  ============================================================ */
-  .container { max-width: var(--max); margin: 0 auto; padding: 0 1rem; }
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* ============================================================
-     HEADER & NAV
-  ============================================================ */
-  #site-header {
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; z-index: 100;
-  }
-  .header-inner {
-    max-width: var(--max);
-    margin: 0 auto;
-    padding: 0 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    height: 54px;
-  }
-  .logo {
-    font-family: 'Tiro Devanagari Sanskrit', serif;
-    font-size: 1.4rem;
-    color: var(--accent);
-    font-weight: 700;
-    white-space: nowrap;
-    cursor: pointer;
-    letter-spacing: -0.01em;
-  }
-  .logo span { color: var(--text3); font-size: 0.75rem; font-family: 'DM Sans', sans-serif; font-weight: 400; display: block; line-height: 1; margin-top: -2px; }
-  .header-search {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    max-width: 480px;
-  }
-  .header-search input {
-    flex: 1;
-    padding: 0.38rem 0.7rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-size: 0.875rem;
-    background: var(--bg);
-    font-family: 'DM Sans', sans-serif;
-    outline: none;
-  }
-  .header-search input:focus { border-color: var(--accent2); }
-  .header-search button {
-    padding: 0.38rem 0.75rem;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-size: 0.8rem;
-    white-space: nowrap;
-  }
-  .header-links { display: flex; gap: 1rem; align-items: center; }
-  .header-links a { font-size: 0.82rem; color: var(--text2); white-space: nowrap; }
-  .header-links a:hover { color: var(--accent); text-decoration: none; }
-  #mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.3rem;
-    color: var(--text);
-  }
-
-  /* Main nav */
-  #main-nav {
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-inner {
-    max-width: var(--max);
-    margin: 0 auto;
-    padding: 0 1rem;
-    display: flex;
-    gap: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .nav-inner::-webkit-scrollbar { display: none; }
-  .nav-inner a {
-    display: block;
-    padding: 0.5rem 0.85rem;
-    font-size: 0.82rem;
-    color: var(--text2);
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    transition: color 0.15s, border-color 0.15s;
-  }
-  .nav-inner a:hover, .nav-inner a.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-    text-decoration: none;
-  }
-
-  /* ============================================================
-     HOMEPAGE
-  ============================================================ */
-  .hero-search {
-    background: linear-gradient(135deg, #fdf8f0 0%, #f5ede0 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 2.5rem 1rem;
-    text-align: center;
-  }
-  .hero-search h1 {
-    font-family: 'Tiro Devanagari Sanskrit', serif;
-    font-size: 2.2rem;
-    color: var(--accent);
-    margin-bottom: 0.3rem;
-  }
-  .hero-search .tagline {
-    font-size: 0.95rem;
-    color: var(--text3);
-    margin-bottom: 1.4rem;
-    font-style: italic;
-    font-family: 'Source Serif 4', serif;
-  }
-  .big-search {
-    display: flex;
-    max-width: 560px;
-    margin: 0 auto;
-    gap: 0;
-    border: 1.5px solid var(--accent2);
-    border-radius: 3px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-  }
-  .big-search input {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    border: none;
-    font-size: 1rem;
-    font-family: 'DM Sans', sans-serif;
-    background: transparent;
-    outline: none;
-  }
-  .big-search button {
-    padding: 0 1.4rem;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    transition: background 0.15s;
-  }
-  .big-search button:hover { background: var(--accent2); }
-  .search-hint { font-size: 0.78rem; color: var(--text3); margin-top: 0.6rem; }
-
-  /* Categories grid */
-  .home-categories { padding: 2rem 0; }
-  .home-categories h2 { font-size: 1.1rem; color: var(--text2); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: 'DM Sans', sans-serif; font-weight: 600; }
-  .cat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-    gap: 0.6rem;
-  }
-  .cat-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 0.9rem 0.8rem;
-    cursor: pointer;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    text-align: center;
-  }
-  .cat-card:hover { border-color: var(--accent2); box-shadow: 0 1px 6px rgba(0,0,0,0.07); text-decoration: none; }
-  .cat-icon { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; }
-  .cat-name { font-size: 0.85rem; font-weight: 600; color: var(--text); display: block; }
-  .cat-count { font-size: 0.72rem; color: var(--text3); }
-
-  /* Home content row */
-  .home-row { display: grid; grid-template-columns: 1fr 300px; gap: 1.5rem; padding: 1rem 0 2rem; }
-  @media (max-width: 768px) { .home-row { grid-template-columns: 1fr; } }
-
-  /* Content columns */
-  .section-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text3);
-    border-bottom: 2px solid var(--border);
-    padding-bottom: 0.4rem;
-    margin-bottom: 0.8rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .section-label a { font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.78rem; }
-
-  .news-list { list-style: none; padding: 0; }
-  .news-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
-  .news-list li:last-child { border-bottom: none; }
-  .news-list .nt { font-size: 0.9rem; font-weight: 600; color: var(--text); line-height: 1.4; }
-  .news-list .nt a:hover { color: var(--accent); }
-  .news-list .nm { font-size: 0.75rem; color: var(--text3); margin-top: 0.15rem; }
-
-  .sidebar-box { background: var(--accent-light); border: 1px solid #e8d5b0; border-radius: var(--radius); padding: 0.9rem; margin-bottom: 1rem; }
-  .sidebar-box h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 0.6rem; }
-  .sidebar-box ul { list-style: none; padding: 0; }
-  .sidebar-box ul li { padding: 0.25rem 0; font-size: 0.83rem; border-bottom: 1px solid #e8d5b0; }
-  .sidebar-box ul li:last-child { border-bottom: none; }
-
-  .featured-article { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 1.2rem; }
-  .featured-article .fa-body { padding: 0.8rem; }
-  .featured-article .fa-cat { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent2); font-weight: 700; }
-  .featured-article h3 { font-size: 1.1rem; margin: 0.2rem 0 0.4rem; }
-  .featured-article p { font-size: 0.85rem; color: var(--text2); margin: 0; }
-
-  /* ============================================================
-     CONTENT PAGE (article/knowledge)
-  ============================================================ */
-  .content-layout {
-    display: grid;
-    grid-template-columns: var(--sidebar) 1fr 220px;
-    gap: 0;
-    max-width: var(--max);
-    margin: 0 auto;
-    padding: 0 1rem;
-    min-height: 60vh;
-  }
-  @media (max-width: 900px) {
-    .content-layout { grid-template-columns: 1fr; }
-    .content-sidebar-left, .content-sidebar-right { display: none; }
-  }
-  .content-sidebar-left {
-    border-right: 1px solid var(--border);
-    padding: 1.2rem 1rem 1.2rem 0;
-    font-size: 0.82rem;
-  }
-  .toc-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); font-weight: 700; margin-bottom: 0.6rem; }
-  .toc ul { list-style: none; padding: 0; }
-  .toc ul li { padding: 0.22rem 0; }
-  .toc ul li a { color: var(--text2); }
-  .toc ul li a:hover { color: var(--accent); text-decoration: none; }
-  .content-sidebar-right {
-    border-left: 1px solid var(--border);
-    padding: 1.2rem 0 1.2rem 1rem;
-  }
-  .content-main {
-    padding: 1.5rem 1.5rem;
-    min-width: 0;
-  }
-  .breadcrumb { font-size: 0.77rem; color: var(--text3); margin-bottom: 0.9rem; }
-  .breadcrumb a { color: var(--text3); }
-  .breadcrumb a:hover { color: var(--accent); }
-  .article-meta { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.78rem; color: var(--text3); margin: 0.4rem 0 1.2rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border); }
-  .article-meta .tag { background: var(--bg2); padding: 0.15rem 0.5rem; border-radius: 20px; font-size: 0.72rem; }
-  .infobox {
-    float: right;
-    margin: 0 0 1rem 1.5rem;
-    width: 220px;
-    background: var(--accent-light);
-    border: 1px solid #e0c898;
-    border-radius: var(--radius);
-    font-size: 0.82rem;
-  }
-  .infobox-header {
-    background: var(--accent);
-    color: #fff;
-    padding: 0.5rem 0.7rem;
-    font-family: 'Source Serif 4', serif;
-    font-size: 0.9rem;
-    text-align: center;
-  }
-  .infobox-symbol { text-align: center; padding: 0.8rem; font-size: 2.5rem; }
-  .infobox table { width: 100%; }
-  .infobox td { padding: 0.3rem 0.6rem; vertical-align: top; border-top: 1px solid #e0c898; }
-  .infobox td:first-child { color: var(--text3); font-weight: 600; white-space: nowrap; }
-  .clearfix::after { content: ''; display: block; clear: both; }
-  .content-main h2 { margin: 1.4rem 0 0.6rem; padding-top: 0.4rem; border-top: 1px solid var(--border); }
-  .content-main h3 { margin: 1.1rem 0 0.5rem; color: var(--accent); }
-  .content-main p { color: var(--text2); }
-  .content-main ul, .content-main ol { color: var(--text2); }
-
-  /* ============================================================
-     LIST PAGES (Tirthankaras, News, Blog)
-  ============================================================ */
-  .list-page { max-width: var(--max); margin: 0 auto; padding: 1.5rem 1rem; }
-  .list-page-header { margin-bottom: 1.2rem; }
-  .list-page-header h1 { font-size: 1.6rem; }
-  .list-page-header p { color: var(--text3); font-size: 0.9rem; margin-top: 0.3rem; }
-  .filter-bar {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.2rem;
-    padding: 0.7rem;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    align-items: center;
-    font-size: 0.82rem;
-  }
-  .filter-bar label { color: var(--text3); font-weight: 600; }
-  .filter-bar select, .filter-bar input {
-    padding: 0.3rem 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-size: 0.82rem;
-    background: #fff;
-    font-family: inherit;
-  }
-
-  /* Tirthankara grid */
-  .tirthankara-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 0.7rem;
-  }
-  .t-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 0.9rem 0.8rem;
-    cursor: pointer;
-    transition: border-color 0.15s;
-    text-align: center;
-  }
-  .t-card:hover { border-color: var(--accent); text-decoration: none; }
-  .t-num { font-size: 0.7rem; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
-  .t-symbol { font-size: 2rem; margin: 0.3rem 0; }
-  .t-name { font-weight: 700; font-size: 0.92rem; color: var(--text); }
-  .t-sub { font-size: 0.75rem; color: var(--text3); margin-top: 0.15rem; }
-
-  /* News / Blog list */
-  .article-list { list-style: none; padding: 0; }
-  .article-list .al-item {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 1rem;
-    padding: 0.9rem 0;
-    border-bottom: 1px solid var(--border);
-    align-items: start;
-  }
-  .al-item:last-child { border-bottom: none; }
-  .al-cat { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; color: var(--accent2); }
-  .al-title { font-size: 1rem; font-weight: 600; color: var(--text); margin: 0.15rem 0 0.3rem; line-height: 1.35; }
-  .al-title a:hover { color: var(--accent); }
-  .al-excerpt { font-size: 0.83rem; color: var(--text3); }
-  .al-meta { font-size: 0.75rem; color: var(--text3); margin-top: 0.3rem; }
-  .al-meta span { margin-right: 0.8rem; }
-  .al-date { font-size: 0.72rem; color: var(--text3); white-space: nowrap; text-align: right; }
-
-  /* ============================================================
-     COMMUNITY PAGE
-  ============================================================ */
-  .community-layout { max-width: var(--max); margin: 0 auto; padding: 1.5rem 1rem; }
-  .community-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 1.5rem; overflow-x: auto; }
-  .community-tabs button {
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    padding: 0.6rem 1rem;
-    font-size: 0.85rem;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text2);
-    white-space: nowrap;
-    margin-bottom: -2px;
-    transition: color 0.15s;
-  }
-  .community-tabs button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
-  .community-tabs button:hover { color: var(--accent); }
-  .ctab { display: none; }
-  .ctab.active { display: block; }
-
-  .member-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 0.8rem;
-  }
-  .member-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem;
-    font-size: 0.85rem;
-  }
-  .member-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; font-family: 'Source Serif 4', serif; margin-bottom: 0.7rem; }
-  .member-name { font-weight: 700; font-size: 0.95rem; }
-  .member-role { color: var(--text3); font-size: 0.78rem; }
-  .member-city { color: var(--text3); font-size: 0.78rem; }
-  .member-badge { display: inline-block; margin-top: 0.4rem; padding: 0.1rem 0.5rem; background: var(--accent-light); color: var(--accent); border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
-
-  .job-list { list-style: none; padding: 0; }
-  .job-item {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem;
-    margin-bottom: 0.7rem;
-  }
-  .job-title { font-weight: 700; font-size: 0.98rem; color: var(--text); }
-  .job-company { color: var(--accent); font-size: 0.83rem; margin: 0.1rem 0; }
-  .job-meta { font-size: 0.75rem; color: var(--text3); margin-top: 0.3rem; display: flex; gap: 1rem; flex-wrap: wrap; }
-  .job-desc { font-size: 0.83rem; color: var(--text2); margin-top: 0.5rem; }
-  .btn {
-    display: inline-block;
-    padding: 0.35rem 0.9rem;
-    border-radius: var(--radius);
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1px solid;
-    font-family: 'DM Sans', sans-serif;
-    transition: background 0.15s;
-    margin-top: 0.6rem;
-  }
-  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); text-decoration: none; }
-  .btn-outline { background: transparent; color: var(--accent); border-color: var(--accent); }
-  .btn-outline:hover { background: var(--accent-light); text-decoration: none; }
-
-  .biz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0.8rem; }
-  .biz-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 0.9rem;
-    font-size: 0.85rem;
-  }
-  .biz-cat { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent2); font-weight: 700; }
-  .biz-name { font-weight: 700; font-size: 1rem; margin: 0.15rem 0; }
-  .biz-loc { color: var(--text3); font-size: 0.78rem; }
-  .biz-desc { color: var(--text2); font-size: 0.82rem; margin-top: 0.4rem; }
-
-  /* ============================================================
-     PHILOSOPHY PAGE
-  ============================================================ */
-  .philosophy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem; }
-  .phil-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.2rem;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
-  .phil-card:hover { border-color: var(--accent); text-decoration: none; }
-  .phil-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
-  .phil-title { font-size: 1.1rem; font-weight: 700; font-family: 'Source Serif 4', serif; color: var(--accent); }
-  .phil-sanskrit { font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 0.9rem; color: var(--text3); }
-  .phil-desc { font-size: 0.85rem; color: var(--text2); margin-top: 0.5rem; }
-
-  /* ============================================================
-     FOOTER
-  ============================================================ */
-  #site-footer {
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
-    padding: 1.8rem 1rem;
-    margin-top: 3rem;
-    font-size: 0.82rem;
-  }
-  .footer-inner {
-    max-width: var(--max);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 1.5rem;
-  }
-  .footer-col h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 0.6rem; }
-  .footer-col ul { list-style: none; padding: 0; }
-  .footer-col ul li { padding: 0.2rem 0; }
-  .footer-col ul li a { color: var(--text3); font-size: 0.82rem; }
-  .footer-col ul li a:hover { color: var(--accent); }
-  .footer-bottom {
-    max-width: var(--max);
-    margin: 1.2rem auto 0;
-    padding-top: 0.8rem;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    color: var(--text3);
-  }
-  .footer-logo { font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 1.1rem; color: var(--accent); font-weight: 700; }
-
-  /* ============================================================
-     UTILITY / MISC
-  ============================================================ */
-  .notice {
-    background: var(--accent-light);
-    border-left: 3px solid var(--accent2);
-    padding: 0.7rem 1rem;
-    font-size: 0.85rem;
-    color: var(--text2);
-    margin: 1rem 0;
-    border-radius: 0 var(--radius) var(--radius) 0;
-  }
-  .badge { display: inline-block; padding: 0.1rem 0.45rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
-  .badge-news { background: #dceefb; color: #1a5276; }
-  .badge-blog { background: #d5f5e3; color: #1e8449; }
-  .badge-event { background: #fdebd0; color: #8b4513; }
-  .tag-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.8rem; }
-  .tag-row a { font-size: 0.75rem; background: var(--bg2); border: 1px solid var(--border); padding: 0.15rem 0.5rem; border-radius: 20px; color: var(--text3); }
-  .tag-row a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
-  .search-results { max-width: var(--max); margin: 0 auto; padding: 1.5rem 1rem; }
-  .search-results .sr-count { font-size: 0.85rem; color: var(--text3); margin-bottom: 1rem; }
-  .no-results { padding: 2rem; text-align: center; color: var(--text3); }
-
-  @media (max-width: 600px) {
-    .header-links { display: none; }
-    #mobile-menu-btn { display: block; }
-    .hero-search h1 { font-size: 1.6rem; }
-    .infobox { float: none; width: 100%; margin: 0 0 1rem; }
-    h1 { font-size: 1.4rem; }
-  }
-  @media (max-width: 768px) {
-    .home-row { grid-template-columns: 1fr; }
-    .tirthankara-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-  }
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -586,34 +22,34 @@
 ============================================================ -->
 <header id="site-header">
   <div class="header-inner">
-    <div class="logo" onclick="showPage('home')">
-      ☸ JanhWorld<span>janhworld.in</span>
+    <div class="logo" onclick="JW.showPage('home')">
+      ☸ JainWorld<span>jainworld.in</span>
     </div>
     <div class="header-search">
-      <input type="text" id="header-search-input" placeholder="Search Jainism…" onkeydown="if(event.key==='Enter')doSearch()">
-      <button onclick="doSearch()">Search</button>
+      <input type="text" id="header-search-input" placeholder="Search Jainism…" aria-label="Search">
+      <button id="header-search-btn">Search</button>
     </div>
     <div class="header-links">
-      <a href="#" onclick="showPage('home');return false">Home</a>
-      <a href="#" onclick="showPage('community');return false">Community</a>
-      <a href="#" onclick="showPage('news');return false">News</a>
-      <a href="#" onclick="return false" style="color:var(--accent);font-weight:600;">Sign In</a>
+      <a href="#" onclick="JW.showPage('home');return false">Home</a>
+      <a href="#" onclick="JW.showPage('news');return false">News</a>
+      <a href="#" onclick="JW.showPage('community');return false">Community</a>
+      <a href="#" onclick="JW.showPage('community');JW.switchTab('ctab-join');return false" style="color:var(--accent);font-weight:600">Join</a>
     </div>
-    <button id="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    <button id="mobile-menu-btn" aria-label="Menu">☰</button>
   </div>
 </header>
 
 <!-- Main Navigation -->
 <nav id="main-nav">
   <div class="nav-inner">
-    <a href="#" onclick="showPage('home');return false" id="nav-home">Home</a>
-    <a href="#" onclick="showPage('tirthankaras');return false" id="nav-tirthankaras">Tirthankaras</a>
-    <a href="#" onclick="showPage('literature');return false" id="nav-literature">Literature</a>
-    <a href="#" onclick="showPage('culture');return false" id="nav-culture">Culture</a>
-    <a href="#" onclick="showPage('philosophy');return false" id="nav-philosophy">Philosophy</a>
-    <a href="#" onclick="showPage('news');return false" id="nav-news">News</a>
-    <a href="#" onclick="showPage('blog');return false" id="nav-blog">Blog</a>
-    <a href="#" onclick="showPage('community');return false" id="nav-community">Community</a>
+    <a href="#" id="nav-home"          data-page="home"          onclick="JW.showPage('home');return false">Home</a>
+    <a href="#" id="nav-tirthankaras"  data-page="tirthankaras"  onclick="JW.showPage('tirthankaras');return false">Tirthankaras</a>
+    <a href="#" id="nav-literature"    data-page="literature"    onclick="JW.showPage('literature');return false">Literature</a>
+    <a href="#" id="nav-culture"       data-page="culture"       onclick="JW.showPage('culture');return false">Culture</a>
+    <a href="#" id="nav-philosophy"    data-page="philosophy"    onclick="JW.showPage('philosophy');return false">Philosophy</a>
+    <a href="#" id="nav-news"          data-page="news"          onclick="JW.showPage('news');return false">News</a>
+    <a href="#" id="nav-blog"          data-page="blog"          onclick="JW.showPage('blog');return false">Blog</a>
+    <a href="#" id="nav-community"     data-page="community"     onclick="JW.showPage('community');return false">Community</a>
   </div>
 </nav>
 
@@ -622,112 +58,65 @@
 ============================================================ -->
 <div id="page-home" class="page active">
   <div class="hero-search">
-    <h1>☸ JanhWorld</h1>
+    <h1>☸ JainWorld</h1>
     <p class="tagline">Parasparopagraho Jīvānām — Souls render service to one another</p>
     <div class="big-search">
-      <input type="text" id="home-search-input" placeholder="Search Tirthankaras, festivals, philosophy, news…" onkeydown="if(event.key==='Enter')doSearch()">
-      <button onclick="doSearch()">Search</button>
+      <input type="text" id="home-search-input" placeholder="Search Tirthankaras, festivals, philosophy, news…" aria-label="Search JainWorld">
+      <button id="home-search-btn">Search</button>
     </div>
-    <p class="search-hint">Knowledge library · News · Community · 24 Tirthankaras · Jain philosophy</p>
+    <p class="search-hint">Knowledge library · Daily News · SEO Blogs · Community · 24 Tirthankaras</p>
   </div>
 
   <div class="container">
-    <div class="home-categories" style="padding-top:1.5rem;">
+    <div class="home-categories">
       <h2>Explore</h2>
       <div class="cat-grid">
-        <div class="cat-card" onclick="showPage('tirthankaras')">
-          <span class="cat-icon">🏛️</span>
-          <span class="cat-name">Tirthankaras</span>
-          <span class="cat-count">24 Enlightened Souls</span>
-        </div>
-        <div class="cat-card" onclick="showPage('literature')">
-          <span class="cat-icon">📜</span>
-          <span class="cat-name">Literature</span>
-          <span class="cat-count">Agamas, Stories, Poems</span>
-        </div>
-        <div class="cat-card" onclick="showPage('culture')">
-          <span class="cat-icon">🪔</span>
-          <span class="cat-name">Culture</span>
-          <span class="cat-count">Festivals & Traditions</span>
-        </div>
-        <div class="cat-card" onclick="showPage('philosophy')">
-          <span class="cat-icon">🔱</span>
-          <span class="cat-name">Philosophy</span>
-          <span class="cat-count">Ahimsa, Karma, Moksha</span>
-        </div>
-        <div class="cat-card" onclick="showPage('news')">
-          <span class="cat-icon">📰</span>
-          <span class="cat-name">News</span>
-          <span class="cat-count">Daily Jain News</span>
-        </div>
-        <div class="cat-card" onclick="showPage('blog')">
-          <span class="cat-icon">✍️</span>
-          <span class="cat-name">Blog</span>
-          <span class="cat-count">Long-form Articles</span>
-        </div>
-        <div class="cat-card" onclick="showPage('community')">
-          <span class="cat-icon">🤝</span>
-          <span class="cat-name">Community</span>
-          <span class="cat-count">Jobs, Business, Network</span>
-        </div>
+        <div class="cat-card" onclick="JW.showPage('tirthankaras')"><span class="cat-icon">🏛️</span><span class="cat-name">Tirthankaras</span><span class="cat-count">24 Enlightened Souls</span></div>
+        <div class="cat-card" onclick="JW.showPage('literature')"><span class="cat-icon">📜</span><span class="cat-name">Literature</span><span class="cat-count">Agamas, Stories, Poems</span></div>
+        <div class="cat-card" onclick="JW.showPage('culture')"><span class="cat-icon">🪔</span><span class="cat-name">Culture</span><span class="cat-count">Festivals & Traditions</span></div>
+        <div class="cat-card" onclick="JW.showPage('philosophy')"><span class="cat-icon">🔱</span><span class="cat-name">Philosophy</span><span class="cat-count">Ahimsa, Karma, Moksha</span></div>
+        <div class="cat-card" onclick="JW.showPage('news')"><span class="cat-icon">📰</span><span class="cat-name">News</span><span class="cat-count">Daily Jain News</span></div>
+        <div class="cat-card" onclick="JW.showPage('blog')"><span class="cat-icon">✍️</span><span class="cat-name">Blog</span><span class="cat-count">Long-form Articles</span></div>
+        <div class="cat-card" onclick="JW.showPage('community')"><span class="cat-icon">🤝</span><span class="cat-name">Community</span><span class="cat-count">Jobs, Business, Network</span></div>
       </div>
     </div>
 
     <div class="home-row">
+      <!-- LEFT: News + Blog -->
       <div class="home-main">
         <div class="featured-article">
           <div class="fa-body">
             <span class="fa-cat">Featured Article</span>
-            <h3><a href="#" onclick="showPage('tirthankara-mahavir');return false">Lord Mahavira — The 24th Tirthankara and Founder of Modern Jainism</a></h3>
-            <p>Vardhamana Mahavira, born in 599 BCE in Vaishali, attained Kevala Jnana at age 42 and became the last of the 24 Tirthankaras. His teachings on ahimsa, truth, and non-attachment form the bedrock of Jain philosophy and continue to influence millions…</p>
-            <div class="tag-row">
-              <a href="#">Mahavira</a><a href="#">24th Tirthankara</a><a href="#">Ahimsa</a><a href="#">Kevala Jnana</a>
-            </div>
+            <h3><a href="#" onclick="JW.showPage('tirthankara-mahavir');return false">Lord Mahavira — The 24th Tirthankara and Founder of Modern Jainism</a></h3>
+            <p>Vardhamana Mahavira, born in 599 BCE in Vaishali, attained Kevala Jnana at age 42 and became the last of the 24 Tirthankaras. His teachings on ahimsa, truth, and non-attachment form the bedrock of Jain philosophy…</p>
+            <div class="tag-row"><a href="#">Mahavira</a><a href="#">24th Tirthankara</a><a href="#">Ahimsa</a><a href="#">Kevala Jnana</a></div>
           </div>
         </div>
 
-        <div class="section-label">Latest News <a href="#" onclick="showPage('news');return false">View all →</a></div>
-        <ul class="news-list">
-          <li>
-            <div class="nt"><a href="#" onclick="showPage('news-article');return false">Paryushan Mahaparva 2025 Celebrations Begin Across India</a></div>
-            <div class="nm">📅 Today · <span class="badge badge-event">Event</span></div>
-          </li>
-          <li>
-            <div class="nt"><a href="#" onclick="showPage('news');return false">Jain International Organisation Launches Global Youth Summit</a></div>
-            <div class="nm">📅 Yesterday · <span class="badge badge-news">World</span></div>
-          </li>
-          <li>
-            <div class="nt"><a href="#" onclick="showPage('news');return false">New Jain Temple Consecrated in London's Harrow District</a></div>
-            <div class="nm">📅 2 days ago · <span class="badge badge-news">Diaspora</span></div>
-          </li>
-          <li>
-            <div class="nt"><a href="#" onclick="showPage('news');return false">Mahavir Jayanti Pilgrimage: Lakhs Visit Pawapuri and Rajgir</a></div>
-            <div class="nm">📅 3 days ago · <span class="badge badge-event">Pilgrimage</span></div>
-          </li>
-          <li>
-            <div class="nt"><a href="#" onclick="showPage('news');return false">Jain Scholars Meet in Ahmedabad to Discuss Agama Preservation</a></div>
-            <div class="nm">📅 4 days ago · <span class="badge badge-news">Education</span></div>
-          </li>
+        <div class="section-label">
+          Latest Jain News
+          <a href="#" onclick="JW.showPage('news');return false">View all →</a>
+        </div>
+        <ul class="news-list" id="home-news-list">
+          <!-- Dynamically populated by news.js -->
+          <li class="loading-placeholder"><div class="skeleton skeleton-line wide"></div><div class="skeleton skeleton-line short" style="margin-top:0.3rem"></div></li>
+          <li class="loading-placeholder"><div class="skeleton skeleton-line wide"></div><div class="skeleton skeleton-line short" style="margin-top:0.3rem"></div></li>
+          <li class="loading-placeholder"><div class="skeleton skeleton-line wide"></div><div class="skeleton skeleton-line short" style="margin-top:0.3rem"></div></li>
         </ul>
 
         <br>
-        <div class="section-label">Latest from Blog <a href="#" onclick="showPage('blog');return false">View all →</a></div>
-        <ul class="news-list">
-          <li>
-            <div class="nt"><a href="#" onclick="showPage('blog-article');return false">The Jain Diet: Why Veganism is Not Enough for a True Jain</a></div>
-            <div class="nm">📅 2 days ago · <span class="badge badge-blog">Health & Diet</span></div>
-          </li>
-          <li>
-            <div class="nt"><a href="#" onclick="showPage('blog');return false">Anekantavada in the Modern World: Finding Truth in Many Perspectives</a></div>
-            <div class="nm">📅 5 days ago · <span class="badge badge-blog">Philosophy</span></div>
-          </li>
-          <li>
-            <div class="nt"><a href="#" onclick="showPage('blog');return false">Jain Business Ethics: How Ancient Values Drive Modern Success</a></div>
-            <div class="nm">📅 1 week ago · <span class="badge badge-blog">Business</span></div>
-          </li>
+        <div class="section-label">
+          Latest from Blog
+          <a href="#" onclick="JW.showPage('blog');return false">View all →</a>
+        </div>
+        <ul class="news-list" id="home-blog-list">
+          <!-- Dynamically populated by community.js -->
+          <li class="loading-placeholder"><div class="skeleton skeleton-line wide"></div><div class="skeleton skeleton-line short" style="margin-top:0.3rem"></div></li>
+          <li class="loading-placeholder"><div class="skeleton skeleton-line wide"></div><div class="skeleton skeleton-line short" style="margin-top:0.3rem"></div></li>
         </ul>
       </div>
 
+      <!-- RIGHT: Sidebar -->
       <div class="home-sidebar">
         <div class="sidebar-box">
           <h4>☸ Today's Thought</h4>
@@ -736,15 +125,11 @@
         </div>
         <div class="sidebar-box">
           <h4>🏛️ Tirthankaras</h4>
-          <ul>
-            <li><a href="#" onclick="showPage('tirthankara-rishabha');return false">1. Rishabhanatha (Adinatha)</a></li>
-            <li><a href="#">7. Suparshvanatha</a></li>
-            <li><a href="#">16. Shantinatha</a></li>
-            <li><a href="#">22. Neminatha</a></li>
-            <li><a href="#">23. Parshvanatha</a></li>
-            <li><a href="#" onclick="showPage('tirthankara-mahavir');return false">24. Mahavira</a></li>
+          <ul id="home-tirthankara-links">
+            <li><a href="#" onclick="JW.showPage('tirthankara-rishabha');return false">1. Rishabhanatha (Adinatha)</a></li>
+            <li><a href="#" onclick="JW.showPage('tirthankara-mahavir');return false">24. Mahavira</a></li>
           </ul>
-          <a href="#" onclick="showPage('tirthankaras');return false" style="font-size:0.78rem;display:block;margin-top:0.5rem">View all 24 →</a>
+          <a href="#" onclick="JW.showPage('tirthankaras');return false" style="font-size:0.78rem;display:block;margin-top:0.5rem">View all 24 →</a>
         </div>
         <div class="sidebar-box">
           <h4>🗓️ Upcoming Events</h4>
@@ -757,8 +142,8 @@
         </div>
         <div class="sidebar-box">
           <h4>🤝 Community</h4>
-          <p style="font-size:0.82rem;color:var(--text2);margin-bottom:0.6rem">Join 12,000+ Jains on JanhWorld. Connect, find jobs, and grow your business.</p>
-          <a href="#" onclick="showPage('community');return false" class="btn btn-primary" style="display:block;text-align:center">Join Community →</a>
+          <p style="font-size:0.82rem;color:var(--text2);margin-bottom:0.6rem">Join 12,000+ Jains. Connect, find jobs, and grow your business.</p>
+          <a href="#" onclick="JW.showPage('community');JW.switchTab('ctab-join');return false" class="btn btn-primary" style="display:block;text-align:center">Join Community →</a>
         </div>
       </div>
     </div>
@@ -766,114 +151,66 @@
 </div>
 
 <!-- ============================================================
-     TIRTHANKARAS LIST PAGE
+     TIRTHANKARAS LIST
 ============================================================ -->
 <div id="page-tirthankaras" class="page">
   <div class="list-page">
     <div class="list-page-header">
-      <div class="breadcrumb"><a href="#" onclick="showPage('home');return false">Home</a> › Tirthankaras</div>
+      <div class="breadcrumb"><a href="#" onclick="JW.showPage('home');return false">Home</a> › Tirthankaras</div>
       <h1>The 24 Tirthankaras</h1>
-      <p>Ford-makers of the current cosmic cycle (Avasarpiṇī). Each Tirthankara attained Kevala Jnana (omniscience) and established the fourfold Jain Sangha.</p>
+      <p>Ford-makers of the current cosmic cycle. Each attained Kevala Jnana and established the Jain Sangha.</p>
     </div>
-    <div class="notice">The word <strong>Tirthankara</strong> (तीर्थंकर) means "ford-maker" — one who creates a path across the ocean of worldly existence. They are the supreme spiritual teachers who revive the Jain path of liberation in each cosmic cycle.</div>
+    <div class="notice">The word <strong>Tirthankara</strong> (तीर्थंकर) means "ford-maker" — one who creates a path across the ocean of worldly existence.</div>
     <div class="tirthankara-grid" id="tirthankara-grid">
-      <!-- Generated by JS -->
+      <!-- Built by app.js -->
     </div>
   </div>
 </div>
 
 <!-- ============================================================
-     TIRTHANKARA ARTICLE: MAHAVIRA
+     TIRTHANKARA: MAHAVIRA
 ============================================================ -->
 <div id="page-tirthankara-mahavir" class="page">
   <div class="content-layout">
     <div class="content-sidebar-left">
       <div class="toc-title">Contents</div>
-      <div class="toc">
-        <ul>
-          <li><a href="#">1. Life Story</a></li>
-          <li><a href="#">2. Early Life & Birth</a></li>
-          <li><a href="#">3. Renunciation</a></li>
-          <li><a href="#">4. Kevala Jnana</a></li>
-          <li><a href="#">5. Teachings</a></li>
-          <li><a href="#">6. Five Vows</a></li>
-          <li><a href="#">7. Nirvana</a></li>
-          <li><a href="#">8. Associated Places</a></li>
-          <li><a href="#">9. Legacy</a></li>
-        </ul>
-      </div>
+      <div class="toc"><ul>
+        <li><a href="#">1. Life Story</a></li><li><a href="#">2. Birth &amp; Early Life</a></li>
+        <li><a href="#">3. Renunciation</a></li><li><a href="#">4. Kevala Jnana</a></li>
+        <li><a href="#">5. Teachings</a></li><li><a href="#">6. Five Vows</a></li>
+        <li><a href="#">7. Nirvana</a></li><li><a href="#">8. Sacred Places</a></li>
+      </ul></div>
       <hr>
       <div style="font-size:0.78rem;color:var(--text3);margin-top:0.6rem">
         <div style="margin-bottom:0.4rem"><strong>Other Tirthankaras</strong></div>
-        <a href="#" onclick="showPage('tirthankara-rishabha');return false" style="display:block;padding:0.2rem 0;color:var(--text3)">← 1. Rishabhanatha</a>
-        <a href="#" style="display:block;padding:0.2rem 0;color:var(--text3)">23. Parshvanatha →</a>
+        <a href="#" onclick="JW.showPage('tirthankara-rishabha');return false" style="display:block;padding:0.2rem 0;color:var(--text3)">← 1. Rishabhanatha</a>
+        <a href="#" style="display:block;padding:0.2rem 0;color:var(--text3)">23. Parshvanatha</a>
       </div>
     </div>
-
     <div class="content-main">
-      <div class="breadcrumb">
-        <a href="#" onclick="showPage('home');return false">Home</a> ›
-        <a href="#" onclick="showPage('tirthankaras');return false">Tirthankaras</a> ›
-        Mahavira
-      </div>
+      <div class="breadcrumb"><a href="#" onclick="JW.showPage('home');return false">Home</a> › <a href="#" onclick="JW.showPage('tirthankaras');return false">Tirthankaras</a> › Mahavira</div>
       <h1>Lord Mahavira — The 24th Tirthankara</h1>
-      <div class="article-meta">
-        <span>📍 24th Tirthankara</span>
-        <span>🗓️ 599–527 BCE</span>
-        <span class="tag">Digambara</span>
-        <span class="tag">Shvetambara</span>
-        <span class="tag">Jain History</span>
-      </div>
-
+      <div class="article-meta"><span>📍 24th Tirthankara</span><span>🗓️ 599–527 BCE</span><span class="tag">Digambara</span><span class="tag">Shvetambara</span></div>
       <div class="infobox">
         <div class="infobox-header">Lord Mahavira</div>
         <div class="infobox-symbol">🦁</div>
         <table>
-          <tr><td>Order</td><td>24th (last)</td></tr>
-          <tr><td>Symbol</td><td>Lion (Simha)</td></tr>
-          <tr><td>Born</td><td>599 BCE, Vaishali</td></tr>
-          <tr><td>Renounced</td><td>569 BCE (age 30)</td></tr>
-          <tr><td>Kevala Jnana</td><td>557 BCE, Jrimbhikagrama</td></tr>
-          <tr><td>Nirvana</td><td>527 BCE, Pawapuri</td></tr>
-          <tr><td>Tree</td><td>Ashoka (Saraca asoca)</td></tr>
-          <tr><td>Color</td><td>Golden Yellow</td></tr>
-          <tr><td>Yaksha</td><td>Matanga</td></tr>
-          <tr><td>Yakshi</td><td>Siddhaika / Padmavathi</td></tr>
+          <tr><td>Order</td><td>24th (last)</td></tr><tr><td>Symbol</td><td>Lion (Simha)</td></tr>
+          <tr><td>Born</td><td>599 BCE, Vaishali</td></tr><tr><td>Renounced</td><td>569 BCE (age 30)</td></tr>
+          <tr><td>Kevala Jnana</td><td>557 BCE, Jrimbhikagrama</td></tr><tr><td>Nirvana</td><td>527 BCE, Pawapuri</td></tr>
+          <tr><td>Tree</td><td>Ashoka (Saraca asoca)</td></tr><tr><td>Color</td><td>Golden Yellow</td></tr>
         </table>
       </div>
-
-      <p><strong>Vardhamana Mahavira</strong> (Sanskrit: वर्धमान महावीर), born in 599 BCE in the ancient city of Vaishali (present-day Bihar, India), was the 24th and last Tirthankara of the current cosmic age. He is considered the greatest spiritual reformer in Jainism and is primarily responsible for the widespread revival and systematic organization of Jain philosophy as we know it today.</p>
-
-      <p>Born into the Kshatriya warrior caste to King Siddhartha and Queen Trishala, Mahavira showed signs of extraordinary spiritual prowess from childhood. The name <em>Mahavira</em> (Great Hero) was given later in his life, recognizing his supreme courage and spiritual triumph over the senses.</p>
-
+      <p><strong>Vardhamana Mahavira</strong> (Sanskrit: वर्धमान महावीर), born in 599 BCE in Vaishali, Bihar, was the 24th and last Tirthankara of the current cosmic age. He is primarily responsible for the widespread revival and systematic organization of Jain philosophy as we know it today.</p>
+      <p>Born to King Siddhartha and Queen Trishala, Mahavira showed signs of extraordinary spiritual prowess from childhood. The name <em>Mahavira</em> (Great Hero) was given later, recognizing his supreme courage and spiritual triumph over the senses.</p>
       <div class="clearfix"></div>
-
       <h2>Early Life and Birth</h2>
-      <p>According to Jain texts, Queen Trishala experienced fourteen auspicious dreams before Mahavira's birth — dreams interpreted by astrologers as heralding the birth of either a universal emperor (Chakravartin) or a Tirthankara. He was born on the 13th day of the bright half of Chaitra month (celebrated today as Mahavir Jayanti).</p>
-      <p>Mahavira grew up in the royal household, was well-educated in the arts, sciences, and Vedic traditions, and married Princess Yashoda (in some traditions). He had a daughter named Anojja. Despite palace comforts, he remained deeply drawn to spiritual inquiry, observing the suffering of all living beings around him.</p>
-
+      <p>Queen Trishala experienced fourteen auspicious dreams before Mahavira's birth — interpreted as heralding either a universal emperor or a Tirthankara. He was born on the 13th day of the bright half of Chaitra (celebrated as Mahavir Jayanti). Mahavira grew up in the royal household, was well-educated in arts and sciences, and married Princess Yashoda, with whom he had a daughter named Anojja.</p>
       <h2>Renunciation (Diksha)</h2>
-      <p>At the age of 30, after his parents passed away, Mahavira renounced all worldly possessions — his palace, family, clothes, and even hair (which he pulled out with his hands, a practice called <em>kesh-lochan</em>). He took Diksha (initiation into ascetic life) and began twelve and a half years of intense spiritual practice.</p>
-      <p>During this period he:</p>
-      <ul>
-        <li>Maintained complete silence for most of his ascetic life</li>
-        <li>Endured extreme heat, cold, and physical hardship without complaint</li>
-        <li>Practiced severe meditation and fasting</li>
-        <li>Walked barefoot through forests, villages, and cities</li>
-        <li>Never harmed any living being — even microorganisms</li>
-        <li>Bore attacks and insults from villagers with equanimity</li>
-      </ul>
-
-      <h2>Attainment of Kevala Jnana (Omniscience)</h2>
-      <p>After twelve and a half years of intense penance, Mahavira attained Kevala Jnana — perfect, complete, infinite knowledge — on the 10th day of Vaishakha (around 557 BCE), under a Sala tree on the banks of the Rijupalika River near the village of Jrimbhikagrama. This is the highest state achievable in Jain spiritual philosophy, signifying total liberation from karma.</p>
-
-      <h3>What is Kevala Jnana?</h3>
-      <p>Kevala Jnana is the direct, simultaneous, and complete perception of all substances, all modes, all time (past, present, future), and all space — without any obstruction. It is not a gift from God but the natural state of the pure soul, revealed when all karmic particles are destroyed.</p>
-
-      <h2>Teachings of Mahavira</h2>
-      <p>After attaining Kevala Jnana, Mahavira spent the remaining 30 years of his life preaching across eastern India. His core message can be summarized in a few fundamental principles:</p>
-
-      <h3>The Five Mahavrata (Great Vows) for Monks</h3>
+      <p>At age 30, after his parents' death, Mahavira renounced all worldly possessions — palace, family, clothes, and hair (pulled out in five handfuls — <em>kesh-lochan</em>). He took Diksha and began twelve and a half years of intense spiritual practice: maintaining complete silence, enduring extreme heat and cold, walking barefoot, eating rarely, and practicing severe meditation.</p>
+      <h2>Kevala Jnana</h2>
+      <p>After twelve and a half years of penance, Mahavira attained Kevala Jnana — perfect, simultaneous, infinite knowledge — under a Sala tree on the banks of the Rijupalika River near Jrimbhikagrama. This is the highest state in Jain philosophy: direct perception of all substances, all modes, all time, and all space.</p>
+      <h2>Teachings — Five Mahavrata</h2>
       <ul>
         <li><strong>Ahimsa</strong> (अहिंसा) — Complete non-violence in thought, word, and deed</li>
         <li><strong>Satya</strong> (सत्य) — Absolute truthfulness</li>
@@ -881,906 +218,358 @@
         <li><strong>Brahmacharya</strong> (ब्रह्मचर्य) — Celibacy</li>
         <li><strong>Aparigraha</strong> (अपरिग्रह) — Complete non-possessiveness</li>
       </ul>
-
-      <h3>Twelve Anuvrata (Lesser Vows) for Laypersons</h3>
-      <p>For householders, Mahavira prescribed twelve lesser vows adapted to the constraints of ordinary life, including partial non-violence, limited possessions, and periodic fasting.</p>
-
-      <h3>The Doctrine of Anekantavada</h3>
-      <p>Mahavira emphasized that reality is multifaceted and cannot be captured by any single point of view. This doctrine of <em>Anekantavada</em> (many-sidedness of truth) is Jainism's great contribution to world philosophy and epistemology.</p>
-
-      <h2>Nirvana and Legacy</h2>
-      <p>At the age of 72, Mahavira attained Nirvana (liberation) at Pawapuri, Bihar, on the night of Kartika Krishna Chaturdashi — the very night that many Hindus observe as Diwali. Jains observe this as the sacred festival of <strong>Diwali</strong>, marking not celebration of wealth, but the liberation of the great soul.</p>
-      <p>His chief disciples (Ganadharas), including Indrabhuti Gautama, compiled his teachings into the Jain Agamas, the canonical scriptures of Jainism.</p>
-
+      <h2>Nirvana</h2>
+      <p>At age 72, Mahavira attained Nirvana at Pawapuri, Bihar, on Kartika Krishna Chaturdashi — the night Jains celebrate as Diwali, marking the liberation of the Great Soul.</p>
       <h2>Associated Sacred Places</h2>
       <ul>
         <li><strong>Vaishali, Bihar</strong> — Birthplace (Kundagrama)</li>
-        <li><strong>Jrimbhikagrama, Bihar</strong> — Place of Kevala Jnana</li>
-        <li><strong>Pawapuri, Bihar</strong> — Place of Nirvana (Moksha)</li>
+        <li><strong>Jrimbhikagrama, Bihar</strong> — Kevala Jnana</li>
+        <li><strong>Pawapuri, Bihar</strong> — Nirvana (Moksha)</li>
         <li><strong>Rajgir, Bihar</strong> — Major preaching ground</li>
-        <li><strong>Shravanabelagola, Karnataka</strong> — Major pilgrimage site</li>
-        <li><strong>Palitana, Gujarat</strong> — Sacred hill with 900+ temples</li>
+        <li><strong>Palitana, Gujarat</strong> — 900+ temples on Shatrunjaya hill</li>
       </ul>
-
-      <div class="tag-row">
-        <a href="#">Mahavira</a><a href="#">24th Tirthankara</a><a href="#">Kevala Jnana</a>
-        <a href="#">Five Vows</a><a href="#">Pawapuri</a><a href="#">Bihar</a><a href="#">Jain History</a>
-      </div>
+      <div class="tag-row"><a href="#">Mahavira</a><a href="#">Kevala Jnana</a><a href="#">Five Vows</a><a href="#">Pawapuri</a><a href="#">Bihar</a></div>
     </div>
-
     <div class="content-sidebar-right">
       <div class="section-label" style="margin-bottom:0.7rem">Quick Facts</div>
-      <div style="font-size:0.82rem;">
-        <p><strong>Religion:</strong> Jainism</p>
-        <p><strong>Sect recognition:</strong> Digambara & Shvetambara</p>
-        <p><strong>Major text:</strong> Acharanga Sutra</p>
-        <p><strong>Festival:</strong> Mahavir Jayanti, Diwali</p>
-      </div>
+      <div style="font-size:0.82rem"><p><strong>Religion:</strong> Jainism</p><p><strong>Festival:</strong> Mahavir Jayanti, Diwali</p><p><strong>Major text:</strong> Acharanga Sutra</p></div>
       <hr>
-      <div class="section-label" style="margin-bottom:0.7rem">Related Articles</div>
-      <ul style="list-style:none;padding:0;font-size:0.82rem;">
-        <li style="padding:0.25rem 0"><a href="#" onclick="showPage('tirthankara-rishabha');return false">Rishabhanatha (1st Tirthankara)</a></li>
-        <li style="padding:0.25rem 0"><a href="#">Parshvanatha (23rd Tirthankara)</a></li>
-        <li style="padding:0.25rem 0"><a href="#" onclick="showPage('philosophy');return false">Five Vows of Jainism</a></li>
-        <li style="padding:0.25rem 0"><a href="#">Kevala Jnana</a></li>
-        <li style="padding:0.25rem 0"><a href="#">Jain Sangha</a></li>
-        <li style="padding:0.25rem 0"><a href="#">Pawapuri Pilgrimage</a></li>
-        <li style="padding:0.25rem 0"><a href="#">Acharanga Sutra</a></li>
+      <div class="section-label" style="margin-bottom:0.7rem">Related</div>
+      <ul style="list-style:none;padding:0;font-size:0.82rem">
+        <li style="padding:0.25rem 0"><a href="#" onclick="JW.showPage('tirthankara-rishabha');return false">Rishabhanatha (1st)</a></li>
+        <li style="padding:0.25rem 0"><a href="#" onclick="JW.showPage('philosophy');return false">Five Vows of Jainism</a></li>
+        <li style="padding:0.25rem 0"><a href="#" onclick="JW.showLitArticle('acharanga-sutra');return false">Acharanga Sutra</a></li>
+        <li style="padding:0.25rem 0"><a href="#" onclick="JW.showPage('culture');return false">Mahavir Jayanti</a></li>
       </ul>
     </div>
   </div>
 </div>
 
 <!-- ============================================================
-     TIRTHANKARA ARTICLE: RISHABHANATHA
+     TIRTHANKARA: RISHABHANATHA
 ============================================================ -->
 <div id="page-tirthankara-rishabha" class="page">
   <div class="content-layout">
     <div class="content-sidebar-left">
       <div class="toc-title">Contents</div>
-      <div class="toc">
-        <ul>
-          <li><a href="#">1. Life Story</a></li>
-          <li><a href="#">2. First of the 24</a></li>
-          <li><a href="#">3. Teachings</a></li>
-          <li><a href="#">4. Symbol</a></li>
-          <li><a href="#">5. Sacred Sites</a></li>
-          <li><a href="#">6. In Hindu Texts</a></li>
-        </ul>
-      </div>
+      <div class="toc"><ul>
+        <li><a href="#">1. Significance</a></li><li><a href="#">2. First Teacher</a></li>
+        <li><a href="#">3. Teachings</a></li><li><a href="#">4. In Hindu Texts</a></li>
+        <li><a href="#">5. Sacred Sites</a></li>
+      </ul></div>
     </div>
     <div class="content-main">
-      <div class="breadcrumb">
-        <a href="#" onclick="showPage('home');return false">Home</a> ›
-        <a href="#" onclick="showPage('tirthankaras');return false">Tirthankaras</a> ›
-        Rishabhanatha
-      </div>
+      <div class="breadcrumb"><a href="#" onclick="JW.showPage('home');return false">Home</a> › <a href="#" onclick="JW.showPage('tirthankaras');return false">Tirthankaras</a> › Rishabhanatha</div>
       <h1>Rishabhanatha — The 1st Tirthankara</h1>
-      <div class="article-meta">
-        <span>📍 1st Tirthankara</span>
-        <span class="tag">Adinatha</span>
-        <span class="tag">Digambara</span>
-      </div>
+      <div class="article-meta"><span>📍 1st Tirthankara</span><span class="tag">Adinatha</span></div>
       <div class="infobox">
         <div class="infobox-header">Rishabhanatha (Adinatha)</div>
         <div class="infobox-symbol">🐂</div>
         <table>
-          <tr><td>Order</td><td>1st</td></tr>
-          <tr><td>Symbol</td><td>Bull (Vrishabha)</td></tr>
-          <tr><td>Color</td><td>Golden</td></tr>
-          <tr><td>Yaksha</td><td>Gomukha</td></tr>
-          <tr><td>Yakshi</td><td>Chakreshvari</td></tr>
-          <tr><td>Key Site</td><td>Ashtapada, Ayodhya</td></tr>
+          <tr><td>Order</td><td>1st</td></tr><tr><td>Symbol</td><td>Bull (Vrishabha)</td></tr>
+          <tr><td>Color</td><td>Golden</td></tr><tr><td>Key Site</td><td>Ayodhya, Ashtapada</td></tr>
         </table>
       </div>
-      <p><strong>Rishabhanatha</strong> (Sanskrit: ऋषभनाथ), also known as <strong>Adinatha</strong> (First Lord), is the first Tirthankara of the present cosmic cycle. He is said to have lived in an ancient age when humanity was in a transitional period from a more perfect state of existence to the current imperfect one.</p>
-      <p>Rishabhanatha is credited with teaching humanity the basics of civilization — including agriculture, fire-making, cooking, pottery, and writing. He is revered not just as a spiritual teacher but as the founder of civilized society itself.</p>
+      <p><strong>Rishabhanatha</strong> (ऋषभनाथ), also known as <strong>Adinatha</strong> (First Lord), is the first Tirthankara of the present cosmic cycle. He is credited with teaching humanity the basics of civilization — agriculture, fire-making, cooking, pottery, and writing — at a time when wish-fulfilling trees (Kalpavrikshas) had ceased to provide humanity's needs.</p>
       <div class="clearfix"></div>
-      <h2>Significance</h2>
-      <p>According to Jain cosmology, Rishabha appeared at the junction of two cosmic ages (the Tretayuga transition), when humans no longer had wish-fulfilling trees (Kalpavrikshas) to provide all their needs. He taught the 72 arts and crafts to men and the 64 arts to women to help humanity survive and prosper.</p>
+      <h2>Teacher of Civilization</h2>
+      <p>Rishabha taught the 72 arts and crafts to men and the 64 arts to women. His son Bharata became the first Chakravartin (universal emperor), giving India its ancient name Bharatavarsha. His daughter Brahmi is said to have given humanity the Brahmi script.</p>
       <h2>Teachings</h2>
       <ul>
         <li>Non-violence as the highest dharma</li>
         <li>Renunciation of worldly attachments</li>
         <li>The fourfold Sangha (monks, nuns, laymen, laywomen)</li>
-        <li>The path of liberation through right faith, right knowledge, right conduct</li>
+        <li>The three jewels: Right Faith, Right Knowledge, Right Conduct</li>
       </ul>
-      <h2>Mention in Hindu Texts</h2>
-      <p>Remarkably, Rishabha (Rishaba) is also mentioned in the Bhagavata Purana (one of the 18 major Puranas), where he is described as an avatar of Vishnu. This has led some scholars to suggest a shared ancestry between Jain and Vedic traditions. Jains, of course, do not accept the avatar interpretation.</p>
+      <h2>In Hindu Texts</h2>
+      <p>Remarkably, Rishabha is also mentioned in the Bhagavata Purana as an avatar of Vishnu — evidence of a shared heritage between Jain and Vedic traditions. Jains, of course, do not accept the avatar interpretation.</p>
       <h2>Sacred Sites</h2>
       <ul>
-        <li><strong>Ashtapada (Kailash)</strong> — Attained Nirvana here</li>
         <li><strong>Ayodhya, UP</strong> — Birthplace</li>
+        <li><strong>Ashtapada (Kailash)</strong> — Nirvana site</li>
         <li><strong>Palitana, Gujarat</strong> — Major temple complex</li>
-        <li><strong>Shikharji (Parasnath), Jharkhand</strong> — Important pilgrimage</li>
       </ul>
-      <div class="tag-row">
-        <a href="#">Rishabhanatha</a><a href="#">Adinatha</a><a href="#">1st Tirthankara</a><a href="#">Jain Cosmology</a>
-      </div>
+      <div class="tag-row"><a href="#">Rishabhanatha</a><a href="#">Adinatha</a><a href="#">1st Tirthankara</a><a href="#">Civilization</a></div>
     </div>
     <div class="content-sidebar-right">
       <div class="section-label" style="margin-bottom:0.7rem">Related</div>
-      <ul style="list-style:none;padding:0;font-size:0.82rem;">
-        <li style="padding:0.25rem 0"><a href="#" onclick="showPage('tirthankara-mahavir');return false">24. Mahavira</a></li>
-        <li style="padding:0.25rem 0"><a href="#">Jain Cosmology</a></li>
-        <li style="padding:0.25rem 0"><a href="#">Kalpavrikshas</a></li>
-        <li style="padding:0.25rem 0"><a href="#">Fourfold Sangha</a></li>
+      <ul style="list-style:none;padding:0;font-size:0.82rem">
+        <li style="padding:0.25rem 0"><a href="#" onclick="JW.showPage('tirthankara-mahavir');return false">24. Mahavira</a></li>
+        <li style="padding:0.25rem 0"><a href="#" onclick="JW.showLitArticle('rishabha-story');return false">Story of Rishabhanatha</a></li>
+        <li style="padding:0.25rem 0"><a href="#" onclick="JW.showPage('tirthankaras');return false">All 24 Tirthankaras</a></li>
       </ul>
     </div>
   </div>
 </div>
 
 <!-- ============================================================
-     LITERATURE PAGE
+     TIRTHANKARA: GENERIC DETAIL (built dynamically by app.js)
+============================================================ -->
+<div id="page-tirthankara-detail" class="page">
+  <!-- Populated by app.js showTirthankaraDetail() -->
+</div>
+
+<!-- ============================================================
+     LITERATURE
 ============================================================ -->
 <div id="page-literature" class="page">
   <div class="list-page">
     <div class="list-page-header">
-      <div class="breadcrumb"><a href="#" onclick="showPage('home');return false">Home</a> › Literature</div>
+      <div class="breadcrumb"><a href="#" onclick="JW.showPage('home');return false">Home</a> › Literature</div>
       <h1>Jain Literature</h1>
-      <p>A vast treasury of Agamas, canonical texts, philosophical treatises, poetry, and folk literature spanning over 2,500 years.</p>
+      <p>Agamas, philosophical treatises, poetry, and folk literature spanning over 2,500 years of Jain tradition.</p>
     </div>
     <div class="filter-bar">
-      <label>Filter:</label>
-      <select><option>All Categories</option><option>Agamas</option><option>Stories</option><option>Poems</option><option>Philosophical Texts</option></select>
-      <select><option>All Languages</option><option>Ardhamagadhi</option><option>Sanskrit</option><option>Prakrit</option><option>Hindi</option></select>
+      <label>Type:</label>
+      <select onchange="filterLiterature(this.value)">
+        <option value="">All Types</option>
+        <option>Agama</option><option>Philosophical Text</option>
+        <option>Prayer</option><option>Biography / Story</option><option>Philosophy</option>
+      </select>
     </div>
-
-    <h2 style="margin-bottom:0.8rem">Jain Agamas (Canonical Scriptures)</h2>
-    <p style="color:var(--text3);font-size:0.88rem;margin-bottom:1rem">The Agamas are the primary canonical literature of Jainism, containing the teachings of Mahavira as compiled by his chief disciples (Ganadharas). Shvetambaras recognize 45 texts; Digambaras believe the original Agamas are lost.</p>
-    <ul class="article-list">
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Anga Agama · Ardhamagadhi</div>
-          <div class="al-title"><a href="#">Acharanga Sutra (आचारांग सूत्र)</a></div>
-          <div class="al-excerpt">The oldest and most important Agama, dealing with the conduct of Jain monks and the biography of Mahavira. Contains the 15 chapters on ascetic discipline.</div>
-          <div class="al-meta"><span>1st Anga</span><span>Shvetambara Canon</span></div>
-        </div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Anga Agama · Ardhamagadhi</div>
-          <div class="al-title"><a href="#">Sutrakritanga (सूत्रकृतांग)</a></div>
-          <div class="al-excerpt">The second Anga, dealing with the refutation of other philosophical doctrines and the path of liberation. Discusses the nature of the soul and karma.</div>
-          <div class="al-meta"><span>2nd Anga</span><span>Shvetambara Canon</span></div>
-        </div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Anga Agama · Ardhamagadhi</div>
-          <div class="al-title"><a href="#">Sthananga (स्थानांग)</a></div>
-          <div class="al-excerpt">Arranged numerically, this text discusses various philosophical, cosmological, and ethical matters organized by number (1 to 10).</div>
-          <div class="al-meta"><span>3rd Anga</span></div>
-        </div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Upanga Agama</div>
-          <div class="al-title"><a href="#">Uvavai (Aupapatika Sutra)</a></div>
-          <div class="al-excerpt">Describes the lives and conditions of various beings in different planes of existence. Contains the famous description of Mahavira's first sermon after attaining Kevala Jnana.</div>
-          <div class="al-meta"><span>1st Upanga</span></div>
-        </div>
-      </li>
-    </ul>
-
-    <h2 style="margin: 1.5rem 0 0.8rem">Philosophical Texts</h2>
-    <ul class="article-list">
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Philosophy · Sanskrit</div>
-          <div class="al-title"><a href="#">Tattvartha Sutra by Umasvati</a></div>
-          <div class="al-excerpt">The only Jain text accepted by all sects. Written in concise Sanskrit sutras, it covers the entire Jain worldview in 10 chapters — from the nature of the soul to liberation.</div>
-          <div class="al-meta"><span>~200 CE</span><span>Accepted by all sects</span></div>
-        </div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Philosophy · Prakrit</div>
-          <div class="al-title"><a href="#">Samayasara by Kundakunda</a></div>
-          <div class="al-excerpt">A profound Digambara text exploring the pure nature of the soul (Paramatman) beyond all worldly classifications. Considers one of the most spiritually advanced Jain texts.</div>
-          <div class="al-meta"><span>~100 CE</span><span>Digambara</span></div>
-        </div>
-      </li>
-    </ul>
-
-    <h2 style="margin: 1.5rem 0 0.8rem">Poetry & Devotional Literature</h2>
-    <ul class="article-list">
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Devotional Poetry · Apabhramsha</div>
-          <div class="al-title"><a href="#">Navkar Mantra — The Universal Jain Prayer</a></div>
-          <div class="al-excerpt">The most sacred mantra in Jainism, saluting the five supreme beings (Pancha Parameshthi). Contains no specific deity's name — it pays respect to qualities, not persons.</div>
-          <div class="al-meta"><span>Ancient</span><span>All Jain Sects</span></div>
-        </div>
-      </li>
-    </ul>
+    <div id="lit-grid-dynamic">
+      <!-- Built by app.js renderLiteraturePage() -->
+      <div class="skeleton skeleton-line wide" style="height:80px;margin-bottom:0.5rem"></div>
+      <div class="skeleton skeleton-line wide" style="height:80px;margin-bottom:0.5rem"></div>
+    </div>
   </div>
 </div>
 
+<!-- Literature article page (built dynamically) -->
+<div id="page-lit-article" class="page">
+  <!-- Built by app.js showLitArticle() -->
+</div>
+
 <!-- ============================================================
-     CULTURE PAGE
+     CULTURE
 ============================================================ -->
 <div id="page-culture" class="page">
   <div class="list-page">
     <div class="list-page-header">
-      <div class="breadcrumb"><a href="#" onclick="showPage('home');return false">Home</a> › Culture</div>
-      <h1>Jain Culture & Traditions</h1>
-      <p>Festivals, rituals, lifestyle, diet, and the living traditions of the Jain community across India and the world.</p>
+      <div class="breadcrumb"><a href="#" onclick="JW.showPage('home');return false">Home</a> › Culture</div>
+      <h1>Jain Culture &amp; Traditions</h1>
+      <p>Festivals, rituals, diet, lifestyle, and the living traditions of the Jain community worldwide.</p>
     </div>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-bottom:2rem">
-      <div class="phil-card" style="cursor:default">
-        <div class="phil-icon">🪔</div>
-        <div class="phil-title">Paryushan Mahaparva</div>
-        <div class="phil-desc">The most sacred Jain festival, lasting 8 days (Shvetambara) or 10 days (Digambara, called Das Lakshana). A time of fasting, prayer, confession, forgiveness, and spiritual renewal. Ends with Samvatsari — the day of seeking universal forgiveness.</div>
-      </div>
-      <div class="phil-card" style="cursor:default">
-        <div class="phil-icon">🎉</div>
-        <div class="phil-title">Mahavir Jayanti</div>
-        <div class="phil-desc">The birth anniversary of Lord Mahavira, celebrated on Chaitra Shukla 13 (March–April). One of the most important Jain holidays, marked by processions, temple worship, and charity. Declared a national holiday in India.</div>
-      </div>
-      <div class="phil-card" style="cursor:default">
-        <div class="phil-icon">🌙</div>
-        <div class="phil-title">Diwali — Liberation of Mahavira</div>
-        <div class="phil-desc">While much of India celebrates Diwali as the festival of lights, Jains observe it as the day Lord Mahavira attained Nirvana (527 BCE). The lamps symbolize the light of knowledge that extinguished after the Great Soul's liberation.</div>
-      </div>
-      <div class="phil-card" style="cursor:default">
-        <div class="phil-icon">🙏</div>
-        <div class="phil-title">Samvatsari — Universal Forgiveness</div>
-        <div class="phil-desc">The holiest day of the Jain year, on which Jains seek forgiveness from all beings — known and unknown — for any harm caused in thought, word, or deed during the past year. The greeting: "Michhami Dukkadam."</div>
-      </div>
-      <div class="phil-card" style="cursor:default">
-        <div class="phil-icon">🥗</div>
-        <div class="phil-title">Jain Diet (Jain Ahara)</div>
-        <div class="phil-desc">Jains observe strict vegetarianism that goes beyond veganism — avoiding root vegetables (potatoes, onions, garlic), eating before sunset, avoiding certain fruits and vegetables during specific periods. The diet is based on minimizing harm to living beings.</div>
-      </div>
-      <div class="phil-card" style="cursor:default">
-        <div class="phil-icon">🏔️</div>
-        <div class="phil-title">Jain Pilgrimage (Teertha)</div>
-        <div class="phil-desc">Key Jain pilgrimage sites include Palitana (Gujarat), Shikharji (Jharkhand), Shravanabelagola (Karnataka), Pawapuri (Bihar), and Mount Abu (Rajasthan). Pilgrimage is considered a spiritually purifying act.</div>
-      </div>
+    <div class="philosophy-grid" id="culture-grid-dynamic">
+      <!-- Built by app.js renderCulturePage() -->
     </div>
-
-    <h2 style="margin-bottom:0.8rem">Jain Diet — Detailed Guide</h2>
-    <div class="notice">The Jain diet is based on the principle of <strong>Ahimsa</strong> — minimal harm to all living beings. It is not merely vegetarian, but a carefully calibrated system that considers the number of senses each organism possesses.</div>
-    <div class="content-main" style="padding:0;margin-top:1rem">
+    <h2 style="margin:1.8rem 0 0.8rem">Jain Diet — A Complete Guide</h2>
+    <div class="notice">The Jain diet is based on <strong>Ahimsa</strong> — minimal harm to all living beings. It is not merely vegetarian; it is a carefully calibrated system considering the senses each organism possesses.</div>
+    <div style="margin-top:1rem">
       <h3>What Jains Avoid</h3>
-      <ul>
-        <li><strong>All meat, fish, poultry, and eggs</strong></li>
-        <li><strong>Root vegetables</strong>: potatoes, onions, garlic, carrots, beets, radishes (they contain many lives and cause death to the plant)</li>
-        <li><strong>Eating after sunset</strong> (to avoid harming insects attracted to light)</li>
-        <li>Multi-seeded vegetables like brinjal (eggplant), figs (in some traditions)</li>
-        <li>Alcohol and other intoxicants</li>
-        <li>Honey (each drop contains infinite life forms)</li>
+      <ul style="color:var(--text2)">
+        <li>All meat, fish, poultry, and eggs</li>
+        <li>Root vegetables (potatoes, onions, garlic, carrots, beets, radishes) — contain anant-kayas (infinite lives)</li>
+        <li>Eating after sunset (insects attracted to light)</li>
+        <li>Honey (bee larvae are killed in harvesting)</li>
+        <li>Alcohol (fermentation involves massive microbial harm)</li>
       </ul>
       <h3>Jain Fasting Traditions</h3>
-      <ul>
+      <ul style="color:var(--text2)">
         <li><strong>Upvas</strong> — Complete fast (water only)</li>
         <li><strong>Ekasana</strong> — One meal a day</li>
-        <li><strong>Biyasana</strong> — Two meals a day</li>
-        <li><strong>Attham</strong> — Three-day fast</li>
-        <li><strong>Masaksaman</strong> — One-month fast</li>
-        <li><strong>Varshi Tapa</strong> — Alternate day fasting for one year (13 months)</li>
+        <li><strong>Attham</strong> — Three-day fast (very common during Paryushan)</li>
+        <li><strong>Varshi Tapa</strong> — Alternate day fasting for one year</li>
       </ul>
     </div>
   </div>
 </div>
 
 <!-- ============================================================
-     PHILOSOPHY PAGE
+     PHILOSOPHY
 ============================================================ -->
 <div id="page-philosophy" class="page">
   <div class="list-page">
     <div class="list-page-header">
-      <div class="breadcrumb"><a href="#" onclick="showPage('home');return false">Home</a> › Philosophy</div>
+      <div class="breadcrumb"><a href="#" onclick="JW.showPage('home');return false">Home</a> › Philosophy</div>
       <h1>Jain Philosophy</h1>
-      <p>One of the world's most sophisticated and complete philosophical systems — built on direct perception, logical rigor, and ethical precision.</p>
+      <p>One of the world's most sophisticated philosophical systems — built on direct perception, logical rigour, and ethical precision.</p>
     </div>
-    <div class="philosophy-grid">
-      <div class="phil-card" onclick="showPage('philosophy')">
-        <div class="phil-icon">☮️</div>
-        <div class="phil-title">Ahimsa</div>
-        <div class="phil-sanskrit">अहिंसा — Non-violence</div>
-        <div class="phil-desc">The supreme principle of Jainism. Non-violence in thought, word, and action towards all living beings. Recognized as the root of all virtues and the path to liberation. Mahatma Gandhi's ahimsa was directly inspired by Jain principles.</div>
-      </div>
-      <div class="phil-card">
-        <div class="phil-icon">🔮</div>
-        <div class="phil-title">Anekantavada</div>
-        <div class="phil-sanskrit">अनेकान्तवाद — Many-sidedness of Truth</div>
-        <div class="phil-desc">Reality is complex and multifaceted. No single statement or perspective can fully capture truth. This doctrine advocates intellectual humility and respect for other viewpoints. Expressed through Syadvada (conditional predication) and Nayavada (standpoints).</div>
-      </div>
-      <div class="phil-card">
-        <div class="phil-icon">⚖️</div>
-        <div class="phil-title">Karma</div>
-        <div class="phil-sanskrit">कर्म — Action and Consequence</div>
-        <div class="phil-desc">In Jain philosophy, karma is a physical substance — fine particles of matter — that attach to the soul based on actions, thoughts, and speech. The soul must shed all karma to achieve liberation. Jain karma theory is the most detailed in any philosophical tradition.</div>
-      </div>
-      <div class="phil-card">
-        <div class="phil-icon">✨</div>
-        <div class="phil-title">Moksha</div>
-        <div class="phil-sanskrit">मोक्ष — Liberation</div>
-        <div class="phil-desc">The ultimate goal of Jain existence — complete liberation of the soul from the cycle of birth and death (Samsara). A liberated soul (Siddha) dwells at the apex of the universe (Siddhashila) in a state of perfect knowledge, bliss, power, and perception.</div>
-      </div>
-      <div class="phil-card">
-        <div class="phil-icon">🌱</div>
-        <div class="phil-title">Aparigraha</div>
-        <div class="phil-sanskrit">अपरिग्रह — Non-possessiveness</div>
-        <div class="phil-desc">The principle of limiting possessions and desires. For monks: total non-possessiveness. For laypeople: defined limits on material possessions. This principle underpins the Jain emphasis on ethical business conduct and philanthropy.</div>
-      </div>
-      <div class="phil-card">
-        <div class="phil-icon">👁️</div>
-        <div class="phil-title">Three Ratnas</div>
-        <div class="phil-sanskrit">त्रिरत्न — Three Jewels</div>
-        <div class="phil-desc">The three foundations of the path to liberation: <strong>Samyak Darshana</strong> (Right Perception/Faith), <strong>Samyak Jnana</strong> (Right Knowledge), and <strong>Samyak Charitra</strong> (Right Conduct). Together they constitute the Jain path of liberation.</div>
-      </div>
-      <div class="phil-card">
-        <div class="phil-icon">🌊</div>
-        <div class="phil-title">Samsara</div>
-        <div class="phil-sanskrit">संसार — Cycle of Existence</div>
-        <div class="phil-desc">The soul's endless cycle of birth, death, and rebirth across the universe's various planes of existence. Liberation (Moksha) is the permanent escape from this cycle. Jainism identifies 8.4 million species of living beings in which the soul can be reborn.</div>
-      </div>
-      <div class="phil-card">
-        <div class="phil-icon">🧘</div>
-        <div class="phil-title">Jiva & Ajiva</div>
-        <div class="phil-sanskrit">जीव–अजीव — Soul and Non-Soul</div>
-        <div class="phil-desc">Jain metaphysics divides all reality into Jiva (conscious, living souls) and Ajiva (non-conscious matter, space, time, etc.). The interaction between the two — especially the binding of karma-matter to the soul — is the cause of Samsara.</div>
-      </div>
+    <div class="philosophy-grid" id="philosophy-grid-dynamic">
+      <!-- Built by app.js renderPhilosophyPage() -->
     </div>
   </div>
 </div>
 
 <!-- ============================================================
-     NEWS PAGE
+     NEWS
 ============================================================ -->
 <div id="page-news" class="page">
   <div class="list-page">
     <div class="list-page-header">
-      <div class="breadcrumb"><a href="#" onclick="showPage('home');return false">Home</a> › News</div>
+      <div class="breadcrumb"><a href="#" onclick="JW.showPage('home');return false">Home</a> › News</div>
       <h1>Jain News</h1>
       <p>Daily news from the global Jain community — festivals, events, diaspora, education, and community affairs.</p>
     </div>
     <div class="filter-bar">
       <label>Category:</label>
-      <select><option>All</option><option>India</option><option>World</option><option>Events</option><option>Pilgrimage</option><option>Education</option><option>Diaspora</option></select>
+      <select><option>All</option><option>India</option><option>World</option><option>Festival</option><option>Pilgrimage</option><option>Diaspora</option><option>Education</option></select>
       <label style="margin-left:0.5rem">Sort:</label>
       <select><option>Latest</option><option>Most Read</option></select>
     </div>
-    <ul class="article-list">
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Event · India</div>
-          <div class="al-title"><a href="#" onclick="showPage('news-article');return false">Paryushan Mahaparva 2025 Celebrations Begin Across India with Record Participation</a></div>
-          <div class="al-excerpt">The eight-day Paryushan festival commenced today across temples in Mumbai, Ahmedabad, Jaipur, and over 50 cities. This year sees record participation with over 2 lakh Jains observing the Attham (three-day fast). Muni Sanghas from Gujarat and Rajasthan lead the spiritual programs.</div>
-          <div class="al-meta"><span>📅 Today</span><span>📍 Pan-India</span><span class="badge badge-event">Festival</span></div>
-        </div>
-        <div class="al-date">Apr 18<br>2025</div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">World</div>
-          <div class="al-title"><a href="#">Jain International Organisation Launches Global Youth Summit 2025 in London</a></div>
-          <div class="al-excerpt">JIO (Jain International Organisation) has announced its annual youth summit will be held in London this August, bringing together 500 young Jains from 20 countries to discuss heritage, identity, and business networking.</div>
-          <div class="al-meta"><span>📅 Yesterday</span><span>📍 London, UK</span><span class="badge badge-news">World</span></div>
-        </div>
-        <div class="al-date">Apr 17<br>2025</div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Diaspora</div>
-          <div class="al-title"><a href="#">New Jain Derasar (Temple) Consecrated in Harrow, London — A Decade in the Making</a></div>
-          <div class="al-excerpt">After nearly a decade of planning and construction, a beautiful new Jain derasar was formally consecrated in Harrow, North London. The event drew over 3,000 devotees from across the UK and featured a 5-day Pratishtha ceremony.</div>
-          <div class="al-meta"><span>📅 2 days ago</span><span>📍 Harrow, London</span><span class="badge badge-news">Diaspora</span></div>
-        </div>
-        <div class="al-date">Apr 16<br>2025</div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Pilgrimage</div>
-          <div class="al-title"><a href="#">Mahavir Jayanti Pilgrimage: 5 Lakh Devotees Visit Pawapuri, Rajgir, and Vaishali</a></div>
-          <div class="al-excerpt">This year's Mahavir Jayanti saw massive pilgrim turnout at sacred sites in Bihar. The Bihar government facilitated special trains and buses from major cities. Chief Minister inaugurated new facilities at Pawapuri Jal Mandir.</div>
-          <div class="al-meta"><span>📅 3 days ago</span><span>📍 Bihar</span><span class="badge badge-event">Pilgrimage</span></div>
-        </div>
-        <div class="al-date">Apr 15<br>2025</div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Education</div>
-          <div class="al-title"><a href="#">Jain Scholars Convene in Ahmedabad to Digitize and Preserve 10,000 Ancient Agama Manuscripts</a></div>
-          <div class="al-excerpt">A landmark conference in Ahmedabad brought together Jain scholars, monks, and technologists to launch a project to digitize over 10,000 rare manuscripts housed in Jain libraries across Rajasthan and Gujarat.</div>
-          <div class="al-meta"><span>📅 4 days ago</span><span>📍 Ahmedabad</span><span class="badge badge-news">Education</span></div>
-        </div>
-        <div class="al-date">Apr 14<br>2025</div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">India</div>
-          <div class="al-title"><a href="#">Palitana Temple Committee Announces Restoration Plan for 16th Century Temples on Shatrunjaya Hill</a></div>
-          <div class="al-excerpt">The Anandji Kalyanji Pedhi trust announced a comprehensive restoration and conservation plan for the historic Jain temples at Palitana, Gujarat — one of the most sacred Jain pilgrimage sites with over 900 temples.</div>
-          <div class="al-meta"><span>📅 5 days ago</span><span>📍 Palitana, Gujarat</span></div>
-        </div>
-        <div class="al-date">Apr 13<br>2025</div>
-      </li>
+    <ul class="article-list" id="news-list-dynamic">
+      <!-- Built by news.js renderNewsPage() -->
+      <li class="al-item loading-placeholder"><div style="flex:1"><div class="skeleton skeleton-line short"></div><div class="skeleton skeleton-line wide" style="margin-top:0.35rem"></div><div class="skeleton skeleton-line mid" style="margin-top:0.3rem"></div></div></li>
+      <li class="al-item loading-placeholder"><div style="flex:1"><div class="skeleton skeleton-line short"></div><div class="skeleton skeleton-line wide" style="margin-top:0.35rem"></div></div></li>
     </ul>
   </div>
 </div>
 
 <!-- ============================================================
-     NEWS ARTICLE PAGE
-============================================================ -->
-<div id="page-news-article" class="page">
-  <div class="content-layout">
-    <div class="content-sidebar-left">
-      <div class="toc-title">In This Article</div>
-      <div class="toc">
-        <ul>
-          <li><a href="#">Overview</a></li>
-          <li><a href="#">Key Events</a></li>
-          <li><a href="#">Shvetambara Observance</a></li>
-          <li><a href="#">Digambara Observance</a></li>
-          <li><a href="#">How to Observe</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="content-main">
-      <div class="breadcrumb">
-        <a href="#" onclick="showPage('home');return false">Home</a> ›
-        <a href="#" onclick="showPage('news');return false">News</a> ›
-        Paryushan 2025
-      </div>
-      <span class="badge badge-event" style="margin-bottom:0.5rem;display:inline-block">Festival</span>
-      <h1>Paryushan Mahaparva 2025 Celebrations Begin Across India with Record Participation</h1>
-      <div class="article-meta">
-        <span>📅 April 18, 2025</span>
-        <span>📍 Pan-India</span>
-        <span>By JanhWorld Desk</span>
-      </div>
-      <p>The most sacred festival in the Jain calendar, <strong>Paryushan Mahaparva</strong>, began today across hundreds of temples and Jain centers throughout India, with authorities reporting record participation this year. From Mumbai's Malabar Hill to Ahmedabad's Shahibaug, from Jaipur's old city to Delhi's Connaught Place — Jain communities have gathered for eight days of intense spiritual practice, prayer, fasting, and introspection.</p>
-      <p>The word <em>Paryushan</em> derives from Sanskrit, meaning "the soul dwelling in itself" — a time when Jain monks and nuns halt their wandering and settle in one place for the monsoon months, a tradition dating to the time of Lord Mahavira himself.</p>
-      <h2>Key Events This Year</h2>
-      <p>This year's Paryushan features several notable highlights. In Mumbai, leading Muni Shri Ratnasagar Maharaj is guiding a major spiritual program at the Walkeshwar Jain Derasar, attracting thousands daily. In Ahmedabad, the Shri Anandji Kalyanji Pedhi has organized a special <em>Kalyanaka</em> celebration on the fifth day. In Jaipur, over 200 Jains have undertaken the Attham (three-day fast with no food or water), and this number is reported to be the highest in the city's recent history.</p>
-      <h2>Shvetambara and Digambara Observances</h2>
-      <p>Shvetambara Jains observe Paryushan for eight days, while Digambara Jains observe it as the ten-day <strong>Das Lakshana Parva</strong>. The eight days correspond to the eight nights of the Kalpa Sutra recitation, culminating in Samvatsari — the day of universal forgiveness. The ten days of Das Lakshana each focus on one of the ten qualities of the soul: forbearance, humility, simplicity, contentlessness, truth, self-restraint, austerity, renunciation, non-possessiveness, and celibacy.</p>
-      <h2>How to Observe Paryushan</h2>
-      <ul>
-        <li>Visit your local Jain temple daily and attend evening discourses (Pravachan)</li>
-        <li>Observe fasting — even partial fasting (Ekasana or Biyasana) is meritorious</li>
-        <li>Listen to or read the Kalpa Sutra, the biography of Mahavira</li>
-        <li>Practice Samayik (equanimity meditation) for 48 minutes daily</li>
-        <li>On Samvatsari, recite "Michhami Dukkadam" to all and seek forgiveness</li>
-        <li>Perform Pratikraman (confession and repentance prayer)</li>
-      </ul>
-      <div class="tag-row">
-        <a href="#">Paryushan</a><a href="#">Festivals</a><a href="#">Samvatsari</a><a href="#">Fasting</a><a href="#">Jain Culture</a>
-      </div>
-    </div>
-    <div class="content-sidebar-right">
-      <div class="section-label" style="margin-bottom:0.7rem">Related News</div>
-      <ul style="list-style:none;padding:0;font-size:0.82rem;">
-        <li style="padding:0.3rem 0;border-bottom:1px solid var(--border)"><a href="#">Das Lakshana Parva 2025 Schedule</a></li>
-        <li style="padding:0.3rem 0;border-bottom:1px solid var(--border)"><a href="#">What is Samvatsari?</a></li>
-        <li style="padding:0.3rem 0;border-bottom:1px solid var(--border)"><a href="#">Kalpa Sutra — The Sacred Text</a></li>
-        <li style="padding:0.3rem 0"><a href="#">Jain Fasting Guide</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================
-     BLOG PAGE
+     BLOG
 ============================================================ -->
 <div id="page-blog" class="page">
   <div class="list-page">
     <div class="list-page-header">
-      <div class="breadcrumb"><a href="#" onclick="showPage('home');return false">Home</a> › Blog</div>
-      <h1>JanhWorld Blog</h1>
-      <p>Long-form articles on Jain lifestyle, health, philosophy, business ethics, and inspiring stories from the Jain community.</p>
+      <div class="breadcrumb"><a href="#" onclick="JW.showPage('home');return false">Home</a> › Blog</div>
+      <h1>JainWorld Blog</h1>
+      <p>Long-form articles on Jain lifestyle, health, philosophy, business ethics, and inspiring Jain success stories.</p>
     </div>
     <div class="filter-bar">
       <label>Category:</label>
-      <select><option>All</option><option>Jain Lifestyle</option><option>Health & Diet</option><option>Spiritual Insights</option><option>Business Ethics</option><option>Success Stories</option></select>
+      <select><option>All</option><option>Jain Lifestyle</option><option>Health &amp; Diet</option><option>Spiritual Insights</option><option>Business Ethics</option><option>Success Stories</option></select>
     </div>
-    <ul class="article-list">
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Health & Diet</div>
-          <div class="al-title"><a href="#" onclick="showPage('blog-article');return false">The Jain Diet: Why Veganism is Not Enough for a True Jain</a></div>
-          <div class="al-excerpt">Many people mistakenly equate Jain diet with veganism. But Jain dietary principles go far deeper — rooted in Ahimsa that considers even the number of senses of the organisms being consumed. Here's a comprehensive guide to the Jain diet in the modern world.</div>
-          <div class="al-meta"><span>📅 2 days ago</span><span>⏱️ 8 min read</span><span>By Priya Mehta</span></div>
-        </div>
-        <div class="al-date">Apr 16</div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Philosophy</div>
-          <div class="al-title"><a href="#">Anekantavada in the Modern World: Finding Truth in Many Perspectives</a></div>
-          <div class="al-excerpt">In an age of ideological rigidity and social media echo chambers, the 2,500-year-old Jain doctrine of Anekantavada offers a radical and refreshing approach to disagreement. We explore how this ancient philosophy can resolve modern conflicts.</div>
-          <div class="al-meta"><span>📅 5 days ago</span><span>⏱️ 12 min read</span><span>By Dr. Sanjay Shah</span></div>
-        </div>
-        <div class="al-date">Apr 13</div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Business Ethics</div>
-          <div class="al-title"><a href="#">Jain Business Ethics: How Ancient Values Drive Modern Success</a></div>
-          <div class="al-excerpt">From the Marwari traders of Rajasthan to the diamond merchants of Surat and the global pharmaceutical families — Jain businessmen have consistently built ethical, durable enterprises. What is their secret? We explore the connection between Aparigraha and long-term wealth creation.</div>
-          <div class="al-meta"><span>📅 1 week ago</span><span>⏱️ 10 min read</span><span>By Rajesh Jain</span></div>
-        </div>
-        <div class="al-date">Apr 11</div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Success Stories</div>
-          <div class="al-title"><a href="#">From Khandelwal to Global Pharma: The Jain Family Behind a $2B Healthcare Empire</a></div>
-          <div class="al-excerpt">A profile of three generations of a Jain family from Rajasthan who built one of India's largest generic pharmaceutical companies — guided by Jain values of honesty, non-possessiveness, and service. A story of business and dharma in perfect alignment.</div>
-          <div class="al-meta"><span>📅 10 days ago</span><span>⏱️ 15 min read</span><span>By JanhWorld Team</span></div>
-        </div>
-        <div class="al-date">Apr 8</div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Spiritual Insights</div>
-          <div class="al-title"><a href="#">Pratikraman: The Jain Practice of Daily Confession and Its Psychological Benefits</a></div>
-          <div class="al-excerpt">Twice-daily Pratikraman — the Jain practice of confessing and repenting for any harm caused — is perhaps the most psychologically sophisticated spiritual practice in any tradition. Modern psychology is only now catching up to what Jain monks have practiced for millennia.</div>
-          <div class="al-meta"><span>📅 2 weeks ago</span><span>⏱️ 9 min read</span><span>By Sunita Kothari</span></div>
-        </div>
-        <div class="al-date">Apr 4</div>
-      </li>
-      <li class="al-item">
-        <div>
-          <div class="al-cat">Jain Lifestyle</div>
-          <div class="al-title"><a href="#">Minimalism Before It Was Trendy: The Jain Art of Living with Less</a></div>
-          <div class="al-excerpt">While minimalism has become a modern lifestyle trend, Jains have been practicing Aparigraha — intentional non-possessiveness — for over 2,500 years. Here's what Silicon Valley minimalists can learn from Jain monks.</div>
-          <div class="al-meta"><span>📅 3 weeks ago</span><span>⏱️ 7 min read</span><span>By Amit Doshi</span></div>
-        </div>
-        <div class="al-date">Mar 28</div>
-      </li>
+    <ul class="article-list" id="blog-list-dynamic">
+      <!-- Built by community.js renderBlogPage() -->
+      <li class="al-item loading-placeholder"><div style="flex:1"><div class="skeleton skeleton-line short"></div><div class="skeleton skeleton-line wide" style="margin-top:0.35rem"></div></div></li>
     </ul>
   </div>
 </div>
 
-<!-- ============================================================
-     BLOG ARTICLE
-============================================================ -->
-<div id="page-blog-article" class="page">
-  <div class="content-layout">
-    <div class="content-sidebar-left">
-      <div class="toc-title">Contents</div>
-      <div class="toc"><ul>
-        <li><a href="#">1. Introduction</a></li>
-        <li><a href="#">2. Why Veganism Falls Short</a></li>
-        <li><a href="#">3. The Sense-Based Classification</a></li>
-        <li><a href="#">4. What Jains Avoid & Why</a></li>
-        <li><a href="#">5. Eating Times</a></li>
-        <li><a href="#">6. Seasonal Restrictions</a></li>
-        <li><a href="#">7. Practical Guide</a></li>
-      </ul></div>
-    </div>
-    <div class="content-main">
-      <div class="breadcrumb">
-        <a href="#" onclick="showPage('home');return false">Home</a> ›
-        <a href="#" onclick="showPage('blog');return false">Blog</a> ›
-        Jain Diet
-      </div>
-      <span class="badge badge-blog" style="margin-bottom:0.5rem;display:inline-block">Health & Diet</span>
-      <h1>The Jain Diet: Why Veganism is Not Enough for a True Jain</h1>
-      <div class="article-meta">
-        <span>📅 April 16, 2025</span>
-        <span>⏱️ 8 min read</span>
-        <span>By Priya Mehta, Nutritionist & Jain Scholar</span>
-      </div>
-      <p>When people first hear about the Jain diet, they typically assume it is simply another form of veganism — no animal products, no dairy. While this is partially correct, the Jain dietary system is a sophisticated, philosophically grounded framework that is far more nuanced than any modern diet trend. It is rooted not in health optimization, environmental concerns, or personal preference, but in one foundational principle: <strong>Ahimsa</strong> — the minimization of harm to all living beings.</p>
-      <p>Understanding the Jain diet requires first understanding the Jain classification of living beings.</p>
-      <h2>The Sense-Based Classification of Life</h2>
-      <p>Jain philosophy classifies all living beings (Jivas) by the number of senses they possess, from the simplest one-sensed organisms to the fully conscious five-sensed beings with a mind (like humans and animals). The more senses a being possesses, the greater its capacity for suffering, and therefore the more harmful it is to kill it.</p>
-      <ul>
-        <li><strong>One-sensed (Ekendriya)</strong> — Earth bodies, water bodies, fire bodies, air bodies, plants, and vegetation. These have only the sense of touch.</li>
-        <li><strong>Two-sensed (Dvindriya)</strong> — Worms, leeches, shells. Touch and taste.</li>
-        <li><strong>Three-sensed (Trindriya)</strong> — Lice, ants, moths. Touch, taste, smell.</li>
-        <li><strong>Four-sensed (Chaturindriya)</strong> — Flies, mosquitoes, bees. Touch, taste, smell, sight.</li>
-        <li><strong>Five-sensed without mind (Panchendriya)</strong> — Many insects, fish.</li>
-        <li><strong>Five-sensed with mind (Sanjni Panchendriya)</strong> — Mammals, birds, humans.</li>
-      </ul>
-      <h2>Why Veganism Falls Short</h2>
-      <p>A vegan avoids all animal products but may freely consume root vegetables. To a Jain, this misses a crucial point: root vegetables like potatoes, onions, and garlic contain <em>anant-kayas</em> — they host infinite numbers of one-sensed lives within a single body. Pulling a potato from the ground doesn't just kill one being; it destroys the habitat for millions of microscopic lives.</p>
-      <h2>What Jains Avoid and Why</h2>
-      <ul>
-        <li><strong>All meat, fish, poultry</strong> — Five-sensed beings with minds, capable of intense suffering</li>
-        <li><strong>Eggs (fertilized)</strong> — Contain a living being</li>
-        <li><strong>Root vegetables (potatoes, onions, garlic, carrots, beets, turnips)</strong> — Anant-kayas, infinite lives per root</li>
-        <li><strong>Brinjal (eggplant)</strong> — Multi-seeded; many lives</li>
-        <li><strong>Honey</strong> — Harvesting involves killing bees and larvae</li>
-        <li><strong>Alcohol</strong> — Produced through fermentation involving massive microbial harm</li>
-        <li><strong>Eating after sunset</strong> — Insects are attracted to light; cooking and eating at night inadvertently kills more organisms</li>
-      </ul>
-      <h2>Practical Guide for Modern Jains</h2>
-      <p>In today's urban life, strict adherence to the Jain diet requires planning. Here are practical tips:</p>
-      <ul>
-        <li>Replace potatoes with sweet potatoes (though some Jains avoid these too), raw banana, or yams</li>
-        <li>Use asafoetida (heeng) as a substitute for the flavor of onion and garlic</li>
-        <li>Eat your largest meal at lunchtime, before sunset</li>
-        <li>During Paryushan, many Jains go further and eat only boiled food, avoiding fermented or raw foods</li>
-        <li>Choose whole fruits over juices (juices involve more organisms in fermentation)</li>
-      </ul>
-      <p>The Jain diet is not a restriction — it is an expression of the profound respect that Jain philosophy holds for all forms of life. As environmental consciousness rises globally, the world is slowly beginning to understand what Jains have known for millennia.</p>
-      <div class="tag-row">
-        <a href="#">Jain Diet</a><a href="#">Ahimsa</a><a href="#">Vegetarianism</a><a href="#">Jain Lifestyle</a><a href="#">Health</a>
-      </div>
-    </div>
-    <div class="content-sidebar-right">
-      <div class="section-label" style="margin-bottom:0.7rem">Related Articles</div>
-      <ul style="list-style:none;padding:0;font-size:0.82rem;">
-        <li style="padding:0.3rem 0;border-bottom:1px solid var(--border)"><a href="#">Jain Fasting — A Complete Guide</a></li>
-        <li style="padding:0.3rem 0;border-bottom:1px solid var(--border)"><a href="#" onclick="showPage('culture');return false">Jain Culture & Traditions</a></li>
-        <li style="padding:0.3rem 0;border-bottom:1px solid var(--border)"><a href="#">Paryushan Diet Tips</a></li>
-        <li style="padding:0.3rem 0"><a href="#">Ahimsa — The Supreme Principle</a></li>
-      </ul>
-    </div>
-  </div>
+<!-- Blog article (built dynamically) -->
+<div id="page-blog-article-dynamic" class="page">
+  <!-- Built by app.js showBlogArticle() -->
 </div>
 
 <!-- ============================================================
-     COMMUNITY PAGE
+     COMMUNITY
 ============================================================ -->
 <div id="page-community" class="page">
   <div class="community-layout">
     <div class="list-page-header">
-      <div class="breadcrumb"><a href="#" onclick="showPage('home');return false">Home</a> › Community</div>
+      <div class="breadcrumb"><a href="#" onclick="JW.showPage('home');return false">Home</a> › Community</div>
       <h1>Jain Community Network</h1>
-      <p>Connect with 12,000+ Jains worldwide. Find jobs, grow your business, and build meaningful connections.</p>
+      <p>Connect with Jains worldwide. Find jobs, grow your business, and build meaningful connections.</p>
     </div>
-    <div class="notice">🔒 This is a private Jain community. <a href="#">Sign in</a> or <a href="#">register</a> to access full profiles, post jobs, and connect with members.</div>
+    <div class="notice">🔒 Private Jain community. <a href="#" onclick="JW.switchTab('ctab-join');return false">Join free</a> to access full profiles, post jobs, and connect with members.</div>
+
     <div class="community-tabs">
-      <button class="active" onclick="switchTab(event,'ctab-members')">👥 Members</button>
-      <button onclick="switchTab(event,'ctab-jobs')">💼 Jobs & Careers</button>
-      <button onclick="switchTab(event,'ctab-business')">🏪 Business Directory</button>
-      <button onclick="switchTab(event,'ctab-leads')">🤝 Business Leads</button>
-      <button onclick="switchTab(event,'ctab-forum')">💬 Forum</button>
+      <button class="active" data-tab="ctab-members" onclick="JW.switchTab('ctab-members')">👥 Members</button>
+      <button data-tab="ctab-jobs"     onclick="JW.switchTab('ctab-jobs')">💼 Jobs</button>
+      <button data-tab="ctab-business" onclick="JW.switchTab('ctab-business')">🏪 Business Directory</button>
+      <button data-tab="ctab-leads"    onclick="JW.switchTab('ctab-leads')">🤝 Business Leads</button>
+      <button data-tab="ctab-forum"    onclick="JW.switchTab('ctab-forum')">💬 Forum</button>
+      <button data-tab="ctab-join"     onclick="JW.switchTab('ctab-join')" style="color:var(--accent);font-weight:600">✅ Join</button>
     </div>
 
-    <!-- Members Tab -->
+    <!-- Members -->
     <div id="ctab-members" class="ctab active">
       <div class="filter-bar">
-        <input type="text" placeholder="Search members by name, city, profession…" style="flex:1;max-width:300px">
-        <select><option>All Cities</option><option>Mumbai</option><option>Ahmedabad</option><option>Delhi</option><option>Jaipur</option><option>Surat</option><option>London</option><option>New York</option></select>
-        <select><option>All Professions</option><option>Business</option><option>Finance</option><option>Medicine</option><option>Law</option><option>Technology</option></select>
+        <input type="text" placeholder="Search members…" style="flex:1;max-width:300px">
+        <select><option>All Cities</option><option>Mumbai</option><option>Ahmedabad</option><option>Delhi</option><option>Surat</option><option>London</option><option>New York</option></select>
+        <select><option>All Professions</option><option>Business</option><option>Finance</option><option>Technology</option><option>Medicine</option></select>
       </div>
-      <div class="member-grid">
-        <div class="member-card">
-          <div class="member-avatar">R</div>
-          <div class="member-name">Rajesh Mehta</div>
-          <div class="member-role">Diamond Merchant</div>
-          <div class="member-city">📍 Surat, Gujarat</div>
-          <span class="member-badge">Verified Business</span>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar" style="background:var(--green)">S</div>
-          <div class="member-name">Sunita Shah</div>
-          <div class="member-role">Chartered Accountant</div>
-          <div class="member-city">📍 Mumbai, Maharashtra</div>
-          <span class="member-badge">Professional</span>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar" style="background:#5d4e75">A</div>
-          <div class="member-name">Amit Kothari</div>
-          <div class="member-role">Textile Exporter</div>
-          <div class="member-city">📍 Jaipur, Rajasthan</div>
-          <span class="member-badge">Verified Business</span>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar" style="background:#2c7873">P</div>
-          <div class="member-name">Priya Jain</div>
-          <div class="member-role">Startup Founder</div>
-          <div class="member-city">📍 Bangalore, Karnataka</div>
-          <span class="member-badge">Entrepreneur</span>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar" style="background:#8b6914">D</div>
-          <div class="member-name">Dinesh Oswal</div>
-          <div class="member-role">Pharmaceutical CEO</div>
-          <div class="member-city">📍 Ahmedabad, Gujarat</div>
-          <span class="member-badge">Premium</span>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar" style="background:#1a5276">N</div>
-          <div class="member-name">Neha Sanghvi</div>
-          <div class="member-role">Lawyer (Corporate Law)</div>
-          <div class="member-city">📍 London, UK</div>
-          <span class="member-badge">Diaspora</span>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar" style="background:#6c3483">V</div>
-          <div class="member-name">Vikram Sheth</div>
-          <div class="member-role">Software Engineer</div>
-          <div class="member-city">📍 San Francisco, USA</div>
-          <span class="member-badge">Tech</span>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar" style="background:#117a65">K</div>
-          <div class="member-name">Kavita Doshi</div>
-          <div class="member-role">Ayurveda Practitioner</div>
-          <div class="member-city">📍 Pune, Maharashtra</div>
-          <span class="member-badge">Healthcare</span>
-        </div>
+      <div class="member-grid" id="community-members-grid">
+        <!-- Built by community.js -->
       </div>
     </div>
 
-    <!-- Jobs Tab -->
+    <!-- Jobs -->
     <div id="ctab-jobs" class="ctab">
       <div class="filter-bar">
         <input type="text" placeholder="Search jobs…" style="flex:1;max-width:260px">
-        <select><option>All Types</option><option>Full-Time</option><option>Part-Time</option><option>Internship</option><option>Freelance</option></select>
-        <select><option>All Industries</option><option>Finance</option><option>Diamonds</option><option>Textiles</option><option>Pharma</option><option>Technology</option></select>
-        <a href="#" class="btn btn-primary" style="margin-left:auto">+ Post a Job</a>
+        <select><option>All Types</option><option>Full-Time</option><option>Part-Time</option><option>Freelance</option></select>
+        <select><option>All Industries</option><option>Finance</option><option>Diamonds</option><option>Textiles</option><option>Technology</option></select>
+        <a href="#" class="btn btn-primary" style="margin-left:auto" onclick="return false">+ Post a Job</a>
       </div>
-      <ul class="job-list">
-        <li class="job-item">
-          <div class="job-title">Senior Diamond Grader — GIA Certified Preferred</div>
-          <div class="job-company">Sheth Diamonds Pvt Ltd · Surat, Gujarat</div>
-          <div class="job-meta">
-            <span>💰 ₹8–12 LPA</span><span>📍 On-site, Surat</span><span>🕐 Full-Time</span><span>Posted 2 days ago</span>
-          </div>
-          <div class="job-desc">We are a 3rd generation Jain diamond trading house looking for an experienced diamond grader. Must have GIA certification and minimum 3 years experience in polished diamond evaluation. Fluency in Gujarati preferred.</div>
-          <a href="#" class="btn btn-primary">Apply Now</a>
-          <a href="#" class="btn btn-outline" style="margin-left:0.4rem">Save</a>
-        </li>
-        <li class="job-item">
-          <div class="job-title">CFO / Finance Head — Jain-owned Textile Group</div>
-          <div class="job-company">Oswal Fabrics Group · Ludhiana, Punjab</div>
-          <div class="job-meta">
-            <span>💰 ₹25–40 LPA</span><span>📍 Ludhiana</span><span>🕐 Full-Time</span><span>Posted 1 week ago</span>
-          </div>
-          <div class="job-desc">Large Jain-owned textile conglomerate seeks an experienced CFO to lead financial strategy across 5 manufacturing units. CA/CPA required with manufacturing sector experience. Ethical, value-driven candidate preferred.</div>
-          <a href="#" class="btn btn-primary">Apply Now</a>
-          <a href="#" class="btn btn-outline" style="margin-left:0.4rem">Save</a>
-        </li>
-        <li class="job-item">
-          <div class="job-title">Marketing Manager — Jain Vegetarian Food Brand (Series A Startup)</div>
-          <div class="job-company">Shuddh Foods · Mumbai / Remote</div>
-          <div class="job-meta">
-            <span>💰 ₹12–18 LPA</span><span>📍 Mumbai or Remote</span><span>🕐 Full-Time</span><span>Posted 3 days ago</span>
-          </div>
-          <div class="job-desc">Fast-growing Jain and Satvik food startup seeks a creative marketing manager. Experience in D2C food brands, social media, and content marketing required. Passion for Jain values and healthy living a huge plus.</div>
-          <a href="#" class="btn btn-primary">Apply Now</a>
-          <a href="#" class="btn btn-outline" style="margin-left:0.4rem">Save</a>
-        </li>
-        <li class="job-item">
-          <div class="job-title">🔍 Job Seeker: Experienced Jain CA Available — Open to Opportunities</div>
-          <div class="job-company">Manish Shah · Currently in Ahmedabad</div>
-          <div class="job-meta">
-            <span>12 years experience</span><span>CA + MBA Finance</span><span>Open to relocation</span><span>Posted today</span>
-          </div>
-          <div class="job-desc">ACA with 12 years in Big 4 and family business. Seeking senior finance role in Jain or values-driven organization. Specialties: M&A, tax planning, family business governance. Available for confidential discussions.</div>
-          <a href="#" class="btn btn-outline">Contact</a>
-        </li>
+      <ul class="job-list" id="community-jobs-list">
+        <!-- Built by community.js -->
       </ul>
     </div>
 
-    <!-- Business Directory Tab -->
+    <!-- Business Directory -->
     <div id="ctab-business" class="ctab">
       <div class="filter-bar">
         <input type="text" placeholder="Search businesses…" style="flex:1;max-width:260px">
-        <select><option>All Categories</option><option>Diamonds & Jewellery</option><option>Textiles</option><option>Pharmaceuticals</option><option>Finance</option><option>Food & Restaurant</option><option>Technology</option></select>
-        <select><option>All Locations</option><option>Mumbai</option><option>Surat</option><option>Jaipur</option><option>Ahmedabad</option><option>Delhi</option></select>
-        <a href="#" class="btn btn-primary" style="margin-left:auto">+ List Business</a>
+        <select><option>All Categories</option><option>Diamonds &amp; Jewellery</option><option>Textiles</option><option>Pharmaceuticals</option><option>Finance</option><option>Technology</option></select>
+        <a href="#" class="btn btn-primary" style="margin-left:auto" onclick="return false">+ List Business</a>
       </div>
-      <div class="biz-grid">
-        <div class="biz-card">
-          <div class="biz-cat">Diamonds & Jewellery</div>
-          <div class="biz-name">Kothari Diamond House</div>
-          <div class="biz-loc">📍 Opera House, Mumbai · Est. 1962</div>
-          <div class="biz-desc">3rd generation Jain diamond trading house. Polished diamonds, loose stones, and custom jewellery. Trusted by 200+ global buyers.</div>
-          <div style="font-size:0.78rem;color:var(--text3);margin-top:0.4rem">📞 +91 22 XXXX XXXX</div>
-        </div>
-        <div class="biz-card">
-          <div class="biz-cat">Textiles & Fabric</div>
-          <div class="biz-name">Sanghvi Mills Pvt Ltd</div>
-          <div class="biz-loc">📍 Ring Road, Surat · Est. 1985</div>
-          <div class="biz-desc">Manufacturers and exporters of premium polyester and silk fabrics. Annual capacity: 500 lakh metres. ISO certified. Family-owned Jain business.</div>
-          <div style="font-size:0.78rem;color:var(--text3);margin-top:0.4rem">📞 +91 261 XXXX XXXX</div>
-        </div>
-        <div class="biz-card">
-          <div class="biz-cat">Pharmaceuticals</div>
-          <div class="biz-name">Jain Lifesciences</div>
-          <div class="biz-loc">📍 Science City Road, Ahmedabad</div>
-          <div class="biz-desc">Generic pharma manufacturer with WHO-GMP certified plant. Exports to 40+ countries. Cruelty-free formulations, no animal testing commitment.</div>
-          <div style="font-size:0.78rem;color:var(--text3);margin-top:0.4rem">🌐 jainlifesciences.com</div>
-        </div>
-        <div class="biz-card">
-          <div class="biz-cat">Food & Restaurant</div>
-          <div class="biz-name">Shuddh — Pure Jain Kitchen</div>
-          <div class="biz-loc">📍 Bandra West, Mumbai</div>
-          <div class="biz-desc">Fine dining Jain restaurant. Strictly no root vegetables, no onion-garlic. Chef-curated seasonal menus using local produce. Catering for events and festivals.</div>
-          <div style="font-size:0.78rem;color:var(--text3);margin-top:0.4rem">📞 +91 98 XXXX XXXX</div>
-        </div>
-        <div class="biz-card">
-          <div class="biz-cat">Finance & Investment</div>
-          <div class="biz-name">Mehta Capital Advisors</div>
-          <div class="biz-loc">📍 Nariman Point, Mumbai</div>
-          <div class="biz-desc">Wealth management and investment advisory for HNIs and family businesses. Specializes in ethical investment strategies aligned with Jain principles.</div>
-          <div style="font-size:0.78rem;color:var(--text3);margin-top:0.4rem">📧 info@mehtacapital.in</div>
-        </div>
-        <div class="biz-card">
-          <div class="biz-cat">Technology</div>
-          <div class="biz-name">JainTech Solutions</div>
-          <div class="biz-loc">📍 Bangalore, Karnataka</div>
-          <div class="biz-desc">Software development and IT consulting. Specializes in ERP solutions for diamond, textile, and commodity trading businesses. 150+ clients across India.</div>
-          <div style="font-size:0.78rem;color:var(--text3);margin-top:0.4rem">🌐 jaintech.in</div>
-        </div>
+      <div class="biz-grid" id="community-biz-grid">
+        <!-- Built by community.js -->
       </div>
     </div>
 
-    <!-- Business Leads Tab -->
+    <!-- Business Leads -->
     <div id="ctab-leads" class="ctab">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem">
-        <p style="color:var(--text3);margin:0;font-size:0.88rem">Partnership opportunities, supplier needs, and investment leads from the Jain business community.</p>
-        <a href="#" class="btn btn-primary">+ Post a Lead</a>
+        <p style="color:var(--text3);margin:0;font-size:0.88rem">Partnership opportunities, supplier needs, and investment leads.</p>
+        <a href="#" class="btn btn-primary" onclick="return false">+ Post a Lead</a>
       </div>
       <ul class="job-list">
         <li class="job-item">
-          <span class="badge badge-event" style="margin-bottom:0.4rem;display:inline-block">Investment Opportunity</span>
+          <span class="badge badge-event" style="display:inline-block;margin-bottom:0.4rem">Investment</span>
           <div class="job-title">Seeking ₹2 Cr Investment — Organic Jain Food Brand (Series A)</div>
           <div class="job-company">Shuddh Foods, Mumbai · FMCG / Food</div>
-          <div class="job-meta"><span>📅 Posted 3 days ago</span><span>💰 ₹2 Crore</span><span>Equity: 15–20%</span></div>
-          <div class="job-desc">Bootstrapped Jain food startup with ₹80L ARR seeking Series A investment. Products: packaged satvik snacks, Jain-certified ready-to-eat meals. 40% MoM growth. Looking for strategic Jain investor/family office.</div>
-          <a href="#" class="btn btn-outline">Express Interest</a>
+          <div class="job-meta"><span>📅 3 days ago</span><span>💰 ₹2 Crore</span><span>Equity: 15–20%</span></div>
+          <div class="job-desc">Bootstrapped Jain food startup with ₹80L ARR seeking Series A. Products: packaged satvik snacks, Jain-certified ready-to-eat meals. 40% MoM growth.</div>
+          <a href="#" class="btn btn-outline" onclick="return false">Express Interest</a>
         </li>
         <li class="job-item">
-          <span class="badge badge-news" style="margin-bottom:0.4rem;display:inline-block">Supplier Needed</span>
-          <div class="job-title">Looking for Reliable Raw Cotton Supplier — Gujarat / Rajasthan Based</div>
+          <span class="badge badge-news" style="display:inline-block;margin-bottom:0.4rem">Supplier Needed</span>
+          <div class="job-title">Looking for Raw Cotton Supplier — Gujarat / Rajasthan Based</div>
           <div class="job-company">Oswal Fabrics, Ludhiana · Textiles</div>
-          <div class="job-meta"><span>📅 Posted 1 week ago</span><span>Volume: 500 MT/month</span></div>
-          <div class="job-desc">Established textile manufacturer seeking direct cotton supplier from Gujarat or Rajasthan. Long-term contract (3+ years). Prefer ethical, Jain-owned supplier. Quality certification required.</div>
-          <a href="#" class="btn btn-outline">Connect</a>
-        </li>
-        <li class="job-item">
-          <span class="badge badge-blog" style="margin-bottom:0.4rem;display:inline-block">Partnership</span>
-          <div class="job-title">Seeking Jain CA / Financial Partner for Family Business Succession Planning</div>
-          <div class="job-company">Confidential · Ahmedabad</div>
-          <div class="job-meta"><span>📅 Posted 2 days ago</span><span>Ongoing retainer</span></div>
-          <div class="job-desc">3rd-generation Jain diamond business looking for a trusted CA from the Jain community to help structure business succession and estate planning. Discretion essential. Community references preferred.</div>
-          <a href="#" class="btn btn-outline">Connect Privately</a>
+          <div class="job-meta"><span>📅 1 week ago</span><span>Volume: 500 MT/month</span></div>
+          <div class="job-desc">Established textile manufacturer seeking direct cotton supplier. Long-term contract (3+ years). Prefer ethical, Jain-owned supplier.</div>
+          <a href="#" class="btn btn-outline" onclick="return false">Connect</a>
         </li>
       </ul>
     </div>
 
-    <!-- Forum Tab -->
+    <!-- Forum -->
     <div id="ctab-forum" class="ctab">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
         <p style="color:var(--text3);margin:0;font-size:0.88rem">Community discussions on Jain life, dharma, business, and culture.</p>
-        <a href="#" class="btn btn-primary">+ Start Discussion</a>
+        <a href="#" class="btn btn-primary" onclick="return false">+ Start Discussion</a>
       </div>
       <ul class="article-list">
         <li class="al-item">
           <div>
             <div class="al-cat">Spiritual Practice</div>
-            <div class="al-title"><a href="#">How do you maintain Paryushan observance while traveling internationally?</a></div>
-            <div class="al-excerpt">Looking for practical advice on fasting and observing the festival while abroad in a country with limited access to Jain food and no local temple.</div>
-            <div class="al-meta"><span>💬 23 replies</span><span>👁️ 412 views</span><span>by Vikram S.</span><span>2 days ago</span></div>
+            <div class="al-title"><a href="#" onclick="return false">How do you maintain Paryushan observance while traveling internationally?</a></div>
+            <div class="al-excerpt">Practical advice on fasting and observing the festival while abroad with limited access to Jain food.</div>
+            <div class="al-meta"><span>💬 23 replies</span><span>👁️ 412 views</span><span>2 days ago</span></div>
           </div>
         </li>
         <li class="al-item">
           <div>
-            <div class="al-cat">Business & Ethics</div>
-            <div class="al-title"><a href="#">Is working in the defense/weapons industry compatible with Jain values?</a></div>
-            <div class="al-excerpt">A young Jain software engineer asks if working for a defense contractor violates Ahimsa, even in an indirect capacity. Deep and thoughtful responses from the community.</div>
-            <div class="al-meta"><span>💬 47 replies</span><span>👁️ 1,204 views</span><span>by Anonymous</span><span>1 week ago</span></div>
+            <div class="al-cat">Business &amp; Ethics</div>
+            <div class="al-title"><a href="#" onclick="return false">Is working in the defense/weapons industry compatible with Jain values?</a></div>
+            <div class="al-excerpt">A young Jain software engineer asks whether working for a defense contractor violates Ahimsa, even indirectly.</div>
+            <div class="al-meta"><span>💬 47 replies</span><span>👁️ 1,204 views</span><span>1 week ago</span></div>
           </div>
         </li>
         <li class="al-item">
           <div>
-            <div class="al-cat">Family & Lifestyle</div>
-            <div class="al-title"><a href="#">Teaching children about Jainism in non-Jain environments — experiences and tips?</a></div>
-            <div class="al-excerpt">Parents in the Jain diaspora share their experiences of raising Jain children in Western countries, maintaining the faith, diet, and values while integrating socially.</div>
-            <div class="al-meta"><span>💬 31 replies</span><span>👁️ 678 views</span><span>by Neha K.</span><span>4 days ago</span></div>
+            <div class="al-cat">Family &amp; Lifestyle</div>
+            <div class="al-title"><a href="#" onclick="return false">Teaching children about Jainism in non-Jain environments</a></div>
+            <div class="al-excerpt">Parents in the Jain diaspora share experiences of raising Jain children in Western countries while maintaining the faith and values.</div>
+            <div class="al-meta"><span>💬 31 replies</span><span>👁️ 678 views</span><span>4 days ago</span></div>
           </div>
         </li>
       </ul>
+    </div>
+
+    <!-- Join Form -->
+    <div id="ctab-join" class="ctab">
+      <div id="community-join-form">
+        <!-- Built by community.js renderJoinForm() -->
+      </div>
     </div>
   </div>
 </div>
 
 <!-- ============================================================
-     SEARCH RESULTS PAGE
+     SEARCH RESULTS
 ============================================================ -->
 <div id="page-search" class="page">
   <div class="search-results">
@@ -1796,33 +585,32 @@
 <footer id="site-footer">
   <div class="footer-inner">
     <div class="footer-col">
-      <div class="footer-logo">☸ JanhWorld</div>
+      <div class="footer-logo">☸ JainWorld</div>
       <p style="font-size:0.8rem;color:var(--text3);margin-top:0.5rem">The largest Jain digital ecosystem. Knowledge, news, and community for Jains worldwide.</p>
     </div>
     <div class="footer-col">
       <h4>Knowledge</h4>
       <ul>
-        <li><a href="#" onclick="showPage('tirthankaras');return false">Tirthankaras</a></li>
-        <li><a href="#" onclick="showPage('literature');return false">Literature & Agamas</a></li>
-        <li><a href="#" onclick="showPage('philosophy');return false">Philosophy</a></li>
-        <li><a href="#" onclick="showPage('culture');return false">Culture & Festivals</a></li>
+        <li><a href="#" onclick="JW.showPage('tirthankaras');return false">Tirthankaras</a></li>
+        <li><a href="#" onclick="JW.showPage('literature');return false">Literature &amp; Agamas</a></li>
+        <li><a href="#" onclick="JW.showPage('philosophy');return false">Philosophy</a></li>
+        <li><a href="#" onclick="JW.showPage('culture');return false">Culture &amp; Festivals</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Community</h4>
       <ul>
-        <li><a href="#" onclick="showPage('community');return false">Member Profiles</a></li>
-        <li><a href="#" onclick="showPage('community');switchTab(null,'ctab-jobs');return false">Jobs Board</a></li>
-        <li><a href="#" onclick="showPage('community');switchTab(null,'ctab-business');return false">Business Directory</a></li>
-        <li><a href="#" onclick="showPage('community');switchTab(null,'ctab-leads');return false">Business Leads</a></li>
-        <li><a href="#" onclick="showPage('community');switchTab(null,'ctab-forum');return false">Forum</a></li>
+        <li><a href="#" onclick="JW.showPage('community');return false">Member Profiles</a></li>
+        <li><a href="#" onclick="JW.showPage('community');JW.switchTab('ctab-jobs');return false">Jobs Board</a></li>
+        <li><a href="#" onclick="JW.showPage('community');JW.switchTab('ctab-business');return false">Business Directory</a></li>
+        <li><a href="#" onclick="JW.showPage('community');JW.switchTab('ctab-join');return false">Join Community</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Updates</h4>
       <ul>
-        <li><a href="#" onclick="showPage('news');return false">Jain News</a></li>
-        <li><a href="#" onclick="showPage('blog');return false">Blog</a></li>
+        <li><a href="#" onclick="JW.showPage('news');return false">Jain News</a></li>
+        <li><a href="#" onclick="JW.showPage('blog');return false">Blog</a></li>
         <li><a href="#">Events Calendar</a></li>
         <li><a href="#">Newsletter</a></li>
       </ul>
@@ -1830,155 +618,39 @@
     <div class="footer-col">
       <h4>About</h4>
       <ul>
-        <li><a href="#">About JanhWorld</a></li>
+        <li><a href="#">About JainWorld</a></li>
         <li><a href="#">Contribute Content</a></li>
-        <li><a href="#">Advertise</a></li>
         <li><a href="#">Contact Us</a></li>
         <li><a href="#">Privacy Policy</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 JanhWorld (janhworld.in) · All Rights Reserved</span>
+    <span>© 2025 JainWorld (jainworld.in) · All Rights Reserved</span>
     <span>🙏 Jai Jinendra · Michhami Dukkadam</span>
   </div>
 </footer>
 
-<!-- ============================================================
-     JAVASCRIPT
-============================================================ -->
+<!-- Load JS modules -->
+<script type="module" src="js/app.js"></script>
+
+<!-- Minimal inline: literature filter (can't use module import inline) -->
 <script>
-// ── Page Navigation ──────────────────────────────────────────
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const page = document.getElementById('page-' + id);
-  if (page) { page.classList.add('active'); }
-  document.querySelectorAll('.nav-inner a').forEach(a => a.classList.remove('active'));
-  const navLink = document.getElementById('nav-' + id);
-  if (navLink) navLink.classList.add('active');
-  window.scrollTo(0, 0);
-  // Trigger Tirthankara grid if needed
-  if (id === 'tirthankaras') buildTirthankaraGrid();
+function filterLiterature(type) {
+  const cards = document.querySelectorAll('.lit-card');
+  cards.forEach(card => {
+    const t = card.querySelector('.lit-type')?.textContent || '';
+    card.style.display = (!type || t.includes(type)) ? '' : 'none';
+  });
+  // Also show/hide h2 section headers
+  const sections = document.querySelectorAll('#lit-grid-dynamic h2');
+  sections.forEach(h2 => {
+    const grid = h2.nextElementSibling;
+    if (!grid) return;
+    const visible = grid.querySelectorAll('.lit-card:not([style*="none"])');
+    h2.style.display = visible.length ? '' : 'none';
+  });
 }
-
-// ── Community Tabs ────────────────────────────────────────────
-function switchTab(event, tabId) {
-  document.querySelectorAll('.ctab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.community-tabs button').forEach(b => b.classList.remove('active'));
-  const tab = document.getElementById(tabId);
-  if (tab) tab.classList.add('active');
-  if (event && event.target) event.target.classList.add('active');
-}
-
-// ── Search ────────────────────────────────────────────────────
-const searchData = [
-  { title: "Lord Mahavira — The 24th Tirthankara", category: "Tirthankara", type: "Knowledge", page: "tirthankara-mahavir" },
-  { title: "Rishabhanatha — The 1st Tirthankara (Adinatha)", category: "Tirthankara", type: "Knowledge", page: "tirthankara-rishabha" },
-  { title: "Ahimsa — Non-violence", category: "Philosophy", type: "Knowledge", page: "philosophy" },
-  { title: "Anekantavada — Many-sidedness of Truth", category: "Philosophy", type: "Knowledge", page: "philosophy" },
-  { title: "Karma in Jain Philosophy", category: "Philosophy", type: "Knowledge", page: "philosophy" },
-  { title: "Moksha — Liberation in Jainism", category: "Philosophy", type: "Knowledge", page: "philosophy" },
-  { title: "Paryushan Mahaparva Celebrations 2025", category: "News", type: "News", page: "news-article" },
-  { title: "New Jain Temple Consecrated in London", category: "News", type: "News", page: "news" },
-  { title: "The Jain Diet: Why Veganism is Not Enough", category: "Health & Diet", type: "Blog", page: "blog-article" },
-  { title: "Anekantavada in the Modern World", category: "Philosophy", type: "Blog", page: "blog" },
-  { title: "Jain Business Ethics", category: "Business", type: "Blog", page: "blog" },
-  { title: "Acharanga Sutra — 1st Anga Agama", category: "Literature", type: "Knowledge", page: "literature" },
-  { title: "Tattvartha Sutra by Umasvati", category: "Literature", type: "Knowledge", page: "literature" },
-  { title: "Paryushan — Jain Festival Guide", category: "Culture", type: "Knowledge", page: "culture" },
-  { title: "Mahavir Jayanti — Celebration and Significance", category: "Culture", type: "Knowledge", page: "culture" },
-  { title: "Jain Community — Jobs Board", category: "Community", type: "Community", page: "community" },
-  { title: "Jain Business Directory", category: "Community", type: "Community", page: "community" },
-  { title: "Samvatsari — Day of Universal Forgiveness", category: "Culture", type: "Knowledge", page: "culture" },
-  { title: "Navkar Mantra — The Universal Jain Prayer", category: "Literature", type: "Knowledge", page: "literature" },
-  { title: "Jain Diet Guide — What Jains Eat and Why", category: "Culture", type: "Knowledge", page: "culture" },
-  { title: "Three Jewels (Ratnatraya) of Jainism", category: "Philosophy", type: "Knowledge", page: "philosophy" },
-  { title: "Shikharji (Parasnath) — Sacred Pilgrimage Hill", category: "Culture", type: "Knowledge", page: "culture" },
-  { title: "Palitana — The City of Temples", category: "Culture", type: "Knowledge", page: "culture" },
-];
-
-function doSearch() {
-  const q = (document.getElementById('header-search-input').value || document.getElementById('home-search-input').value || '').trim().toLowerCase();
-  if (!q) return;
-  const results = searchData.filter(item =>
-    item.title.toLowerCase().includes(q) ||
-    item.category.toLowerCase().includes(q) ||
-    item.type.toLowerCase().includes(q)
-  );
-  document.getElementById('search-query-display').textContent = q;
-  document.getElementById('search-result-count').innerHTML = `Found <strong>${results.length}</strong> result${results.length !== 1 ? 's' : ''} for "<strong>${q}</strong>"`;
-  const list = document.getElementById('search-results-list');
-  if (results.length === 0) {
-    list.innerHTML = '<div class="no-results">No results found. Try a different search term.</div>';
-  } else {
-    list.innerHTML = results.map(r => `
-      <li class="al-item">
-        <div>
-          <div class="al-cat">${r.type} · ${r.category}</div>
-          <div class="al-title"><a href="#" onclick="showPage('${r.page}');return false">${r.title}</a></div>
-        </div>
-        <span class="badge badge-${r.type === 'News' ? 'news' : r.type === 'Blog' ? 'blog' : 'event'}">${r.type}</span>
-      </li>
-    `).join('');
-  }
-  showPage('search');
-}
-
-// ── Tirthankara Grid Builder ───────────────────────────────────
-const tirthankaras = [
-  { n:1, name:"Rishabhanatha", aka:"Adinatha", symbol:"🐂", city:"Ayodhya" },
-  { n:2, name:"Ajitanatha", aka:"", symbol:"🐘", city:"Ayodhya" },
-  { n:3, name:"Sambhavanatha", aka:"", symbol:"🐴", city:"Shravasti" },
-  { n:4, name:"Abhinandananatha", aka:"", symbol:"🐒", city:"Ayodhya" },
-  { n:5, name:"Sumatinatha", aka:"", symbol:"🐦", city:"Ayodhya" },
-  { n:6, name:"Padmaprabha", aka:"", symbol:"🪷", city:"Kaushambi" },
-  { n:7, name:"Suparshvanatha", aka:"", symbol:"🌀", city:"Varanasi" },
-  { n:8, name:"Chandraprabha", aka:"", symbol:"🌙", city:"Chandrapuri" },
-  { n:9, name:"Pushpadanta", aka:"Suvidhinatha", symbol:"🐊", city:"Kakandi" },
-  { n:10, name:"Shitalanatha", aka:"", symbol:"✨", city:"Bhadrikapuri" },
-  { n:11, name:"Shreyamsanatha", aka:"", symbol:"🦏", city:"Sinhapuri" },
-  { n:12, name:"Vasupujya", aka:"", symbol:"🐃", city:"Champapuri" },
-  { n:13, name:"Vimalanatha", aka:"", symbol:"🐗", city:"Kampilya" },
-  { n:14, name:"Anantanatha", aka:"", symbol:"🐻", city:"Ayodhya" },
-  { n:15, name:"Dharmanatha", aka:"", symbol:"⚡", city:"Ratnapuri" },
-  { n:16, name:"Shantinatha", aka:"", symbol:"🦌", city:"Hastinapur" },
-  { n:17, name:"Kunthunatha", aka:"", symbol:"🐐", city:"Hastinapur" },
-  { n:18, name:"Arahanatha", aka:"", symbol:"🐟", city:"Hastinapur" },
-  { n:19, name:"Mallinatha", aka:"", symbol:"🏺", city:"Mithila" },
-  { n:20, name:"Munisuvrata", aka:"", symbol:"🐢", city:"Rajagriha" },
-  { n:21, name:"Naminatha", aka:"", symbol:"🪷", city:"Mithila" },
-  { n:22, name:"Neminatha", aka:"Arishtanemi", symbol:"🐚", city:"Shauripur" },
-  { n:23, name:"Parshvanatha", aka:"", symbol:"🐍", city:"Varanasi" },
-  { n:24, name:"Mahavira", aka:"Vardhamana", symbol:"🦁", city:"Vaishali" },
-];
-
-function buildTirthankaraGrid() {
-  const grid = document.getElementById('tirthankara-grid');
-  if (grid && grid.children.length === 0) {
-    grid.innerHTML = tirthankaras.map(t => `
-      <div class="t-card" onclick="showPage('tirthankara-${t.n === 24 ? 'mahavir' : t.n === 1 ? 'rishabha' : 'mahavir'}')">
-        <div class="t-num">${t.n}${t.n === 1 ? 'st' : t.n === 2 ? 'nd' : t.n === 3 ? 'rd' : 'th'} Tirthankara</div>
-        <div class="t-symbol">${t.symbol}</div>
-        <div class="t-name">${t.name}</div>
-        <div class="t-sub">${t.aka ? t.aka + ' · ' : ''}${t.city}</div>
-      </div>
-    `).join('');
-  }
-}
-
-// ── Mobile Menu ────────────────────────────────────────────────
-function toggleMobileMenu() {
-  const nav = document.getElementById('main-nav');
-  nav.style.display = nav.style.display === 'none' ? 'block' : 'none';
-}
-
-// ── Sync search inputs ─────────────────────────────────────────
-document.getElementById('header-search-input').addEventListener('input', function() {
-  document.getElementById('home-search-input').value = this.value;
-});
-document.getElementById('home-search-input').addEventListener('input', function() {
-  document.getElementById('header-search-input').value = this.value;
-});
 </script>
 </body>
 </html>
