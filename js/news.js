@@ -5,7 +5,7 @@
  * jainworld.in
  */
 
-const NEWS_API = '/api/news';
+const NEWS_API = 'https://jainworld.rjain-sobha.workers.dev/api/news';
 const NEWS_CACHE_KEY = 'jainworld_news_v1';
 const NEWS_CACHE_TTL = 15 * 60 * 1000; // 15 minutes
 
