@@ -1,0 +1,35 @@
+[
+  {
+    "id": "audio-1",
+    "title": "Namokar Mantra Daily Chant",
+    "slug": "namokar-mantra-daily-chant",
+    "category": "Mantra",
+    "duration": "08:12",
+    "audio_url": "https://www.youtube.com/embed/ysz5S6PUM-U",
+    "description": "A simple daily listening track for the Namokar Mantra with a calm pace suitable for families and beginners.",
+    "speaker": "JainWorld Audio Starter",
+    "published_at": "2026-04-10"
+  },
+  {
+    "id": "audio-2",
+    "title": "Ahimsa for Children",
+    "slug": "ahimsa-for-children",
+    "category": "Education",
+    "duration": "12:40",
+    "audio_url": "https://www.youtube.com/embed/jNQXAC9IVRw",
+    "description": "A beginner-friendly audio lesson introducing compassion, care for life, and everyday Ahimsa habits.",
+    "speaker": "JainWorld Learning",
+    "published_at": "2026-04-14"
+  },
+  {
+    "id": "audio-3",
+    "title": "Bhaktamar Stotra Intro Recitation",
+    "slug": "bhaktamar-stotra-intro-recitation",
+    "category": "Stavan",
+    "duration": "15:05",
+    "audio_url": "https://www.youtube.com/embed/tgbNymZ7vqY",
+    "description": "A starter listening entry for those exploring Jain stavan and devotional recitation formats.",
+    "speaker": "JainWorld Devotional",
+    "published_at": "2026-04-18"
+  }
+]
