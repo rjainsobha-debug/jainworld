@@ -277,12 +277,12 @@ function renderQuickCategories() {
   }
 
   root.innerHTML = `
-    <div class="jw-grid-3">
+    <div class="explore-grid jw-grid-3">
       ${QUICK_CATEGORIES.map(
         (item) => `
-          <a href="${item.href}" class="jw-card p-5 no-underline transition hover:border-amber-300">
-            <h3 class="m-0 text-lg font-semibold text-stone-900" data-en="${item.titleEn}" data-hi="${item.titleHi}">${item.titleEn}</h3>
-            <p class="m-0 mt-3 text-sm leading-7 text-stone-600" data-en="${item.summaryEn}" data-hi="${item.summaryHi}">${item.summaryEn}</p>
+          <a href="${item.href}" class="cat-card jw-card p-5 no-underline transition hover:border-amber-300">
+            <h3 class="cat-name m-0 text-lg font-semibold text-stone-900" data-en="${item.titleEn}" data-hi="${item.titleHi}">${item.titleEn}</h3>
+            <p class="cat-count m-0 mt-3 text-sm leading-7 text-stone-600" data-en="${item.summaryEn}" data-hi="${item.summaryHi}">${item.summaryEn}</p>
           </a>
         `
       ).join("")}

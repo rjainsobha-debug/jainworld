@@ -28,10 +28,10 @@ export const QUICK_CATEGORIES = [
   },
   {
     href: "/temples.html",
-    titleEn: "Temple Directory",
-    titleHi: "मंदिर निर्देशिका",
-    summaryEn: "Country, state, and city-wise temple discovery with pilgrimage focus.",
-    summaryHi: "देश, राज्य और शहर के अनुसार मंदिर खोज और तीर्थ जानकारी।"
+    titleEn: "Temples",
+    titleHi: "मंदिर",
+    summaryEn: "Jain Temples",
+    summaryHi: "जैन मंदिर"
   },
   {
     href: "/culture.html",
@@ -386,4 +386,3 @@ export function createSearchOverlay() {
     </div>
   `;
 }
-
