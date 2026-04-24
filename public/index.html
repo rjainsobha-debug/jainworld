@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JainWorld.in | Jain Literature, Education, Temples, Food, News, and Calendar</title>
+    <meta
+      name="description"
+      content="JainWorld.in is a fast, mobile-first Jain knowledge platform for literature, education, temples, food, culture, news, community, and calendar content."
+    />
+    <link rel="canonical" href="https://jainworld.in/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="JainWorld.in | Jain Digital Knowledge Ecosystem" />
+    <meta
+      property="og:description"
+      content="Explore structured Jain literature, courses, temples, food guidance, blogs, news, and calendar modules."
+    />
+    <meta property="og:url" content="https://jainworld.in/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "name": "JainWorld.in",
+            "url": "https://jainworld.in/",
+            "description": "Jain digital knowledge ecosystem for literature, education, temples, food, calendar, and community.",
+            "sameAs": ["https://jainworld.in/"]
+          },
+          {
+            "@type": "WebSite",
+            "name": "JainWorld.in",
+            "url": "https://jainworld.in/",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://jainworld.in/?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          }
+        ]
+      }
+    </script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HQ3VW7D0RR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HQ3VW7D0RR');
+    </script>
+  </head>
+  <body data-page="home" class="jw-shell">
+    <div id="app-header"></div>
+
+    <main>
+      <section class="jw-page-hero">
+        <div class="jw-container jw-page-hero-inner">
+          <div class="jw-grid-2 items-center gap-8">
+            <div>
+              <span class="jw-kicker">JainWorld Platform</span>
+              <h1
+                class="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-stone-900 md:text-5xl"
+                data-en="The Jain digital knowledge ecosystem, built for clarity and scale."
+                data-hi="स्पष्टता और विस्तार के लिए निर्मित जैन डिजिटल ज्ञान मंच।"
+              >
+                The Jain digital knowledge ecosystem, built for clarity and scale.
+              </h1>
+              <p
+                class="m-0 mt-5 max-w-2xl text-base leading-8 text-stone-600 md:text-lg"
+                data-en="Simple, mobile-first, and search-friendly. Explore literature, courses, temples, culture, food guidance, news, blogs, calendar, and community modules in one structured platform."
+                data-hi="सरल, मोबाइल-फर्स्ट और खोज-अनुकूल। साहित्य, पाठ्यक्रम, मंदिर, संस्कृति, आहार, समाचार, ब्लॉग, कैलेंडर और समुदाय मॉड्यूल एक ही संरचित मंच पर।"
+              >
+                Simple, mobile-first, and search-friendly. Explore literature, courses, temples, culture, food guidance, news, blogs, calendar, and community modules in one structured platform.
+              </p>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <a href="/literature.html" class="jw-btn jw-btn-primary">Browse Literature</a>
+                <a href="/temples.html" class="jw-btn">Find Temples</a>
+              </div>
+            </div>
+            <div class="jw-card p-5 lg:p-6">
+              <h2
+                class="m-0 text-2xl font-semibold text-stone-900"
+                data-en="Hero Search"
+                data-hi="मुख्य खोज"
+              >
+                Hero Search
+              </h2>
+              <p
+                class="m-0 mt-3 text-sm leading-7 text-stone-600"
+                data-en="Use one search to discover Jain concepts, articles, temples, recipes, and lessons."
+                data-hi="एक ही खोज से जैन विषय, लेख, मंदिर, रेसिपी और पाठ खोजें।"
+              >
+                Use one search to discover Jain concepts, articles, temples, recipes, and lessons.
+              </p>
+              <form class="jw-search-shell mt-5 space-y-3" data-global-search-form>
+                <input
+                  type="search"
+                  name="q"
+                  data-global-search-input
+                  data-placeholder-en="Try Ahimsa, Palitana, boiled water, Tattvartha Sutra..."
+                  data-placeholder-hi="जैसे अहिंसा, पालीताना, उबला पानी, तत्त्वार्थ सूत्र..."
+                  placeholder="Try Ahimsa, Palitana, boiled water, Tattvartha Sutra..."
+                />
+                <button type="submit" class="jw-btn jw-btn-primary w-full">
+                  <span data-en="Search JainWorld" data-hi="जैनवर्ल्ड खोजें">Search JainWorld</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-12">
+        <div class="jw-container">
+          <div class="jw-section-title">
+            <div>
+              <span class="jw-kicker">Quick Categories</span>
+              <h2
+                class="mt-3 text-2xl font-semibold tracking-tight text-stone-900"
+                data-en="Start from the main knowledge modules"
+                data-hi="मुख्य ज्ञान मॉड्यूल से शुरुआत करें"
+              >
+                Start from the main knowledge modules
+              </h2>
+            </div>
+          </div>
+          <div id="quick-categories"></div>
+        </div>
+      </section>
+
+      <section class="py-4">
+        <div class="jw-container">
+          <div class="jw-section-title">
+            <div>
+              <span class="jw-kicker">Featured Literature</span>
+              <h2
+                class="mt-3 text-2xl font-semibold tracking-tight text-stone-900"
+                data-en="Texts, sutras, and stories explained simply"
+                data-hi="ग्रंथ, सूत्र और कथाएं सरल रूप में"
+              >
+                Texts, sutras, and stories explained simply
+              </h2>
+            </div>
+            <a href="/literature.html" class="text-sm font-semibold text-amber-800">View all</a>
+          </div>
+          <div id="featured-literature"></div>
+        </div>
+      </section>
+
+      <section class="py-12">
+        <div class="jw-container">
+          <div class="jw-section-title">
+            <div>
+              <span class="jw-kicker">Education Levels</span>
+              <h2
+                class="mt-3 text-2xl font-semibold tracking-tight text-stone-900"
+                data-en="Beginner to scholar pathways"
+                data-hi="शुरुआती से विद्वान तक सीखने के मार्ग"
+              >
+                Beginner to scholar pathways
+              </h2>
+            </div>
+          </div>
+          <div id="education-levels"></div>
+          <div class="mt-6" id="education-course-grid"></div>
+        </div>
+      </section>
+
+      <section class="py-4">
+        <div class="jw-container">
+          <div class="jw-section-title">
+            <div>
+              <span class="jw-kicker">Temple Finder</span>
+              <h2
+                class="mt-3 text-2xl font-semibold tracking-tight text-stone-900"
+                data-en="Search by country, city, and pilgrimage relevance"
+                data-hi="देश, शहर और तीर्थ महत्व के अनुसार खोजें"
+              >
+                Search by country, city, and pilgrimage relevance
+              </h2>
+            </div>
+            <a href="/temples.html" class="text-sm font-semibold text-amber-800">Open directory</a>
+          </div>
+          <div id="featured-pilgrimages"></div>
+          <div class="mt-6" id="temple-finder-results"></div>
+        </div>
+      </section>
+
+      <section class="py-12">
+        <div class="jw-container">
+          <div class="jw-section-title">
+            <div>
+              <span class="jw-kicker">Jain Food Guide</span>
+              <h2
+                class="mt-3 text-2xl font-semibold tracking-tight text-stone-900"
+                data-en="Daily discipline, recipes, and respectful food explanations"
+                data-hi="दैनिक अनुशासन, रेसिपी और संतुलित आहार व्याख्या"
+              >
+                Daily discipline, recipes, and respectful food explanations
+              </h2>
+            </div>
+            <a href="/food.html" class="text-sm font-semibold text-amber-800">Explore food</a>
+          </div>
+          <div id="food-guide-rules"></div>
+          <div class="mt-6" id="food-guide-list"></div>
+        </div>
+      </section>
+
+      <section class="py-4">
+        <div class="jw-container">
+          <div class="jw-grid-2 gap-6">
+            <div>
+              <div class="jw-section-title">
+                <div>
+                  <span class="jw-kicker">News</span>
+                  <h2
+                    class="mt-3 text-2xl font-semibold tracking-tight text-stone-900"
+                    data-en="Jain news stream"
+                    data-hi="जैन समाचार धारा"
+                  >
+                    Jain news stream
+                  </h2>
+                </div>
+              </div>
+              <div id="news-column"></div>
+            </div>
+            <div>
+              <div class="jw-section-title">
+                <div>
+                  <span class="jw-kicker">Blogs</span>
+                  <h2
+                    class="mt-3 text-2xl font-semibold tracking-tight text-stone-900"
+                    data-en="SEO blog system"
+                    data-hi="एसईओ ब्लॉग सिस्टम"
+                  >
+                    SEO blog system
+                  </h2>
+                </div>
+              </div>
+              <div id="blogs-column"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-12">
+        <div class="jw-container">
+          <div id="community-cta"></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="app-footer"></div>
+    <div id="app-overlay"></div>
+
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>
