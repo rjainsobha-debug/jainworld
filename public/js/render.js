@@ -41,6 +41,24 @@ function getImageSrc(item) {
   return item?.image || DEFAULT_IMAGE;
 }
 
+function getTempleImageSrc(item) {
+  if (item?.image) {
+    return item.image;
+  }
+
+  const photoValue = String(item?.photos || "").trim();
+  if (!photoValue) {
+    return DEFAULT_IMAGE;
+  }
+
+  const firstPhoto = photoValue
+    .split(",")
+    .map((entry) => entry.trim())
+    .find((entry) => /^https?:\/\//i.test(entry) || entry.startsWith("/"));
+
+  return firstPhoto || DEFAULT_IMAGE;
+}
+
 export function renderCards(target, items, options = {}) {
   const root = resolveTarget(target);
   if (!root) {
@@ -172,16 +190,45 @@ export function renderBlogs(target, items) {
 }
 
 export function renderTemples(target, items) {
-  renderCards(target, items, {
-    type: "temples",
-    titleBase: "name",
-    summaryBuilder: (item) => {
-      return [item.city, item.state].filter(Boolean).join(", ") || item.address || "Temple directory entry";
-    },
-    metaBuilder: (item) => [item.country].filter(Boolean),
-    emptyTitle: "No temples found",
-    emptyBody: "Try changing the country, state, city, or search filter."
-  });
+  const root = resolveTarget(target);
+  if (!root) {
+    return;
+  }
+
+  if (!Array.isArray(items) || items.length === 0) {
+    root.innerHTML = `
+      <div class="jw-card p-5">
+        <h3 class="m-0 text-lg font-semibold text-stone-900">No temples found</h3>
+        <p class="m-0 mt-2 text-sm text-stone-600">Try changing the country, state, city, or search filter.</p>
+      </div>
+    `;
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="jw-grid-3">
+      ${items
+        .map((item) => {
+          const name = item.name_en || item.name_hi || item.name || item.slug || "Temple";
+          const location = [item.city, item.state].filter(Boolean).join(", ") || item.country || "Location pending";
+          const href = buildDetailUrl("temples", item);
+
+          return `
+            <article class="jw-card p-5">
+              <div class="flex flex-wrap gap-2">
+                ${(item.category ? `<span class="jw-badge">${escapeHtml(item.category)}</span>` : "")}
+                ${(item.country ? `<span class="jw-badge">${escapeHtml(item.country)}</span>` : "")}
+              </div>
+              <h3 class="mt-4 text-lg font-semibold leading-snug text-stone-900">
+                <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(name)}</a>
+              </h3>
+              <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(location)}</p>
+            </article>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
 }
 
 export function renderCourses(target, items) {
@@ -360,20 +407,22 @@ export function renderTempleDetail(target, item) {
   }
 
   if (!item) {
-    root.innerHTML = `<div class="jw-card p-6 text-stone-600">The requested temple was not found.</div>`;
+    root.innerHTML = `<div class="jw-card p-6 text-stone-600">Temple Not Found</div>`;
     return;
   }
 
-  const name = pickLocalized(item, "name") || item.name_en || item.slug || "Temple detail";
-  const history = pickLocalized(item, "history") || item.history_en || "";
-  const rituals = pickLocalized(item, "rituals") || item.rituals_en || "";
-  const imageSrc = getImageSrc(item);
+  const nameEn = item.name_en || pickLocalized(item, "name") || item.slug || "Temple detail";
+  const nameHi = item.name_hi || "";
+  const history = item.history_en || pickLocalized(item, "history") || "";
+  const rituals = item.rituals_en || pickLocalized(item, "rituals") || "";
+  const imageSrc = getTempleImageSrc(item);
+  const location = [item.city, item.state, item.country].filter(Boolean).join(", ");
 
   root.innerHTML = `
     <article class="jw-card p-6 lg:p-8">
       <img
         src="${escapeHtml(imageSrc)}"
-        alt="${escapeHtml(name)}"
+        alt="${escapeHtml(nameEn)}"
         class="h-56 w-full rounded-2xl border border-stone-200 object-cover"
         onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
         loading="lazy"
@@ -382,14 +431,15 @@ export function renderTempleDetail(target, item) {
         ${(item.category ? `<span class="jw-badge">${escapeHtml(item.category)}</span>` : "")}
         ${(item.country ? `<span class="jw-badge">${escapeHtml(item.country)}</span>` : "")}
       </div>
-      <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(name)}</h1>
-      <div class="jw-meta mt-4">
-        ${[item.city, item.state, item.country, item.timings].filter(Boolean).map((entry) => `<span>${escapeHtml(entry)}</span>`).join("")}
-      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(nameEn)}</h1>
+      ${nameHi ? `<p class="m-0 mt-2 text-base text-stone-600">${escapeHtml(nameHi)}</p>` : ""}
       <div class="jw-grid-2 mt-8">
         <section class="jw-card-flat p-5">
-          <h2 class="m-0 text-lg font-semibold text-stone-900">Address</h2>
-          <p class="m-0 mt-3 text-sm leading-7 text-stone-600">${escapeHtml(item.address || "Address will be added from the Sheets CMS.")}</p>
+          <h2 class="m-0 text-lg font-semibold text-stone-900">Location</h2>
+          <p class="m-0 mt-3 text-sm leading-7 text-stone-600">${escapeHtml(location || "Location will be updated from the Sheets CMS.")}</p>
+          <p class="m-0 mt-3 text-sm leading-7 text-stone-600">
+            <strong class="text-stone-900">Address:</strong> ${escapeHtml(item.address || "Address will be added from the Sheets CMS.")}
+          </p>
           ${
             item.map_link
               ? `<a href="${escapeHtml(item.map_link)}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Open Google Map</a>`
@@ -397,7 +447,7 @@ export function renderTempleDetail(target, item) {
           }
         </section>
         <section class="jw-card-flat p-5">
-          <h2 class="m-0 text-lg font-semibold text-stone-900">Practical Info</h2>
+          <h2 class="m-0 text-lg font-semibold text-stone-900">Temple Details</h2>
           <div class="mt-3 grid gap-2 text-sm text-stone-600">
             <span><strong class="text-stone-900">Timings:</strong> ${escapeHtml(item.timings || "To be updated")}</span>
             <span><strong class="text-stone-900">Contact:</strong> ${escapeHtml(item.contact || "To be updated")}</span>

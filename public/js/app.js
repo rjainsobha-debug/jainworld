@@ -6,7 +6,6 @@ import {
   getFood,
   getLiterature,
   getNews,
-  getTemple,
   getTemples
 } from "./api.js";
 import { initCalendarPage } from "./calendar.js";
@@ -171,7 +170,7 @@ async function loadEducationPage() {
 }
 
 async function loadTemplesPage() {
-  const items = await getTemples({ limit: 100 });
+  const items = await getTemples({ limit: 500 });
   setupTempleFilters(items);
   renderTemples("#temples-list", items);
 }
@@ -255,7 +254,13 @@ async function loadArticlePage() {
 
 async function loadTempleDetailPage() {
   const slug = new URLSearchParams(window.location.search).get("slug") || "";
-  const item = await getTemple(slug);
+  if (!slug) {
+    renderTempleDetail("#temple-detail", null);
+    return;
+  }
+
+  const items = await getTemples({ limit: 500 });
+  const item = items.find((entry) => entry.slug === slug || entry.id === slug) || null;
   renderTempleDetail("#temple-detail", item);
 }
 
