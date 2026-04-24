@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jain Community | Signup, Students, Jobs, Business, Volunteer Network</title>
+    <meta
+      name="description"
+      content="JainWorld.in community starter for verified signup, student support, jobs, business networking, volunteer groups, and future approvals."
+    />
+    <link rel="canonical" href="https://jainworld.in/community" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Jain Community | JainWorld.in" />
+    <meta property="og:description" content="A clean and future-ready Jain community signup and directory module." />
+    <meta property="og:url" content="https://jainworld.in/community" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Jain Community",
+        "url": "https://jainworld.in/community",
+        "description": "Community signup and discovery module on JainWorld.in."
+      }
+    </script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HQ3VW7D0RR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HQ3VW7D0RR');
+    </script>
+  </head>
+  <body data-page="community" class="jw-shell">
+    <div id="app-header"></div>
+    <main>
+      <section class="jw-page-hero">
+        <div class="jw-container jw-page-hero-inner">
+          <span class="jw-kicker">Community</span>
+          <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900" data-en="Build a verified Jain community layer" data-hi="सत्यापित जैन समुदाय परत बनाएं">
+            Build a verified Jain community layer
+          </h1>
+          <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600" data-en="Collect members now through a simple form and add manual approval, directory views, jobs, and private groups in later phases." data-hi="अभी एक सरल फॉर्म से सदस्यों को जोड़ें, और आगे मैनुअल अप्रूवल, डायरेक्टरी, जॉब्स और निजी समूह जोड़ें।">
+            Collect members now through a simple form and add manual approval, directory views, jobs, and private groups in later phases.
+          </p>
+        </div>
+      </section>
+      <section class="py-10">
+        <div class="jw-container">
+          <div class="jw-grid-2 gap-6">
+            <section class="jw-card p-6">
+              <h2 class="m-0 text-2xl font-semibold text-stone-900">Join the community</h2>
+              <p class="m-0 mt-3 text-sm leading-7 text-stone-600">Submissions are marked pending until manual verification is added into the workflow.</p>
+              <form id="community-form" class="jw-form-grid mt-6">
+                <div class="jw-grid-2">
+                  <div class="jw-search-shell">
+                    <label class="mb-2 block text-sm font-semibold text-stone-900">Name</label>
+                    <input type="text" name="name" required />
+                  </div>
+                  <div class="jw-search-shell">
+                    <label class="mb-2 block text-sm font-semibold text-stone-900">Mobile</label>
+                    <input type="tel" name="mobile" required />
+                  </div>
+                </div>
+                <div class="jw-grid-2">
+                  <div class="jw-search-shell">
+                    <label class="mb-2 block text-sm font-semibold text-stone-900">Email</label>
+                    <input type="email" name="email" required />
+                  </div>
+                  <div class="jw-search-shell">
+                    <label class="mb-2 block text-sm font-semibold text-stone-900">City</label>
+                    <input type="text" name="city" required />
+                  </div>
+                </div>
+                <div class="jw-grid-2">
+                  <div class="jw-search-shell">
+                    <label class="mb-2 block text-sm font-semibold text-stone-900">Country</label>
+                    <input type="text" name="country" required />
+                  </div>
+                  <div class="jw-search-shell">
+                    <label class="mb-2 block text-sm font-semibold text-stone-900">Interest Category</label>
+                    <select name="interest_category">
+                      <option value="Students">Students</option>
+                      <option value="Business">Business</option>
+                      <option value="Volunteer">Volunteer</option>
+                      <option value="Temple">Temple</option>
+                      <option value="Family">Family</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="jw-grid-2">
+                  <div class="jw-search-shell">
+                    <label class="mb-2 block text-sm font-semibold text-stone-900">Profession</label>
+                    <input type="text" name="profession" />
+                  </div>
+                  <div class="jw-search-shell">
+                    <label class="mb-2 block text-sm font-semibold text-stone-900">WhatsApp Group Preference</label>
+                    <select name="whatsapp_group_preference">
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="jw-search-shell">
+                  <label class="mb-2 block text-sm font-semibold text-stone-900">Business Name</label>
+                  <input type="text" name="business_name" />
+                </div>
+                <button type="submit" class="jw-btn jw-btn-primary">Submit for verification</button>
+              </form>
+              <div id="community-message" aria-live="polite"></div>
+            </section>
+            <section>
+              <div class="jw-section-title">
+                <div>
+                  <span class="jw-kicker">Why This Module Matters</span>
+                  <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">Built for future network effects</h2>
+                </div>
+              </div>
+              <div id="community-benefits"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div id="app-footer"></div>
+    <div id="app-overlay"></div>
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>

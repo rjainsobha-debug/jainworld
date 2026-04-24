@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Course Detail | JainWorld.in</title>
+    <meta
+      name="description"
+      content="Course lesson detail page for JainWorld.in with learning content, quiz JSON, and level-based structure."
+    />
+    <link rel="canonical" href="https://jainworld.in/education/detail" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Course Detail | JainWorld.in" />
+    <meta property="og:description" content="Detailed Jain education lesson page for structured learning." />
+    <meta property="og:url" content="https://jainworld.in/education/detail" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "JainWorld Lesson",
+        "provider": {
+          "@type": "Organization",
+          "name": "JainWorld.in"
+        }
+      }
+    </script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HQ3VW7D0RR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HQ3VW7D0RR');
+    </script>
+  </head>
+  <body data-page="course-detail" class="jw-shell">
+    <div id="app-header"></div>
+    <main class="py-10">
+      <div class="jw-container">
+        <div class="mb-6 text-sm text-stone-500">
+          <a href="/index.html" class="hover:text-stone-900">Home</a> /
+          <a href="/education.html" class="hover:text-stone-900">Education</a> /
+          <span>Lesson</span>
+        </div>
+        <div id="course-detail"></div>
+      </div>
+    </main>
+    <div id="app-footer"></div>
+    <div id="app-overlay"></div>
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>

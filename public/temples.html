@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jain Temples Directory | India, USA, UK, Dubai, Africa, Pilgrimage</title>
+    <meta
+      name="description"
+      content="Explore Jain temples by country, state, city, and pilgrimage importance on JainWorld.in. Designed for directory SEO and future local discovery."
+    />
+    <link rel="canonical" href="https://jainworld.in/temples" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Jain Temples Directory | JainWorld.in" />
+    <meta property="og:description" content="Find temples by location, history, timings, rituals, and pilgrimage value." />
+    <meta property="og:url" content="https://jainworld.in/temples" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Jain Temples Directory",
+        "url": "https://jainworld.in/temples",
+        "description": "Temple directory for India and the global Jain diaspora.",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "JainWorld.in",
+          "url": "https://jainworld.in/"
+        }
+      }
+    </script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HQ3VW7D0RR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HQ3VW7D0RR');
+    </script>
+  </head>
+  <body data-page="temples" class="jw-shell">
+    <div id="app-header"></div>
+    <main>
+      <section class="jw-page-hero">
+        <div class="jw-container jw-page-hero-inner">
+          <span class="jw-kicker">Temples</span>
+          <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900" data-en="A scalable Jain temple directory" data-hi="विस्तार योग्य जैन मंदिर निर्देशिका">
+            A scalable Jain temple directory
+          </h1>
+          <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600" data-en="Filter by country, state, city, temple type, and search. Each detail page is ready for maps, photos, food, and dharamshala extensions." data-hi="देश, राज्य, शहर, मंदिर प्रकार और खोज के अनुसार फ़िल्टर करें। प्रत्येक डिटेल पेज मैप, फोटो, भोजन और धर्मशाला विस्तार के लिए तैयार है।">
+            Filter by country, state, city, temple type, and search. Each detail page is ready for maps, photos, food, and dharamshala extensions.
+          </p>
+        </div>
+      </section>
+      <section class="py-10">
+        <div class="jw-container">
+          <form id="temple-filters" class="jw-card p-5">
+            <div class="jw-grid-4">
+              <div class="jw-search-shell">
+                <label class="mb-2 block text-sm font-semibold text-stone-900">Country</label>
+                <select id="temple-country">
+                  <option value="">All countries</option>
+                </select>
+              </div>
+              <div class="jw-search-shell">
+                <label class="mb-2 block text-sm font-semibold text-stone-900">State</label>
+                <select id="temple-state">
+                  <option value="">All states</option>
+                </select>
+              </div>
+              <div class="jw-search-shell">
+                <label class="mb-2 block text-sm font-semibold text-stone-900">City</label>
+                <select id="temple-city">
+                  <option value="">All cities</option>
+                </select>
+              </div>
+              <div class="jw-search-shell">
+                <label class="mb-2 block text-sm font-semibold text-stone-900">Temple type</label>
+                <select id="temple-type">
+                  <option value="">All temple types</option>
+                </select>
+              </div>
+            </div>
+            <div class="jw-grid-2 mt-4">
+              <div class="jw-search-shell">
+                <label class="mb-2 block text-sm font-semibold text-stone-900">Search</label>
+                <input id="temple-search" type="search" placeholder="Search temple, history, rituals..." />
+              </div>
+            </div>
+          </form>
+          <div class="mt-8" id="temples-list"></div>
+        </div>
+      </section>
+    </main>
+    <div id="app-footer"></div>
+    <div id="app-overlay"></div>
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>

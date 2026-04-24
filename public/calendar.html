@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jain Calendar | Tithi, Festivals, Fasting Days, Events</title>
+    <meta
+      name="description"
+      content="View Jain calendar events, festivals, fasting days, and observance details on JainWorld.in with a simple monthly interface."
+    />
+    <link rel="canonical" href="https://jainworld.in/calendar" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Jain Calendar | JainWorld.in" />
+    <meta property="og:description" content="Simple monthly Jain calendar with festival details and observance guidance." />
+    <meta property="og:url" content="https://jainworld.in/calendar" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Jain Calendar",
+        "url": "https://jainworld.in/calendar",
+        "description": "Monthly Jain calendar with tithi, fasting, festivals, and rituals."
+      }
+    </script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HQ3VW7D0RR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HQ3VW7D0RR');
+    </script>
+  </head>
+  <body data-page="calendar" class="jw-shell">
+    <div id="app-header"></div>
+    <main>
+      <section class="jw-page-hero">
+        <div class="jw-container jw-page-hero-inner">
+          <span class="jw-kicker">Calendar</span>
+          <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900" data-en="A simple monthly Jain calendar" data-hi="सरल मासिक जैन कैलेंडर">
+            A simple monthly Jain calendar
+          </h1>
+          <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600" data-en="Track tithi, festivals, fasting days, and rituals in a clean and readable layout ready for detail pages." data-hi="तिथि, त्योहार, उपवास और अनुष्ठानों को साफ और पठनीय रूप में ट्रैक करें।">
+            Track tithi, festivals, fasting days, and rituals in a clean and readable layout ready for detail pages.
+          </p>
+        </div>
+      </section>
+      <section class="py-10">
+        <div class="jw-container">
+          <div id="calendar-app"></div>
+        </div>
+      </section>
+    </main>
+    <div id="app-footer"></div>
+    <div id="app-overlay"></div>
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>
