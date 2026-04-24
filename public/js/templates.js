@@ -2,6 +2,7 @@ export const NAV_ITEMS = [
   { key: "home", href: "/index.html", labelEn: "Home", labelHi: "होम" },
   { key: "literature", href: "/literature.html", labelEn: "Literature", labelHi: "साहित्य" },
   { key: "education", href: "/education.html", labelEn: "Education", labelHi: "शिक्षा" },
+  { key: "audio", href: "/audio.html", labelEn: "Audio", labelHi: "ऑडियो" },
   { key: "temples", href: "/temples.html", labelEn: "Temples", labelHi: "मंदिर" },
   { key: "culture", href: "/culture.html", labelEn: "Culture", labelHi: "संस्कृति" },
   { key: "food", href: "/food.html", labelEn: "Food", labelHi: "आहार" },
@@ -25,6 +26,13 @@ export const QUICK_CATEGORIES = [
     titleHi: "जैन शिक्षा",
     summaryEn: "Structured learning paths from beginner to scholar with quizzes.",
     summaryHi: "शुरुआती से विद्वान तक संरचित पाठ्यक्रम और क्विज।"
+  },
+  {
+    href: "/audio.html",
+    titleEn: "Audio",
+    titleHi: "ऑडियो",
+    summaryEn: "Jain Audio",
+    summaryHi: "जैन ऑडियो"
   },
   {
     href: "/temples.html",
@@ -317,9 +325,9 @@ export function createHeader(activePage = "home") {
               type="search"
               name="q"
               data-global-search-input
-              data-placeholder-en="Search literature, temples, food, courses, and blogs"
-              data-placeholder-hi="साहित्य, मंदिर, आहार, पाठ्यक्रम और ब्लॉग खोजें"
-              placeholder="Search literature, temples, food, courses, and blogs"
+              data-placeholder-en="Search literature, audio, temples, food, courses, and blogs"
+              data-placeholder-hi="साहित्य, ऑडियो, मंदिर, आहार, पाठ्यक्रम और ब्लॉग खोजें"
+              placeholder="Search literature, audio, temples, food, courses, and blogs"
             />
             <button type="submit" class="jw-btn jw-btn-primary">
               <span data-en="Search" data-hi="खोज">Search</span>
@@ -348,6 +356,7 @@ export function createFooter() {
             <div class="grid gap-2 text-sm text-stone-600">
               <a href="/literature.html" class="hover:text-stone-900">Literature</a>
               <a href="/education.html" class="hover:text-stone-900">Education</a>
+              <a href="/audio.html" class="hover:text-stone-900">Audio</a>
               <a href="/temples.html" class="hover:text-stone-900">Temples</a>
               <a href="/food.html" class="hover:text-stone-900">Food</a>
             </div>
@@ -377,7 +386,7 @@ export function createSearchOverlay() {
         <div class="flex items-center justify-between border-b border-stone-200 px-5 py-4">
           <div>
             <h2 class="m-0 text-xl font-semibold text-stone-900" data-en="Search Results" data-hi="खोज परिणाम">Search Results</h2>
-            <p class="m-0 mt-1 text-sm text-stone-600" id="search-overlay-subtitle">Search across literature, food, temples, courses, blogs, and news.</p>
+            <p class="m-0 mt-1 text-sm text-stone-600" id="search-overlay-subtitle">Search across literature, audio, food, temples, courses, blogs, and news.</p>
           </div>
           <button id="search-overlay-close" type="button" class="jw-btn">Close</button>
         </div>

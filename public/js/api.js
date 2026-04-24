@@ -8,7 +8,8 @@ const LOCAL_FILES = {
   temples: "/data/sample-temples.json",
   food: "/data/sample-food.json",
   education: "/data/sample-education.json",
-  calendar: "/data/sample-calendar.json"
+  calendar: "/data/sample-calendar.json",
+  audio: "/data/sample-audio.json"
 };
 
 const SAMPLE_NEWS = [
@@ -267,6 +268,10 @@ export function getCalendar(params = {}) {
   return requestCollection("/api/calendar", "calendar", params);
 }
 
+export function getAudioItems(params = {}) {
+  return requestCollection("/api/audio", "audio", params);
+}
+
 export async function getNews(params = {}) {
   if (!shouldUseLocalFallback()) {
     try {
@@ -303,6 +308,7 @@ export async function searchAll(query, params = {}) {
 
   const collections = await Promise.all([
     readLocalCollection("blogs"),
+    readLocalCollection("audio"),
     readLocalCollection("literature"),
     readLocalCollection("temples"),
     readLocalCollection("food"),
@@ -310,7 +316,7 @@ export async function searchAll(query, params = {}) {
     readLocalCollection("news")
   ]);
 
-  const types = ["blogs", "literature", "temples", "food", "education", "news"];
+  const types = ["blogs", "audio", "literature", "temples", "food", "education", "news"];
   const lowerQuery = String(query || "").toLowerCase().trim();
 
   if (!lowerQuery) {

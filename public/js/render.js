@@ -22,6 +22,10 @@ export function buildDetailUrl(type, item) {
     return `/article.html?slug=${slug}`;
   }
 
+  if (type === "audio") {
+    return `/audio-detail.html?slug=${slug}`;
+  }
+
   if (type === "temples") {
     return `/temple-detail.html?slug=${slug}`;
   }
@@ -57,6 +61,42 @@ function getTempleImageSrc(item) {
     .find((entry) => /^https?:\/\//i.test(entry) || entry.startsWith("/"));
 
   return firstPhoto || DEFAULT_IMAGE;
+}
+
+function getAudioEmbedUrl(value) {
+  const raw = String(value || "").trim();
+  if (!raw) {
+    return "";
+  }
+
+  try {
+    const url = new URL(raw);
+    const host = url.hostname.replace(/^www\./, "");
+
+    if (host === "youtube.com" || host === "m.youtube.com") {
+      if (url.pathname === "/watch") {
+        const videoId = url.searchParams.get("v");
+        if (videoId) {
+          return `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
+        }
+      }
+
+      if (url.pathname.startsWith("/embed/")) {
+        return url.toString();
+      }
+    }
+
+    if (host === "youtu.be") {
+      const videoId = url.pathname.split("/").filter(Boolean)[0];
+      if (videoId) {
+        return `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
+      }
+    }
+  } catch (error) {
+    return raw;
+  }
+
+  return raw;
 }
 
 export function renderCards(target, items, options = {}) {
@@ -189,6 +229,55 @@ export function renderBlogs(target, items) {
   });
 }
 
+export function renderAudio(target, items) {
+  const root = resolveTarget(target);
+  if (!root) {
+    return;
+  }
+
+  if (!Array.isArray(items) || items.length === 0) {
+    root.innerHTML = `<div class="jw-card p-5 text-sm text-stone-600">No audio entries are available yet.</div>`;
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="jw-list">
+      ${items
+        .map((item) => {
+          const title = item.title || item.slug || "Untitled audio";
+          const href = buildDetailUrl("audio", item);
+          const embedUrl = getAudioEmbedUrl(item.audio_url);
+
+          return `
+            <article class="jw-card p-5">
+              ${
+                embedUrl
+                  ? `<iframe
+                      src="${escapeHtml(embedUrl)}"
+                      width="100%"
+                      height="200"
+                      class="rounded-xl border border-stone-200"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                    ></iframe>`
+                  : `<div class="flex h-[200px] items-center justify-center rounded-xl border border-stone-200 bg-stone-50 text-sm text-stone-500">Audio player will appear here.</div>`
+              }
+              <div class="mt-4 flex items-center justify-between gap-3">
+                <span class="jw-badge">${escapeHtml(item.category || "Audio")}</span>
+                <span class="text-xs text-stone-500">${escapeHtml(item.duration || "Duration pending")}</span>
+              </div>
+              <h3 class="mt-3 text-lg font-semibold leading-snug text-stone-900">
+                <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(title)}</a>
+              </h3>
+            </article>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
+}
+
 export function renderTemples(target, items) {
   const root = resolveTarget(target);
   if (!root) {
@@ -275,6 +364,7 @@ export function renderGroupedSearch(target, groups, query) {
 
   const groupNames = {
     blogs: "Blogs",
+    audio: "Audio",
     literature: "Literature",
     temples: "Temples",
     food: "Food",
@@ -458,6 +548,60 @@ export function renderTempleDetail(target, item) {
       </div>
       ${history ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">History</h2><p class="mt-3 text-stone-600">${escapeHtml(history)}</p></section>` : ""}
       ${rituals ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Rituals</h2><p class="mt-3 text-stone-600">${escapeHtml(rituals)}</p></section>` : ""}
+    </article>
+  `;
+}
+
+export function renderAudioDetail(target, item) {
+  const root = resolveTarget(target);
+  if (!root) {
+    return;
+  }
+
+  if (!item) {
+    root.innerHTML = `<div class="jw-card p-6 text-stone-600">Audio Not Found</div>`;
+    return;
+  }
+
+  const title = item.title || item.slug || "Audio detail";
+  const embedUrl = getAudioEmbedUrl(item.audio_url);
+
+  root.innerHTML = `
+    <article class="jw-card p-6 lg:p-8">
+      ${
+        embedUrl
+          ? `<iframe
+              src="${escapeHtml(embedUrl)}"
+              width="100%"
+              height="360"
+              class="rounded-2xl border border-stone-200"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>`
+          : `<div class="flex h-[360px] items-center justify-center rounded-2xl border border-stone-200 bg-stone-50 text-sm text-stone-500">Audio player unavailable.</div>`
+      }
+      <div class="mt-5 flex flex-wrap gap-2">
+        ${(item.category ? `<span class="jw-badge">${escapeHtml(item.category)}</span>` : "")}
+        ${(item.duration ? `<span class="jw-badge">${escapeHtml(item.duration)}</span>` : "")}
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(title)}</h1>
+      <div class="jw-meta mt-4">
+        ${[item.speaker, item.category, item.duration, formatDate(item.published_at || item.created_at)]
+          .filter(Boolean)
+          .map((entry) => `<span>${escapeHtml(entry)}</span>`)
+          .join("")}
+      </div>
+      ${
+        item.description
+          ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Description</h2><p class="mt-3 text-stone-600">${escapeHtml(item.description)}</p></section>`
+          : ""
+      }
+      ${
+        item.audio_url
+          ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Audio Link</h2><a href="${escapeHtml(item.audio_url)}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Open Source</a></section>`
+          : ""
+      }
     </article>
   `;
 }

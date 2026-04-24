@@ -1,4 +1,5 @@
 import {
+  getAudioItems,
   getBlogs,
   getCalendar,
   getCourse,
@@ -13,6 +14,8 @@ import { initCommunityForm } from "./community.js";
 import { getLanguage, initLanguageToggle, updateLanguageDOM } from "./language.js";
 import {
   buildDetailUrl,
+  renderAudio,
+  renderAudioDetail,
   renderArticleDetail,
   renderBlogs,
   renderCards,
@@ -59,6 +62,9 @@ async function loadPage(page) {
     case "literature":
       await loadLiteraturePage();
       break;
+    case "audio":
+      await loadAudioPage();
+      break;
     case "education":
       await loadEducationPage();
       break;
@@ -85,6 +91,9 @@ async function loadPage(page) {
       break;
     case "article":
       await loadArticlePage();
+      break;
+    case "audio-detail":
+      await loadAudioDetailPage();
       break;
     case "temple-detail":
       await loadTempleDetailPage();
@@ -161,6 +170,11 @@ async function loadLiteraturePage() {
 
   const items = await getLiterature({ limit: 24 });
   renderSimpleLiterature(items, "#literature-list");
+}
+
+async function loadAudioPage() {
+  const items = await getAudioItems({ limit: 24 });
+  renderAudio("#audio-list", items);
 }
 
 async function loadEducationPage() {
@@ -262,6 +276,18 @@ async function loadTempleDetailPage() {
   const items = await getTemples({ limit: 500 });
   const item = items.find((entry) => entry.slug === slug || entry.id === slug) || null;
   renderTempleDetail("#temple-detail", item);
+}
+
+async function loadAudioDetailPage() {
+  const slug = new URLSearchParams(window.location.search).get("slug") || "";
+  if (!slug) {
+    renderAudioDetail("#audio-detail", null);
+    return;
+  }
+
+  const items = await getAudioItems({ limit: 500 });
+  const item = items.find((entry) => entry.slug === slug || entry.id === slug) || null;
+  renderAudioDetail("#audio-detail", item);
 }
 
 async function loadCourseDetailPage() {

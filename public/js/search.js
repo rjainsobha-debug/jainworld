@@ -59,6 +59,7 @@ function closeOverlay(overlay) {
 function groupByType(results) {
   const grouped = {
     blogs: [],
+    audio: [],
     literature: [],
     temples: [],
     food: [],
@@ -76,4 +77,3 @@ function groupByType(results) {
 
   return grouped;
 }
-
