@@ -161,6 +161,34 @@ function applyFilters(items, params = {}) {
   return results.slice(0, Number.isFinite(limit) ? limit : results.length);
 }
 
+function sortByNewest(items, dateKeys = ["published_at", "updated_at", "created_at"]) {
+  return [...items].sort((left, right) => {
+    const leftValue = getNewestValue(left, dateKeys);
+    const rightValue = getNewestValue(right, dateKeys);
+    return rightValue.localeCompare(leftValue);
+  });
+}
+
+function getNewestValue(item, dateKeys) {
+  for (const key of dateKeys) {
+    const value = String(item?.[key] || "").trim();
+    if (value) {
+      return value;
+    }
+  }
+
+  return "";
+}
+
+function applyClientLimit(items, limit) {
+  const parsedLimit = Number(limit);
+  if (!Number.isFinite(parsedLimit) || parsedLimit <= 0) {
+    return items;
+  }
+
+  return items.slice(0, parsedLimit);
+}
+
 async function requestCollection(path, fallbackKey, params = {}) {
   if (!shouldUseLocalFallback()) {
     try {
@@ -187,7 +215,16 @@ async function requestDetail(path, fallbackKey, slug) {
 }
 
 export function getBlogs(params = {}) {
-  return requestCollection("/api/blogs", "blogs", params);
+  const requestedLimit = Number(params.limit || 0);
+  const apiParams = {
+    ...params,
+    limit: 100
+  };
+
+  return requestCollection("/api/blogs", "blogs", apiParams).then((items) => {
+    const sorted = sortByNewest(items, ["updated_at", "created_at"]);
+    return applyClientLimit(sorted, requestedLimit || items.length);
+  });
 }
 
 export function getBlog(slug) {
@@ -233,13 +270,13 @@ export function getCalendar(params = {}) {
 export async function getNews(params = {}) {
   if (!shouldUseLocalFallback()) {
     try {
-      return normalizeCollection(await fetchJson("/api/news", params));
+      return sortByNewest(normalizeCollection(await fetchJson("/api/news", params)));
     } catch (error) {
       console.warn("Using local news fallback", error);
     }
   }
 
-  return applyFilters(SAMPLE_NEWS, params);
+  return sortByNewest(applyFilters(SAMPLE_NEWS, params));
 }
 
 export async function getCommunity(params = {}) {

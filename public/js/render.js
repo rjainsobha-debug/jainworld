@@ -51,6 +51,7 @@ export function renderCards(target, items, options = {}) {
     type = "blogs",
     titleBase = "title",
     summaryBase = "summary",
+    summaryBuilder = null,
     metaBuilder = () => [],
     linkBuilder = (item) => buildDetailUrl(type, item),
     layoutClass = "jw-grid-2",
@@ -77,6 +78,7 @@ export function renderCards(target, items, options = {}) {
           const title =
             pickLocalized(item, titleBase, lang) || item.title || item.name || item.slug || "Untitled";
           const summary =
+            (typeof summaryBuilder === "function" ? summaryBuilder(item, lang) : "") ||
             pickLocalized(item, summaryBase, lang) ||
             item.summary ||
             item.description ||
@@ -173,8 +175,10 @@ export function renderTemples(target, items) {
   renderCards(target, items, {
     type: "temples",
     titleBase: "name",
-    summaryBase: "history",
-    metaBuilder: (item) => [item.city, item.state, item.country].filter(Boolean),
+    summaryBuilder: (item) => {
+      return [item.city, item.state].filter(Boolean).join(", ") || item.address || "Temple directory entry";
+    },
+    metaBuilder: (item) => [item.country].filter(Boolean),
     emptyTitle: "No temples found",
     emptyBody: "Try changing the country, state, city, or search filter."
   });
@@ -299,7 +303,7 @@ export function renderArticleDetail(target, item, type = "blogs") {
   }
 
   if (!item) {
-    root.innerHTML = `<div class="jw-card p-6 text-stone-600">The requested article could not be found.</div>`;
+    root.innerHTML = `<div class="jw-card p-6 text-stone-600">Not Found</div>`;
     return;
   }
 

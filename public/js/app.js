@@ -1,13 +1,10 @@
 import {
-  getBlog,
   getBlogs,
   getCalendar,
   getCourse,
   getCourses,
   getFood,
-  getFoodItem,
   getLiterature,
-  getLiteratureItem,
   getNews,
   getTemple,
   getTemples
@@ -139,7 +136,7 @@ async function loadHomePage() {
     getTemples({ limit: 4 }),
     getFood({ limit: 4 }),
     getNews({ limit: 4 }),
-    getBlogs({ limit: 4 })
+    getBlogs({ limit: 5 })
   ]);
 
   renderSimpleLiterature(literature);
@@ -225,25 +222,35 @@ async function loadArticlePage() {
     return;
   }
 
-  if (type === "blogs") {
-    item = await getBlog(slug);
+  if (!type || type === "blogs") {
+    const blogs = await getBlogs({ limit: 100 });
+    item = blogs.find((entry) => entry.slug === slug || entry.id === slug) || null;
+    resolvedType = "blogs";
   } else if (type === "literature") {
-    item = await getLiteratureItem(slug);
+    const literature = await getLiterature({ limit: 100 });
+    item = literature.find((entry) => entry.slug === slug || entry.id === slug) || null;
   } else if (type === "food") {
-    item = await getFoodItem(slug);
-  } else {
-    item = await getBlog(slug);
-    if (!item) {
-      item = await getLiteratureItem(slug);
+    const food = await getFood({ limit: 100 });
+    item = food.find((entry) => entry.slug === slug || entry.id === slug) || null;
+  }
+
+  if (!item && !type) {
+    const literature = await getLiterature({ limit: 100 });
+    item = literature.find((entry) => entry.slug === slug || entry.id === slug) || null;
+    if (item) {
       resolvedType = "literature";
     }
-    if (!item) {
-      item = await getFoodItem(slug);
+  }
+
+  if (!item && !type) {
+    const food = await getFood({ limit: 100 });
+    item = food.find((entry) => entry.slug === slug || entry.id === slug) || null;
+    if (item) {
       resolvedType = "food";
     }
   }
 
-  renderArticleDetail("#article-detail", item, item ? resolvedType : "article");
+  renderArticleDetail("#article-detail", item, item ? resolvedType : "blogs");
 }
 
 async function loadTempleDetailPage() {
