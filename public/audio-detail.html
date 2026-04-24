@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jain Audio Detail | JainWorld.in</title>
+    <meta
+      name="description"
+      content="Listen to a full Jain audio detail page with embedded playback, category, duration, and supporting context."
+    />
+    <link rel="canonical" href="https://jainworld.in/audio/detail" />
+    <meta property="og:type" content="music.song" />
+    <meta property="og:title" content="Jain Audio Detail | JainWorld.in" />
+    <meta
+      property="og:description"
+      content="Detailed Jain audio page with embedded player and structured listening information."
+    />
+    <meta property="og:url" content="https://jainworld.in/audio/detail" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "AudioObject",
+        "name": "Jain audio",
+        "url": "https://jainworld.in/audio/detail"
+      }
+    </script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HQ3VW7D0RR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HQ3VW7D0RR');
+    </script>
+  </head>
+  <body data-page="audio-detail" class="jw-shell">
+    <div id="app-header"></div>
+    <main class="py-10">
+      <div class="jw-container">
+        <div class="mb-6 text-sm text-stone-500">
+          <a href="/index.html" class="hover:text-stone-900">Home</a> /
+          <a href="/audio.html" class="hover:text-stone-900">Audio</a> /
+          <span>Detail</span>
+        </div>
+        <div id="audio-detail" aria-live="polite"></div>
+      </div>
+    </main>
+    <div id="app-footer"></div>
+    <div id="app-overlay"></div>
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>
