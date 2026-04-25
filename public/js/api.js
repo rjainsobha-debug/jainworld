@@ -2,6 +2,8 @@ import { API_BASE } from "./config.js";
 
 export { API_BASE };
 
+console.log("API loaded");
+
 const LOCAL_FILES = {
   blogs: "/data/sample-blogs.json",
   literature: "/data/sample-literature.json",

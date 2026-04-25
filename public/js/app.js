@@ -30,7 +30,6 @@ import {
 import {
   COMMUNITY_BENEFITS,
   createFooter,
-  createHeader,
   createSearchOverlay,
   CULTURE_MODULES,
   EDUCATION_LEVELS,
@@ -41,6 +40,7 @@ import {
 import { initGlobalSearch } from "./search.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+  console.log("Page loaded:", document.body.dataset.page || "home");
   injectShell();
   initLanguageToggle();
   initGlobalSearch();
@@ -107,13 +107,12 @@ async function loadPage(page) {
 }
 
 function injectShell() {
-  const page = document.body.dataset.page || "home";
   const headerRoot = document.getElementById("app-header");
   const footerRoot = document.getElementById("app-footer");
   const overlayRoot = document.getElementById("app-overlay");
 
-  if (headerRoot) {
-    headerRoot.innerHTML = createHeader(page);
+  if (headerRoot && !headerRoot.dataset.injected) {
+    headerRoot.innerHTML = "";
   }
 
   if (footerRoot) {
