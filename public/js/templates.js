@@ -1,5 +1,5 @@
 export const NAV_ITEMS = [
-  { key: "home", href: "/", labelEn: "Home", labelHi: "होम" },
+  { key: "home", href: "/index.html", labelEn: "Home", labelHi: "होम" },
   { key: "literature", href: "/literature.html", labelEn: "Literature", labelHi: "साहित्य" },
   { key: "education", href: "/education.html", labelEn: "Education", labelHi: "शिक्षा" },
   { key: "audio", href: "/audio.html", labelEn: "Audio", labelHi: "ऑडियो" },
@@ -308,7 +308,7 @@ export function createHeader(activePage = "home") {
       <div class="jw-container py-3">
         <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div class="flex items-start justify-between gap-4">
-            <a href="/" class="flex min-w-0 items-center gap-3 no-underline">
+            <a href="/index.html" class="flex min-w-0 items-center gap-3 no-underline">
               <div class="flex h-11 w-11 items-center justify-center rounded-full border border-amber-700/20 bg-amber-50 text-lg font-bold text-amber-800">JW</div>
               <div>
                 <div class="text-lg font-bold tracking-tight text-stone-900">JainWorld.in</div>

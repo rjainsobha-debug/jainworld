@@ -40,6 +40,7 @@ import {
 import { initGlobalSearch } from "./search.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+  console.log("App loaded");
   console.log("Page loaded:", document.body.dataset.page || "home");
   injectShell();
   initLanguageToggle();
