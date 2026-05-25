@@ -7,6 +7,7 @@
 - [Phase 5 API Test Commands](./phase5-api-test-commands.md)
 - [Phase 6 Hardening and Automation Prep](./phase6-hardening-and-automation-prep.md)
 - [Phase 7 Global Search](./phase7-global-search.md)
+- [Phase 7.1 Universal Search Index](./phase7-1-universal-search-index.md)
 - [JSON to D1 Migration Plan](./json-to-d1-migration-plan.md)
 - [Admin Auth Security Plan](./admin-auth-security-plan.md)
 - [Cloudflare Access Admin Authentication](./cloudflare-access-admin-auth.md)

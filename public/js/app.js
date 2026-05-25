@@ -34,9 +34,12 @@ import {
   createFooter,
   createSearchOverlay,
   CULTURE_MODULES,
+  DAILY_JAIN_ITEMS,
   EDUCATION_LEVELS,
   FEATURED_PILGRIMAGES,
   FOOD_RESTRICTIONS,
+  LEARNING_PATHS,
+  POPULAR_TOPICS,
   QUICK_CATEGORIES,
   START_HERE_ITEMS
 } from "./templates.js";
@@ -45,24 +48,34 @@ import { initGlobalSearch } from "./search.js";
 const HOME_DISCOVERY_ITEMS = [
   {
     titleEn: "Jain Audio",
-    summaryEn: "Listen to bhajan, aarti, stavan, pravachan, meditation, and family-friendly recitation.",
+    summaryEn: "Listen to bhajan, aarti, stavan, pravachan, mantra recitation, and calm reflective audio.",
     href: "/audio.html"
   },
   {
-    titleEn: "Jain News",
-    summaryEn: "Follow curated Jain updates from temples, pilgrimages, sanghs, and community organizations.",
+    titleEn: "Curated Jain updates",
+    summaryEn: "Follow festival notices, temple updates, pilgrimages, sangh activities, and community developments.",
     href: "/news.html"
   },
   {
-    titleEn: "Jain Resources",
-    summaryEn: "Review scholarships, minority resources, directories, and official-ready links with caution notes.",
+    titleEn: "Scholarships and support",
+    summaryEn: "Review scholarships, minority resources, educational directories, and official-ready support links.",
     href: "/resources.html"
   },
   {
-    titleEn: "Jain Community",
-    summaryEn: "Request to join and connect with students, families, contributors, temples, and institutions.",
+    titleEn: "Community and participation",
+    summaryEn: "Join JainWorld, contribute knowledge, and stay close to families, volunteers, temples, and institutions.",
     href: "/community.html"
   }
+];
+
+const SEARCH_CHIPS = [
+  "Paryushan",
+  "Navkar Mantra",
+  "Jain food rules",
+  "Ahimsa",
+  "Samayik",
+  "Temples near me",
+  "Scholarships"
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -186,9 +199,13 @@ function setFooterYear() {
 async function loadHomePage() {
   renderQuickCategories();
   renderStartHere();
+  renderSearchChips();
+  renderDailyJain();
   renderEducationLevels();
   renderPilgrimages();
   renderHomeDiscovery();
+  renderLearningPaths();
+  renderPopularTopics();
   renderFoodRules("#food-guide-rules", FOOD_RESTRICTIONS.slice(0, 4));
   setLoadingState("#featured-literature");
   setLoadingState("#education-course-grid");
@@ -384,11 +401,12 @@ function renderQuickCategories() {
   }
 
   root.innerHTML = `
-    <div class="explore-grid jw-grid-3">
+    <div class="content-grid" data-columns="3">
       ${QUICK_CATEGORIES.map(
         (item) => `
-          <a href="${item.href}" class="cat-card jw-card p-5 no-underline transition hover:border-amber-300">
-            <h3 class="cat-name m-0 text-lg font-semibold text-stone-900" data-en="${item.titleEn}" data-hi="${item.titleHi}">${item.titleEn}</h3>
+          <a href="${item.href}" class="quick-action-card">
+            <span class="card-icon" aria-hidden="true">${getCardIcon(item.titleEn)}</span>
+            <h3 class="cat-name m-0 mt-4 text-lg font-semibold text-stone-900" data-en="${item.titleEn}" data-hi="${item.titleHi}">${item.titleEn}</h3>
             <p class="cat-count m-0 mt-3 text-sm leading-7 text-stone-600" data-en="${item.summaryEn}" data-hi="${item.summaryHi}">${item.summaryEn}</p>
           </a>
         `
@@ -404,13 +422,47 @@ function renderStartHere() {
   }
 
   root.innerHTML = `
-    <div class="jw-grid-3">
+    <div class="content-grid" data-columns="3">
       ${START_HERE_ITEMS.map(
         (item) => `
-          <a href="${item.href}" class="jw-card p-5 no-underline transition hover:border-amber-300">
-            <h3 class="m-0 text-lg font-semibold text-stone-900" data-en="${item.titleEn}" data-hi="${item.titleHi}">${item.titleEn}</h3>
+          <a href="${item.href}" class="journey-card">
+            <span class="card-icon" aria-hidden="true">${getCardIcon(item.titleEn)}</span>
+            <h3 class="m-0 mt-4 text-lg font-semibold text-stone-900" data-en="${item.titleEn}" data-hi="${item.titleHi}">${item.titleEn}</h3>
             <p class="m-0 mt-3 text-sm leading-7 text-stone-600" data-en="${item.summaryEn}" data-hi="${item.summaryHi}">${item.summaryEn}</p>
           </a>
+        `
+      ).join("")}
+    </div>
+  `;
+}
+
+function renderSearchChips() {
+  const root = document.getElementById("search-chip-list");
+  if (!root) {
+    return;
+  }
+
+  root.innerHTML = SEARCH_CHIPS.map(
+    (item) => `<a href="/search.html?q=${encodeURIComponent(item)}" class="topic-chip">${item}</a>`
+  ).join("");
+}
+
+function renderDailyJain() {
+  const root = document.getElementById("daily-jain-grid");
+  if (!root) {
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="content-grid" data-columns="3">
+      ${DAILY_JAIN_ITEMS.map(
+        (item) => `
+          <article class="daily-card">
+            <span class="card-icon" aria-hidden="true">${getCardIcon(item.titleEn)}</span>
+            <p class="mt-4 mb-0 text-xs uppercase tracking-[0.16em] text-stone-500">${item.meta}</p>
+            <h3 class="mt-3 text-xl font-semibold text-stone-900">${item.titleEn}</h3>
+            <p>${item.summaryEn}</p>
+          </article>
         `
       ).join("")}
     </div>
@@ -427,7 +479,7 @@ function renderEducationLevels(targetSelector = "#education-levels") {
     <div class="jw-grid-4">
       ${EDUCATION_LEVELS.map(
         (level) => `
-          <article class="jw-card p-5">
+          <article class="feature-card">
             <span class="jw-badge">${level.level}</span>
             <h3 class="mt-3 text-lg font-semibold text-stone-900">${level.level}</h3>
             <p class="m-0 mt-2 text-sm leading-7 text-stone-600" data-en="${level.titleEn}" data-hi="${level.titleHi}">${level.titleEn}</p>
@@ -446,9 +498,9 @@ function renderPilgrimages() {
   }
 
   root.innerHTML = `
-    <div class="jw-card p-5">
+    <div class="soft-card p-5">
       <div class="jw-inline-scroll">
-        ${FEATURED_PILGRIMAGES.map((item) => `<span class="jw-badge whitespace-nowrap">${item}</span>`).join("")}
+        ${FEATURED_PILGRIMAGES.map((item) => `<a href="/temples.html?search=${encodeURIComponent(item)}" class="topic-chip whitespace-nowrap">${item}</a>`).join("")}
       </div>
     </div>
   `;
@@ -466,7 +518,7 @@ function renderCalendarPreview(items) {
 
   if (!Array.isArray(items) || items.length === 0) {
     root.innerHTML = `
-      <div class="jw-card p-5">
+      <div class="soft-card p-5">
         <h3 class="m-0 text-lg font-semibold text-stone-900">Calendar preview is not available yet</h3>
         <p class="m-0 mt-2 text-sm text-stone-600">Festival and fasting highlights will appear here once the reviewed calendar is available.</p>
       </div>
@@ -478,7 +530,7 @@ function renderCalendarPreview(items) {
     <div class="jw-grid-2">
       ${items
         .map((item) => `
-          <article class="jw-card p-5">
+          <article class="daily-card">
             <span class="jw-badge">${item.category || "Calendar"}</span>
             <h3 class="mt-3 text-lg font-semibold text-stone-900">${item.festival_en || item.festival_hi || "Jain observance"}</h3>
             <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${item.description_en || "Festival and observance detail will appear here."}</p>
@@ -525,7 +577,7 @@ function renderCommunityCta() {
   }
 
   root.innerHTML = `
-    <div class="jw-card p-6 lg:p-8">
+    <div class="jw-page-cta">
       <div class="jw-grid-2 items-center">
         <div>
           <span class="jw-kicker">Community</span>
@@ -537,7 +589,7 @@ function renderCommunityCta() {
             Join the JainWorld community.
           </h2>
           <p
-            class="m-0 mt-3 text-sm leading-7 text-stone-600"
+            class="m-0 mt-3 text-sm leading-7"
             data-en="Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks."
             data-hi="Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks."
           >
@@ -561,7 +613,41 @@ function renderCategoryPills(targetSelector, items) {
 
   root.innerHTML = `
     <div class="jw-inline-scroll">
-      ${items.map((item) => `<span class="jw-badge whitespace-nowrap">${item}</span>`).join("")}
+      ${items.map((item) => `<span class="topic-chip whitespace-nowrap">${item}</span>`).join("")}
+    </div>
+  `;
+}
+
+function renderLearningPaths() {
+  const root = document.getElementById("learning-paths-grid");
+  if (!root) {
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="content-grid" data-columns="3">
+      ${LEARNING_PATHS.map(
+        (item) => `
+          <a href="${item.href}" class="feature-card">
+            <span class="jw-badge">Learning path</span>
+            <h3 class="mt-4 text-xl font-semibold text-stone-900">${item.titleEn}</h3>
+            <p class="m-0 mt-3 text-sm leading-7 text-stone-600">${item.summaryEn}</p>
+          </a>
+        `
+      ).join("")}
+    </div>
+  `;
+}
+
+function renderPopularTopics() {
+  const root = document.getElementById("popular-topics");
+  if (!root) {
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="jw-inline-scroll">
+      ${POPULAR_TOPICS.map((item) => `<a href="/search.html?q=${encodeURIComponent(item)}" class="topic-chip whitespace-nowrap">${item}</a>`).join("")}
     </div>
   `;
 }
@@ -754,8 +840,36 @@ function setLoadingState(targetSelector, text = "Loading...") {
   }
 
   root.innerHTML = `
-    <div class="jw-card p-5">
+    <div class="soft-card p-5">
       <p class="m-0 text-sm text-stone-600">${text}</p>
     </div>
   `;
+}
+
+function getCardIcon(label) {
+  const text = String(label || "").toLowerCase();
+
+  if (text.includes("temple")) {
+    return "TM";
+  }
+  if (text.includes("food")) {
+    return "FD";
+  }
+  if (text.includes("calendar") || text.includes("festival")) {
+    return "CL";
+  }
+  if (text.includes("resource") || text.includes("scholar")) {
+    return "RS";
+  }
+  if (text.includes("audio") || text.includes("bhajan")) {
+    return "AU";
+  }
+  if (text.includes("children") || text.includes("kids")) {
+    return "KD";
+  }
+  if (text.includes("community")) {
+    return "CM";
+  }
+
+  return "JW";
 }

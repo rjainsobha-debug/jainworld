@@ -34,76 +34,78 @@
       <div id="app-header"></div>
       <noscript><div class="jw-noscript">Enable JavaScript to search across JainWorld content and source-linked results.</div></noscript>
       <main id="main-content">
-        <section class="jw-page-hero">
+        <section class="page-banner">
           <div class="jw-container jw-page-hero-inner">
-            <span class="jw-kicker">JainWorld Search</span>
-            <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">Search JainWorld</h1>
-            <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">
-              Find Jain literature, temples, food guidance, audio, news, scholarships, resources, and community information in one place.
-            </p>
-            <form id="search-page-form" class="jw-search-shell mt-6 space-y-3" data-search-page-form role="search" aria-label="Search JainWorld">
-              <input id="search-page-input" type="search" name="q" placeholder="Search JainWorld" aria-label="Search JainWorld" />
-              <div class="jw-grid-2">
-                <div>
-                  <label for="search-page-type" class="mb-2 block text-sm font-semibold text-stone-900">Content type</label>
-                  <select id="search-page-type" name="type" class="w-full rounded-xl border border-stone-300 px-4 py-3 text-sm text-stone-900">
-                    <option value="all">All</option>
-                    <option value="literature">Literature</option>
-                    <option value="education">Education</option>
-                    <option value="temples">Temples</option>
-                    <option value="food">Food</option>
-                    <option value="news">News</option>
-                    <option value="blogs">Blogs</option>
-                    <option value="audio">Audio</option>
-                    <option value="resources">Resources</option>
-                    <option value="calendar">Calendar</option>
-                  </select>
+            <div class="breadcrumb"><a href="/index.html">Home</a><span aria-hidden="true">/</span><span>Ask JainWorld</span></div>
+            <div class="page-banner-copy">
+              <span class="jw-kicker">JainWorld Search</span>
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">Search JainWorld</h1>
+              <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">
+                Find Jain literature, temples, food guidance, audio, news, scholarships, resources, and community information in one place.
+              </p>
+            </div>
+            <div class="hero-search-panel mt-6">
+              <form id="search-page-form" class="jw-search-shell space-y-3" data-search-page-form role="search" aria-label="Search JainWorld">
+                <input id="search-page-input" type="search" name="q" placeholder="Ask about Jain values, temples, food rules, scholarships, prayers..." aria-label="Search JainWorld" />
+                <div class="jw-grid-2">
+                  <div>
+                    <label for="search-page-type" class="mb-2 block text-sm font-semibold text-stone-900">Content type</label>
+                    <select id="search-page-type" name="type" class="w-full rounded-xl border border-stone-300 px-4 py-3 text-sm text-stone-900">
+                      <option value="all">All</option>
+                      <option value="literature">Literature</option>
+                      <option value="education">Education</option>
+                      <option value="temples">Temples</option>
+                      <option value="food">Food</option>
+                      <option value="news">News</option>
+                      <option value="blogs">Blogs</option>
+                      <option value="audio">Audio</option>
+                      <option value="resources">Resources</option>
+                      <option value="calendar">Calendar</option>
+                    </select>
+                  </div>
+                  <div class="flex items-end">
+                    <button type="submit" class="jw-btn jw-btn-primary w-full">Search</button>
+                  </div>
                 </div>
-                <div class="flex items-end">
-                  <button type="submit" class="jw-btn jw-btn-primary w-full">Search</button>
-                </div>
+              </form>
+              <div class="jw-search-suggestions mt-4">
+                <a href="/search.html?q=Paryushan" class="topic-chip">Paryushan</a>
+                <a href="/search.html?q=Navkar+Mantra" class="topic-chip">Navkar Mantra</a>
+                <a href="/search.html?q=Jain+food+rules" class="topic-chip">Jain food rules</a>
+                <a href="/search.html?q=Ahimsa" class="topic-chip">Ahimsa</a>
+                <a href="/search.html?q=Samayik" class="topic-chip">Samayik</a>
+                <a href="/search.html?q=Scholarships" class="topic-chip">Scholarships</a>
               </div>
-            </form>
-          </div>
-        </section>
-
-        <section class="py-8">
-          <div class="jw-container">
-            <div class="flex flex-wrap gap-2" aria-label="Search type filters">
-              <button type="button" class="jw-badge" data-search-type-link="all">All</button>
-              <button type="button" class="jw-badge" data-search-type-link="literature">Literature</button>
-              <button type="button" class="jw-badge" data-search-type-link="education">Education</button>
-              <button type="button" class="jw-badge" data-search-type-link="temples">Temples</button>
-              <button type="button" class="jw-badge" data-search-type-link="food">Food</button>
-              <button type="button" class="jw-badge" data-search-type-link="news">News</button>
-              <button type="button" class="jw-badge" data-search-type-link="blogs">Blogs</button>
-              <button type="button" class="jw-badge" data-search-type-link="audio">Audio</button>
-              <button type="button" class="jw-badge" data-search-type-link="resources">Resources</button>
-              <button type="button" class="jw-badge" data-search-type-link="calendar">Calendar</button>
             </div>
           </div>
         </section>
 
-        <section class="py-4">
-          <div class="jw-container">
+        <section class="py-8">
+          <div class="jw-container jw-page-stack">
+            <div class="soft-card p-5">
+              <div class="jw-inline-scroll" aria-label="Search type filters">
+                <button type="button" class="topic-chip" data-search-type-link="all">All</button>
+                <button type="button" class="topic-chip" data-search-type-link="literature">Literature</button>
+                <button type="button" class="topic-chip" data-search-type-link="education">Education</button>
+                <button type="button" class="topic-chip" data-search-type-link="temples">Temples</button>
+                <button type="button" class="topic-chip" data-search-type-link="food">Food</button>
+                <button type="button" class="topic-chip" data-search-type-link="news">News</button>
+                <button type="button" class="topic-chip" data-search-type-link="blogs">Blogs</button>
+                <button type="button" class="topic-chip" data-search-type-link="audio">Audio</button>
+                <button type="button" class="topic-chip" data-search-type-link="resources">Resources</button>
+                <button type="button" class="topic-chip" data-search-type-link="calendar">Calendar</button>
+              </div>
+            </div>
+
             <div id="search-summary" aria-live="polite"></div>
-            <div class="mt-6" id="search-results" aria-live="polite"></div>
-            <div class="mt-6" id="search-no-results" aria-live="polite"></div>
-          </div>
-        </section>
-
-        <section class="py-4">
-          <div class="jw-container">
+            <div id="search-results" aria-live="polite"></div>
+            <div id="search-no-results" aria-live="polite"></div>
             <div id="popular-searches"></div>
-          </div>
-        </section>
 
-        <section class="py-10">
-          <div class="jw-container">
-            <div class="jw-card p-6">
+            <div class="jw-page-cta">
               <span class="jw-kicker">Ask JainWorld</span>
-              <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">JainWorld Knowledge Assistant</h2>
-              <p class="m-0 mt-3 text-sm leading-7 text-stone-600">
+              <h2 class="mt-3 text-2xl font-semibold tracking-tight">JainWorld Knowledge Assistant</h2>
+              <p class="m-0 mt-3 text-sm leading-7">
                 AI answers are coming soon. For now, JainWorld Search shows source-linked results from approved content.
               </p>
             </div>

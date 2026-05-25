@@ -386,10 +386,10 @@ function mapLocalSearchResult(type, item) {
     item.title_en ||
     item.title ||
     item.name_en ||
+    item.name ||
     item.course_title_en ||
     item.lesson_title_en ||
     item.festival_en ||
-    item.name ||
     "Untitled";
   const summary =
     item.summary_en ||
@@ -417,7 +417,7 @@ function mapLocalSearchResult(type, item) {
 function buildSearchResultUrl(type, slug, item) {
   const encodedSlug = encodeURIComponent(slug || "");
   if (type === "blogs") {
-    return `/article.html?slug=${encodedSlug}`;
+    return `/article.html?type=blogs&slug=${encodedSlug}`;
   }
   if (type === "audio") {
     return `/audio-detail.html?slug=${encodedSlug}`;
@@ -429,10 +429,10 @@ function buildSearchResultUrl(type, slug, item) {
     return `/course-detail.html?slug=${encodedSlug}`;
   }
   if (type === "resources") {
-    return item.official_url || "/resources.html";
+    return "/resources.html";
   }
   if (type === "news") {
-    return item.source_url || item.link || "/news.html";
+    return "/news.html";
   }
   if (type === "calendar") {
     return "/calendar.html";

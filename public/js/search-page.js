@@ -83,22 +83,22 @@ async function runSearch(query, type) {
   const startedAt = performance.now();
 
   let results = [];
-  let modeLabel = "Sample fallback";
+  let modeLabel = "Sample fallback mode";
 
   try {
     results = await searchAll(query, {
       type: type === "all" ? "" : type,
       limit: 50
     });
-    modeLabel = "Live or fallback search";
+    modeLabel = "JainWorld search";
   } catch (error) {
     results = [];
   }
 
   const searchTime = Math.max(1, Math.round(performance.now() - startedAt));
-  renderResults(resultsRoot, results, query);
+  renderResults(resultsRoot, results, query, type);
   summaryRoot.innerHTML = `
-    <div class="jw-card p-5">
+    <div class="soft-card p-5">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 class="m-0 text-xl font-semibold text-stone-900">Search results</h2>
@@ -111,14 +111,14 @@ async function runSearch(query, type) {
 
   if (!results.length) {
     noResultsRoot.innerHTML = `
-      <div class="jw-card p-5">
+      <div class="soft-card p-5">
         <h3 class="m-0 text-lg font-semibold text-stone-900">No results found</h3>
-        <p class="m-0 mt-2 text-sm leading-7 text-stone-600">Try a shorter search, switch content type, or start with one of the popular searches below.</p>
+        <p class="m-0 mt-2 text-sm leading-7 text-stone-600">Try a shorter search, switch content type, or begin with a festival, prayer, place, food rule, or scholarship topic.</p>
         <div class="mt-4 flex flex-wrap gap-2">
           ${POPULAR_SEARCHES.slice(0, 5)
             .map(
               (item) =>
-                `<a class="jw-badge hover:border-stone-400" href="/search.html?q=${encodeURIComponent(item)}">${escapeHtml(item)}</a>`
+                `<a class="topic-chip" href="/search.html?q=${encodeURIComponent(item)}">${escapeHtml(item)}</a>`
             )
             .join("")}
         </div>
@@ -131,42 +131,65 @@ async function runSearch(query, type) {
   popularRoot.setAttribute("hidden", query ? "hidden" : "");
 }
 
-function renderResults(root, results, query) {
+function renderResults(root, results, query, type) {
   if (!Array.isArray(results) || results.length === 0) {
     root.innerHTML = "";
     return;
   }
 
+  if (type === "all") {
+    const grouped = groupByType(results);
+    root.innerHTML = Object.entries(grouped)
+      .map(([groupType, groupItems]) => {
+        if (!groupItems.length) {
+          return "";
+        }
+
+        return `
+          <section class="mb-6">
+            <div class="mb-3 flex items-center justify-between gap-3">
+              <h3 class="m-0 text-lg font-semibold text-stone-900">${escapeHtml(formatType(groupType))}</h3>
+              <span class="jw-badge">${groupItems.length}</span>
+            </div>
+            <div class="jw-list">
+              ${groupItems.map((item) => renderSearchCard(item, query)).join("")}
+            </div>
+          </section>
+        `;
+      })
+      .join("");
+    return;
+  }
+
   root.innerHTML = `
     <div class="jw-list">
-      ${results
-        .map((item) => {
-          const title = highlightMatch(item.title || "Untitled", query);
-          const summary = highlightMatch(item.summary || "No summary available.", query);
-          const meta = Array.isArray(item.meta) ? item.meta.filter(Boolean) : [];
-          const source = item.source_name ? `<span>Source: ${escapeHtml(item.source_name)}</span>` : "";
-          const review = item.review_status ? `<span>Status: ${escapeHtml(item.review_status)}</span>` : "";
-
-          return `
-            <article class="jw-card p-5">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="jw-badge">${escapeHtml(formatType(item.type))}</span>
-                ${item.review_status ? `<span class="jw-badge jw-badge--approved">${escapeHtml(item.review_status)}</span>` : ""}
-              </div>
-              <h3 class="mt-3 text-lg font-semibold text-stone-900">
-                <a href="${escapeHtml(item.url || "/search.html")}" class="hover:text-amber-800">${title}</a>
-              </h3>
-              <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${summary}</p>
-              <div class="jw-meta mt-3">
-                ${meta.map((entry) => `<span>${escapeHtml(entry)}</span>`).join("")}
-                ${source}
-                ${review}
-              </div>
-            </article>
-          `;
-        })
-        .join("")}
+      ${results.map((item) => renderSearchCard(item, query)).join("")}
     </div>
+  `;
+}
+
+function renderSearchCard(item, query) {
+  const title = highlightMatch(item.title || "Untitled", query);
+  const summary = highlightMatch(item.summary || "No summary available.", query);
+  const meta = Array.isArray(item.meta) ? item.meta.filter(Boolean) : [];
+  const source = item.source_name ? `<span>Source: ${escapeHtml(item.source_name)}</span>` : "";
+  const reviewText = item.review_status ? formatReview(item.review_status) : "";
+
+  return `
+    <article class="jw-card p-5">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="jw-badge">${escapeHtml(formatType(item.type))}</span>
+        ${item.review_status ? `<span class="jw-badge jw-badge--approved">${escapeHtml(reviewText)}</span>` : ""}
+      </div>
+      <h3 class="mt-3 text-lg font-semibold text-stone-900">
+        <a href="${escapeHtml(item.url || "/search.html")}" class="hover:text-amber-800">${title}</a>
+      </h3>
+      <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${summary}</p>
+      <div class="jw-meta mt-3">
+        ${meta.map((entry) => `<span>${escapeHtml(entry)}</span>`).join("")}
+        ${source}
+      </div>
+    </article>
   `;
 }
 
@@ -177,12 +200,12 @@ function renderPopularSearches() {
   }
 
   root.innerHTML = `
-    <div class="jw-card p-5">
+    <div class="soft-card p-5">
       <h2 class="m-0 text-xl font-semibold text-stone-900">Popular searches</h2>
       <div class="mt-4 flex flex-wrap gap-2">
         ${POPULAR_SEARCHES.map(
           (item) =>
-            `<a class="jw-badge hover:border-stone-400" href="/search.html?q=${encodeURIComponent(item)}">${escapeHtml(item)}</a>`
+            `<a class="topic-chip" href="/search.html?q=${encodeURIComponent(item)}">${escapeHtml(item)}</a>`
         ).join("")}
       </div>
     </div>
@@ -199,8 +222,8 @@ function renderIntroState() {
   }
   if (summaryRoot) {
     summaryRoot.innerHTML = `
-      <div class="jw-card p-5">
-        <h2 class="m-0 text-xl font-semibold text-stone-900">Start with a topic, place, festival, text, or resource</h2>
+      <div class="soft-card p-5">
+        <h2 class="m-0 text-xl font-semibold text-stone-900">Start with a topic, prayer, place, festival, or resource</h2>
         <p class="m-0 mt-2 text-sm text-stone-600">Search across Jain literature, temples, audio, food guidance, news, scholarships, and learning paths.</p>
       </div>
     `;
@@ -257,6 +280,28 @@ function formatType(type) {
   return String(type || "result")
     .replace(/-/g, " ")
     .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function formatReview(value) {
+  const normalized = String(value || "").toLowerCase();
+  if (normalized === "verified") {
+    return "Verified";
+  }
+  if (normalized === "approved" || normalized === "published") {
+    return "Curated";
+  }
+  return String(value || "");
+}
+
+function groupByType(results) {
+  return results.reduce((groups, item) => {
+    const key = item.type || "results";
+    if (!groups[key]) {
+      groups[key] = [];
+    }
+    groups[key].push(item);
+    return groups;
+  }, {});
 }
 
 function highlightMatch(text, query) {

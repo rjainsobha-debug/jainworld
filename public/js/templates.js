@@ -1,13 +1,11 @@
 export const NAV_ITEMS = [
   { key: "home", href: "/index.html", labelEn: "Home", labelHi: "Home" },
-  { key: "literature", href: "/literature.html", labelEn: "Literature", labelHi: "Literature" },
+  { key: "education", href: "/education.html", labelEn: "Learn", labelHi: "Learn" },
   { key: "temples", href: "/temples.html", labelEn: "Temples", labelHi: "Temples" },
   { key: "food", href: "/food.html", labelEn: "Food", labelHi: "Food" },
-  { key: "education", href: "/education.html", labelEn: "Education", labelHi: "Education" },
-  { key: "news", href: "/news.html", labelEn: "News", labelHi: "News" },
-  { key: "blogs", href: "/blogs.html", labelEn: "Blogs", labelHi: "Blogs" },
-  { key: "audio", href: "/audio.html", labelEn: "Audio", labelHi: "Audio" },
-  { key: "community", href: "/community.html", labelEn: "Community", labelHi: "Community" }
+  { key: "calendar", href: "/calendar.html", labelEn: "Calendar", labelHi: "Calendar" },
+  { key: "resources", href: "/resources.html", labelEn: "Resources", labelHi: "Resources" },
+  { key: "search", href: "/search.html", labelEn: "Ask", labelHi: "Ask" }
 ];
 
 export const QUICK_CATEGORIES = [
@@ -126,6 +124,72 @@ export const START_HERE_ITEMS = [
     summaryEn: "Request to join and connect with families, students, volunteers, and institutions.",
     summaryHi: "Request to join and connect with families, students, volunteers, and institutions."
   }
+];
+
+export const DAILY_JAIN_ITEMS = [
+  {
+    titleEn: "Thought of the day",
+    summaryEn: "Ahimsa begins in small choices: the way we speak, eat, think, and care for every living being.",
+    meta: "Daily reflection"
+  },
+  {
+    titleEn: "Festival highlight",
+    summaryEn: "Use the Jain calendar to stay close to Paryushan, Samvatsari, Ayambil Oli, and other important observances.",
+    meta: "Calendar guidance"
+  },
+  {
+    titleEn: "Suggested reading",
+    summaryEn: "Start with beginner-friendly Jain lessons, then continue into stories, sutras, and values for family life.",
+    meta: "Learning path"
+  }
+];
+
+export const LEARNING_PATHS = [
+  {
+    href: "/education.html",
+    titleEn: "Jainism for Beginners",
+    summaryEn: "Simple introductions to Jain beliefs, values, prayers, and everyday life."
+  },
+  {
+    href: "/education.html",
+    titleEn: "Jainism for Kids",
+    summaryEn: "Family-friendly stories, values, and gentle learning for children."
+  },
+  {
+    href: "/food.html",
+    titleEn: "Jain Food & Lifestyle",
+    summaryEn: "Understand ingredients, timings, travel guidance, and fasting discipline."
+  },
+  {
+    href: "/calendar.html",
+    titleEn: "Jain Festivals",
+    summaryEn: "Follow tithis, fasting days, and important observances throughout the year."
+  },
+  {
+    href: "/literature.html",
+    titleEn: "Jain Literature",
+    summaryEn: "Read foundational texts, stories, and devotional learning with clarity."
+  },
+  {
+    href: "/temples.html",
+    titleEn: "Jain Temples & Pilgrimage",
+    summaryEn: "Plan darshan, learn temple traditions, and explore pilgrimage destinations."
+  }
+];
+
+export const POPULAR_TOPICS = [
+  "Ahimsa",
+  "Anekantavada",
+  "Paryushan",
+  "Samayik",
+  "Navkar Mantra",
+  "Bhaktamar",
+  "Fasting",
+  "Temple etiquette",
+  "Children's learning",
+  "Scholarships",
+  "Minority resources",
+  "Pilgrimage planning"
 ];
 
 export const EDUCATION_LEVELS = [
@@ -343,18 +407,25 @@ const FOOTER_LINK_GROUPS = [
       { href: "/about.html", label: "About" },
       { href: "/contact.html", label: "Contact" },
       { href: "/contribute.html", label: "Contribute" },
-      { href: "/search.html", label: "Search" },
-      { href: "/resources.html", label: "Resources" },
-      { href: "/admin-review.html", label: "Admin Review" }
+      { href: "/search.html", label: "Search" }
     ]
   },
   {
-    heading: "Explore",
+    heading: "Popular sections",
+    links: [
+      { href: "/education.html", label: "Learn Jainism" },
+      { href: "/temples.html", label: "Temples" },
+      { href: "/food.html", label: "Food & Lifestyle" },
+      { href: "/calendar.html", label: "Calendar" }
+    ]
+  },
+  {
+    heading: "Knowledge & support",
     links: [
       { href: "/literature.html", label: "Literature" },
-      { href: "/education.html", label: "Education" },
-      { href: "/temples.html", label: "Temples" },
-      { href: "/audio.html", label: "Audio" }
+      { href: "/audio.html", label: "Audio" },
+      { href: "/resources.html", label: "Resources" },
+      { href: "/community.html", label: "Community" }
     ]
   },
   {
@@ -370,27 +441,48 @@ const FOOTER_LINK_GROUPS = [
 
 export function createFooter() {
   return `
-    <footer class="mt-16 border-t border-stone-200 bg-white">
+    <footer class="jw-footer">
       <div class="jw-container py-10">
-        <div class="jw-grid-4">
+        <div class="jw-footer-cta">
+          <div class="jw-grid-2">
+            <div>
+              <span class="jw-kicker">For every Jain family</span>
+              <h2 class="mt-3 text-2xl font-semibold text-stone-900">Help us make JainWorld better for every Jain family.</h2>
+              <p class="m-0 mt-3 text-sm leading-7 text-stone-700">
+                Share ideas, suggest resources, and help us shape a calm, useful Jain companion for learners, families, and global communities.
+              </p>
+            </div>
+            <div class="jw-page-actions md:justify-end">
+              <a href="/resources.html" class="jw-btn jw-btn-primary">Explore Resources</a>
+              <a href="/contact.html" class="jw-btn">Contact / Contribute</a>
+            </div>
+          </div>
+        </div>
+        <div class="jw-footer-grid">
           <div class="space-y-3">
-            <h2 class="m-0 text-lg font-semibold text-stone-900">JainWorld.in</h2>
+            <a href="/index.html" class="site-logo" aria-label="JainWorld home">
+              <span class="site-logo-mark" aria-hidden="true">JW</span>
+              <span class="site-logo-text">
+                <span class="site-logo-title">JainWorld</span>
+                <span class="site-logo-tagline">A warm digital Jain companion for learning, practice, and community.</span>
+              </span>
+            </a>
             <p
               class="jw-muted m-0 text-sm leading-7"
-              data-en="JainWorld brings together trusted learning, temple discovery, food guidance, community pathways, and practical resources in one simple place."
-              data-hi="JainWorld brings together trusted learning, temple discovery, food guidance, community pathways, and practical resources in one simple place."
+              data-en="JainWorld brings together trusted learning, temple discovery, food guidance, family support, and community resources in one peaceful place."
+              data-hi="JainWorld brings together trusted learning, temple discovery, food guidance, family support, and community resources in one peaceful place."
             >
-              JainWorld brings together trusted learning, temple discovery, food guidance, community pathways, and practical resources in one simple place.
+              JainWorld brings together trusted learning, temple discovery, food guidance, family support, and community resources in one peaceful place.
             </p>
             <p class="m-0 text-xs leading-6 text-stone-500">
-              Reviewed, evolving, and community-supported. Please verify time-sensitive details on official or institutional sources.
+              Reviewed, evolving, and community-supported. Please verify time-sensitive details on official or institutional sources before making decisions.
             </p>
           </div>
           ${FOOTER_LINK_GROUPS.map(
             (group) => `
               <div class="space-y-2">
                 <h3 class="text-base font-semibold text-stone-900">${group.heading}</h3>
-                <div class="grid gap-2 text-sm text-stone-600">
+                <div class="jw-footer-links text-sm text-stone-600">
                   ${group.links
                     .map(
                       (link) => `
@@ -403,9 +495,9 @@ export function createFooter() {
             `
           ).join("")}
         </div>
-        <div class="mt-8 flex flex-col gap-2 border-t border-stone-200 pt-4 text-sm text-stone-500 md:flex-row md:items-center md:justify-between">
+        <div class="jw-footer-bottom">
           <span>&copy; <span id="footer-year"></span> JainWorld.in</span>
-          <span>Knowledge, culture, service, and community - with clarity and care.</span>
+          <span>Knowledge, culture, service, and community with clarity, warmth, and care.</span>
         </div>
       </div>
     </footer>

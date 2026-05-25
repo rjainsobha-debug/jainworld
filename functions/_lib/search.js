@@ -2,6 +2,18 @@ import { createId, normalizeString, nowIso, safeLimit } from "./http.js";
 
 const PUBLIC_STATUS = new Set(["published", "active"]);
 const PUBLIC_REVIEW_STATUS = new Set(["approved", "verified", "published", ""]);
+const ALLOWED_TYPES = new Set([
+  "all",
+  "literature",
+  "education",
+  "temples",
+  "food",
+  "news",
+  "blogs",
+  "audio",
+  "resources",
+  "calendar"
+]);
 
 export function normalizeQuery(text) {
   return normalizeString(text)
@@ -31,7 +43,9 @@ export function scoreItem(query, item) {
   const tokens = tokenize(query);
   const title = normalizeQuery(item.title || "");
   const summary = normalizeQuery(item.summary || "");
+  const body = normalizeQuery(item.body || "");
   const category = normalizeQuery((item.meta || []).join(" "));
+  const tags = normalizeQuery(item.tags || "");
   let score = 0;
 
   if (!normalizedQuery) {
@@ -39,19 +53,27 @@ export function scoreItem(query, item) {
   }
 
   if (title === normalizedQuery) {
-    score += 120;
+    score += 140;
+  }
+
+  if (title.startsWith(normalizedQuery)) {
+    score += 95;
   }
 
   if (title.includes(normalizedQuery)) {
     score += 80;
   }
 
-  if (category.includes(normalizedQuery)) {
-    score += 40;
+  if (category.includes(normalizedQuery) || tags.includes(normalizedQuery)) {
+    score += 45;
   }
 
   if (summary.includes(normalizedQuery)) {
-    score += 25;
+    score += 28;
+  }
+
+  if (body.includes(normalizedQuery)) {
+    score += 16;
   }
 
   tokens.forEach((token) => {
@@ -61,20 +83,25 @@ export function scoreItem(query, item) {
     if (summary.includes(token)) {
       score += 6;
     }
-    if (category.includes(token)) {
+    if (body.includes(token)) {
+      score += 4;
+    }
+    if (category.includes(token) || tags.includes(token)) {
       score += 8;
     }
   });
 
+  score += Number(item.search_weight || 0) * 10;
+
   if (item.type === "news") {
-    score += boostRecent(item.created_at || item.published_at, 20);
+    score += boostRecent(item.updated_at || item.created_at || item.published_at, 20);
   }
 
   if (item.type === "resources" && normalizeString(item.review_status).toLowerCase() === "verified") {
     score += 18;
   }
 
-  if (item.type === "audio" && category.includes(normalizedQuery)) {
+  if (item.type === "audio" && (category.includes(normalizedQuery) || tags.includes(normalizedQuery))) {
     score += 14;
   }
 
@@ -112,7 +139,7 @@ export function makeSnippet(text, query) {
 }
 
 export function buildResult(type, item, query) {
-  const mappedType = typeMap(type);
+  const mappedType = typeMap(type || item.content_type);
   const title =
     normalizeString(item.title) ||
     normalizeString(item.title_en) ||
@@ -121,7 +148,7 @@ export function buildResult(type, item, query) {
     normalizeString(item.lesson_title_en) ||
     normalizeString(item.festival_en) ||
     "Untitled";
-  const summary =
+  const rawSummary =
     normalizeString(item.summary) ||
     normalizeString(item.summary_en) ||
     normalizeString(item.description_en) ||
@@ -130,17 +157,29 @@ export function buildResult(type, item, query) {
     normalizeString(item.meaning_en) ||
     normalizeString(item.description) ||
     "";
+  const body =
+    normalizeString(item.body) ||
+    normalizeString(item.content_en) ||
+    normalizeString(item.history_en) ||
+    normalizeString(item.ingredients_en) ||
+    normalizeString(item.method_en) ||
+    rawSummary;
   const meta = buildMeta(mappedType, item);
   const result = {
     id: item.id || item.slug || createId("search-item"),
     type: mappedType,
     title,
-    summary: makeSnippet(summary || title, query),
+    summary: makeSnippet(rawSummary || body || title, query),
+    body,
     url: buildUrl(mappedType, item),
     meta,
     score: 0,
+    search_weight: Number(item.search_weight || 0),
     review_status: normalizeString(item.review_status),
-    source_name: normalizeString(item.source_name || item.source || item.author)
+    source_name: normalizeString(item.source_name || item.source || item.author),
+    tags: normalizeString(item.tags),
+    created_at: normalizeString(item.created_at),
+    updated_at: normalizeString(item.updated_at || item.published_at)
   };
   result.score = scoreItem(query, result);
   return result;
@@ -191,8 +230,12 @@ export function resolveSearchParams(url) {
 
 export function normalizeType(type) {
   const value = normalizeString(type).toLowerCase();
-  const allowed = new Set(["all", "literature", "education", "temples", "food", "news", "blogs", "audio", "resources", "calendar"]);
-  return allowed.has(value) ? value : "all";
+  return ALLOWED_TYPES.has(value) ? value : "all";
+}
+
+export function indexTypeToPublicType(contentType) {
+  const mapped = typeMap(contentType);
+  return mapped === "courses" ? "education" : mapped;
 }
 
 function buildMeta(type, item) {
@@ -200,13 +243,13 @@ function buildMeta(type, item) {
     return [item.category, item.state, item.last_verified_at ? `Verified: ${item.last_verified_at}` : ""].filter(Boolean);
   }
   if (type === "news") {
-    return [item.category, item.region, item.published_at || item.created_at].filter(Boolean);
+    return [item.category, item.region, item.published_at || item.created_at, item.source_name ? "Curated" : ""].filter(Boolean);
   }
   if (type === "audio") {
     return [item.category, item.language, item.duration].filter(Boolean);
   }
   if (type === "temples") {
-    return [item.city, item.state, item.country].filter(Boolean);
+    return [item.city, item.state, item.country, item.category].filter(Boolean);
   }
   if (type === "education") {
     return [item.course_level, item.topic, item.difficulty].filter(Boolean);
@@ -218,12 +261,12 @@ function buildMeta(type, item) {
 }
 
 function buildUrl(type, item) {
-  const slug = encodeURIComponent(item.slug || item.id || "");
+  const slug = encodeURIComponent(item.slug || item.source_id || item.id || "");
   if (type === "resources") {
-    return item.official_url || "/resources.html";
+    return "/resources.html";
   }
   if (type === "news") {
-    return item.source_url || item.canonical_url || "/news.html";
+    return "/news.html";
   }
   if (type === "audio") {
     return `/audio-detail.html?slug=${slug}`;
@@ -238,9 +281,15 @@ function buildUrl(type, item) {
     return "/calendar.html";
   }
   if (type === "blogs") {
-    return `/article.html?slug=${slug}`;
+    return `/article.html?type=blogs&slug=${slug}`;
   }
-  return `/article.html?type=${encodeURIComponent(type)}&slug=${slug}`;
+  if (type === "literature") {
+    return `/article.html?type=literature&slug=${slug}`;
+  }
+  if (type === "food") {
+    return `/article.html?type=food&slug=${slug}`;
+  }
+  return item.url || `/article.html?type=${encodeURIComponent(type)}&slug=${slug}`;
 }
 
 function typeMap(type) {

@@ -1,7 +1,15 @@
 import { errorResponse, hasDb, jsonResponse } from "../_lib/http.js";
-import { buildResult, buildSearchResponse, logSearchQuery, normalizeType, resolveSearchParams, safePublicStatus } from "../_lib/search.js";
+import {
+  buildResult,
+  buildSearchResponse,
+  indexTypeToPublicType,
+  logSearchQuery,
+  normalizeType,
+  resolveSearchParams,
+  safePublicStatus
+} from "../_lib/search.js";
 
-const TABLES = [
+const LEGACY_TABLES = [
   {
     type: "resources",
     table: "resources",
@@ -42,19 +50,16 @@ export async function onRequestGet(context) {
     return errorResponse("Search service is not available right now.", 503);
   }
 
-  const selectedTables = type === "all" ? TABLES : TABLES.filter((entry) => entry.type === normalizeType(type));
-  const results = [];
+  let results = [];
 
-  for (const entry of selectedTables) {
-    try {
-      const rows = await searchTable(context.env.DB, entry, query, limit);
-      rows
-        .filter((row) => safePublicStatus(row))
-        .map((row) => buildResult(entry.type, row, query))
-        .forEach((row) => results.push(row));
-    } catch (error) {
-      // Keep search resilient when a D1 table is missing or unavailable.
-    }
+  try {
+    results = await searchIndex(context.env.DB, query, type, limit);
+  } catch (error) {
+    results = [];
+  }
+
+  if (!results.length) {
+    results = await searchLegacyTables(context.env.DB, query, type, limit);
   }
 
   const sortedResults = results.sort((left, right) => right.score - left.score).slice(0, limit);
@@ -68,7 +73,60 @@ export async function onRequestGet(context) {
   return jsonResponse(buildSearchResponse(query, type, sortedResults, logged));
 }
 
-async function searchTable(db, entry, query, limit) {
+async function searchIndex(db, query, type, limit) {
+  const normalized = `%${query.toLowerCase()}%`;
+  const bindings = [normalized, limit];
+  let typeClause = "";
+
+  if (type !== "all") {
+    typeClause = " AND content_type = ?3";
+    bindings.splice(1, 0, type);
+  }
+
+  const limitPosition = type !== "all" ? "?3" : "?2";
+  const sql = `
+    SELECT id, content_type, source_id, title, summary, body, url, category, tags, language, status, review_status,
+           source_name, published_at, updated_at, search_weight, created_at
+    FROM search_index
+    WHERE status = 'published'
+      AND (review_status IN ('verified', 'approved', 'published') OR review_status IS NULL OR review_status = '')
+      ${typeClause}
+      AND (
+        lower(coalesce(title, '')) LIKE ?1 OR
+        lower(coalesce(summary, '')) LIKE ?1 OR
+        lower(coalesce(body, '')) LIKE ?1 OR
+        lower(coalesce(category, '')) LIKE ?1 OR
+        lower(coalesce(tags, '')) LIKE ?1
+      )
+    ORDER BY search_weight DESC, coalesce(updated_at, published_at, created_at) DESC
+    LIMIT ${limitPosition}
+  `;
+
+  const result = await db.prepare(sql).bind(...bindings).all();
+  const rows = Array.isArray(result?.results) ? result.results : [];
+  return rows.map((row) => buildResult(indexTypeToPublicType(row.content_type), row, query)).filter((row) => safePublicStatus(row));
+}
+
+async function searchLegacyTables(db, query, type, limit) {
+  const selectedTables = type === "all" ? LEGACY_TABLES : LEGACY_TABLES.filter((entry) => entry.type === normalizeType(type));
+  const results = [];
+
+  for (const entry of selectedTables) {
+    try {
+      const rows = await searchLegacyTable(db, entry, query, limit);
+      rows
+        .filter((row) => safePublicStatus(row))
+        .map((row) => buildResult(entry.type, row, query))
+        .forEach((row) => results.push(row));
+    } catch (error) {
+      // Keep search resilient if legacy tables are missing.
+    }
+  }
+
+  return results;
+}
+
+async function searchLegacyTable(db, entry, query, limit) {
   const normalized = `%${query.toLowerCase()}%`;
   const sql = `
     SELECT ${entry.columns}

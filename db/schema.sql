@@ -159,6 +159,26 @@ CREATE TABLE IF NOT EXISTS search_queries (
   ip_hash TEXT
 );
 
+CREATE TABLE IF NOT EXISTS search_index (
+  id TEXT PRIMARY KEY,
+  content_type TEXT NOT NULL,
+  source_id TEXT,
+  title TEXT NOT NULL,
+  summary TEXT,
+  body TEXT,
+  url TEXT,
+  category TEXT,
+  tags TEXT,
+  language TEXT DEFAULT 'en',
+  status TEXT DEFAULT 'published',
+  review_status TEXT DEFAULT 'verified',
+  source_name TEXT,
+  published_at TEXT,
+  updated_at TEXT,
+  search_weight INTEGER DEFAULT 1,
+  created_at TEXT NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_community_submissions_review_status ON community_submissions(review_status);
 CREATE INDEX IF NOT EXISTS idx_community_submissions_created_at ON community_submissions(created_at);
 CREATE INDEX IF NOT EXISTS idx_correction_submissions_review_status ON correction_submissions(review_status);
@@ -184,3 +204,9 @@ CREATE INDEX IF NOT EXISTS idx_review_logs_created_at ON review_logs(created_at)
 CREATE INDEX IF NOT EXISTS idx_search_queries_query ON search_queries(query);
 CREATE INDEX IF NOT EXISTS idx_search_queries_created_at ON search_queries(created_at);
 CREATE INDEX IF NOT EXISTS idx_search_queries_type ON search_queries(type);
+CREATE INDEX IF NOT EXISTS idx_search_index_content_type ON search_index(content_type);
+CREATE INDEX IF NOT EXISTS idx_search_index_status ON search_index(status);
+CREATE INDEX IF NOT EXISTS idx_search_index_review_status ON search_index(review_status);
+CREATE INDEX IF NOT EXISTS idx_search_index_category ON search_index(category);
+CREATE INDEX IF NOT EXISTS idx_search_index_title ON search_index(title);
+CREATE INDEX IF NOT EXISTS idx_search_index_created_at ON search_index(created_at);

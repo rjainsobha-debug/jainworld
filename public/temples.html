@@ -28,8 +28,64 @@
       <div id="app-header"></div>
       <noscript><div class="jw-noscript">Enable JavaScript to load the latest JainWorld content and interactive sections.</div></noscript>
       <main id="main-content">
-        <section class="jw-page-hero"><div class="jw-container jw-page-hero-inner"><span class="jw-kicker">Temples</span><h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">A trusted Jain temple directory for darshan, travel, and pilgrimage planning</h1><p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">Search by city, state, country, or temple type. If you are travelling, please confirm timings and arrangements with the temple or trust directly.</p></div></section>
-        <section class="py-10"><div class="jw-container"><form id="temple-filters" class="jw-card p-5" aria-label="Temple filters"><div class="jw-grid-4"><div class="jw-search-shell"><label for="temple-country" class="mb-2 block text-sm font-semibold text-stone-900">Country</label><select id="temple-country"><option value="">All countries</option></select></div><div class="jw-search-shell"><label for="temple-state" class="mb-2 block text-sm font-semibold text-stone-900">State</label><select id="temple-state"><option value="">All states</option></select></div><div class="jw-search-shell"><label for="temple-city" class="mb-2 block text-sm font-semibold text-stone-900">City</label><select id="temple-city"><option value="">All cities</option></select></div><div class="jw-search-shell"><label for="temple-type" class="mb-2 block text-sm font-semibold text-stone-900">Temple type</label><select id="temple-type"><option value="">All temple types</option></select></div></div><div class="jw-grid-2 mt-4"><div class="jw-search-shell"><label for="temple-search" class="mb-2 block text-sm font-semibold text-stone-900">Search</label><input id="temple-search" type="search" placeholder="Search temple, city, history, rituals..." aria-label="Search temples" /></div></div></form><p class="mt-4 text-sm leading-7 text-stone-600">Open any temple card to view history, rituals, timings, maps, and a correction link if details need to be updated.</p><p class="m-0 text-sm leading-7 text-stone-600">Temple details can change. Please verify timings and facilities with the temple or trust before visiting.</p><div class="mt-8" id="temples-list" aria-live="polite"></div></div></section>
+        <section class="page-banner">
+          <div class="jw-container jw-page-hero-inner">
+            <div class="breadcrumb"><a href="/index.html">Home</a><span aria-hidden="true">/</span><span>Temples</span></div>
+            <div class="page-banner-copy">
+              <span class="jw-kicker">Temples</span>
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">A practical Jain temple guide for darshan, travel, and pilgrimage planning</h1>
+              <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">
+                Search by city, state, country, or temple type. If you are travelling, please confirm timings and arrangements with the temple or trust directly.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-10">
+          <div class="jw-container jw-page-stack">
+            <div class="soft-card p-5">
+              <div class="jw-inline-scroll">
+                <span class="topic-chip">Palitana</span>
+                <span class="topic-chip">Shikharji</span>
+                <span class="topic-chip">Ranakpur</span>
+                <span class="topic-chip">Shankheshwar</span>
+                <span class="topic-chip">Dharamshala</span>
+                <span class="topic-chip">Bhojanshala</span>
+              </div>
+            </div>
+
+            <form id="temple-filters" class="jw-card p-5" aria-label="Temple filters"><div class="jw-grid-4"><div class="jw-search-shell"><label for="temple-country" class="mb-2 block text-sm font-semibold text-stone-900">Country</label><select id="temple-country"><option value="">All countries</option></select></div><div class="jw-search-shell"><label for="temple-state" class="mb-2 block text-sm font-semibold text-stone-900">State</label><select id="temple-state"><option value="">All states</option></select></div><div class="jw-search-shell"><label for="temple-city" class="mb-2 block text-sm font-semibold text-stone-900">City</label><select id="temple-city"><option value="">All cities</option></select></div><div class="jw-search-shell"><label for="temple-type" class="mb-2 block text-sm font-semibold text-stone-900">Temple type</label><select id="temple-type"><option value="">All temple types</option></select></div></div><div class="jw-grid-2 mt-4"><div class="jw-search-shell"><label for="temple-search" class="mb-2 block text-sm font-semibold text-stone-900">Search</label><input id="temple-search" type="search" placeholder="Search temple, city, history, rituals..." aria-label="Search temples" /></div></div></form>
+
+            <div class="jw-grid-2 gap-6">
+              <div class="soft-card p-5">
+                <span class="jw-kicker">Plan your visit</span>
+                <h2 class="mt-3 text-2xl font-semibold text-stone-900">Travel with calm expectations</h2>
+                <p class="m-0 mt-3 text-sm leading-7 text-stone-600">Look for timings, address, contact, darshan arrangements, dharamshala, bhojanshala, and accessibility details before leaving home.</p>
+              </div>
+              <div class="soft-card p-5">
+                <span class="jw-kicker">Trust note</span>
+                <h2 class="mt-3 text-2xl font-semibold text-stone-900">Temple details can change</h2>
+                <p class="m-0 mt-3 text-sm leading-7 text-stone-600">Open any temple card to view history, rituals, timings, maps, and a correction link if details need to be updated.</p>
+              </div>
+            </div>
+
+            <div class="mt-2" id="temples-list" aria-live="polite"></div>
+
+            <section class="related-content">
+              <div class="section-header">
+                <div>
+                  <span class="jw-kicker">Related pilgrimage resources</span>
+                  <h2 class="mt-3 text-2xl font-semibold text-stone-900">Continue with travel, learning, and community planning</h2>
+                </div>
+              </div>
+              <div class="jw-grid-3">
+                <a href="/resources.html" class="feature-card"><h3>Travel and support resources</h3><p>Explore useful resources, institutions, and community links that may help while planning.</p></a>
+                <a href="/calendar.html" class="feature-card"><h3>Festival timing</h3><p>Check observances and seasonally relevant dates before visiting important temple destinations.</p></a>
+                <a href="/search.html?q=Palitana" class="feature-card"><h3>Search pilgrimage topics</h3><p>Use Ask JainWorld to search for pilgrimage routes, temple names, and family travel questions.</p></a>
+              </div>
+            </section>
+          </div>
+        </section>
       </main>
       <div id="app-footer"></div>
       <div id="app-overlay"></div>

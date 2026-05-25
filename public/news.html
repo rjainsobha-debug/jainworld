@@ -28,8 +28,44 @@
       <div id="app-header"></div>
       <noscript><div class="jw-noscript">Enable JavaScript to load the latest JainWorld content and interactive sections.</div></noscript>
       <main id="main-content">
-        <section class="jw-page-hero"><div class="jw-container jw-page-hero-inner"><span class="jw-kicker">news</span><h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">Jain news from across India and the world</h1><p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">Festival announcements, temple updates, community stories, and pilgrimage news curated for the Jain community.</p></div></section>
-        <section class="py-10"><div class="jw-container"><div class="jw-card p-5"><p class="m-0 text-sm leading-7 text-stone-700">News items may link to external sources. JainWorld curates and summarizes Jain-related updates, but event details should be verified with the original organizer or source.</p></div><form id="news-filters" class="jw-card mt-6 p-5" aria-label="News filters"><div class="jw-grid-2"><div class="jw-search-shell"><label for="news-category" class="mb-2 block text-sm font-semibold text-stone-900">Category</label><select id="news-category"><option value="">All categories</option></select></div><div class="jw-search-shell"><label for="news-search" class="mb-2 block text-sm font-semibold text-stone-900">Search</label><input id="news-search" type="search" placeholder="Search temple, festival, community, pilgrimage..." aria-label="Search news" /></div></div></form><div class="mt-8" id="news-feed" aria-live="polite"></div></div></section>
+        <section class="page-banner">
+          <div class="jw-container jw-page-hero-inner">
+            <div class="breadcrumb"><a href="/index.html">Home</a><span aria-hidden="true">/</span><span>News</span></div>
+            <div class="page-banner-copy">
+              <span class="jw-kicker">Jain News</span>
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">Jain news from across India and the world</h1>
+              <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">Festival announcements, temple updates, community stories, and pilgrimage news curated for the Jain community.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-10">
+          <div class="jw-container jw-page-stack">
+            <div class="jw-grid-2 gap-6">
+              <div class="soft-card p-5">
+                <span class="jw-kicker">Featured story</span>
+                <h2 class="mt-3 text-2xl font-semibold text-stone-900">Curated updates that stay close to the Jain community</h2>
+                <p class="m-0 mt-3 text-sm leading-7 text-stone-600">Use this page for temple updates, festival notices, sangh activity, pilgrimage coverage, and community developments.</p>
+              </div>
+              <div class="soft-card p-5">
+                <span class="jw-kicker">Source note</span>
+                <p class="m-0 text-sm leading-7 text-stone-700">News items may link to external sources. JainWorld curates and summarizes Jain-related updates, but event details should be verified with the original organizer or source.</p>
+              </div>
+            </div>
+
+            <form id="news-filters" class="jw-card p-5" aria-label="News filters"><div class="jw-grid-2"><div class="jw-search-shell"><label for="news-category" class="mb-2 block text-sm font-semibold text-stone-900">Category</label><select id="news-category"><option value="">All categories</option></select></div><div class="jw-search-shell"><label for="news-search" class="mb-2 block text-sm font-semibold text-stone-900">Search</label><input id="news-search" type="search" placeholder="Search temple, festival, community, pilgrimage..." aria-label="Search news" /></div></div></form>
+
+            <div id="news-feed" aria-live="polite"></div>
+
+            <section class="related-content">
+              <div class="jw-grid-3">
+                <a href="/blogs.html" class="feature-card"><h3>Read related perspectives</h3><p>Move from updates into reflective writing on values, family life, and Jain living.</p></a>
+                <a href="/calendar.html" class="feature-card"><h3>Track upcoming observances</h3><p>Use the calendar to keep festival and observance timing close at hand.</p></a>
+                <a href="/search.html?q=Paryushan" class="feature-card"><h3>Search for an event</h3><p>Use Ask JainWorld to search by festival, temple, city, or pilgrimage topic.</p></a>
+              </div>
+            </section>
+          </div>
+        </section>
       </main>
       <div id="app-footer"></div>
       <div id="app-overlay"></div>
