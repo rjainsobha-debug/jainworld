@@ -12,59 +12,9 @@ const LOCAL_FILES = {
   education: "/data/sample-education.json",
   calendar: "/data/sample-calendar.json",
   audio: "/data/sample-audio.json",
+  news: "/data/sample-news.json",
   resources: "/data/sample-resources.json"
 };
-
-const SAMPLE_NEWS = [
-  {
-    id: "news-1",
-    title: "Mahavir Jayanti preparation guide for temples and local communities",
-    link: "https://jainworld.in/news.html#mahavir-jayanti-preparation-guide",
-    source: "JainWorld Starter Feed",
-    category: "Festival",
-    summary: "Starter item showing how news summaries, sources, and review labels appear on the site.",
-    image: "",
-    published_at: "2026-04-20",
-    hash: "mahavir-jayanti-guide",
-    status: "published"
-  },
-  {
-    id: "news-2",
-    title: "Pilgrimage planning checklist for Palitana and Girnar season",
-    link: "https://jainworld.in/news.html#pilgrimage-planning-checklist",
-    source: "JainWorld Starter Feed",
-    category: "Pilgrimage",
-    summary: "A sample travel-oriented update covering routes, food discipline, and family planning tips.",
-    image: "",
-    published_at: "2026-04-18",
-    hash: "pilgrimage-planning-checklist",
-    status: "published"
-  },
-  {
-    id: "news-3",
-    title: "Community education drive launches beginner Ahimsa study circle",
-    link: "https://jainworld.in/news.html#ahimsa-study-circle",
-    source: "JainWorld Starter Feed",
-    category: "Education",
-    summary: "This sample card represents Jain education updates from curated or automated feeds.",
-    image: "",
-    published_at: "2026-04-15",
-    hash: "ahimsa-study-circle",
-    status: "published"
-  },
-  {
-    id: "news-4",
-    title: "Temple volunteer teams expand boiled water and no-wastage awareness",
-    link: "https://jainworld.in/news.html#temple-volunteer-awareness",
-    source: "JainWorld Starter Feed",
-    category: "Community",
-    summary: "Sample operational update for temple or sangh announcements on food discipline and seva.",
-    image: "",
-    published_at: "2026-04-12",
-    hash: "temple-volunteer-awareness",
-    status: "published"
-  }
-];
 
 async function fetchJson(path, params = {}) {
   const url = new URL(path, API_BASE);
@@ -84,10 +34,6 @@ async function fetchJson(path, params = {}) {
 }
 
 async function readLocalCollection(key) {
-  if (key === "news") {
-    return SAMPLE_NEWS;
-  }
-
   const file = LOCAL_FILES[key];
   if (!file) {
     return [];
@@ -150,6 +96,12 @@ function applyFilters(items, params = {}) {
     );
   }
 
+  if (params.state) {
+    results = results.filter((item) =>
+      String(item.state || "").toLowerCase() === String(params.state).toLowerCase()
+    );
+  }
+
   if (params.level) {
     results = results.filter((item) =>
       String(item.course_level || item.difficulty || "").toLowerCase() ===
@@ -157,9 +109,29 @@ function applyFilters(items, params = {}) {
     );
   }
 
+  if (params.language) {
+    results = results.filter((item) =>
+      String(item.language || "").toLowerCase() === String(params.language).toLowerCase()
+    );
+  }
+
+  if (params.review_status) {
+    results = results.filter((item) =>
+      String(item.review_status || "").toLowerCase() === String(params.review_status).toLowerCase()
+    );
+  }
+
   const query = String(params.search || params.q || "").toLowerCase().trim();
   if (query) {
     results = results.filter((item) => JSON.stringify(item).toLowerCase().includes(query));
+  }
+
+  const publishedOnly = params.includeDrafts !== true;
+  if (publishedOnly) {
+    results = results.filter((item) => {
+      const status = String(item.status || "published").toLowerCase();
+      return status === "published" || status === "active";
+    });
   }
 
   const limit = Number(params.limit || results.length);
@@ -183,6 +155,27 @@ function getNewestValue(item, dateKeys) {
   }
 
   return "";
+}
+
+function dedupeNews(items) {
+  const seen = new Set();
+
+  return items.filter((item) => {
+    const key = String(
+      item.duplicate_group_id || item.canonical_url || item.content_hash || item.slug || item.id || item.title_en || ""
+    ).toLowerCase();
+
+    if (!key) {
+      return true;
+    }
+
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
 }
 
 function applyClientLimit(items, limit) {
@@ -279,13 +272,13 @@ export function getAudioItems(params = {}) {
 export async function getNews(params = {}) {
   if (!shouldUseLocalFallback()) {
     try {
-      return sortByNewest(normalizeCollection(await fetchJson("/api/news", params)));
+      return sortByNewest(dedupeNews(normalizeCollection(await fetchJson("/api/news", params))));
     } catch (error) {
       console.warn("Using local news fallback", error);
     }
   }
 
-  return sortByNewest(applyFilters(SAMPLE_NEWS, params));
+  return sortByNewest(dedupeNews(applyFilters(await readLocalCollection("news"), params)));
 }
 
 export async function getCommunity(params = {}) {

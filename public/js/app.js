@@ -14,6 +14,7 @@ import { initCalendarPage } from "./calendar.js";
 import { initCommunityForm } from "./community.js";
 import { getLanguage, initLanguageToggle, updateLanguageDOM } from "./language.js";
 import {
+  formatDate,
   renderAudio,
   renderAudioDetail,
   renderArticleDetail,
@@ -41,10 +42,34 @@ import {
 } from "./templates.js";
 import { initGlobalSearch } from "./search.js";
 
+const HOME_DISCOVERY_ITEMS = [
+  {
+    titleEn: "Jain Audio",
+    summaryEn: "Listen to bhajan, aarti, stavan, pravachan, meditation, and family-friendly recitation.",
+    href: "/audio.html"
+  },
+  {
+    titleEn: "Jain News",
+    summaryEn: "Follow curated Jain updates from temples, pilgrimages, sanghs, and community organizations.",
+    href: "/news.html"
+  },
+  {
+    titleEn: "Jain Resources",
+    summaryEn: "Review scholarships, minority resources, directories, and official-ready links with caution notes.",
+    href: "/resources.html"
+  },
+  {
+    titleEn: "Jain Community",
+    summaryEn: "Request to join and connect with students, families, contributors, temples, and institutions.",
+    href: "/community.html"
+  }
+];
+
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("App loaded");
   console.log("Page loaded:", document.body.dataset.page || "home");
   ensureMainContentTarget();
+  ensureFavicon();
   injectShell();
   initLanguageToggle();
   initGlobalSearch();
@@ -121,6 +146,18 @@ function ensureMainContentTarget() {
   }
 }
 
+function ensureFavicon() {
+  if (document.querySelector('link[rel="icon"]')) {
+    return;
+  }
+
+  const link = document.createElement("link");
+  link.rel = "icon";
+  link.href = "/favicon.svg";
+  link.type = "image/svg+xml";
+  document.head.appendChild(link);
+}
+
 function injectShell() {
   const headerRoot = document.getElementById("app-header");
   const footerRoot = document.getElementById("app-footer");
@@ -151,16 +188,26 @@ async function loadHomePage() {
   renderStartHere();
   renderEducationLevels();
   renderPilgrimages();
+  renderHomeDiscovery();
   renderFoodRules("#food-guide-rules", FOOD_RESTRICTIONS.slice(0, 4));
+  setLoadingState("#featured-literature");
+  setLoadingState("#education-course-grid");
+  setLoadingState("#temple-finder-results");
+  setLoadingState("#food-guide-list");
+  setLoadingState("#news-column");
+  setLoadingState("#blogs-column");
+  setLoadingState("#resources-preview");
+  setLoadingState("#calendar-preview");
 
-  const [literature, courses, temples, food, news, blogs, resources] = await Promise.all([
+  const [literature, courses, temples, food, news, blogs, resources, calendar] = await Promise.all([
     getLiterature({ limit: 4 }),
     getCourses({ limit: 4 }),
     getTemples({ limit: 4 }),
     getFood({ limit: 4 }),
     getNews({ limit: 4 }),
     getBlogs({ limit: 5 }),
-    getResources({ limit: 4 })
+    getResources({ limit: 4 }),
+    getCalendar({ limit: 4 })
   ]);
 
   renderSimpleLiterature(literature);
@@ -170,6 +217,7 @@ async function loadHomePage() {
   renderNews("#news-column", news);
   renderBlogs("#blogs-column", blogs);
   renderResources("#resources-preview", resources);
+  renderCalendarPreview(calendar);
   renderCommunityCta();
 }
 
@@ -185,22 +233,27 @@ async function loadLiteraturePage() {
     "Poems"
   ]);
 
+  setLoadingState("#literature-list");
   const items = await getLiterature({ limit: 24 });
   renderSimpleLiterature(items, "#literature-list");
 }
 
 async function loadAudioPage() {
-  const items = await getAudioItems({ limit: 24 });
+  setLoadingState("#audio-list");
+  const items = await getAudioItems({ limit: 50 });
+  setupAudioFilters(items);
   renderAudio("#audio-list", items);
 }
 
 async function loadEducationPage() {
   renderEducationLevels("#education-level-cards");
+  setLoadingState("#education-course-list");
   const items = await getCourses({ limit: 24 });
   renderCourses("#education-course-list", items);
 }
 
 async function loadTemplesPage() {
+  setLoadingState("#temples-list");
   const items = await getTemples({ limit: 500 });
   setupTempleFilters(items);
   renderTemples("#temples-list", items);
@@ -220,16 +273,20 @@ async function loadCulturePage() {
 
 async function loadFoodPage() {
   renderFoodRules("#food-rules", FOOD_RESTRICTIONS);
+  setLoadingState("#food-recipes");
   const items = await getFood({ limit: 24 });
   renderSimpleFood(items);
 }
 
 async function loadNewsPage() {
-  const items = await getNews({ limit: 24 });
+  setLoadingState("#news-feed");
+  const items = await getNews({ limit: 50 });
+  setupNewsFilters(items);
   renderNews("#news-feed", items);
 }
 
 async function loadBlogsPage() {
+  setLoadingState("#blogs-list");
   const items = await getBlogs({ limit: 24 });
   renderBlogs("#blogs-list", items);
 }
@@ -240,7 +297,9 @@ function loadCommunityPage() {
 }
 
 async function loadResourcesPage() {
-  const items = await getResources({ limit: 50 });
+  setLoadingState("#resources-list");
+  const items = await getResources({ limit: 100 });
+  setupResourcesFilters(items);
   renderResources("#resources-list", items);
 }
 
@@ -395,9 +454,47 @@ function renderPilgrimages() {
   `;
 }
 
+function renderHomeDiscovery() {
+  renderStaticInfoCards("#home-discovery-grid", HOME_DISCOVERY_ITEMS);
+}
+
+function renderCalendarPreview(items) {
+  const root = document.getElementById("calendar-preview");
+  if (!root) {
+    return;
+  }
+
+  if (!Array.isArray(items) || items.length === 0) {
+    root.innerHTML = `
+      <div class="jw-card p-5">
+        <h3 class="m-0 text-lg font-semibold text-stone-900">Calendar preview is not available yet</h3>
+        <p class="m-0 mt-2 text-sm text-stone-600">Festival and fasting highlights will appear here once the reviewed calendar is available.</p>
+      </div>
+    `;
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="jw-grid-2">
+      ${items
+        .map((item) => `
+          <article class="jw-card p-5">
+            <span class="jw-badge">${item.category || "Calendar"}</span>
+            <h3 class="mt-3 text-lg font-semibold text-stone-900">${item.festival_en || item.festival_hi || "Jain observance"}</h3>
+            <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${item.description_en || "Festival and observance detail will appear here."}</p>
+            <p class="m-0 mt-3 text-sm text-stone-500">${formatDate(item.date_gregorian)}${item.tithi ? ` | ${item.tithi}` : ""}</p>
+          </article>
+        `)
+        .join("")}
+    </div>
+  `;
+}
+
 function renderSimpleLiterature(items, targetSelector = "#featured-literature") {
   renderCards(targetSelector, items, {
     type: "literature",
+    emptyTitle: "No literature is available yet",
+    emptyBody: "Reviewed Jain texts, stories, and study notes will appear here soon.",
     metaBuilder: (item) => [
       item.category,
       item.subcategory,
@@ -410,6 +507,8 @@ function renderSimpleLiterature(items, targetSelector = "#featured-literature") 
 function renderFoodHighlights(items) {
   renderCards("#food-guide-list", items, {
     type: "food",
+    emptyTitle: "No food guides are available yet",
+    emptyBody: "Practical Jain food guidance will appear here after review.",
     metaBuilder: (item) => [
       item.category,
       item.type,
@@ -433,14 +532,14 @@ function renderCommunityCta() {
           <h2
             class="mt-3 text-2xl font-semibold tracking-tight text-stone-900"
             data-en="Join the JainWorld community."
-            data-hi="जैनवर्ल्ड समुदाय से जुड़ें."
+            data-hi="Join the JainWorld community."
           >
             Join the JainWorld community.
           </h2>
           <p
             class="m-0 mt-3 text-sm leading-7 text-stone-600"
             data-en="Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks."
-            data-hi="भारत और दुनिया भर के जैनों से सीखने, सेवा, व्यवसाय, मंदिर और परिवार के लिए जुड़ें."
+            data-hi="Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks."
           >
             Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks.
           </p>
@@ -470,6 +569,8 @@ function renderCategoryPills(targetSelector, items) {
 function renderSimpleFood(items) {
   renderCards("#food-recipes", items, {
     type: "food",
+    emptyTitle: "No food entries are available yet",
+    emptyBody: "Recipes and discipline notes will appear here once they are reviewed.",
     metaBuilder: (item) => [
       item.category,
       item.allowed_status,
@@ -524,6 +625,111 @@ function setupTempleFilters(items) {
   form.addEventListener("change", update);
 }
 
+function setupAudioFilters(items) {
+  const form = document.getElementById("audio-filters");
+  if (!form || form.dataset.bound === "true") {
+    return;
+  }
+
+  const categorySelect = document.getElementById("audio-category");
+  const languageSelect = document.getElementById("audio-language");
+  const searchInput = document.getElementById("audio-search");
+
+  fillSelect(categorySelect, getUnique(items, "category"));
+  fillSelect(languageSelect, getUnique(items, "language"));
+
+  const update = () => {
+    let filtered = [...items];
+
+    if (categorySelect?.value) {
+      filtered = filtered.filter((item) => item.category === categorySelect.value);
+    }
+
+    if (languageSelect?.value) {
+      filtered = filtered.filter((item) => item.language === languageSelect.value);
+    }
+
+    if (searchInput?.value.trim()) {
+      const query = searchInput.value.toLowerCase();
+      filtered = filtered.filter((item) => JSON.stringify(item).toLowerCase().includes(query));
+    }
+
+    renderAudio("#audio-list", filtered);
+  };
+
+  form.dataset.bound = "true";
+  form.addEventListener("input", update);
+  form.addEventListener("change", update);
+}
+
+function setupNewsFilters(items) {
+  const form = document.getElementById("news-filters");
+  if (!form || form.dataset.bound === "true") {
+    return;
+  }
+
+  const categorySelect = document.getElementById("news-category");
+  const searchInput = document.getElementById("news-search");
+
+  fillSelect(categorySelect, getUnique(items, "category"));
+
+  const update = () => {
+    let filtered = [...items];
+
+    if (categorySelect?.value) {
+      filtered = filtered.filter((item) => item.category === categorySelect.value);
+    }
+
+    if (searchInput?.value.trim()) {
+      const query = searchInput.value.toLowerCase();
+      filtered = filtered.filter((item) => JSON.stringify(item).toLowerCase().includes(query));
+    }
+
+    renderNews("#news-feed", filtered);
+  };
+
+  form.dataset.bound = "true";
+  form.addEventListener("input", update);
+  form.addEventListener("change", update);
+}
+
+function setupResourcesFilters(items) {
+  const form = document.getElementById("resources-filters");
+  if (!form || form.dataset.bound === "true") {
+    return;
+  }
+
+  const categorySelect = document.getElementById("resources-category");
+  const stateSelect = document.getElementById("resources-state");
+  const searchInput = document.getElementById("resources-search");
+
+  fillSelect(categorySelect, getUnique(items, "category"));
+  fillSelect(stateSelect, getUnique(items, "state"));
+
+  const update = () => {
+    let filtered = [...items];
+
+    if (categorySelect?.value) {
+      filtered = filtered.filter((item) => item.category === categorySelect.value);
+    }
+
+    if (stateSelect?.value) {
+      filtered = filtered.filter((item) => item.state === stateSelect.value);
+    }
+
+    if (searchInput?.value.trim()) {
+      const query = searchInput.value.toLowerCase();
+      filtered = filtered.filter((item) => JSON.stringify(item).toLowerCase().includes(query));
+    }
+
+    renderResources("#resources-list", filtered);
+  };
+
+  form.dataset.bound = "true";
+  form.addEventListener("input", update);
+  form.addEventListener("change", update);
+}
+
 function fillSelect(select, values) {
   if (!select) {
     return;
@@ -539,4 +745,17 @@ function fillSelect(select, values) {
 
 function getUnique(items, key) {
   return [...new Set(items.map((item) => item[key]).filter(Boolean))].sort();
+}
+
+function setLoadingState(targetSelector, text = "Loading...") {
+  const root = document.querySelector(targetSelector);
+  if (!root) {
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="jw-card p-5">
+      <p class="m-0 text-sm text-stone-600">${text}</p>
+    </div>
+  `;
 }

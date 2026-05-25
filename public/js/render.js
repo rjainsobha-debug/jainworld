@@ -37,6 +37,29 @@ function renderTrustMeta(entries = []) {
   `;
 }
 
+function renderEmptyState(title, body, actionHtml = "") {
+  return `
+    <div class="jw-card p-5">
+      <h3 class="m-0 text-lg font-semibold text-stone-900">${escapeHtml(title)}</h3>
+      <p class="m-0 mt-2 text-sm text-stone-600">${escapeHtml(body)}</p>
+      ${actionHtml ? `<div class="mt-4">${actionHtml}</div>` : ""}
+    </div>
+  `;
+}
+
+function renderBadges(badges = []) {
+  const clean = badges.filter(Boolean);
+  if (!clean.length) {
+    return "";
+  }
+
+  return `
+    <div class="mt-4 flex flex-wrap gap-2">
+      ${clean.map((badge) => `<span class="jw-badge">${escapeHtml(badge)}</span>`).join("")}
+    </div>
+  `;
+}
+
 export function buildDetailUrl(type, item) {
   const slug = encodeURIComponent(item.slug || item.id || "");
 
@@ -57,7 +80,7 @@ export function buildDetailUrl(type, item) {
   }
 
   if (type === "news") {
-    return item.link || "#";
+    return item.source_url || item.canonical_url || item.link || "#";
   }
 
   if (type === "resources") {
@@ -89,7 +112,12 @@ function getTempleImageSrc(item) {
   return firstPhoto || DEFAULT_IMAGE;
 }
 
-function getAudioEmbedUrl(value) {
+function getAudioEmbedUrl(itemOrValue) {
+  const value =
+    typeof itemOrValue === "object" && itemOrValue
+      ? itemOrValue.embed_url || itemOrValue.audio_url || ""
+      : itemOrValue || "";
+
   const raw = String(value || "").trim();
   if (!raw) {
     return "";
@@ -125,6 +153,23 @@ function getAudioEmbedUrl(value) {
   return raw;
 }
 
+function renderIframeCard(embedUrl, title, height = 200) {
+  if (!embedUrl) {
+    return `<div class="flex h-[${height}px] items-center justify-center rounded-xl border border-stone-200 bg-stone-50 text-sm text-stone-500">Embedded player unavailable.</div>`;
+  }
+
+  return `<iframe
+    src="${escapeHtml(embedUrl)}"
+    width="100%"
+    height="${height}"
+    class="rounded-xl border border-stone-200"
+    loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    title="${escapeHtml(title)}"
+  ></iframe>`;
+}
+
 export function renderCards(target, items, options = {}) {
   const root = resolveTarget(target);
   if (!root) {
@@ -144,12 +189,7 @@ export function renderCards(target, items, options = {}) {
   } = options;
 
   if (!Array.isArray(items) || items.length === 0) {
-    root.innerHTML = `
-      <div class="jw-card p-5">
-        <h3 class="m-0 text-lg font-semibold text-stone-900">${escapeHtml(emptyTitle)}</h3>
-        <p class="m-0 mt-2 text-sm text-stone-600">${escapeHtml(emptyBody)}</p>
-      </div>
-    `;
+    root.innerHTML = renderEmptyState(emptyTitle, emptyBody);
     return;
   }
 
@@ -181,10 +221,7 @@ export function renderCards(target, items, options = {}) {
                 onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
                 loading="lazy"
               />
-              <div class="mt-4 flex flex-wrap gap-2">
-                ${(item.category ? `<span class="jw-badge">${escapeHtml(item.category)}</span>` : "")}
-                ${(item.difficulty ? `<span class="jw-badge">${escapeHtml(item.difficulty)}</span>` : "")}
-              </div>
+              ${renderBadges([item.category, item.difficulty])}
               <h3 class="mt-3 text-lg font-semibold leading-snug text-stone-900">
                 <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(title)}</a>
               </h3>
@@ -205,9 +242,14 @@ export function renderNews(target, items) {
   }
 
   if (!Array.isArray(items) || items.length === 0) {
-    root.innerHTML = `<div class="jw-card p-5 text-sm text-stone-600">No news items are available right now.</div>`;
+    root.innerHTML = renderEmptyState(
+      "No news items are available right now",
+      "Curated Jain updates will appear here after review. Please check back soon."
+    );
     return;
   }
+
+  const lang = getLanguage();
 
   root.innerHTML = `
     <div class="jw-list">
@@ -215,31 +257,33 @@ export function renderNews(target, items) {
         .map((item) => {
           const href = buildDetailUrl("news", item);
           const imageSrc = getImageSrc(item);
-          const source = item.source || "Source pending";
-          const lastUpdated = formatDate(item.published_at || item.created_at);
+          const title = pickLocalized(item, "title", lang) || item.title || item.title_en || "Untitled news entry";
+          const summary =
+            pickLocalized(item, "summary", lang) || item.summary || item.summary_en || "Curated news for the Jain community.";
+          const source = item.source_name || item.source || "Source pending";
+          const published = formatDate(item.published_at || item.created_at);
+          const status = formatReviewStatus(item.review_status);
+          const externalLabel = item.source_url ? "External source" : "";
 
           return `
             <article class="jw-card p-5">
               <img
                 src="${escapeHtml(imageSrc)}"
-                alt="${escapeHtml(item.title || "News image")}"
+                alt="${escapeHtml(title)}"
                 class="h-40 w-full rounded-xl border border-stone-200 object-cover"
                 onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
                 loading="lazy"
               />
-              <div class="mt-4 flex items-center justify-between gap-3">
-                <span class="jw-badge">${escapeHtml(item.category || "General")}</span>
-                <span class="text-xs text-stone-500">${escapeHtml(lastUpdated || "Date pending")}</span>
-              </div>
+              ${renderBadges([item.category || "General", item.region, status])}
               <h3 class="mt-3 text-lg font-semibold leading-snug text-stone-900">
-                <a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer" class="hover:text-amber-800">${escapeHtml(item.title || "Untitled news entry")}</a>
+                <a href="${escapeHtml(href)}" ${item.source_url ? 'target="_blank" rel="noopener noreferrer"' : ""} class="hover:text-amber-800">${escapeHtml(title)}</a>
               </h3>
-              <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(item.summary || "Curated news for the Jain community.")}</p>
+              <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
               ${renderTrustMeta([
                 `Source: ${source}`,
-                lastUpdated ? `Last updated: ${lastUpdated}` : "",
-                "Reviewed by JainWorld Editorial",
-                "External link"
+                published ? `Published: ${published}` : "",
+                externalLabel,
+                item.review_status === "approved" ? "Curated by JainWorld" : ""
               ])}
             </article>
           `;
@@ -253,6 +297,8 @@ export function renderBlogs(target, items) {
   renderCards(target, items, {
     type: "blogs",
     layoutClass: "jw-list",
+    emptyTitle: "No blog articles are available yet",
+    emptyBody: "Fresh Jain perspectives will appear here after they are reviewed and published.",
     metaBuilder: (item) => [
       item.author ? `Author: ${item.author}` : "",
       item.category,
@@ -271,7 +317,10 @@ export function renderAudio(target, items) {
   }
 
   if (!Array.isArray(items) || items.length === 0) {
-    root.innerHTML = `<div class="jw-card p-5 text-sm text-stone-600">No audio entries are available yet.</div>`;
+    root.innerHTML = renderEmptyState(
+      "No audio entries are available yet",
+      "Audio entries will appear here once they are reviewed and approved for listing."
+    );
     return;
   }
 
@@ -281,34 +330,31 @@ export function renderAudio(target, items) {
         .map((item) => {
           const title = item.title || item.slug || "Untitled audio";
           const href = buildDetailUrl("audio", item);
-          const embedUrl = getAudioEmbedUrl(item.audio_url);
+          const embedUrl = getAudioEmbedUrl(item);
+          const people = [item.speaker ? `Speaker: ${item.speaker}` : "", item.singer ? `Singer: ${item.singer}` : ""]
+            .filter(Boolean)
+            .join(" | ");
 
           return `
             <article class="jw-card p-5">
-              ${
-                embedUrl
-                  ? `<iframe
-                      src="${escapeHtml(embedUrl)}"
-                      width="100%"
-                      height="200"
-                      class="rounded-xl border border-stone-200"
-                      loading="lazy"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowfullscreen
-                      title="${escapeHtml(title)}"
-                    ></iframe>`
-                  : `<div class="flex h-[200px] items-center justify-center rounded-xl border border-stone-200 bg-stone-50 text-sm text-stone-500">Embedded player unavailable.</div>`
-              }
-              <div class="mt-4 flex items-center justify-between gap-3">
-                <span class="jw-badge">${escapeHtml(item.category || "Audio")}</span>
+              ${renderIframeCard(embedUrl, title)}
+              ${renderBadges([
+                item.category || "Audio",
+                item.language,
+                item.tradition,
+                item.verified_status === "verified" ? "Verified" : "",
+                formatPermissionStatus(item.permission_status)
+              ])}
+              <div class="mt-3 flex items-center justify-between gap-3">
+                <h3 class="m-0 text-lg font-semibold leading-snug text-stone-900">
+                  <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(title)}</a>
+                </h3>
                 <span class="text-xs text-stone-500">${escapeHtml(item.duration || "Duration pending")}</span>
               </div>
-              <h3 class="mt-3 text-lg font-semibold leading-snug text-stone-900">
-                <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(title)}</a>
-              </h3>
               ${renderTrustMeta([
-                item.speaker ? `Speaker: ${item.speaker}` : "",
-                "Reviewed by JainWorld Editorial"
+                people,
+                item.source ? `Source: ${item.source}` : "",
+                item.published_at ? `Published: ${formatDate(item.published_at)}` : ""
               ])}
             </article>
           `;
@@ -325,12 +371,10 @@ export function renderTemples(target, items) {
   }
 
   if (!Array.isArray(items) || items.length === 0) {
-    root.innerHTML = `
-      <div class="jw-card p-5">
-        <h3 class="m-0 text-lg font-semibold text-stone-900">No temples found</h3>
-        <p class="m-0 mt-2 text-sm text-stone-600">Try changing the country, state, city, or search filter.</p>
-      </div>
-    `;
+    root.innerHTML = renderEmptyState(
+      "No temples found",
+      "Try changing the country, state, city, temple type, or search terms."
+    );
     return;
   }
 
@@ -339,22 +383,20 @@ export function renderTemples(target, items) {
       ${items
         .map((item) => {
           const name = item.name_en || item.name_hi || item.name || item.slug || "Temple";
-          const location = [item.city, item.state].filter(Boolean).join(", ") || item.country || "Location pending";
+          const location = [item.city, item.state, item.country].filter(Boolean).join(", ") || "Location pending";
           const href = buildDetailUrl("temples", item);
 
           return `
             <article class="jw-card p-5">
-              <div class="flex flex-wrap gap-2">
-                ${(item.category ? `<span class="jw-badge">${escapeHtml(item.category)}</span>` : "")}
-                ${(item.country ? `<span class="jw-badge">${escapeHtml(item.country)}</span>` : "")}
-              </div>
+              ${renderBadges([item.category, item.tradition, item.main_deity])}
               <h3 class="mt-4 text-lg font-semibold leading-snug text-stone-900">
                 <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(name)}</a>
               </h3>
               <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(location)}</p>
               ${renderTrustMeta([
                 item.timings ? `Timings: ${item.timings}` : "",
-                "Reviewed by JainWorld Editorial"
+                item.last_verified_at ? `Last verified: ${formatDate(item.last_verified_at)}` : "",
+                item.verified_by ? `Verified by: ${item.verified_by}` : ""
               ])}
             </article>
           `;
@@ -369,6 +411,8 @@ export function renderCourses(target, items) {
     type: "education",
     titleBase: "lesson_title",
     summaryBase: "content",
+    emptyTitle: "No lessons are available yet",
+    emptyBody: "Course lessons will appear here once the reviewed curriculum is published.",
     metaBuilder: (item) => [
       item.course_level,
       item.topic,
@@ -415,12 +459,11 @@ export function renderResources(target, items) {
   }
 
   if (!Array.isArray(items) || items.length === 0) {
-    root.innerHTML = `
-      <div class="jw-card p-5">
-        <h3 class="m-0 text-lg font-semibold text-stone-900">Resources coming soon</h3>
-        <p class="m-0 mt-2 text-sm text-stone-600">Official-ready Jain resources will appear here as they are reviewed and verified.</p>
-      </div>
-    `;
+    root.innerHTML = renderEmptyState(
+      "No matching resources found",
+      "Try a different category, state, or search term.",
+      `<a href="/corrections.html" class="jw-btn">Suggest a resource or correction</a>`
+    );
     return;
   }
 
@@ -434,25 +477,24 @@ export function renderResources(target, items) {
           const summary = pickLocalized(item, "summary", lang) || item.summary_en || "";
           const officialUrl = item.official_url || "";
           const lastVerified = formatDate(item.last_verified_at);
+          const reviewStatus = formatReviewStatus(item.review_status);
 
           return `
             <article class="jw-card p-5">
-              <div class="flex flex-wrap gap-2">
-                ${(item.category ? `<span class="jw-badge">${escapeHtml(item.category)}</span>` : "")}
-                ${(item.state ? `<span class="jw-badge">${escapeHtml(item.state)}</span>` : "")}
-              </div>
+              ${renderBadges([item.category, item.state, reviewStatus])}
               <h3 class="mt-4 text-lg font-semibold leading-snug text-stone-900">${escapeHtml(title)}</h3>
               <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
               ${renderTrustMeta([
+                item.source_name ? `Source: ${item.source_name}` : "",
                 item.eligibility_en ? `Eligibility: ${item.eligibility_en}` : "",
-                lastVerified ? `Last verified: ${lastVerified}` : "",
-                "Reviewed by JainWorld Editorial"
+                lastVerified ? `Last verified: ${lastVerified}` : ""
               ])}
               ${
                 officialUrl
                   ? `<a href="${escapeHtml(officialUrl)}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Official link (external)</a>`
                   : `<p class="m-0 mt-4 text-sm text-stone-500">Official link will be added after verification.</p>`
               }
+              <a href="/corrections.html" class="mt-3 inline-flex text-sm font-semibold text-stone-700 hover:text-stone-900">Suggest correction</a>
             </article>
           `;
         })
@@ -481,12 +523,10 @@ export function renderGroupedSearch(target, groups, query) {
   const nonEmptyGroups = Object.entries(groups).filter(([, items]) => items.length);
 
   if (!nonEmptyGroups.length) {
-    root.innerHTML = `
-      <div class="jw-card p-5">
-        <h3 class="m-0 text-lg font-semibold text-stone-900">No results found</h3>
-        <p class="m-0 mt-2 text-sm text-stone-600">No results matched "${escapeHtml(query)}". Try a broader term like Ahimsa, Mahavir, temple, or Paryushan.</p>
-      </div>
-    `;
+    root.innerHTML = renderEmptyState(
+      "No results found",
+      `No results matched "${query}". Try a broader term like Ahimsa, Mahavir, temple, or Paryushan.`
+    );
     return;
   }
 
@@ -579,10 +619,7 @@ export function renderArticleDetail(target, item, type = "blogs") {
         onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
         loading="lazy"
       />
-      <div class="mt-5 flex flex-wrap gap-2">
-        ${(item.category ? `<span class="jw-badge">${escapeHtml(item.category)}</span>` : "")}
-        ${(item.tags ? `<span class="jw-badge">${escapeHtml(item.tags)}</span>` : "")}
-      </div>
+      ${renderBadges([item.category, item.tags])}
       <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(title)}</h1>
       <p class="m-0 mt-4 text-base leading-8 text-stone-600">${escapeHtml(summary)}</p>
       ${renderTrustMeta([
@@ -618,6 +655,7 @@ export function renderTempleDetail(target, item) {
   const rituals = item.rituals_en || pickLocalized(item, "rituals") || "";
   const imageSrc = getTempleImageSrc(item);
   const location = [item.city, item.state, item.country].filter(Boolean).join(", ");
+  const correctionUrl = item.correction_url || "/corrections.html";
 
   root.innerHTML = `
     <article class="jw-card p-6 lg:p-8">
@@ -628,17 +666,18 @@ export function renderTempleDetail(target, item) {
         onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
         loading="lazy"
       />
-      <div class="mt-5 flex flex-wrap gap-2">
-        ${(item.category ? `<span class="jw-badge">${escapeHtml(item.category)}</span>` : "")}
-        ${(item.country ? `<span class="jw-badge">${escapeHtml(item.country)}</span>` : "")}
-      </div>
+      ${renderBadges([item.category, item.country, item.tradition, item.main_deity])}
       <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(nameEn)}</h1>
       ${nameHi ? `<p class="m-0 mt-2 text-base text-stone-600">${escapeHtml(nameHi)}</p>` : ""}
       ${renderTrustMeta([
         `Location: ${location || "Location will be updated"}`,
         item.timings ? `Timings: ${item.timings}` : "",
-        "Reviewed by JainWorld Editorial"
+        item.last_verified_at ? `Last verified: ${formatDate(item.last_verified_at)}` : "",
+        item.verified_by ? `Verified by: ${item.verified_by}` : ""
       ])}
+      <p class="m-0 mt-4 text-sm leading-7 text-stone-600">
+        Temple details can change. Please verify timings and facilities with the temple or trust before visiting.
+      </p>
       <div class="jw-grid-2 mt-8">
         <section class="jw-card-flat p-5">
           <h2 class="m-0 text-lg font-semibold text-stone-900">Location</h2>
@@ -651,16 +690,24 @@ export function renderTempleDetail(target, item) {
               ? `<a href="${escapeHtml(item.map_link)}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Open Google Maps</a>`
               : ""
           }
+          ${
+            item.website
+              ? `<a href="${escapeHtml(item.website)}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Temple website</a>`
+              : ""
+          }
         </section>
         <section class="jw-card-flat p-5">
           <h2 class="m-0 text-lg font-semibold text-stone-900">Temple details</h2>
           <div class="mt-3 grid gap-2 text-sm text-stone-600">
             <span><strong class="text-stone-900">Timings:</strong> ${escapeHtml(item.timings || "To be updated")}</span>
-            <span><strong class="text-stone-900">Contact:</strong> ${escapeHtml(item.contact || "To be updated")}</span>
-            <span><strong class="text-stone-900">Photos:</strong> ${escapeHtml(item.photos || "Photo gallery can be added later")}</span>
-            <span><strong class="text-stone-900">Source:</strong> Temple and community information submitted for review.</span>
+            <span><strong class="text-stone-900">Phone:</strong> ${escapeHtml(item.phone || item.contact || "To be updated")}</span>
+            <span><strong class="text-stone-900">Dharamshala:</strong> ${escapeHtml(formatBooleanLabel(item.dharamshala_available))}</span>
+            <span><strong class="text-stone-900">Bhojanshala:</strong> ${escapeHtml(formatBooleanLabel(item.bhojanshala_available))}</span>
+            <span><strong class="text-stone-900">Parking:</strong> ${escapeHtml(formatBooleanLabel(item.parking))}</span>
+            <span><strong class="text-stone-900">Accessibility:</strong> ${escapeHtml(item.accessibility || "Please verify locally")}</span>
+            <span><strong class="text-stone-900">Best time to visit:</strong> ${escapeHtml(item.best_time_to_visit || "Please verify locally")}</span>
           </div>
-          <a href="/corrections.html" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Report correction</a>
+          <a href="${escapeHtml(correctionUrl)}" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Report correction</a>
         </section>
       </div>
       ${history ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">History</h2><p class="mt-3 text-stone-600">${escapeHtml(history)}</p></section>` : ""}
@@ -681,38 +728,38 @@ export function renderAudioDetail(target, item) {
   }
 
   const title = item.title || item.slug || "Audio detail";
-  const embedUrl = getAudioEmbedUrl(item.audio_url);
+  const embedUrl = getAudioEmbedUrl(item);
   const lastUpdated = formatDate(item.published_at || item.created_at);
 
   root.innerHTML = `
     <article class="jw-card p-6 lg:p-8">
-      ${
-        embedUrl
-          ? `<iframe
-              src="${escapeHtml(embedUrl)}"
-              width="100%"
-              height="360"
-              class="rounded-2xl border border-stone-200"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              title="${escapeHtml(title)}"
-            ></iframe>`
-          : `<div class="flex h-[360px] items-center justify-center rounded-2xl border border-stone-200 bg-stone-50 text-sm text-stone-500">Audio player unavailable.</div>`
-      }
-      <div class="mt-5 flex flex-wrap gap-2">
-        ${(item.category ? `<span class="jw-badge">${escapeHtml(item.category)}</span>` : "")}
-        ${(item.duration ? `<span class="jw-badge">${escapeHtml(item.duration)}</span>` : "")}
-      </div>
+      ${renderIframeCard(embedUrl, title, 360)}
+      ${renderBadges([
+        item.category,
+        item.duration,
+        item.language,
+        item.tradition,
+        formatPermissionStatus(item.permission_status),
+        item.verified_status === "verified" ? "Verified" : ""
+      ])}
       <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(title)}</h1>
       ${renderTrustMeta([
         item.speaker ? `Speaker: ${item.speaker}` : "",
-        lastUpdated ? `Last updated: ${lastUpdated}` : "",
-        "Reviewed by JainWorld Editorial"
+        item.singer ? `Singer: ${item.singer}` : "",
+        item.source ? `Source: ${item.source}` : "",
+        lastUpdated ? `Published: ${lastUpdated}` : ""
       ])}
+      <p class="m-0 mt-4 text-sm leading-7 text-stone-600">
+        Audio is embedded or listed only with source and permission status. Copyrighted content should not be uploaded without permission.
+      </p>
       ${
-        item.description
-          ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Description</h2><p class="mt-3 text-stone-600">${escapeHtml(item.description)}</p></section>`
+        item.meaning_en
+          ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Meaning or notes</h2><p class="mt-3 text-stone-600">${escapeHtml(item.meaning_en)}</p></section>`
+          : ""
+      }
+      ${
+        item.lyrics_en
+          ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Lyrics or excerpt</h2><p class="mt-3 text-stone-600">${escapeHtml(item.lyrics_en)}</p></section>`
           : ""
       }
       ${
@@ -750,11 +797,7 @@ export function renderCourseDetail(target, item) {
         onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
         loading="lazy"
       />
-      <div class="mt-5 flex flex-wrap gap-2">
-        ${(item.course_level ? `<span class="jw-badge">${escapeHtml(item.course_level)}</span>` : "")}
-        ${(item.difficulty ? `<span class="jw-badge">${escapeHtml(item.difficulty)}</span>` : "")}
-        ${(item.certificate_ready ? `<span class="jw-badge">${escapeHtml(item.certificate_ready)}</span>` : "")}
-      </div>
+      ${renderBadges([item.course_level, item.difficulty, item.certificate_ready])}
       <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(lessonTitle)}</h1>
       <p class="m-0 mt-3 text-base text-stone-600">${escapeHtml(courseTitle)}</p>
       ${renderTrustMeta([
@@ -818,4 +861,50 @@ export function formatDate(value) {
     month: "short",
     year: "numeric"
   }).format(date);
+}
+
+function formatReviewStatus(value) {
+  const key = String(value || "").trim().toLowerCase();
+  const labels = {
+    pending_review: "Pending review",
+    approved: "Curated",
+    verified: "Verified",
+    rejected: "Rejected",
+    needs_update: "Needs update"
+  };
+
+  return labels[key] || "";
+}
+
+function formatPermissionStatus(value) {
+  const key = String(value || "").trim().toLowerCase();
+  const labels = {
+    embedded: "Embedded",
+    permission_received: "Permission received",
+    public_domain: "Public domain",
+    needs_review: "Needs review"
+  };
+
+  return labels[key] || "";
+}
+
+function formatBooleanLabel(value) {
+  if (typeof value === "boolean") {
+    return value ? "Available" : "Not listed";
+  }
+
+  const normalized = String(value || "").trim().toLowerCase();
+  if (!normalized) {
+    return "Please verify locally";
+  }
+
+  if (["yes", "true", "available"].includes(normalized)) {
+    return "Available";
+  }
+
+  if (["no", "false", "not available"].includes(normalized)) {
+    return "Not available";
+  }
+
+  return String(value);
 }

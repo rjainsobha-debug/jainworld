@@ -54,7 +54,7 @@ function renderHeader() {
                 <p
                   class="m-0 text-sm text-stone-600"
                   data-en="Knowledge, community, and everyday Jain guidance."
-                  data-hi="ज्ञान, समुदाय और दैनिक जैन मार्गदर्शन."
+                  data-hi="Knowledge, community, and everyday Jain guidance."
                 >
                   Knowledge, community, and everyday Jain guidance.
                 </p>
@@ -62,7 +62,7 @@ function renderHeader() {
             </a>
             <div class="jw-lang-toggle shrink-0" data-lang-toggle>
               <button type="button" data-lang="en" aria-pressed="true">EN</button>
-              <button type="button" data-lang="hi" aria-pressed="false">हिं</button>
+              <button type="button" data-lang="hi" aria-pressed="false">HI</button>
             </div>
           </div>
           <form
@@ -76,12 +76,12 @@ function renderHeader() {
               name="q"
               data-global-search-input
               data-placeholder-en="Search literature, temples, food, audio, news, and resources"
-              data-placeholder-hi="साहित्य, मंदिर, आहार, ऑडियो, समाचार और संसाधन खोजें"
+              data-placeholder-hi="Search literature, temples, food, audio, news, and resources"
               placeholder="Search literature, temples, food, audio, news, and resources"
               aria-label="Search JainWorld"
             />
             <button type="submit" class="jw-btn jw-btn-primary">
-              <span data-en="Search" data-hi="खोज">Search</span>
+              <span data-en="Search" data-hi="Search">Search</span>
             </button>
           </form>
         </div>

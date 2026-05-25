@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -17,7 +17,7 @@
     />
     <meta property="og:url" content="https://jainworld.in/news.html" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />`r`n    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -57,6 +57,25 @@
         </section>
         <section class="py-10">
           <div class="jw-container">
+            <div class="jw-card p-5">
+              <p class="m-0 text-sm leading-7 text-stone-700">
+                News items may link to external sources. JainWorld curates and summarizes Jain-related updates, but event details should be verified with the original organizer or source.
+              </p>
+            </div>
+            <form id="news-filters" class="jw-card mt-6 p-5" aria-label="News filters">
+              <div class="jw-grid-2">
+                <div class="jw-search-shell">
+                  <label for="news-category" class="mb-2 block text-sm font-semibold text-stone-900">Category</label>
+                  <select id="news-category">
+                    <option value="">All categories</option>
+                  </select>
+                </div>
+                <div class="jw-search-shell">
+                  <label for="news-search" class="mb-2 block text-sm font-semibold text-stone-900">Search</label>
+                  <input id="news-search" type="search" placeholder="Search temple, festival, community, pilgrimage..." aria-label="Search news" />
+                </div>
+              </div>
+            </form>
             <div id="news-feed" aria-live="polite"></div>
           </div>
         </section>
@@ -68,3 +87,4 @@
     <script type="module" src="/js/app.js"></script>
   </body>
 </html>
+

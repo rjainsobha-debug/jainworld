@@ -1,6 +1,7 @@
 const LANGUAGE_KEY = "lang";
 const LEGACY_LANGUAGE_KEY = "jainworld-language";
 const DEFAULT_LANGUAGE = "en";
+const MOJIBAKE_PATTERN = /(?:\u00E0\u00A4|\\u00E0\\u00A4|\u00E0\u00A5|\\u00E0\\u00A5|\u00E2\u0080\u00A2|\\u00E2\\u0080\\u00A2|\u00C2\u00A9|\\u00C2\\u00A9|\u00E2\u0080\u0094|\\u00E2\\u0080\\u0094|\u00E2\u0080\u0093|\\u00E2\\u0080\\u0093)/;
 
 export function getLanguage() {
   const saved =
@@ -43,29 +44,38 @@ export function updateLanguageDOM(lang = getLanguage()) {
   document.documentElement.lang = lang;
 
   document.querySelectorAll("[data-hi][data-en]").forEach((node) => {
-    const nextText = node.dataset[lang];
-    if (typeof nextText === "string") {
+    const nextText = getSafeLocalizedValue(node.dataset[lang], node.dataset.en);
+    if (typeof nextText === "string" && nextText.trim()) {
       node.textContent = nextText;
     }
   });
 
   document.querySelectorAll("[data-placeholder-hi][data-placeholder-en]").forEach((node) => {
-    const nextPlaceholder = node.dataset[`placeholder${lang === "hi" ? "Hi" : "En"}`];
-    if (typeof nextPlaceholder === "string") {
+    const nextPlaceholder = getSafeLocalizedValue(
+      node.dataset[`placeholder${lang === "hi" ? "Hi" : "En"}`],
+      node.dataset.placeholderEn
+    );
+    if (typeof nextPlaceholder === "string" && nextPlaceholder.trim()) {
       node.setAttribute("placeholder", nextPlaceholder);
     }
   });
 
   document.querySelectorAll("[data-title-hi][data-title-en]").forEach((node) => {
-    const nextTitle = node.dataset[`title${lang === "hi" ? "Hi" : "En"}`];
-    if (typeof nextTitle === "string") {
+    const nextTitle = getSafeLocalizedValue(
+      node.dataset[`title${lang === "hi" ? "Hi" : "En"}`],
+      node.dataset.titleEn
+    );
+    if (typeof nextTitle === "string" && nextTitle.trim()) {
       node.setAttribute("title", nextTitle);
     }
   });
 
   document.querySelectorAll("[data-value-hi][data-value-en]").forEach((node) => {
-    const nextValue = node.dataset[`value${lang === "hi" ? "Hi" : "En"}`];
-    if (typeof nextValue === "string") {
+    const nextValue = getSafeLocalizedValue(
+      node.dataset[`value${lang === "hi" ? "Hi" : "En"}`],
+      node.dataset.valueEn
+    );
+    if (typeof nextValue === "string" && nextValue.trim()) {
       node.setAttribute("value", nextValue);
     }
   });
@@ -86,12 +96,28 @@ export function pickLocalized(item, base, lang = getLanguage()) {
 
   for (const key of preferredKeys) {
     const value = item[key];
-    if (typeof value === "string" && value.trim()) {
+    if (typeof value === "string" && isUsableLocalizedText(value)) {
       return value.trim();
     }
   }
 
   return "";
+}
+
+function getSafeLocalizedValue(value, fallback = "") {
+  if (typeof value === "string" && isUsableLocalizedText(value)) {
+    return value.trim();
+  }
+
+  if (typeof fallback === "string" && fallback.trim()) {
+    return fallback.trim();
+  }
+
+  return "";
+}
+
+function isUsableLocalizedText(value) {
+  return typeof value === "string" && value.trim() && !MOJIBAKE_PATTERN.test(value);
 }
 
 function syncLanguageButtons() {
