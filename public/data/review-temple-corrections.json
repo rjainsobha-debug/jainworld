@@ -1,0 +1,44 @@
+[
+  {
+    "id": "review-temple-1",
+    "type": "temple_correction",
+    "title": "Palitana Shatrunjaya timing update",
+    "summary": "Visitor noted that current ascent timing guidance may be outdated during a specific season.",
+    "source_url": "/temple-detail.html?slug=palitana-shatrunjaya",
+    "submitted_by": "temple-visitor-report",
+    "review_status": "pending_review",
+    "priority": "high",
+    "created_at": "2026-05-25T06:50:00Z",
+    "last_checked_at": "2026-05-25T08:30:00Z",
+    "admin_notes": "Check trust notice or official board photo before updating timing text.",
+    "correction_category": "Wrong timing"
+  },
+  {
+    "id": "review-temple-2",
+    "type": "temple_correction",
+    "title": "London Jain Temple website clarification",
+    "summary": "Community member submitted a possible updated website and asked for a category review.",
+    "source_url": "/temple-detail.html?slug=london-jain-temple",
+    "submitted_by": "diaspora-contributor",
+    "review_status": "pending_review",
+    "priority": "medium",
+    "created_at": "2026-05-24T18:10:00Z",
+    "last_checked_at": "2026-05-25T08:50:00Z",
+    "admin_notes": "Verify official ownership before adding any external domain.",
+    "correction_category": "Wrong phone/website"
+  },
+  {
+    "id": "review-temple-3",
+    "type": "temple_correction",
+    "title": "Ranakpur accessibility note needs update",
+    "summary": "Reviewer requested clearer language around accessibility and local verification.",
+    "source_url": "/temple-detail.html?slug=ranakpur-jain-temple",
+    "submitted_by": "editorial-review",
+    "review_status": "approved",
+    "priority": "low",
+    "created_at": "2026-05-23T11:00:00Z",
+    "last_checked_at": "2026-05-25T07:55:00Z",
+    "admin_notes": "Approved wording update can be applied in the next temple content pass.",
+    "correction_category": "Religious/history correction"
+  }
+]

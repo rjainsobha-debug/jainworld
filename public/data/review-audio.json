@@ -1,0 +1,44 @@
+[
+  {
+    "id": "review-audio-1",
+    "type": "audio",
+    "title": "Paryushan Reflection Pravachan",
+    "summary": "Embedded reference is available, but permission status remains under review.",
+    "source_url": "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+    "submitted_by": "audio-staging",
+    "review_status": "pending_review",
+    "priority": "high",
+    "created_at": "2026-05-25T09:20:00Z",
+    "last_checked_at": "2026-05-25T09:30:00Z",
+    "admin_notes": "Keep public listing minimal until source/permission context is confirmed.",
+    "permission_status": "needs_review"
+  },
+  {
+    "id": "review-audio-2",
+    "type": "audio",
+    "title": "Namokar Mantra Daily Chant",
+    "summary": "Basic embed entry is safe, but lyrics and meaning fields still need editorial review.",
+    "source_url": "https://www.youtube.com/watch?v=ysz5S6PUM-U",
+    "submitted_by": "audio-staging",
+    "review_status": "approved",
+    "priority": "medium",
+    "created_at": "2026-05-24T08:00:00Z",
+    "last_checked_at": "2026-05-25T08:45:00Z",
+    "admin_notes": "Fine to keep public as an embed-only reference entry.",
+    "permission_status": "embedded"
+  },
+  {
+    "id": "review-audio-3",
+    "type": "audio",
+    "title": "Festival Special Aarti Reference",
+    "summary": "Contributor supplied a source link, but copyright status is unclear.",
+    "source_url": "https://example.org/festival-aarti-reference",
+    "submitted_by": "audio-contributor-form",
+    "review_status": "rejected",
+    "priority": "high",
+    "created_at": "2026-05-22T13:40:00Z",
+    "last_checked_at": "2026-05-25T09:05:00Z",
+    "admin_notes": "Rejected until permission or public-domain basis is documented.",
+    "permission_status": "rejected_copyright"
+  }
+]

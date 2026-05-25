@@ -1,0 +1,41 @@
+[
+  {
+    "id": "review-resource-1",
+    "type": "resource",
+    "title": "State minority commission directory",
+    "summary": "Directory structure exists, but several state links and contact notes still need source verification.",
+    "source_url": "",
+    "submitted_by": "resources-editorial",
+    "review_status": "needs_update",
+    "priority": "high",
+    "created_at": "2026-05-24T10:15:00Z",
+    "last_checked_at": "2026-05-25T08:10:00Z",
+    "admin_notes": "Add official URLs before expanding any state-by-state claims."
+  },
+  {
+    "id": "review-resource-2",
+    "type": "resource",
+    "title": "Documents usually required for scholarship applications",
+    "summary": "Guide is structurally ready and needs one more readability pass before marked verified.",
+    "source_url": "",
+    "submitted_by": "resources-editorial",
+    "review_status": "verified",
+    "priority": "medium",
+    "created_at": "2026-05-23T12:00:00Z",
+    "last_checked_at": "2026-05-25T08:20:00Z",
+    "admin_notes": "Good as a general checklist, but keep caution language prominent."
+  },
+  {
+    "id": "review-resource-3",
+    "type": "resource",
+    "title": "Student hostel support directory",
+    "summary": "Needs location-by-location review before any published directory expansion.",
+    "source_url": "",
+    "submitted_by": "community-contributor-draft",
+    "review_status": "pending_review",
+    "priority": "medium",
+    "created_at": "2026-05-25T07:45:00Z",
+    "last_checked_at": "2026-05-25T09:00:00Z",
+    "admin_notes": "Confirm whether each hostel accepts outside students before listing."
+  }
+]

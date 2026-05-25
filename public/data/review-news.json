@@ -1,0 +1,53 @@
+[
+  {
+    "id": "review-news-1",
+    "type": "news",
+    "title": "Mahavir Jayanti planning notes for temples and local communities",
+    "summary": "Curated summary needs final festival-date verification and source note review.",
+    "source_url": "https://jainworld.in/news.html#mahavir-jayanti-planning-notes",
+    "submitted_by": "news-curation-bot-draft",
+    "review_status": "pending_review",
+    "priority": "high",
+    "created_at": "2026-05-25T09:00:00Z",
+    "last_checked_at": "2026-05-25T09:30:00Z",
+    "admin_notes": "Verify event framing and local organizer reference before public highlight.",
+    "canonical_url": "https://jainworld.in/news.html#mahavir-jayanti-planning-notes",
+    "content_hash": "mahavir-jayanti-planning-notes",
+    "duplicate_group_id": "festival-mahavir-jayanti-2026",
+    "published": false
+  },
+  {
+    "id": "review-news-2",
+    "type": "news",
+    "title": "Mahavir Jayanti planning notes for temples and local communities",
+    "summary": "Alternate draft from another discovery source with similar title and duplicate group.",
+    "source_url": "https://example.org/mahavir-jayanti-draft",
+    "submitted_by": "rss-staging",
+    "review_status": "pending_review",
+    "priority": "medium",
+    "created_at": "2026-05-25T09:10:00Z",
+    "last_checked_at": "2026-05-25T09:35:00Z",
+    "admin_notes": "Likely duplicate. Keep only if source adds materially different details.",
+    "canonical_url": "https://jainworld.in/news.html#mahavir-jayanti-planning-notes",
+    "content_hash": "mahavir-jayanti-planning-notes",
+    "duplicate_group_id": "festival-mahavir-jayanti-2026",
+    "published": false
+  },
+  {
+    "id": "review-news-3",
+    "type": "news",
+    "title": "Minority scholarship reminder for students checking current notices",
+    "summary": "Resource-linked news item waiting for source-level deadline verification.",
+    "source_url": "https://jainworld.in/news.html#minority-scholarship-reminder-students",
+    "submitted_by": "resources-monitor-draft",
+    "review_status": "needs_update",
+    "priority": "high",
+    "created_at": "2026-05-24T15:00:00Z",
+    "last_checked_at": "2026-05-25T08:40:00Z",
+    "admin_notes": "Do not publish if no current official deadline notice can be cited.",
+    "canonical_url": "https://jainworld.in/news.html#minority-scholarship-reminder-students",
+    "content_hash": "minority-scholarship-reminder-students",
+    "duplicate_group_id": "",
+    "published": false
+  }
+]

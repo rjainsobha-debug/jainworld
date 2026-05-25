@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Review Prototype | JainWorld</title>
+    <meta name="description" content="Internal review dashboard prototype for JainWorld content and queue workflows." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="https://jainworld.in/admin-review.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Admin Review Prototype | JainWorld" />
+    <meta property="og:description" content="Internal review dashboard prototype for content queues, not for public indexing." />
+    <meta property="og:url" content="https://jainworld.in/admin-review.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HQ3VW7D0RR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HQ3VW7D0RR');
+    </script>
+  </head>
+  <body data-page="admin-review" class="jw-shell">
+    <div id="app">
+      <div id="app-header"></div>
+      <noscript><div class="jw-noscript">Enable JavaScript to load the internal review queues and summary counts.</div></noscript>
+      <main id="main-content">
+        <section class="jw-page-hero">
+          <div class="jw-container jw-page-hero-inner">
+            <span class="jw-kicker">Admin Review</span>
+            <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">Internal review dashboard prototype</h1>
+            <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">
+              Internal review dashboard prototype. Do not expose private user data publicly in production.
+            </p>
+          </div>
+        </section>
+        <section class="py-10">
+          <div class="jw-container">
+            <div class="jw-card p-5">
+              <p class="m-0 text-sm leading-7 text-stone-700">
+                This prototype is JSON-first and review-first. It is meant to help plan moderation and approval workflows before any production auth, database, or automation layer is added.
+              </p>
+            </div>
+            <div class="mt-8" id="admin-review-summary" aria-live="polite"></div>
+            <div class="mt-8" id="admin-review-dashboard" aria-live="polite"></div>
+          </div>
+        </section>
+      </main>
+      <div id="app-footer"></div>
+      <div id="app-overlay"></div>
+    </div>
+    <script type="module" src="/js/header.js"></script>
+    <script type="module" src="/js/app.js"></script>
+    <script type="module" src="/js/admin-review.js"></script>
+  </body>
+</html>
