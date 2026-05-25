@@ -33,6 +33,17 @@ async function fetchJson(path, params = {}) {
   return response.json();
 }
 
+async function fetchSameOriginJson(path, options = {}) {
+  const response = await fetch(path, options);
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data.error || `Request failed for ${path}`);
+  }
+
+  return data;
+}
+
 async function readLocalCollection(key) {
   const file = LOCAL_FILES[key];
   if (!file) {
@@ -359,6 +370,20 @@ export async function searchAll(query, params = {}) {
 }
 
 export async function submitCommunity(payload) {
+  try {
+    const sameOriginResponse = await fetchSameOriginJson("/api/community-submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    return sameOriginResponse;
+  } catch (error) {
+    console.warn("Same-origin community submit unavailable, falling back", error);
+  }
+
   if (!shouldUseLocalFallback()) {
     try {
       const response = await fetch(new URL("/api/community", API_BASE).toString(), {
@@ -389,4 +414,22 @@ export async function submitCommunity(payload) {
     message:
       "Thank you. Your request has been received. The JainWorld team will review it and contact you if more details are needed."
   };
+}
+
+export async function submitCorrection(payload) {
+  // TODO: Add a public corrections form that can safely POST to /api/correction-submit.
+  try {
+    return await fetchSameOriginJson("/api/correction-submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message || "Correction submit failed"
+    };
+  }
 }

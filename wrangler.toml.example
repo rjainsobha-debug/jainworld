@@ -1,0 +1,24 @@
+name = "jainworld-pages-functions"
+compatibility_date = "2026-05-25"
+
+# Use this as a starter reference for Cloudflare Pages Functions + D1.
+# Do not commit real secrets or production IDs to wrangler.toml.
+
+[[d1_databases]]
+binding = "DB"
+database_name = "jainworld"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[vars]
+# Set this securely in Cloudflare Pages / Workers settings, not in git.
+ADMIN_TOKEN = "REPLACE_IN_CLOUDFLARE_ONLY"
+
+# Optional future bindings:
+# [env.production.vars]
+# ADMIN_TOKEN = "SET_IN_PRODUCTION_DASHBOARD"
+
+# For Pages:
+# 1. Create a D1 database in Cloudflare.
+# 2. Bind it to the Pages project as DB.
+# 3. Add ADMIN_TOKEN as an encrypted environment variable.
+# 4. Deploy the static site with the /functions directory included.

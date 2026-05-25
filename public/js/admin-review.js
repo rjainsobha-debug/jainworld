@@ -1,5 +1,8 @@
 console.log("Admin review loaded");
 
+// TODO: When authenticated backend review APIs are enabled, try `/api/review/{type}`
+// first and keep these static JSON files as a safe fallback for local preview.
+
 const REVIEW_FILES = [
   { key: "news", path: "/data/review-news.json", title: "Pending News" },
   { key: "resources", path: "/data/review-resources.json", title: "Pending Resources" },
@@ -362,8 +365,43 @@ function formatDate(value) {
 }
 
 function buildMaskedContact(item) {
-  const parts = [item.mobile, item.email].filter(Boolean);
+  const parts = [maskPhone(item.mobile), maskEmail(item.email)].filter(Boolean);
   return parts.join(" | ");
+}
+
+export function maskEmail(email) {
+  const value = String(email || "").trim();
+  if (!value || !value.includes("@")) {
+    return "";
+  }
+
+  const [localPart, domainPart] = value.split("@");
+  if (!localPart || !domainPart) {
+    return value;
+  }
+
+  if (localPart.length <= 2) {
+    return `${localPart[0] || "*"}***@${domainPart}`;
+  }
+
+  return `${localPart.slice(0, 2)}***@${domainPart}`;
+}
+
+export function maskPhone(phone) {
+  const value = String(phone || "").trim();
+  const digits = value.replace(/\D/g, "");
+
+  if (!digits) {
+    return "";
+  }
+
+  if (digits.length <= 4) {
+    return value;
+  }
+
+  const prefix = digits.slice(0, Math.min(2, digits.length - 2));
+  const suffix = digits.slice(-2);
+  return `${prefix}${"X".repeat(Math.max(4, digits.length - prefix.length - suffix.length))}${suffix}`;
 }
 
 function escapeHtml(value) {
