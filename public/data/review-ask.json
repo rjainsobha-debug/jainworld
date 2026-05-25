@@ -1,0 +1,30 @@
+[
+  {
+    "id": "ask-review-1",
+    "type": "ask",
+    "title": "What is the exact benefit amount for a Jain minority scholarship this year?",
+    "summary": "Source coverage was limited and the question involved time-sensitive scheme details.",
+    "question": "What is the exact benefit amount for a Jain minority scholarship this year?",
+    "reason": "High-review question with sensitive government or scholarship details.",
+    "safety_level": "high_review",
+    "review_status": "pending_review",
+    "priority": "high",
+    "created_at": "2026-05-25T08:30:00.000Z",
+    "last_checked_at": "2026-05-25T08:35:00.000Z",
+    "admin_notes": "Check official ministry or scholarship portal before allowing a stronger answer."
+  },
+  {
+    "id": "ask-review-2",
+    "type": "ask",
+    "title": "Which Jain tradition is correct about this ritual?",
+    "summary": "Question may require careful doctrinal handling and comparison across traditions.",
+    "question": "Which Jain tradition is correct about this ritual?",
+    "reason": "Potentially sensitive doctrinal comparison.",
+    "safety_level": "high_review",
+    "review_status": "pending_review",
+    "priority": "medium",
+    "created_at": "2026-05-24T16:10:00.000Z",
+    "last_checked_at": "2026-05-24T16:15:00.000Z",
+    "admin_notes": "Prefer a neutral comparative response with sourced explanations."
+  }
+]

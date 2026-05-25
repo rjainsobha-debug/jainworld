@@ -52,6 +52,13 @@ export const REVIEW_TYPE_MAP = {
     idColumn: "id",
     selectColumns:
       "id, related_type, related_slug, image_url, alt_text, caption, source, license_status, review_status, created_at, reviewed_at, reviewed_by"
+  },
+  ask: {
+    table: "ask_review_queue",
+    reviewColumn: "review_status",
+    idColumn: "id",
+    selectColumns:
+      "id, question, reason, safety_level, review_status, created_at, reviewed_at, reviewed_by"
   }
 };
 

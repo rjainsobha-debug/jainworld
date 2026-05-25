@@ -12,7 +12,8 @@ const PAGE_GROUP_MAP = {
   blogs: "search",
   news: "search",
   audio: "search",
-  community: "resources"
+  community: "resources",
+  ask: "search"
 };
 
 function getActivePage() {
@@ -105,7 +106,7 @@ function renderHeader() {
               ${navLinks}
             </nav>
             <div class="jw-header-cta">
-              <a href="/search.html" class="jw-btn jw-btn-secondary">Ask JainWorld</a>
+              <a href="/ask.html" class="jw-btn jw-btn-secondary">Ask JainWorld</a>
             </div>
           </div>
         </div>

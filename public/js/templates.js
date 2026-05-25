@@ -5,7 +5,7 @@ export const NAV_ITEMS = [
   { key: "food", href: "/food.html", labelEn: "Food", labelHi: "Food" },
   { key: "calendar", href: "/calendar.html", labelEn: "Calendar", labelHi: "Calendar" },
   { key: "resources", href: "/resources.html", labelEn: "Resources", labelHi: "Resources" },
-  { key: "search", href: "/search.html", labelEn: "Ask", labelHi: "Ask" }
+  { key: "search", href: "/ask.html", labelEn: "Ask", labelHi: "Ask" }
 ];
 
 export const QUICK_CATEGORIES = [
@@ -407,7 +407,8 @@ const FOOTER_LINK_GROUPS = [
       { href: "/about.html", label: "About" },
       { href: "/contact.html", label: "Contact" },
       { href: "/contribute.html", label: "Contribute" },
-      { href: "/search.html", label: "Search" }
+      { href: "/search.html", label: "Search" },
+      { href: "/ask.html", label: "Ask JainWorld" }
     ]
   },
   {

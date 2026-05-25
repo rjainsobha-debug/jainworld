@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ask JainWorld | JainWorld Knowledge Assistant</title>
+    <meta
+      name="description"
+      content="Ask JainWorld about Jain principles, food discipline, temples, festivals, literature, resources, scholarships, audio, and community information."
+    />
+    <link rel="canonical" href="https://jainworld.in/ask.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Ask JainWorld | JainWorld Knowledge Assistant" />
+    <meta
+      property="og:description"
+      content="Ask about Jain principles, food discipline, temples, festivals, literature, audio, scholarships, resources, and community information."
+    />
+    <meta property="og:url" content="https://jainworld.in/ask.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HQ3VW7D0RR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HQ3VW7D0RR');
+    </script>
+  </head>
+  <body data-page="ask" class="jw-shell">
+    <div id="app">
+      <div id="app-header"></div>
+      <noscript><div class="jw-noscript">Enable JavaScript to ask JainWorld and review source-based answers.</div></noscript>
+      <main id="main-content">
+        <section class="page-banner">
+          <div class="jw-container jw-page-hero-inner">
+            <div class="breadcrumb"><a href="/index.html">Home</a><span aria-hidden="true">/</span><span>Ask JainWorld</span></div>
+            <div class="page-banner-copy">
+              <span class="jw-kicker">JainWorld Knowledge Assistant</span>
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">Ask JainWorld</h1>
+              <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">
+                Ask about Jain principles, food discipline, temples, festivals, literature, audio, scholarships, resources, and community information. JainWorld answers from available verified sources.
+              </p>
+            </div>
+            <div class="hero-search-panel mt-6">
+              <form id="ask-page-form" class="jw-search-shell space-y-3" aria-label="Ask JainWorld">
+                <label for="ask-page-input" class="mb-2 block text-sm font-semibold text-stone-900">Your question</label>
+                <textarea id="ask-page-input" name="question" rows="4" placeholder="Ask a question about Jain life, values, food guidance, temples, festivals, literature, scholarships, or resources"></textarea>
+                <button type="submit" class="jw-btn jw-btn-primary">Ask JainWorld</button>
+              </form>
+              <div class="jw-search-suggestions mt-4">
+                <a href="/ask.html?q=Why%20do%20Jains%20follow%20Ahimsa%3F" class="topic-chip">Why do Jains follow Ahimsa?</a>
+                <a href="/ask.html?q=What%20are%20Jain%20food%20rules%3F" class="topic-chip">What are Jain food rules?</a>
+                <a href="/ask.html?q=What%20is%20Paryushan%3F" class="topic-chip">What is Paryushan?</a>
+                <a href="/ask.html?q=Find%20Jain%20scholarships" class="topic-chip">Find Jain scholarships</a>
+                <a href="/ask.html?q=Explain%20Namokar%20Mantra" class="topic-chip">Explain Namokar Mantra</a>
+                <a href="/ask.html?q=Find%20temples%20with%20dharamshala" class="topic-chip">Find temples with dharamshala</a>
+                <a href="/ask.html?q=What%20documents%20are%20needed%20for%20minority%20scholarships%3F" class="topic-chip">What documents are needed for minority scholarships?</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-8">
+          <div class="jw-container jw-page-stack">
+            <div class="soft-card p-5">
+              <p class="m-0 text-sm leading-7 text-stone-700">
+                Answers are based on JainWorld’s available sources. Please verify important religious, legal, government, medical, or travel decisions with trusted authorities.
+              </p>
+            </div>
+
+            <div id="ask-feedback-banner" class="soft-card p-5">
+              <p class="m-0 text-sm text-stone-600">Ask JainWorld will answer from source-linked JainWorld content when enough verified coverage exists.</p>
+            </div>
+
+            <div id="ask-answer" aria-live="polite"></div>
+            <div id="ask-sources" aria-live="polite"></div>
+            <div id="ask-suggestions" aria-live="polite"></div>
+          </div>
+        </section>
+      </main>
+      <div id="app-footer"></div>
+      <div id="app-overlay"></div>
+    </div>
+    <script type="module" src="/js/header.js"></script>
+    <script type="module" src="/js/app.js"></script>
+    <script type="module" src="/js/ask-page.js"></script>
+  </body>
+</html>

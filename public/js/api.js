@@ -522,3 +522,23 @@ export async function submitCorrection(payload) {
     };
   }
 }
+
+export async function askJainWorld(payload) {
+  return fetchSameOriginJson("/api/ask", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+}
+
+export async function submitAskFeedback(payload) {
+  return fetchSameOriginJson("/api/ask-feedback", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+}

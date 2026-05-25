@@ -8,7 +8,8 @@ const LIVE_REVIEW_TYPES = [
   { key: "resources", path: "/api/review/resources", title: "Pending Resources" },
   { key: "audio", path: "/api/review/audio", title: "Pending Audio" },
   { key: "templeCorrections", apiType: "temple-corrections", path: "/api/review/temple-corrections", title: "Pending Temple Corrections" },
-  { key: "images", path: "/api/review/images", title: "Pending Images" }
+  { key: "images", path: "/api/review/images", title: "Pending Images" },
+  { key: "ask", path: "/api/review/ask", title: "Ask Review Queue" }
 ];
 
 const FALLBACK_FILES = {
@@ -18,7 +19,8 @@ const FALLBACK_FILES = {
   resources: "/data/review-resources.json",
   audio: "/data/review-audio.json",
   templeCorrections: "/data/review-temple-corrections.json",
-  images: "/data/review-images.json"
+  images: "/data/review-images.json",
+  ask: "/data/review-ask.json"
 };
 
 const STATUS_ORDER = ["pending_review", "approved", "verified", "needs_update", "rejected", "published", "draft", "archived"];
@@ -270,6 +272,9 @@ function renderDashboard(collections, isLive) {
     }),
     renderSection("Pending Audio", "audio", collections.audio, isLive, {
       subtitle: "Review permission status, source attribution, and speaker or singer metadata."
+    }),
+    renderSection("Ask Review Queue", "ask", collections.ask, isLive, {
+      subtitle: "Questions with limited source coverage or higher safety sensitivity are queued here."
     }),
     renderSection("Pending Temple Corrections", "temple-corrections", collections.templeCorrections, isLive, {
       subtitle: "Review correction categories before pushing any temple detail changes."

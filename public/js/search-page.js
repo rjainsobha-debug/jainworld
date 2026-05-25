@@ -46,6 +46,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     typeSelect.value = type;
   }
 
+  updateAskLink(query);
+
   renderPopularSearches();
   bindTypeButtons();
 
@@ -60,6 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const nextQuery = input?.value?.trim() || "";
     const nextType = normalizeType(typeSelect?.value || "all");
     updateUrl(nextQuery, nextType);
+    updateAskLink(nextQuery);
     await runSearch(nextQuery, nextType);
   });
 });
@@ -234,6 +237,8 @@ function renderIntroState() {
   if (popularRoot) {
     popularRoot.removeAttribute("hidden");
   }
+
+  updateAskLink("");
 }
 
 function bindTypeButtons() {
@@ -249,6 +254,7 @@ function bindTypeButtons() {
       }
       const query = input?.value?.trim() || new URLSearchParams(window.location.search).get("q") || "";
       updateUrl(query, type);
+      updateAskLink(query);
       if (query) {
         await runSearch(query, type);
       }
@@ -269,6 +275,15 @@ function updateUrl(query, type) {
     url.searchParams.delete("type");
   }
   window.history.replaceState({}, "", url);
+}
+
+function updateAskLink(query) {
+  const link = document.getElementById("search-ask-link");
+  if (!link) {
+    return;
+  }
+
+  link.href = query ? `/ask.html?q=${encodeURIComponent(query)}` : "/ask.html";
 }
 
 function normalizeType(type) {
