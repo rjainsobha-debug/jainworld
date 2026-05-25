@@ -2,6 +2,7 @@ import { errorResponse, hasDb, jsonResponse } from "../_lib/http.js";
 import {
   buildResult,
   buildSearchResponse,
+  expandQueryVariants,
   indexTypeToPublicType,
   logSearchQuery,
   normalizeType,
@@ -74,16 +75,39 @@ export async function onRequestGet(context) {
 }
 
 async function searchIndex(db, query, type, limit) {
-  const normalized = `%${query.toLowerCase()}%`;
-  const bindings = [normalized, limit];
+  const variants = expandQueryVariants(query);
+  const tokens = variants.tokens.length ? variants.tokens : [variants.normalized].filter(Boolean);
+  const bindings = [];
   let typeClause = "";
+  let nextPosition = 1;
 
   if (type !== "all") {
-    typeClause = " AND content_type = ?3";
-    bindings.splice(1, 0, type);
+    typeClause = ` AND content_type = ?${nextPosition}`;
+    bindings.push(type);
+    nextPosition += 1;
   }
 
-  const limitPosition = type !== "all" ? "?3" : "?2";
+  const searchableColumns = [
+    "lower(coalesce(title, ''))",
+    "lower(coalesce(summary, ''))",
+    "lower(coalesce(body, ''))",
+    "lower(coalesce(category, ''))",
+    "lower(coalesce(tags, ''))",
+    "lower(coalesce(source_name, ''))"
+  ];
+
+  const tokenClauses = tokens
+    .map((token) => {
+      const binding = `%${token}%`;
+      const comparisons = searchableColumns.map((column) => `${column} LIKE ?${nextPosition}`).join(" OR ");
+      bindings.push(binding);
+      nextPosition += 1;
+      return `(${comparisons})`;
+    })
+    .join(" OR ");
+
+  bindings.push(Math.max(limit * 6, 60));
+  const limitPosition = `?${nextPosition}`;
   const sql = `
     SELECT id, content_type, source_id, title, summary, body, url, category, tags, language, status, review_status,
            source_name, published_at, updated_at, search_weight, created_at
@@ -91,20 +115,17 @@ async function searchIndex(db, query, type, limit) {
     WHERE status = 'published'
       AND (review_status IN ('verified', 'approved', 'published') OR review_status IS NULL OR review_status = '')
       ${typeClause}
-      AND (
-        lower(coalesce(title, '')) LIKE ?1 OR
-        lower(coalesce(summary, '')) LIKE ?1 OR
-        lower(coalesce(body, '')) LIKE ?1 OR
-        lower(coalesce(category, '')) LIKE ?1 OR
-        lower(coalesce(tags, '')) LIKE ?1
-      )
-    ORDER BY search_weight DESC, coalesce(updated_at, published_at, created_at) DESC
+      AND (${tokenClauses || "1 = 0"})
+    ORDER BY coalesce(updated_at, published_at, created_at) DESC
     LIMIT ${limitPosition}
   `;
 
   const result = await db.prepare(sql).bind(...bindings).all();
   const rows = Array.isArray(result?.results) ? result.results : [];
-  return rows.map((row) => buildResult(indexTypeToPublicType(row.content_type), row, query)).filter((row) => safePublicStatus(row));
+  return rows
+    .map((row) => buildResult(indexTypeToPublicType(row.content_type), row, query))
+    .filter((row) => safePublicStatus(row))
+    .filter((row) => row.score > 0);
 }
 
 async function searchLegacyTables(db, query, type, limit) {

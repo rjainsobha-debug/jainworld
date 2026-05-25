@@ -35,6 +35,26 @@ If verified source coverage is weak, Ask JainWorld should say so clearly.
 5. Logs the ask query in `ask_queries`.
 6. Queues weak or sensitive questions into `ask_review_queue`.
 
+## Hotfix for natural-language questions
+
+Ask JainWorld now uses token-aware source lookup instead of relying on a single exact phrase.
+
+That means questions such as:
+
+- `What documents are needed for minority scholarships?`
+- `Why do Jains follow Ahimsa?`
+
+can be normalized into meaningful domain tokens before source lookup.
+
+The hotfix includes:
+
+- stop-word removal
+- light singular and plural normalization
+- simple JainWorld synonym expansion
+- token scoring across title, summary, body, category, tags, and source name
+
+If source lookup still fails, `/api/ask` now returns a safe `ok: true` insufficient-answer response instead of failing hard.
+
 ## Safety rules
 
 - No hallucinated religious, legal, medical, or government advice.
@@ -79,6 +99,22 @@ Example:
 ```powershell
 $body = @{
   question = "Why do Jains follow Ahimsa?"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "https://YOUR_PAGES_DOMAIN/api/ask" -Method Post -ContentType "application/json" -Body $body
+```
+
+Additional manual tests:
+
+```powershell
+Invoke-RestMethod -Uri "https://YOUR_PAGES_DOMAIN/api/search?q=documents%20minority%20scholarships&type=all&limit=10"
+Invoke-RestMethod -Uri "https://YOUR_PAGES_DOMAIN/api/search?q=scholarship&type=resources&limit=10"
+Invoke-RestMethod -Uri "https://YOUR_PAGES_DOMAIN/api/search?q=namokar%20mantra&type=all&limit=10"
+```
+
+```powershell
+$body = @{
+  question = "What documents are needed for minority scholarships?"
 } | ConvertTo-Json
 
 Invoke-RestMethod -Uri "https://YOUR_PAGES_DOMAIN/api/ask" -Method Post -ContentType "application/json" -Body $body

@@ -61,6 +61,33 @@ npx wrangler d1 execute jainworld-db --remote --file .\db\seed-search-index.sql
 
 This keeps JainWorld Search resilient during rollout.
 
+## Natural-language hotfix
+
+Phase 8A added a focused hotfix so `search_index` queries work better for natural-language questions and multi-word searches.
+
+Examples:
+
+- `documents minority scholarships`
+- `namokar mantra`
+- `why do jains follow ahimsa`
+
+The search layer now:
+
+- removes common stop words
+- applies light singular or plural normalization
+- expands a small JainWorld-safe synonym set
+- scores token matches across title, summary, body, category, tags, and source name
+- returns results when any useful token matches instead of requiring a full phrase match
+
+Recommended manual tests:
+
+```powershell
+Invoke-RestMethod -Uri "https://YOUR_PAGES_DOMAIN/api/search?q=documents%20minority%20scholarships&type=all&limit=10"
+Invoke-RestMethod -Uri "https://YOUR_PAGES_DOMAIN/api/search?q=scholarship&type=resources&limit=10"
+Invoke-RestMethod -Uri "https://YOUR_PAGES_DOMAIN/api/search?q=namokar%20mantra&type=all&limit=10"
+Invoke-RestMethod -Uri "https://YOUR_PAGES_DOMAIN/api/search?q=ahimsa&type=all&limit=10"
+```
+
 ## Refreshing the index later
 
 Whenever public content changes materially:

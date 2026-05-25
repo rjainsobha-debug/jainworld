@@ -1,6 +1,6 @@
 import { errorResponse, hasDb, jsonResponse, normalizeString, nowIso, readJson, requireMethod, createId } from "../_lib/http.js";
 import { buildExtractiveAnswer, buildSuggestions, detectSafetyLevel, normalizeQuestion, shouldQueueForReview, summarizeSources } from "../_lib/ask.js";
-import { buildResult, safePublicStatus } from "../_lib/search.js";
+import { buildResult, expandQueryVariants, safePublicStatus } from "../_lib/search.js";
 
 export async function onRequestPost(context) {
   const methodError = requireMethod(context.request, "POST");
@@ -29,12 +29,13 @@ export async function onRequestPost(context) {
   }
 
   const safetyLevel = detectSafetyLevel(question);
+  const askQueryId = createId("ask");
   let results = [];
 
   try {
     results = await searchIndex(context.env.DB, question, 5);
   } catch (error) {
-    return errorResponse("Ask JainWorld could not load verified sources right now.", 503);
+    results = [];
   }
 
   const answerPayload = buildExtractiveAnswer(question, results);
@@ -42,9 +43,8 @@ export async function onRequestPost(context) {
   const sourceSummaries = summarizeSources(results);
   const answer = appendSafetyNote(answerPayload.answer, safetyLevel);
   const suggestions = buildSuggestions(question, results);
-  const askQueryId = createId("ask");
 
-  const logged = await logAskQuery(context.env.DB, {
+  await logAskQuery(context.env.DB, {
     id: askQueryId,
     question,
     normalizedQuestion: normalizeQuestion(question),
@@ -55,7 +55,7 @@ export async function onRequestPost(context) {
     safetyLevel
   });
 
-  if (logged && shouldQueueForReview(question, confidence, safetyLevel)) {
+  if (shouldQueueForReview(question, confidence, safetyLevel)) {
     await queueAskReview(context.env.DB, {
       question,
       safetyLevel,
@@ -76,26 +76,46 @@ export async function onRequestPost(context) {
 }
 
 async function searchIndex(db, question, limit) {
-  const normalized = `%${normalizeQuestion(question)}%`;
+  const variants = expandQueryVariants(question);
+  const tokens = variants.tokens.length ? variants.tokens : [variants.normalized].filter(Boolean);
+  const bindings = [];
+  const searchableColumns = [
+    "lower(coalesce(title, ''))",
+    "lower(coalesce(summary, ''))",
+    "lower(coalesce(body, ''))",
+    "lower(coalesce(category, ''))",
+    "lower(coalesce(tags, ''))",
+    "lower(coalesce(source_name, ''))"
+  ];
+  let nextPosition = 1;
+  const tokenClauses = tokens
+    .map((token) => {
+      bindings.push(`%${token}%`);
+      const clause = searchableColumns.map((column) => `${column} LIKE ?${nextPosition}`).join(" OR ");
+      nextPosition += 1;
+      return `(${clause})`;
+    })
+    .join(" OR ");
+  bindings.push(Math.max(limit * 6, 30));
+  const limitPosition = `?${nextPosition}`;
   const sql = `
     SELECT id, content_type, source_id, title, summary, body, url, category, tags, language, status, review_status,
            source_name, published_at, updated_at, search_weight, created_at
     FROM search_index
     WHERE status = 'published'
       AND (review_status IN ('verified', 'approved', 'published') OR review_status IS NULL OR review_status = '')
-      AND (
-        lower(coalesce(title, '')) LIKE ?1 OR
-        lower(coalesce(summary, '')) LIKE ?1 OR
-        lower(coalesce(body, '')) LIKE ?1 OR
-        lower(coalesce(category, '')) LIKE ?1 OR
-        lower(coalesce(tags, '')) LIKE ?1
-      )
-    ORDER BY search_weight DESC, coalesce(updated_at, published_at, created_at) DESC
-    LIMIT ?2
+      AND (${tokenClauses || "1 = 0"})
+    ORDER BY coalesce(updated_at, published_at, created_at) DESC
+    LIMIT ${limitPosition}
   `;
-  const result = await db.prepare(sql).bind(normalized, limit).all();
+  const result = await db.prepare(sql).bind(...bindings).all();
   const rows = Array.isArray(result?.results) ? result.results : [];
-  return rows.map((row) => buildResult(row.content_type, row, question)).filter((row) => safePublicStatus(row));
+  return rows
+    .map((row) => buildResult(row.content_type, row, question))
+    .filter((row) => safePublicStatus(row))
+    .filter((row) => row.score > 0)
+    .sort((left, right) => right.score - left.score)
+    .slice(0, limit);
 }
 
 async function logAskQuery(db, payload) {
@@ -141,7 +161,7 @@ function appendSafetyNote(answer, safetyLevel) {
     return answer;
   }
 
-  return `${answer} Please verify important religious, legal, government, medical, or travel decisions with trusted authorities and original sources.`;
+  return `${answer} Please verify eligibility, documents, and deadlines on the official government, institution, or trust website before applying.`;
 }
 
 function buildQueueReason(confidence, safetyLevel, sourceCount) {

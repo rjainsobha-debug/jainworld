@@ -15,6 +15,54 @@ const ALLOWED_TYPES = new Set([
   "calendar"
 ]);
 
+const STOP_WORDS = new Set([
+  "what",
+  "why",
+  "how",
+  "are",
+  "is",
+  "do",
+  "does",
+  "needed",
+  "need",
+  "for",
+  "the",
+  "a",
+  "an",
+  "of",
+  "in",
+  "on",
+  "to",
+  "with",
+  "from",
+  "please",
+  "find",
+  "explain",
+  "tell",
+  "me"
+]);
+
+const STEM_MAP = new Map([
+  ["scholarships", "scholarship"],
+  ["documents", "document"],
+  ["temples", "temple"],
+  ["rules", "rule"],
+  ["sources", "source"],
+  ["applications", "application"],
+  ["certificates", "certificate"],
+  ["papers", "paper"]
+]);
+
+const TOKEN_SYNONYMS = {
+  scholarship: ["scholarships", "student aid", "education support"],
+  document: ["documents", "papers", "certificate", "certificates"],
+  minority: ["minority resources", "government scheme"],
+  namokar: ["navkar", "namokar mantra", "navkar mantra"],
+  temple: ["mandir", "tirth", "pilgrimage"],
+  food: ["diet", "eating", "ingredients"],
+  ahimsa: ["non violence", "non-violence"]
+};
+
 export function normalizeQuery(text) {
   return normalizeString(text)
     .toLowerCase()
@@ -23,11 +71,47 @@ export function normalizeQuery(text) {
     .trim();
 }
 
-export function tokenize(text) {
-  return normalizeQuery(text)
+export function normalizeToken(token) {
+  const normalized = normalizeQuery(token);
+  if (!normalized) {
+    return "";
+  }
+
+  return STEM_MAP.get(normalized) || normalized;
+}
+
+export function tokenizeQuery(text) {
+  const baseTokens = normalizeQuery(text)
     .split(" ")
-    .map((token) => token.trim())
-    .filter(Boolean);
+    .map((token) => normalizeToken(token.trim()))
+    .filter((token) => token && !STOP_WORDS.has(token));
+
+  const expanded = new Set(baseTokens);
+  baseTokens.forEach((token) => {
+    (TOKEN_SYNONYMS[token] || []).forEach((synonym) => {
+      normalizeQuery(synonym)
+        .split(" ")
+        .map((entry) => normalizeToken(entry))
+        .filter(Boolean)
+        .forEach((entry) => expanded.add(entry));
+    });
+  });
+
+  return [...expanded];
+}
+
+export function tokenize(text) {
+  return tokenizeQuery(text);
+}
+
+export function expandQueryVariants(text) {
+  const base = normalizeQuery(text);
+  const tokens = tokenizeQuery(text);
+  return {
+    normalized: base,
+    tokens,
+    phrases: [base, ...tokens].filter(Boolean)
+  };
 }
 
 export function safePublicStatus(item) {
@@ -40,56 +124,72 @@ export function safePublicStatus(item) {
 
 export function scoreItem(query, item) {
   const normalizedQuery = normalizeQuery(query);
-  const tokens = tokenize(query);
+  const tokens = tokenizeQuery(query);
   const title = normalizeQuery(item.title || "");
   const summary = normalizeQuery(item.summary || "");
   const body = normalizeQuery(item.body || "");
   const category = normalizeQuery((item.meta || []).join(" "));
   const tags = normalizeQuery(item.tags || "");
+  const sourceName = normalizeQuery(item.source_name || "");
   let score = 0;
 
-  if (!normalizedQuery) {
+  if (!normalizedQuery && !tokens.length) {
     return score;
   }
 
-  if (title === normalizedQuery) {
+  if (normalizedQuery && title === normalizedQuery) {
     score += 140;
   }
 
-  if (title.startsWith(normalizedQuery)) {
+  if (normalizedQuery && title.startsWith(normalizedQuery)) {
     score += 95;
   }
 
-  if (title.includes(normalizedQuery)) {
+  if (normalizedQuery && title.includes(normalizedQuery)) {
     score += 80;
   }
 
-  if (category.includes(normalizedQuery) || tags.includes(normalizedQuery)) {
+  if (normalizedQuery && (category.includes(normalizedQuery) || tags.includes(normalizedQuery))) {
     score += 45;
   }
 
-  if (summary.includes(normalizedQuery)) {
+  if (normalizedQuery && summary.includes(normalizedQuery)) {
     score += 28;
   }
 
-  if (body.includes(normalizedQuery)) {
+  if (normalizedQuery && body.includes(normalizedQuery)) {
     score += 16;
   }
 
+  let matchedTokens = 0;
   tokens.forEach((token) => {
+    let matched = false;
     if (title.includes(token)) {
-      score += 12;
+      score += 24;
+      matched = true;
     }
     if (summary.includes(token)) {
-      score += 6;
+      score += 12;
+      matched = true;
     }
     if (body.includes(token)) {
-      score += 4;
+      score += 10;
+      matched = true;
     }
-    if (category.includes(token) || tags.includes(token)) {
-      score += 8;
+    if (category.includes(token) || tags.includes(token) || sourceName.includes(token)) {
+      score += 14;
+      matched = true;
+    }
+    if (matched) {
+      matchedTokens += 1;
     }
   });
+
+  if (tokens.length && matchedTokens === tokens.length) {
+    score += 40;
+  } else if (matchedTokens > 0) {
+    score += matchedTokens * 4;
+  }
 
   score += Number(item.search_weight || 0) * 10;
 
@@ -122,18 +222,29 @@ export function makeSnippet(text, query) {
   }
 
   const lowered = source.toLowerCase();
-  const queryValue = normalizeQuery(query);
-  if (!queryValue) {
+  const variants = expandQueryVariants(query);
+  const anchors = [variants.normalized, ...variants.tokens].filter(Boolean);
+  if (!anchors.length) {
     return source.slice(0, 180);
   }
 
-  const index = lowered.indexOf(queryValue);
+  let index = -1;
+  let matchLength = 0;
+  for (const anchor of anchors) {
+    const nextIndex = lowered.indexOf(anchor);
+    if (nextIndex !== -1) {
+      index = nextIndex;
+      matchLength = anchor.length;
+      break;
+    }
+  }
+
   if (index === -1) {
     return source.slice(0, 180);
   }
 
   const start = Math.max(0, index - 60);
-  const end = Math.min(source.length, index + queryValue.length + 120);
+  const end = Math.min(source.length, index + matchLength + 120);
   const snippet = source.slice(start, end).trim();
   return `${start > 0 ? "..." : ""}${snippet}${end < source.length ? "..." : ""}`;
 }
