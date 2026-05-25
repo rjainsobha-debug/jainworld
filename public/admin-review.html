@@ -42,8 +42,26 @@
           <div class="jw-container">
             <div class="jw-card p-5">
               <p class="m-0 text-sm leading-7 text-stone-700">
-                This prototype is JSON-first and review-first. It is meant to help plan moderation and approval workflows before any production auth, database, or automation layer is added.
+                This internal tool can load sample review queues or live D1-backed review data. Keep private data masked and use authenticated review APIs only.
               </p>
+              <div class="jw-grid-2 mt-6">
+                <div>
+                  <label for="admin-token-input" class="mb-2 block text-sm font-semibold text-stone-900">Admin token</label>
+                  <input id="admin-token-input" type="password" class="w-full rounded-xl border border-stone-300 px-4 py-3 text-sm text-stone-900" autocomplete="off" />
+                  <p class="m-0 mt-2 text-xs leading-6 text-stone-500">Token is stored only for this browser session.</p>
+                </div>
+                <div class="flex flex-wrap items-end gap-3">
+                  <button id="admin-load-live" type="button" class="jw-btn jw-btn-primary">Load live review queues</button>
+                  <button id="admin-load-sample" type="button" class="jw-btn">Use sample fallback</button>
+                </div>
+              </div>
+              <div class="mt-4 flex flex-wrap items-center gap-3">
+                <span class="jw-badge jw-badge--draft">Source</span>
+                <span id="admin-source-label" class="text-sm text-stone-600">Sample JSON fallback</span>
+              </div>
+              <div id="admin-review-feedback" class="mt-4 rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-600">
+                Internal admin prototype. Do not expose private data publicly.
+              </div>
             </div>
             <div class="mt-8" id="admin-review-summary" aria-live="polite"></div>
             <div class="mt-8" id="admin-review-dashboard" aria-live="polite"></div>

@@ -1,59 +1,141 @@
 console.log("Admin review loaded");
 
-// TODO: When authenticated backend review APIs are enabled, try `/api/review/{type}`
-// first and keep these static JSON files as a safe fallback for local preview.
-
-const REVIEW_FILES = [
-  { key: "news", path: "/data/review-news.json", title: "Pending News" },
-  { key: "resources", path: "/data/review-resources.json", title: "Pending Resources" },
-  { key: "audio", path: "/data/review-audio.json", title: "Pending Audio" },
-  { key: "templeCorrections", path: "/data/review-temple-corrections.json", title: "Pending Temple Corrections" },
-  { key: "community", path: "/data/review-community.json", title: "Pending Community Members" },
-  { key: "images", path: "/data/review-images.json", title: "Pending Images" }
+const SESSION_TOKEN_KEY = "jainworld_admin_token";
+const LIVE_REVIEW_TYPES = [
+  { key: "community", path: "/api/review/community", title: "Pending Community Members" },
+  { key: "corrections", path: "/api/review/corrections", title: "Pending Corrections" },
+  { key: "news", path: "/api/review/news", title: "Pending News" },
+  { key: "resources", path: "/api/review/resources", title: "Pending Resources" },
+  { key: "audio", path: "/api/review/audio", title: "Pending Audio" },
+  { key: "templeCorrections", apiType: "temple-corrections", path: "/api/review/temple-corrections", title: "Pending Temple Corrections" },
+  { key: "images", path: "/api/review/images", title: "Pending Images" }
 ];
 
-const STATUS_ORDER = [
-  "pending_review",
-  "approved",
-  "verified",
-  "needs_update",
-  "rejected",
-  "published",
-  "draft",
-  "archived"
-];
+const FALLBACK_FILES = {
+  community: "/data/review-community.json",
+  corrections: "/data/review-corrections.json",
+  news: "/data/review-news.json",
+  resources: "/data/review-resources.json",
+  audio: "/data/review-audio.json",
+  templeCorrections: "/data/review-temple-corrections.json",
+  images: "/data/review-images.json"
+};
+
+const STATUS_ORDER = ["pending_review", "approved", "verified", "needs_update", "rejected", "published", "draft", "archived"];
+
+let currentState = {
+  token: "",
+  sourceLabel: "Sample JSON fallback",
+  collections: {}
+};
 
 document.addEventListener("DOMContentLoaded", async () => {
   if (document.body.dataset.page !== "admin-review") {
     return;
   }
 
-  const dashboard = document.getElementById("admin-review-dashboard");
-  if (!dashboard) {
-    return;
+  const tokenInput = document.getElementById("admin-token-input");
+  const liveButton = document.getElementById("admin-load-live");
+  const sampleButton = document.getElementById("admin-load-sample");
+
+  currentState.token = sessionStorage.getItem(SESSION_TOKEN_KEY) || "";
+  if (tokenInput) {
+    tokenInput.value = currentState.token;
   }
 
-  dashboard.innerHTML = `<div class="jw-card p-5"><p class="m-0 text-sm text-stone-600">Loading review queues...</p></div>`;
-
-  const collections = await loadCollections();
-  renderDashboard(collections);
+  bindActionBar(tokenInput, liveButton, sampleButton);
+  await loadFallbackMode("Loading sample review queues...");
 });
 
-async function loadCollections() {
+function bindActionBar(tokenInput, liveButton, sampleButton) {
+  liveButton?.addEventListener("click", async () => {
+    const token = String(tokenInput?.value || "").trim();
+    if (!token) {
+      setFeedback("Enter an admin token to load live D1 review queues.", "error");
+      return;
+    }
+
+    sessionStorage.setItem(SESSION_TOKEN_KEY, token);
+    currentState.token = token;
+    await loadLiveMode();
+  });
+
+  sampleButton?.addEventListener("click", async () => {
+    sessionStorage.removeItem(SESSION_TOKEN_KEY);
+    currentState.token = "";
+    if (tokenInput) {
+      tokenInput.value = "";
+    }
+    await loadFallbackMode("Showing sample JSON fallback queues.");
+  });
+}
+
+async function loadFallbackMode(message) {
+  renderLoading("Loading sample review queues...");
+  currentState.sourceLabel = "Sample JSON fallback";
+  currentState.collections = await loadCollectionsFromFallback();
+  renderDashboard(currentState.collections, false);
+  setFeedback(message, "neutral");
+}
+
+async function loadLiveMode() {
+  renderLoading("Loading live D1 review queues...");
+  try {
+    const collections = await loadCollectionsFromApi(currentState.token);
+    currentState.sourceLabel = "Live D1 data";
+    currentState.collections = collections;
+    renderDashboard(collections, true);
+    setFeedback("Live D1 review queues loaded.", "success");
+  } catch (error) {
+    console.warn("Falling back to sample review queues", error);
+    await loadFallbackMode(error.message || "Could not load live review queues. Showing sample data instead.");
+    setFeedback("Live review queues are unavailable. Showing sample JSON fallback.", "error");
+  }
+}
+
+async function loadCollectionsFromApi(token) {
   const entries = await Promise.all(
-    REVIEW_FILES.map(async (file) => {
+    LIVE_REVIEW_TYPES.map(async (item) => {
+      const response = await fetch(`${item.path}?limit=50`, {
+        headers: {
+          "x-admin-token": token
+        }
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data.ok !== true) {
+        throw new Error(data.error || "Admin review API request failed.");
+      }
+
+      return [item.key, Array.isArray(data.items) ? data.items : []];
+    })
+  );
+
+  return Object.fromEntries(entries);
+}
+
+async function loadCollectionsFromFallback() {
+  const entries = await Promise.all(
+    Object.entries(FALLBACK_FILES).map(async ([key, path]) => {
       try {
-        const response = await fetch(file.path);
+        const response = await fetch(path);
         const items = response.ok ? await response.json() : [];
-        return [file.key, Array.isArray(items) ? items : []];
+        return [key, Array.isArray(items) ? items : []];
       } catch (error) {
-        console.warn("Review queue fallback failed for", file.path, error);
-        return [file.key, []];
+        console.warn("Review queue fallback failed for", path, error);
+        return [key, []];
       }
     })
   );
 
   return Object.fromEntries(entries);
+}
+
+function renderLoading(text) {
+  const dashboard = document.getElementById("admin-review-dashboard");
+  if (dashboard) {
+    dashboard.innerHTML = `<div class="jw-card p-5"><p class="m-0 text-sm text-stone-600">${escapeHtml(text)}</p></div>`;
+  }
 }
 
 export function normalizeTitle(title) {
@@ -121,11 +203,7 @@ export function findPotentialDuplicates(newsItems) {
       }
 
       if (reasons.length) {
-        matches.push({
-          left,
-          right,
-          reasons
-        });
+        matches.push({ left, right, reasons });
       }
     }
   }
@@ -133,12 +211,17 @@ export function findPotentialDuplicates(newsItems) {
   return matches;
 }
 
-function renderDashboard(collections) {
+function renderDashboard(collections, isLive) {
   const summaryRoot = document.getElementById("admin-review-summary");
   const sectionsRoot = document.getElementById("admin-review-dashboard");
+  const sourceNode = document.getElementById("admin-source-label");
 
-  if (!sectionsRoot || !summaryRoot) {
+  if (!summaryRoot || !sectionsRoot) {
     return;
+  }
+
+  if (sourceNode) {
+    sourceNode.textContent = currentState.sourceLabel;
   }
 
   const allItems = Object.values(collections).flat();
@@ -160,30 +243,37 @@ function renderDashboard(collections) {
   `;
 
   sectionsRoot.innerHTML = [
-    renderSection("Pending News", collections.news, {
+    renderSection("Pending Community Members", "community", collections.community, isLive, {
+      subtitle: "Private contact details remain masked in the admin preview."
+    }),
+    renderSection("Pending Corrections", "corrections", collections.corrections, isLive, {
+      subtitle: "Review factual, temple, translation, and resource correction requests."
+    }),
+    renderSection("Pending News", "news", collections.news, isLive, {
       subtitle: "Includes review state, priority, source notes, and possible duplicate checks.",
       extraContent: renderDuplicatePanel(duplicates)
     }),
-    renderSection("Pending Resources", collections.resources, {
+    renderSection("Pending Resources", "resources", collections.resources, isLive, {
       subtitle: "Watch for stale links, missing official sources, and needs-update items."
     }),
-    renderSection("Pending Audio", collections.audio, {
+    renderSection("Pending Audio", "audio", collections.audio, isLive, {
       subtitle: "Review permission status, source attribution, and speaker or singer metadata."
     }),
-    renderSection("Pending Temple Corrections", collections.templeCorrections, {
+    renderSection("Pending Temple Corrections", "temple-corrections", collections.templeCorrections, isLive, {
       subtitle: "Review correction categories before pushing any temple detail changes."
     }),
-    renderSection("Pending Community Members", collections.community, {
-      subtitle: "Private contact details should remain masked in any public-facing workflow."
-    }),
-    renderSection("Pending Images", collections.images, {
+    renderSection("Pending Images", "images", collections.images, isLive, {
       subtitle: "Review licensing, captions, alt text, and whether a photo or generated image is appropriate."
     }),
     renderSystemNotes(collections)
   ].join("");
+
+  if (isLive) {
+    bindReviewActionButtons();
+  }
 }
 
-function renderSection(title, items = [], options = {}) {
+function renderSection(title, itemType, items = [], isLive = false, options = {}) {
   const subtitle = options.subtitle || "";
   const extraContent = options.extraContent || "";
   const priorityItems = items.filter((item) => String(item.priority || "").toLowerCase() === "high");
@@ -206,7 +296,7 @@ function renderSection(title, items = [], options = {}) {
             <span class="${buildStatusClass("pending_review")}">${pendingItems.length}</span>
           </div>
           <div class="jw-admin-item mt-4">
-            ${renderQueueItems(items.slice(0, 4))}
+            ${renderQueueItems(itemType, pendingItems.slice(0, 6), isLive)}
           </div>
         </article>
         <article class="jw-card p-5">
@@ -215,13 +305,60 @@ function renderSection(title, items = [], options = {}) {
             <span class="jw-badge jw-badge--needs-update">${priorityItems.length}</span>
           </div>
           <div class="jw-admin-item mt-4">
-            ${renderQueueItems(priorityItems.slice(0, 4), "No high-priority items right now.")}
+            ${renderQueueItems(itemType, priorityItems.slice(0, 6), isLive, "No high-priority items right now.")}
           </div>
         </article>
       </div>
       ${extraContent}
     </section>
   `;
+}
+
+function renderQueueItems(itemType, items = [], isLive = false, emptyText = "No items are waiting in this queue.") {
+  if (!items.length) {
+    return `<p class="m-0 text-sm text-stone-600">${escapeHtml(emptyText)}</p>`;
+  }
+
+  return items
+    .map((item) => {
+      const title = item.title || item.title_en || item.summary || item.id || "Untitled";
+      const summary = item.summary || item.summary_en || item.description || "No summary provided.";
+      const sourceUrl = item.source_url || item.official_url || "";
+      const maskedContact = item.masked_contact || buildMaskedContact(item);
+
+      return `
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="${buildStatusClass(item.review_status)}">${formatStatus(item.review_status)}</span>
+            <span class="jw-badge jw-badge--draft">${escapeHtml(item.priority || "low")}</span>
+            ${item.status ? `<span class="jw-badge jw-badge--published">${escapeHtml(item.status)}</span>` : ""}
+          </div>
+          <h4 class="m-0 mt-3 text-base font-semibold text-stone-900">${escapeHtml(title)}</h4>
+          <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
+          <div class="jw-meta mt-3">
+            ${item.created_at ? `<span>Created: ${escapeHtml(formatDate(item.created_at))}</span>` : ""}
+            ${item.last_checked_at ? `<span>Checked: ${escapeHtml(formatDate(item.last_checked_at))}</span>` : ""}
+            ${item.submitted_by ? `<span>Submitted by: ${escapeHtml(item.submitted_by)}</span>` : ""}
+            ${item.submitted_by_name ? `<span>Submitted by: ${escapeHtml(item.submitted_by_name)}</span>` : ""}
+            ${maskedContact ? `<span>Contact: ${escapeHtml(maskedContact)}</span>` : ""}
+          </div>
+          ${item.admin_notes ? `<p class="m-0 mt-2 text-sm text-stone-500"><strong>Notes:</strong> ${escapeHtml(item.admin_notes)}</p>` : ""}
+          ${item.risk_notes ? `<p class="m-0 mt-2 text-sm text-stone-500"><strong>Risk:</strong> ${escapeHtml(item.risk_notes)}</p>` : ""}
+          ${sourceUrl ? `<p class="m-0 mt-2 text-sm"><a class="text-amber-800 hover:text-amber-900" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">Open source link</a></p>` : ""}
+          ${
+            isLive
+              ? `<div class="mt-4 flex flex-wrap gap-2">
+                  <button type="button" class="jw-btn jw-btn-primary" data-review-action="approve" data-item-type="${escapeHtml(itemType)}" data-item-id="${escapeHtml(item.id)}">Approve</button>
+                  <button type="button" class="jw-btn" data-review-action="reject" data-item-type="${escapeHtml(itemType)}" data-item-id="${escapeHtml(item.id)}">Reject</button>
+                  <button type="button" class="jw-btn" data-review-action="needs_update" data-item-type="${escapeHtml(itemType)}" data-item-id="${escapeHtml(item.id)}">Needs Update</button>
+                  <button type="button" class="jw-btn" data-review-action="archive" data-item-type="${escapeHtml(itemType)}" data-item-id="${escapeHtml(item.id)}">Archive</button>
+                </div>`
+              : ""
+          }
+        </div>
+      `;
+    })
+    .join("");
 }
 
 function renderDuplicatePanel(duplicates) {
@@ -245,7 +382,7 @@ function renderDuplicatePanel(duplicates) {
                   `
                 )
                 .join("")
-            : `<p class="m-0 text-sm text-stone-600">No duplicate signals found in the current sample queue.</p>`
+            : `<p class="m-0 text-sm text-stone-600">No duplicate signals found in the current queue.</p>`
         }
       </div>
     </div>
@@ -286,40 +423,70 @@ function renderSystemNotes(collections) {
   `;
 }
 
-function renderQueueItems(items = [], emptyText = "No items are waiting in this queue.") {
-  if (!items.length) {
-    return `<p class="m-0 text-sm text-stone-600">${escapeHtml(emptyText)}</p>`;
+function bindReviewActionButtons() {
+  document.querySelectorAll("[data-review-action]").forEach((button) => {
+    if (button.dataset.bound === "true") {
+      return;
+    }
+
+    button.dataset.bound = "true";
+    button.addEventListener("click", async () => {
+      const action = button.getAttribute("data-review-action");
+      const itemType = button.getAttribute("data-item-type");
+      const itemId = button.getAttribute("data-item-id");
+      const token = currentState.token;
+
+      if (!token) {
+        setFeedback("Admin token is required for review actions.", "error");
+        return;
+      }
+
+      button.disabled = true;
+      try {
+        const response = await fetch("/api/review-action", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-admin-token": token
+          },
+          body: JSON.stringify({
+            item_type: itemType,
+            item_id: itemId,
+            action,
+            notes: ""
+          })
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || data.ok !== true) {
+          throw new Error(data.error || "Could not save review action.");
+        }
+
+        setFeedback("Review action saved.", "success");
+        await loadLiveMode();
+      } catch (error) {
+        setFeedback(error.message || "Could not save review action.", "error");
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+}
+
+function setFeedback(text, tone = "neutral") {
+  const node = document.getElementById("admin-review-feedback");
+  if (!node) {
+    return;
   }
 
-  return items
-    .map((item) => {
-      const title = item.title || item.title_en || item.summary || item.id || "Untitled";
-      const summary = item.summary || item.summary_en || "No summary provided.";
-      const sourceUrl = item.source_url || item.official_url || "";
-      const maskedContact = item.masked_contact || buildMaskedContact(item);
+  const styles = {
+    neutral: "mt-4 rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-600",
+    success: "mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900",
+    error: "mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+  };
 
-      return `
-        <div>
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="${buildStatusClass(item.review_status)}">${formatStatus(item.review_status)}</span>
-            <span class="jw-badge jw-badge--draft">${escapeHtml(item.priority || "low")}</span>
-            ${item.published ? '<span class="jw-badge jw-badge--published">Published</span>' : ""}
-          </div>
-          <h4 class="m-0 mt-3 text-base font-semibold text-stone-900">${escapeHtml(title)}</h4>
-          <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
-          <div class="jw-meta mt-3">
-            ${item.created_at ? `<span>Created: ${escapeHtml(formatDate(item.created_at))}</span>` : ""}
-            ${item.last_checked_at ? `<span>Checked: ${escapeHtml(formatDate(item.last_checked_at))}</span>` : ""}
-            ${item.submitted_by ? `<span>Submitted by: ${escapeHtml(item.submitted_by)}</span>` : ""}
-            ${maskedContact ? `<span>Contact: ${escapeHtml(maskedContact)}</span>` : ""}
-          </div>
-          ${item.admin_notes ? `<p class="m-0 mt-2 text-sm text-stone-500"><strong>Notes:</strong> ${escapeHtml(item.admin_notes)}</p>` : ""}
-          ${item.risk_notes ? `<p class="m-0 mt-2 text-sm text-stone-500"><strong>Risk:</strong> ${escapeHtml(item.risk_notes)}</p>` : ""}
-          ${sourceUrl ? `<p class="m-0 mt-2 text-sm"><a class="text-amber-800 hover:text-amber-900" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">Open source link</a></p>` : ""}
-        </div>
-      `;
-    })
-    .join("");
+  node.textContent = text;
+  node.className = styles[tone] || styles.neutral;
 }
 
 function buildStatusClass(status) {
@@ -365,7 +532,7 @@ function formatDate(value) {
 }
 
 function buildMaskedContact(item) {
-  const parts = [maskPhone(item.mobile), maskEmail(item.email)].filter(Boolean);
+  const parts = [item.masked_mobile || maskPhone(item.mobile), item.masked_email || maskEmail(item.email)].filter(Boolean);
   return parts.join(" | ");
 }
 

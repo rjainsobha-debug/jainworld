@@ -409,10 +409,9 @@ export async function submitCommunity(payload) {
   }
 
   return {
-    success: true,
-    verification_status: "pending",
-    message:
-      "Thank you. Your request has been received. The JainWorld team will review it and contact you if more details are needed."
+    ok: false,
+    success: false,
+    error: "We could not submit right now. Please try again later."
   };
 }
 

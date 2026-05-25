@@ -1,4 +1,4 @@
-export function json(data, status = 200, extraHeaders = {}) {
+export function jsonResponse(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data, null, 2), {
     status,
     headers: {
@@ -9,33 +9,111 @@ export function json(data, status = 200, extraHeaders = {}) {
   });
 }
 
-export async function parseJsonBody(request) {
-  try {
-    return await request.json();
-  } catch (error) {
-    return null;
-  }
+export function errorResponse(message, status = 400) {
+  return jsonResponse(
+    {
+      ok: false,
+      error: String(message || "Request failed.")
+    },
+    status
+  );
+}
+
+export function json(data, status = 200, extraHeaders = {}) {
+  return jsonResponse(data, status, extraHeaders);
 }
 
 export function hasDb(env) {
   return Boolean(env && env.DB);
 }
 
-export function getAdminTokenFromRequest(request) {
-  return request.headers.get("x-admin-token") || request.headers.get("authorization")?.replace(/^Bearer\s+/i, "") || "";
+export function nowIso() {
+  return new Date().toISOString();
 }
 
-export function isAdminAuthorized(request, env) {
-  const configuredToken = String(env?.ADMIN_TOKEN || "").trim();
-  if (!configuredToken) {
+export function createId(prefix = "jw") {
+  return `${prefix}-${crypto.randomUUID()}`;
+}
+
+export function normalizeString(value) {
+  const normalized = String(value ?? "").trim();
+  return normalized || "";
+}
+
+export function normalizeBoolean(value) {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  return ["true", "1", "yes", "on"].includes(normalizeString(value).toLowerCase());
+}
+
+export async function readJson(request) {
+  const contentType = normalizeString(request.headers.get("content-type")).toLowerCase();
+  if (!contentType.includes("application/json")) {
     return {
       ok: false,
-      reason: "Admin review API is not configured."
+      error: "Content-Type must be application/json."
     };
   }
 
-  const requestToken = String(getAdminTokenFromRequest(request) || "").trim();
+  try {
+    return {
+      ok: true,
+      data: await request.json()
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      error: "Invalid JSON body."
+    };
+  }
+}
+
+export async function parseJsonBody(request) {
+  const result = await readJson(request);
+  return result.ok ? result.data : null;
+}
+
+export function requireMethod(request, method) {
+  if (request.method !== method) {
+    return errorResponse(`Method ${request.method} not allowed.`, 405);
+  }
+
+  return null;
+}
+
+export function getAdminTokenFromRequest(request) {
+  return (
+    request.headers.get("x-admin-token") ||
+    request.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ||
+    ""
+  );
+}
+
+export function requireAdminToken(request, env) {
+  const configuredToken = normalizeString(env?.ADMIN_TOKEN);
+  if (!configuredToken) {
+    return {
+      ok: false,
+      response: errorResponse("Admin review API is not configured.", 403)
+    };
+  }
+
+  const requestToken = normalizeString(getAdminTokenFromRequest(request));
   if (!requestToken || requestToken !== configuredToken) {
+    return {
+      ok: false,
+      response: errorResponse("Admin authorization failed.", 403)
+    };
+  }
+
+  return { ok: true };
+}
+
+export function isAdminAuthorized(request, env) {
+  const result = requireAdminToken(request, env);
+  if (!result.ok) {
     return {
       ok: false,
       reason: "Admin authorization failed."
@@ -45,20 +123,13 @@ export function isAdminAuthorized(request, env) {
   return { ok: true };
 }
 
-export function nowIso() {
-  return new Date().toISOString();
-}
-
-export function normalizeBoolean(value) {
-  if (typeof value === "boolean") {
-    return value;
+export function safeLimit(value, fallback = 50, max = 100) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return fallback;
   }
 
-  return ["true", "1", "yes", "on"].includes(String(value || "").trim().toLowerCase());
-}
-
-export function normalizeString(value) {
-  return String(value ?? "").trim();
+  return Math.min(Math.max(Math.floor(parsed), 1), max);
 }
 
 export function maskEmail(email) {

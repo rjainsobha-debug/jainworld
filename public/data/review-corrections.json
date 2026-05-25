@@ -1,0 +1,30 @@
+[
+  {
+    "id": "correction-queue-1",
+    "type": "corrections",
+    "title": "Palitana timing note update",
+    "summary": "Visitor reported that the listed morning timing may be outdated during festival season.",
+    "source_url": "https://example.org/temple-notice",
+    "submitted_by_name": "R. Shah",
+    "masked_email": "ra***@example.com",
+    "review_status": "pending_review",
+    "priority": "high",
+    "created_at": "2026-05-20T08:00:00.000Z",
+    "last_checked_at": "2026-05-21T10:30:00.000Z",
+    "admin_notes": "Verify with official trust contact before updating public page."
+  },
+  {
+    "id": "correction-queue-2",
+    "type": "corrections",
+    "title": "Scholarship resource link review",
+    "summary": "A reader flagged an outdated scholarship portal link in the resources section.",
+    "source_url": "https://example.org/scholarship-update",
+    "submitted_by_name": "A. Mehta",
+    "masked_email": "am***@example.com",
+    "review_status": "needs_update",
+    "priority": "medium",
+    "created_at": "2026-05-18T09:15:00.000Z",
+    "last_checked_at": "2026-05-22T14:10:00.000Z",
+    "admin_notes": "Replace only after confirming the current official portal."
+  }
+]

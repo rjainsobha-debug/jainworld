@@ -20,12 +20,7 @@ export function initCommunityForm() {
     const payload = Object.fromEntries(formData.entries());
 
     if (String(payload.website || "").trim()) {
-      showMessage(
-        message,
-        "Thank you. Your request has been received. The JainWorld team will review it and contact you if more details are needed.",
-        "success"
-      );
-      form.reset();
+      showMessage(message, "We could not submit right now. Please try again later.", "error");
       return;
     }
 
@@ -48,10 +43,10 @@ export function initCommunityForm() {
 
     const response = await submitCommunity(payload);
 
-    if (!response.success && response.ok !== true) {
+    if (response.ok !== true && response.success !== true) {
       showMessage(
         message,
-        response.error || "We could not send your request right now. Please try again in a few minutes.",
+        response.error || "We could not submit right now. Please try again later.",
         "error"
       );
       return;
@@ -59,8 +54,7 @@ export function initCommunityForm() {
 
     showMessage(
       message,
-      response.message ||
-        "Thank you. Your request has been received. The JainWorld team will review it and contact you if more details are needed.",
+      response.message || "Your request has been received for review.",
       "success"
     );
     form.reset();
@@ -80,11 +74,18 @@ function validatePayload(payload) {
     return "Please enter your full name.";
   }
 
-  if (!MOBILE_PATTERN.test(String(payload.mobile || "").trim())) {
+  const mobile = String(payload.mobile || "").trim();
+  const email = String(payload.email || "").trim();
+
+  if (!mobile && !email) {
+    return "Please enter at least one contact method: email or mobile number.";
+  }
+
+  if (mobile && !MOBILE_PATTERN.test(mobile)) {
     return "Please enter a valid mobile number.";
   }
 
-  if (!EMAIL_PATTERN.test(String(payload.email || "").trim())) {
+  if (email && !EMAIL_PATTERN.test(email)) {
     return "Please enter a valid email address.";
   }
 
