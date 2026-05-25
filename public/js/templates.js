@@ -343,6 +343,7 @@ const FOOTER_LINK_GROUPS = [
       { href: "/about.html", label: "About" },
       { href: "/contact.html", label: "Contact" },
       { href: "/contribute.html", label: "Contribute" },
+      { href: "/search.html", label: "Search" },
       { href: "/resources.html", label: "Resources" },
       { href: "/admin-review.html", label: "Admin Review" }
     ]

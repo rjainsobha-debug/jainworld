@@ -19,7 +19,13 @@ export function initGlobalSearch() {
       const input = form.querySelector("[data-global-search-input], input[name='q']");
       const query = input?.value?.trim() || "";
 
-      if (!query || !overlay || !resultRoot) {
+      if (!query) {
+        return;
+      }
+
+      const isSearchPageForm = form.hasAttribute("data-search-page-form");
+      if (!overlay || !resultRoot || isSearchPageForm || document.body.dataset.page === "search") {
+        window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
         return;
       }
 
@@ -33,6 +39,10 @@ export function initGlobalSearch() {
       const results = await searchAll(query, { limit: 50 });
       const groups = groupByType(results);
       renderGroupedSearch(resultRoot, groups, query);
+      resultRoot.insertAdjacentHTML(
+        "beforeend",
+        `<div class="mt-4"><a class="jw-btn jw-btn-primary" href="/search.html?q=${encodeURIComponent(query)}">View full search results</a></div>`
+      );
     });
   });
 

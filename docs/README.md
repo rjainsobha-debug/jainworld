@@ -6,9 +6,11 @@
 - [Phase 5 Live Review Workflow](./phase5-live-review-workflow.md)
 - [Phase 5 API Test Commands](./phase5-api-test-commands.md)
 - [Phase 6 Hardening and Automation Prep](./phase6-hardening-and-automation-prep.md)
+- [Phase 7 Global Search](./phase7-global-search.md)
 - [JSON to D1 Migration Plan](./json-to-d1-migration-plan.md)
 - [Admin Auth Security Plan](./admin-auth-security-plan.md)
 - [Cloudflare Access Admin Authentication](./cloudflare-access-admin-auth.md)
+- [Ask JainWorld AI Roadmap](./ask-jainworld-ai-roadmap.md)
 - [D1 Seed Import Guide](./d1-seed-import-guide.md)
 
 ## Automation prep docs

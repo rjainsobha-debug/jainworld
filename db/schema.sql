@@ -148,6 +148,17 @@ CREATE TABLE IF NOT EXISTS review_logs (
   created_at TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS search_queries (
+  id TEXT PRIMARY KEY,
+  query TEXT NOT NULL,
+  type TEXT NOT NULL DEFAULT 'all',
+  result_count INTEGER NOT NULL DEFAULT 0,
+  source TEXT NOT NULL DEFAULT 'pages-search',
+  created_at TEXT NOT NULL,
+  user_agent_hash TEXT,
+  ip_hash TEXT
+);
+
 CREATE INDEX IF NOT EXISTS idx_community_submissions_review_status ON community_submissions(review_status);
 CREATE INDEX IF NOT EXISTS idx_community_submissions_created_at ON community_submissions(created_at);
 CREATE INDEX IF NOT EXISTS idx_correction_submissions_review_status ON correction_submissions(review_status);
@@ -170,3 +181,6 @@ CREATE INDEX IF NOT EXISTS idx_temple_corrections_created_at ON temple_correctio
 CREATE INDEX IF NOT EXISTS idx_image_assets_review_status ON image_assets(review_status);
 CREATE INDEX IF NOT EXISTS idx_image_assets_created_at ON image_assets(created_at);
 CREATE INDEX IF NOT EXISTS idx_review_logs_created_at ON review_logs(created_at);
+CREATE INDEX IF NOT EXISTS idx_search_queries_query ON search_queries(query);
+CREATE INDEX IF NOT EXISTS idx_search_queries_created_at ON search_queries(created_at);
+CREATE INDEX IF NOT EXISTS idx_search_queries_type ON search_queries(type);

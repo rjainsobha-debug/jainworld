@@ -67,6 +67,10 @@ function normalizeCollection(data) {
     return data;
   }
 
+  if (Array.isArray(data?.results)) {
+    return data.results;
+  }
+
   if (Array.isArray(data?.items)) {
     return data.items;
   }
@@ -319,14 +323,14 @@ export async function searchAll(query, params = {}) {
 
   if (!shouldUseLocalFallback()) {
     try {
-      const data = await fetchJson("/api/search", { q: query, ...params });
+      const data = await fetchSameOriginJson(`/api/search?${new URLSearchParams({ q: query, ...params }).toString()}`);
       apiResults = normalizeCollection(data);
     } catch (error) {
       console.warn("Using local search fallback", error);
     }
   }
 
-  const [blogs, audio, literature, temples, food, education, news, resources] = await Promise.all([
+  const [blogs, audio, literature, temples, food, education, news, resources, calendar] = await Promise.all([
     readLocalCollection("blogs"),
     readLocalCollection("audio"),
     readLocalCollection("literature"),
@@ -334,7 +338,8 @@ export async function searchAll(query, params = {}) {
     readLocalCollection("food"),
     readLocalCollection("education"),
     readLocalCollection("news"),
-    readLocalCollection("resources")
+    readLocalCollection("resources"),
+    readLocalCollection("calendar")
   ]);
 
   const localCollections = [
@@ -345,14 +350,20 @@ export async function searchAll(query, params = {}) {
     { type: "food", items: food },
     { type: "education", items: education },
     { type: "news", items: news },
-    { type: "resources", items: resources }
+    { type: "resources", items: resources },
+    { type: "calendar", items: calendar }
   ];
 
-  const localResults = localCollections.flatMap(({ type, items }) =>
+  const filteredCollections =
+    params.type && params.type !== "all"
+      ? localCollections.filter(({ type }) => type === params.type)
+      : localCollections;
+
+  const localResults = filteredCollections.flatMap(({ type, items }) =>
     items
       .filter((item) => JSON.stringify(item).toLowerCase().includes(lowerQuery))
       .slice(0, 10)
-      .map((item) => ({ type, ...item }))
+      .map((item) => mapLocalSearchResult(type, item))
   );
 
   const seen = new Set();
@@ -367,6 +378,85 @@ export async function searchAll(query, params = {}) {
   });
 
   return applyClientLimit(merged, Number(params.limit || 50));
+}
+
+function mapLocalSearchResult(type, item) {
+  const slug = item.slug || item.id || "";
+  const title =
+    item.title_en ||
+    item.title ||
+    item.name_en ||
+    item.course_title_en ||
+    item.lesson_title_en ||
+    item.festival_en ||
+    item.name ||
+    "Untitled";
+  const summary =
+    item.summary_en ||
+    item.summary ||
+    item.description_en ||
+    item.content_en ||
+    item.history_en ||
+    item.meaning_en ||
+    item.description ||
+    "";
+
+  return {
+    id: item.id || slug,
+    type,
+    title,
+    summary,
+    url: buildSearchResultUrl(type, slug, item),
+    meta: buildSearchMeta(type, item),
+    review_status: item.review_status || item.verified_status || "",
+    source_name: item.source_name || item.source || "",
+    score: 0
+  };
+}
+
+function buildSearchResultUrl(type, slug, item) {
+  const encodedSlug = encodeURIComponent(slug || "");
+  if (type === "blogs") {
+    return `/article.html?slug=${encodedSlug}`;
+  }
+  if (type === "audio") {
+    return `/audio-detail.html?slug=${encodedSlug}`;
+  }
+  if (type === "temples") {
+    return `/temple-detail.html?slug=${encodedSlug}`;
+  }
+  if (type === "education") {
+    return `/course-detail.html?slug=${encodedSlug}`;
+  }
+  if (type === "resources") {
+    return item.official_url || "/resources.html";
+  }
+  if (type === "news") {
+    return item.source_url || item.link || "/news.html";
+  }
+  if (type === "calendar") {
+    return "/calendar.html";
+  }
+  return `/article.html?type=${encodeURIComponent(type)}&slug=${encodedSlug}`;
+}
+
+function buildSearchMeta(type, item) {
+  if (type === "temples") {
+    return [item.city, item.state, item.country].filter(Boolean);
+  }
+  if (type === "education") {
+    return [item.course_level, item.topic, item.difficulty].filter(Boolean);
+  }
+  if (type === "resources") {
+    return [item.category, item.state, item.last_verified_at].filter(Boolean);
+  }
+  if (type === "audio") {
+    return [item.category, item.language, item.duration].filter(Boolean);
+  }
+  if (type === "calendar") {
+    return [item.category, item.date_gregorian, item.tithi].filter(Boolean);
+  }
+  return [item.category, item.tags, item.author].filter(Boolean);
 }
 
 export async function submitCommunity(payload) {
