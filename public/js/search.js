@@ -64,7 +64,8 @@ function groupByType(results) {
     temples: [],
     food: [],
     education: [],
-    news: []
+    news: [],
+    resources: []
   };
 
   results.forEach((item) => {

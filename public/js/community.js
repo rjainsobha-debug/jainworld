@@ -18,6 +18,21 @@ export function initCommunityForm() {
 
     const formData = new FormData(form);
     const payload = Object.fromEntries(formData.entries());
+
+    if (String(payload.website || "").trim()) {
+      showMessage(
+        message,
+        "Thank you. Your request has been received. The JainWorld team will review it and contact you if more details are needed.",
+        "success"
+      );
+      form.reset();
+      return;
+    }
+
+    trimPayload(payload);
+    if (!payload.interest_category && payload.join_as) {
+      payload.interest_category = payload.join_as;
+    }
     const validationError = validatePayload(payload);
 
     if (validationError) {
@@ -27,15 +42,16 @@ export function initCommunityForm() {
 
     payload.verification_status = "pending";
     payload.created_at = new Date().toISOString();
+    payload.whatsapp_group_preference = payload.whatsapp_updates ? "Yes" : "No";
 
-    showMessage(message, "Submitting your request...", "neutral");
+    showMessage(message, "Sending your request...", "neutral");
 
     const response = await submitCommunity(payload);
 
     if (!response.success && response.ok !== true) {
       showMessage(
         message,
-        response.error || "Something went wrong while sending your request.",
+        response.error || "We could not send your request right now. Please try again in a few minutes.",
         "error"
       );
       return;
@@ -44,16 +60,24 @@ export function initCommunityForm() {
     showMessage(
       message,
       response.message ||
-        "Thank you. Your profile has been received and is pending manual verification.",
+        "Thank you. Your request has been received. The JainWorld team will review it and contact you if more details are needed.",
       "success"
     );
     form.reset();
   });
 }
 
+function trimPayload(payload) {
+  Object.keys(payload).forEach((key) => {
+    if (typeof payload[key] === "string") {
+      payload[key] = payload[key].trim();
+    }
+  });
+}
+
 function validatePayload(payload) {
   if (!String(payload.name || "").trim()) {
-    return "Please enter your name.";
+    return "Please enter your full name.";
   }
 
   if (!MOBILE_PATTERN.test(String(payload.mobile || "").trim())) {
@@ -70,6 +94,18 @@ function validatePayload(payload) {
 
   if (!String(payload.country || "").trim()) {
     return "Please enter your country.";
+  }
+
+  if (!String(payload.join_as || "").trim()) {
+    return "Please choose how you would like to join JainWorld.";
+  }
+
+  if (!String(payload.preferred_language || "").trim()) {
+    return "Please select your preferred language.";
+  }
+
+  if (!String(payload.privacy_consent || "").trim()) {
+    return "Please agree to the Privacy Policy and Terms of Use.";
   }
 
   return "";

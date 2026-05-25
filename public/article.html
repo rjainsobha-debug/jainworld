@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jain Article | Blog, Literature, and Food Detail</title>
+    <title>JainWorld Article | Editorial article detail</title>
     <meta
       name="description"
-      content="Read a JainWorld article with clean formatting for blogs, literature explainers, and Jain food content."
+      content="Read a JainWorld article with clear formatting for blogs, literature explainers, and Jain food content."
     />
-    <link rel="canonical" href="https://jainworld.in/article" />
+    <link rel="canonical" href="https://jainworld.in/article.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Jain Article | JainWorld.in" />
-    <meta property="og:description" content="Readable Jain article detail page for blogs, food explainers, and literature content." />
-    <meta property="og:url" content="https://jainworld.in/article" />
+    <meta property="og:title" content="JainWorld Article" />
+    <meta property="og:description" content="Readable JainWorld editorial page for articles, explainers, and guides." />
+    <meta property="og:url" content="https://jainworld.in/article.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/style.css" />
     <script type="application/ld+json">
@@ -20,7 +20,7 @@
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "JainWorld article",
-        "mainEntityOfPage": "https://jainworld.in/article",
+        "mainEntityOfPage": "https://jainworld.in/article.html",
         "publisher": {
           "@type": "Organization",
           "name": "JainWorld.in"
@@ -38,23 +38,21 @@
   </head>
   <body data-page="article" class="jw-shell">
     <div id="app">
-    <div id="app-header"></div>
-    <main class="py-10">
-      <div class="jw-container">
-        <div class="mb-6 text-sm text-stone-500">
-          <a href="/index.html" class="hover:text-stone-900">Home</a> /
-          <span>Article</span>
+      <div id="app-header"></div>
+      <noscript><div class="jw-noscript">Enable JavaScript to load the full article.</div></noscript>
+      <main id="main-content" class="py-10">
+        <div class="jw-container">
+          <div class="mb-6 text-sm text-stone-500">
+            <a href="/index.html" class="hover:text-stone-900">Home</a> /
+            <span>Article</span>
+          </div>
+          <div id="article-detail" aria-live="polite"></div>
         </div>
-        <div id="article-detail"></div>
-      </div>
-    </main>
-    <div id="app-footer"></div>
-    <div id="app-overlay"></div>
-        </div>
+      </main>
+      <div id="app-footer"></div>
+      <div id="app-overlay"></div>
+    </div>
     <script type="module" src="/js/header.js"></script>
     <script type="module" src="/js/app.js"></script>
   </body>
 </html>
-
-
-

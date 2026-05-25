@@ -15,6 +15,28 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+function normalizeParagraphs(text) {
+  return String(text || "")
+    .split("\n")
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+    .join("");
+}
+
+function renderTrustMeta(entries = []) {
+  const cleanEntries = entries.filter(Boolean);
+  if (!cleanEntries.length) {
+    return "";
+  }
+
+  return `
+    <div class="jw-meta mt-4">
+      ${cleanEntries.map((entry) => `<span>${escapeHtml(entry)}</span>`).join("")}
+    </div>
+  `;
+}
+
 export function buildDetailUrl(type, item) {
   const slug = encodeURIComponent(item.slug || item.id || "");
 
@@ -36,6 +58,10 @@ export function buildDetailUrl(type, item) {
 
   if (type === "news") {
     return item.link || "#";
+  }
+
+  if (type === "resources") {
+    return item.official_url || "/resources.html";
   }
 
   return `/article.html?type=${encodeURIComponent(type)}&slug=${slug}`;
@@ -113,8 +139,8 @@ export function renderCards(target, items, options = {}) {
     metaBuilder = () => [],
     linkBuilder = (item) => buildDetailUrl(type, item),
     layoutClass = "jw-grid-2",
-    emptyTitle = "No entries yet",
-    emptyBody = "Content will appear here after the CMS starts publishing rows."
+    emptyTitle = "Nothing to show yet",
+    emptyBody = "Content will appear here as soon as reviewed records are available."
   } = options;
 
   if (!Array.isArray(items) || items.length === 0) {
@@ -141,7 +167,7 @@ export function renderCards(target, items, options = {}) {
             item.summary ||
             item.description ||
             item.excerpt ||
-            "Structured Jain knowledge content.";
+            "Structured JainWorld content.";
           const meta = metaBuilder(item).filter(Boolean);
           const href = linkBuilder(item);
           const imageSrc = getImageSrc(item);
@@ -163,13 +189,7 @@ export function renderCards(target, items, options = {}) {
                 <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(title)}</a>
               </h3>
               <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
-              ${
-                meta.length
-                  ? `<div class="jw-meta mt-3">${meta
-                      .map((entry) => `<span>${escapeHtml(entry)}</span>`)
-                      .join("")}</div>`
-                  : ""
-              }
+              ${renderTrustMeta(meta)}
             </article>
           `;
         })
@@ -185,7 +205,7 @@ export function renderNews(target, items) {
   }
 
   if (!Array.isArray(items) || items.length === 0) {
-    root.innerHTML = `<div class="jw-card p-5 text-sm text-stone-600">No news items are available yet.</div>`;
+    root.innerHTML = `<div class="jw-card p-5 text-sm text-stone-600">No news items are available right now.</div>`;
     return;
   }
 
@@ -195,6 +215,9 @@ export function renderNews(target, items) {
         .map((item) => {
           const href = buildDetailUrl("news", item);
           const imageSrc = getImageSrc(item);
+          const source = item.source || "Source pending";
+          const lastUpdated = formatDate(item.published_at || item.created_at);
+
           return `
             <article class="jw-card p-5">
               <img
@@ -206,13 +229,18 @@ export function renderNews(target, items) {
               />
               <div class="mt-4 flex items-center justify-between gap-3">
                 <span class="jw-badge">${escapeHtml(item.category || "General")}</span>
-                <span class="text-xs text-stone-500">${escapeHtml(formatDate(item.published_at || item.created_at))}</span>
+                <span class="text-xs text-stone-500">${escapeHtml(lastUpdated || "Date pending")}</span>
               </div>
               <h3 class="mt-3 text-lg font-semibold leading-snug text-stone-900">
                 <a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer" class="hover:text-amber-800">${escapeHtml(item.title || "Untitled news entry")}</a>
               </h3>
-              <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(item.summary || "RSS-ready news card for JainWorld.")}</p>
-              <p class="m-0 mt-3 text-xs uppercase tracking-[0.18em] text-stone-500">${escapeHtml(item.source || "Source pending")}</p>
+              <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(item.summary || "Curated news for the Jain community.")}</p>
+              ${renderTrustMeta([
+                `Source: ${source}`,
+                lastUpdated ? `Last updated: ${lastUpdated}` : "",
+                "Reviewed by JainWorld Editorial",
+                "External link"
+              ])}
             </article>
           `;
         })
@@ -225,7 +253,14 @@ export function renderBlogs(target, items) {
   renderCards(target, items, {
     type: "blogs",
     layoutClass: "jw-list",
-    metaBuilder: (item) => [item.author, item.category, formatDate(item.created_at)]
+    metaBuilder: (item) => [
+      item.author ? `Author: ${item.author}` : "",
+      item.category,
+      formatDate(item.updated_at || item.created_at)
+        ? `Last updated: ${formatDate(item.updated_at || item.created_at)}`
+        : "",
+      "Reviewed by JainWorld Editorial"
+    ]
   });
 }
 
@@ -260,8 +295,9 @@ export function renderAudio(target, items) {
                       loading="lazy"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowfullscreen
+                      title="${escapeHtml(title)}"
                     ></iframe>`
-                  : `<div class="flex h-[200px] items-center justify-center rounded-xl border border-stone-200 bg-stone-50 text-sm text-stone-500">Audio player will appear here.</div>`
+                  : `<div class="flex h-[200px] items-center justify-center rounded-xl border border-stone-200 bg-stone-50 text-sm text-stone-500">Embedded player unavailable.</div>`
               }
               <div class="mt-4 flex items-center justify-between gap-3">
                 <span class="jw-badge">${escapeHtml(item.category || "Audio")}</span>
@@ -270,6 +306,10 @@ export function renderAudio(target, items) {
               <h3 class="mt-3 text-lg font-semibold leading-snug text-stone-900">
                 <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(title)}</a>
               </h3>
+              ${renderTrustMeta([
+                item.speaker ? `Speaker: ${item.speaker}` : "",
+                "Reviewed by JainWorld Editorial"
+              ])}
             </article>
           `;
         })
@@ -312,6 +352,10 @@ export function renderTemples(target, items) {
                 <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(name)}</a>
               </h3>
               <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(location)}</p>
+              ${renderTrustMeta([
+                item.timings ? `Timings: ${item.timings}` : "",
+                "Reviewed by JainWorld Editorial"
+              ])}
             </article>
           `;
         })
@@ -325,7 +369,14 @@ export function renderCourses(target, items) {
     type: "education",
     titleBase: "lesson_title",
     summaryBase: "content",
-    metaBuilder: (item) => [item.course_level, item.topic, item.difficulty].filter(Boolean)
+    metaBuilder: (item) => [
+      item.course_level,
+      item.topic,
+      item.difficulty,
+      formatDate(item.updated_at || item.created_at)
+        ? `Last updated: ${formatDate(item.updated_at || item.created_at)}`
+        : ""
+    ].filter(Boolean)
   });
 }
 
@@ -340,6 +391,7 @@ export function renderFoodRules(target, items) {
       ${items
         .map((item) => {
           const lang = getLanguage();
+
           return `
             <article class="jw-card p-5">
               <h3 class="m-0 text-lg font-semibold text-stone-900">${escapeHtml(pickLocalized(item, "title", lang) || item.titleEn || "")}</h3>
@@ -348,6 +400,59 @@ export function renderFoodRules(target, items) {
                 <p class="m-0"><strong class="text-stone-900">Practical:</strong> ${escapeHtml(pickLocalized(item, "practical", lang) || item.practicalEn || "")}</p>
                 <p class="m-0"><strong class="text-stone-900">Alternative:</strong> ${escapeHtml(pickLocalized(item, "alternative", lang) || item.alternativeEn || "")}</p>
               </div>
+            </article>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
+}
+
+export function renderResources(target, items) {
+  const root = resolveTarget(target);
+  if (!root) {
+    return;
+  }
+
+  if (!Array.isArray(items) || items.length === 0) {
+    root.innerHTML = `
+      <div class="jw-card p-5">
+        <h3 class="m-0 text-lg font-semibold text-stone-900">Resources coming soon</h3>
+        <p class="m-0 mt-2 text-sm text-stone-600">Official-ready Jain resources will appear here as they are reviewed and verified.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const lang = getLanguage();
+
+  root.innerHTML = `
+    <div class="jw-list">
+      ${items
+        .map((item) => {
+          const title = pickLocalized(item, "title", lang) || item.title_en || item.title || "Jain resource";
+          const summary = pickLocalized(item, "summary", lang) || item.summary_en || "";
+          const officialUrl = item.official_url || "";
+          const lastVerified = formatDate(item.last_verified_at);
+
+          return `
+            <article class="jw-card p-5">
+              <div class="flex flex-wrap gap-2">
+                ${(item.category ? `<span class="jw-badge">${escapeHtml(item.category)}</span>` : "")}
+                ${(item.state ? `<span class="jw-badge">${escapeHtml(item.state)}</span>` : "")}
+              </div>
+              <h3 class="mt-4 text-lg font-semibold leading-snug text-stone-900">${escapeHtml(title)}</h3>
+              <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
+              ${renderTrustMeta([
+                item.eligibility_en ? `Eligibility: ${item.eligibility_en}` : "",
+                lastVerified ? `Last verified: ${lastVerified}` : "",
+                "Reviewed by JainWorld Editorial"
+              ])}
+              ${
+                officialUrl
+                  ? `<a href="${escapeHtml(officialUrl)}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Official link (external)</a>`
+                  : `<p class="m-0 mt-4 text-sm text-stone-500">Official link will be added after verification.</p>`
+              }
             </article>
           `;
         })
@@ -369,7 +474,8 @@ export function renderGroupedSearch(target, groups, query) {
     temples: "Temples",
     food: "Food",
     education: "Education",
-    news: "News"
+    news: "News",
+    resources: "Resources"
   };
 
   const nonEmptyGroups = Object.entries(groups).filter(([, items]) => items.length);
@@ -409,7 +515,7 @@ export function renderGroupedSearch(target, groups, query) {
                   item.summary ||
                   item.description ||
                   item.city ||
-                  "View the result for more detail.";
+                  "Open the result to view more detail.";
 
                 return `
                   <article class="jw-card-flat p-4">
@@ -454,7 +560,7 @@ export function renderArticleDetail(target, item, type = "blogs") {
   const summary =
     pickLocalized(item, "summary") ||
     item.summary ||
-    "Structured JainWorld article detail starter.";
+    "Detailed JainWorld article.";
 
   const content = pickLocalized(item, "content") || item.content || item.method_en || item.content_en || "";
   const spiritualReason = pickLocalized(item, "spiritual_reason") || item.spiritual_reason_en || "";
@@ -462,6 +568,7 @@ export function renderArticleDetail(target, item, type = "blogs") {
   const ingredients = pickLocalized(item, "ingredients") || item.ingredients_en || "";
   const method = pickLocalized(item, "method") || item.method_en || "";
   const imageSrc = getImageSrc(item);
+  const lastUpdated = formatDate(item.updated_at || item.created_at);
 
   root.innerHTML = `
     <article class="jw-card p-6 lg:p-8">
@@ -478,14 +585,18 @@ export function renderArticleDetail(target, item, type = "blogs") {
       </div>
       <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(title)}</h1>
       <p class="m-0 mt-4 text-base leading-8 text-stone-600">${escapeHtml(summary)}</p>
-      <div class="jw-meta mt-4">
-        ${[item.author, item.source_note, formatDate(item.created_at), type].filter(Boolean).map((entry) => `<span>${escapeHtml(entry)}</span>`).join("")}
-      </div>
-      ${content ? `<div class="jw-prose mt-8">${content.split("\n").map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}</div>` : ""}
+      ${renderTrustMeta([
+        item.author ? `Author: ${item.author}` : "",
+        item.source_note ? `Source: ${item.source_note}` : "",
+        lastUpdated ? `Last updated: ${lastUpdated}` : "",
+        `Type: ${type}`,
+        "Reviewed by JainWorld Editorial"
+      ])}
+      ${content ? `<div class="jw-prose mt-8">${normalizeParagraphs(content)}</div>` : ""}
       ${ingredients ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Ingredients</h2><p class="mt-3 text-stone-600">${escapeHtml(ingredients)}</p></section>` : ""}
       ${method ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Method</h2><p class="mt-3 text-stone-600">${escapeHtml(method)}</p></section>` : ""}
-      ${spiritualReason ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Spiritual Reason</h2><p class="mt-3 text-stone-600">${escapeHtml(spiritualReason)}</p></section>` : ""}
-      ${scientificReason ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Scientific or Practical Reason</h2><p class="mt-3 text-stone-600">${escapeHtml(scientificReason)}</p></section>` : ""}
+      ${spiritualReason ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Spiritual reason</h2><p class="mt-3 text-stone-600">${escapeHtml(spiritualReason)}</p></section>` : ""}
+      ${scientificReason ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Scientific or practical reason</h2><p class="mt-3 text-stone-600">${escapeHtml(scientificReason)}</p></section>` : ""}
     </article>
   `;
 }
@@ -523,27 +634,33 @@ export function renderTempleDetail(target, item) {
       </div>
       <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(nameEn)}</h1>
       ${nameHi ? `<p class="m-0 mt-2 text-base text-stone-600">${escapeHtml(nameHi)}</p>` : ""}
+      ${renderTrustMeta([
+        `Location: ${location || "Location will be updated"}`,
+        item.timings ? `Timings: ${item.timings}` : "",
+        "Reviewed by JainWorld Editorial"
+      ])}
       <div class="jw-grid-2 mt-8">
         <section class="jw-card-flat p-5">
           <h2 class="m-0 text-lg font-semibold text-stone-900">Location</h2>
-          <p class="m-0 mt-3 text-sm leading-7 text-stone-600">${escapeHtml(location || "Location will be updated from the Sheets CMS.")}</p>
+          <p class="m-0 mt-3 text-sm leading-7 text-stone-600">${escapeHtml(location || "Location will be updated from the CMS.")}</p>
           <p class="m-0 mt-3 text-sm leading-7 text-stone-600">
-            <strong class="text-stone-900">Address:</strong> ${escapeHtml(item.address || "Address will be added from the Sheets CMS.")}
+            <strong class="text-stone-900">Address:</strong> ${escapeHtml(item.address || "Address will be added after review.")}
           </p>
           ${
             item.map_link
-              ? `<a href="${escapeHtml(item.map_link)}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Open Google Map</a>`
+              ? `<a href="${escapeHtml(item.map_link)}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Open Google Maps</a>`
               : ""
           }
         </section>
         <section class="jw-card-flat p-5">
-          <h2 class="m-0 text-lg font-semibold text-stone-900">Temple Details</h2>
+          <h2 class="m-0 text-lg font-semibold text-stone-900">Temple details</h2>
           <div class="mt-3 grid gap-2 text-sm text-stone-600">
             <span><strong class="text-stone-900">Timings:</strong> ${escapeHtml(item.timings || "To be updated")}</span>
             <span><strong class="text-stone-900">Contact:</strong> ${escapeHtml(item.contact || "To be updated")}</span>
             <span><strong class="text-stone-900">Photos:</strong> ${escapeHtml(item.photos || "Photo gallery can be added later")}</span>
-            <span><strong class="text-stone-900">Future-ready:</strong> Nearby Jain food and dharamshala modules can plug in here later.</span>
+            <span><strong class="text-stone-900">Source:</strong> Temple and community information submitted for review.</span>
           </div>
+          <a href="/corrections.html" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Report correction</a>
         </section>
       </div>
       ${history ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">History</h2><p class="mt-3 text-stone-600">${escapeHtml(history)}</p></section>` : ""}
@@ -565,6 +682,7 @@ export function renderAudioDetail(target, item) {
 
   const title = item.title || item.slug || "Audio detail";
   const embedUrl = getAudioEmbedUrl(item.audio_url);
+  const lastUpdated = formatDate(item.published_at || item.created_at);
 
   root.innerHTML = `
     <article class="jw-card p-6 lg:p-8">
@@ -578,6 +696,7 @@ export function renderAudioDetail(target, item) {
               loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
+              title="${escapeHtml(title)}"
             ></iframe>`
           : `<div class="flex h-[360px] items-center justify-center rounded-2xl border border-stone-200 bg-stone-50 text-sm text-stone-500">Audio player unavailable.</div>`
       }
@@ -586,12 +705,11 @@ export function renderAudioDetail(target, item) {
         ${(item.duration ? `<span class="jw-badge">${escapeHtml(item.duration)}</span>` : "")}
       </div>
       <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(title)}</h1>
-      <div class="jw-meta mt-4">
-        ${[item.speaker, item.category, item.duration, formatDate(item.published_at || item.created_at)]
-          .filter(Boolean)
-          .map((entry) => `<span>${escapeHtml(entry)}</span>`)
-          .join("")}
-      </div>
+      ${renderTrustMeta([
+        item.speaker ? `Speaker: ${item.speaker}` : "",
+        lastUpdated ? `Last updated: ${lastUpdated}` : "",
+        "Reviewed by JainWorld Editorial"
+      ])}
       ${
         item.description
           ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Description</h2><p class="mt-3 text-stone-600">${escapeHtml(item.description)}</p></section>`
@@ -599,7 +717,7 @@ export function renderAudioDetail(target, item) {
       }
       ${
         item.audio_url
-          ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Audio Link</h2><a href="${escapeHtml(item.audio_url)}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Open Source</a></section>`
+          ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Source link</h2><a href="${escapeHtml(item.audio_url)}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Open external source</a></section>`
           : ""
       }
     </article>
@@ -621,6 +739,7 @@ export function renderCourseDetail(target, item) {
   const lessonTitle = pickLocalized(item, "lesson_title") || item.lesson_title_en || item.slug || "Lesson";
   const content = pickLocalized(item, "content") || item.content_en || "";
   const imageSrc = getImageSrc(item);
+  const lastUpdated = formatDate(item.updated_at || item.created_at);
 
   root.innerHTML = `
     <article class="jw-card p-6 lg:p-8">
@@ -638,10 +757,13 @@ export function renderCourseDetail(target, item) {
       </div>
       <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(lessonTitle)}</h1>
       <p class="m-0 mt-3 text-base text-stone-600">${escapeHtml(courseTitle)}</p>
-      <div class="jw-meta mt-4">
-        ${[item.topic, `Lesson ${item.lesson_no || "1"}`, item.course_level].filter(Boolean).map((entry) => `<span>${escapeHtml(entry)}</span>`).join("")}
-      </div>
-      <div class="jw-prose mt-8">${content.split("\n").map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}</div>
+      ${renderTrustMeta([
+        item.topic ? `Topic: ${item.topic}` : "",
+        item.lesson_no ? `Lesson ${item.lesson_no}` : "",
+        lastUpdated ? `Last updated: ${lastUpdated}` : "",
+        "Reviewed by JainWorld Editorial"
+      ])}
+      <div class="jw-prose mt-8">${normalizeParagraphs(content)}</div>
       ${
         item.quiz_json
           ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Quiz JSON</h2><pre class="mt-3 overflow-auto rounded-xl bg-stone-900 p-4 text-sm text-stone-100">${escapeHtml(item.quiz_json)}</pre></section>`
@@ -665,10 +787,13 @@ export function renderStaticInfoCards(target, items) {
         .map((item) => {
           const title = pickLocalized(item, "title", lang) || item.titleEn || item.title;
           const summary = pickLocalized(item, "summary", lang) || item.summaryEn || item.summary;
+          const href = item.href || "";
 
           return `
             <article class="jw-card p-5">
-              <h3 class="m-0 text-lg font-semibold text-stone-900">${escapeHtml(title)}</h3>
+              <h3 class="m-0 text-lg font-semibold text-stone-900">
+                ${href ? `<a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(title)}</a>` : escapeHtml(title)}
+              </h3>
               <p class="m-0 mt-3 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
             </article>
           `;

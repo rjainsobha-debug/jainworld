@@ -3,19 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jain Audio | Pravachan, Bhajan, Stavan, and Learning Audio</title>
+    <title>Jain Audio | Bhajan, aarti, stavan, pravachan, and mantra</title>
     <meta
       name="description"
-      content="Listen to Jain audio content on JainWorld.in, including pravachan, bhajan, stavan, mantra, and learning-focused audio modules."
+      content="Listen to Jain audio including bhajan, aarti, stavan, pravachan, mantra, and learning-focused listening."
     />
-    <link rel="canonical" href="https://jainworld.in/audio" />
+    <link rel="canonical" href="https://jainworld.in/audio.html" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Jain Audio | JainWorld.in" />
-    <meta
-      property="og:description"
-      content="Audio library for Jain teachings, bhajans, stavan, and structured listening content."
-    />
-    <meta property="og:url" content="https://jainworld.in/audio" />
+    <meta property="og:title" content="Jain Audio | JainWorld" />
+    <meta property="og:description" content="Audio library for Jain teachings, bhajans, stavan, aarti, pravachan, and mantra." />
+    <meta property="og:url" content="https://jainworld.in/audio.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/style.css" />
     <script type="application/ld+json">
@@ -23,12 +20,12 @@
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         "name": "Jain Audio",
-        "url": "https://jainworld.in/audio",
-        "description": "Audio collection for JainWorld.in with embedded listening and detail pages.",
+        "url": "https://jainworld.in/audio.html",
+        "description": "Audio collection with embedded listening and detail pages.",
         "isPartOf": {
           "@type": "WebSite",
           "name": "JainWorld.in",
-          "url": "https://jainworld.in/"
+          "url": "https://jainworld.in/index.html"
         }
       }
     </script>
@@ -43,40 +40,28 @@
   </head>
   <body data-page="audio" class="jw-shell">
     <div id="app">
-    <div id="app-header"></div>
-    <main>
-      <section class="jw-page-hero">
-        <div class="jw-container jw-page-hero-inner">
-          <span class="jw-kicker">Audio</span>
-          <h1
-            class="mt-4 text-4xl font-bold tracking-tight text-stone-900"
-            data-en="A simple Jain audio library"
-            data-hi="एक सरल जैन ऑडियो लाइब्रेरी"
-          >
-            A simple Jain audio library
-          </h1>
-          <p
-            class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600"
-            data-en="Browse pravachan, bhajan, mantra, and educational listening content in a clean card layout with embedded players."
-            data-hi="प्रवचन, भजन, मंत्र और शैक्षिक श्रवण सामग्री को साफ कार्ड लेआउट और एम्बेडेड प्लेयर के साथ देखें।"
-          >
-            Browse pravachan, bhajan, mantra, and educational listening content in a clean card layout with embedded players.
-          </p>
-        </div>
-      </section>
-      <section class="py-10">
-        <div class="jw-container">
-          <div id="audio-list"></div>
-        </div>
-      </section>
-    </main>
-    <div id="app-footer"></div>
-    <div id="app-overlay"></div>
-        </div>
+      <div id="app-header"></div>
+      <noscript><div class="jw-noscript">Enable JavaScript to load audio cards and embedded players.</div></noscript>
+      <main id="main-content">
+        <section class="jw-page-hero">
+          <div class="jw-container jw-page-hero-inner">
+            <span class="jw-kicker">Audio</span>
+            <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">Jain audio for prayer, reflection, learning, and family listening</h1>
+            <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">
+              Browse bhajan, aarti, stavan, pravachan, mantra, and learning-focused audio in a clean layout with simple listening pages.
+            </p>
+          </div>
+        </section>
+        <section class="py-10">
+          <div class="jw-container">
+            <div id="audio-list" aria-live="polite"></div>
+          </div>
+        </section>
+      </main>
+      <div id="app-footer"></div>
+      <div id="app-overlay"></div>
+    </div>
     <script type="module" src="/js/header.js"></script>
     <script type="module" src="/js/app.js"></script>
   </body>
 </html>
-
-
-

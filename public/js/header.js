@@ -1,14 +1,4 @@
-const NAV = [
-  { name: "Home", link: "/index.html", key: "home", hi: "होम" },
-  { name: "Literature", link: "/literature.html", key: "literature", hi: "साहित्य" },
-  { name: "Temples", link: "/temples.html", key: "temples", hi: "मंदिर" },
-  { name: "Food", link: "/food.html", key: "food", hi: "आहार" },
-  { name: "Education", link: "/education.html", key: "education", hi: "शिक्षा" },
-  { name: "News", link: "/news.html", key: "news", hi: "समाचार" },
-  { name: "Blogs", link: "/blogs.html", key: "blogs", hi: "ब्लॉग" },
-  { name: "Audio", link: "/audio.html", key: "audio", hi: "ऑडियो" },
-  { name: "Community", link: "/community.html", key: "community", hi: "समुदाय" }
-];
+import { NAV_ITEMS } from "./templates.js";
 
 const DETAIL_PAGE_MAP = {
   article: "blogs",
@@ -19,6 +9,7 @@ const DETAIL_PAGE_MAP = {
 
 function getActivePage() {
   const page = document.body?.dataset?.page || "";
+
   if (DETAIL_PAGE_MAP[page]) {
     return DETAIL_PAGE_MAP[page];
   }
@@ -40,25 +31,33 @@ function renderHeader() {
     return;
   }
 
-  const navLinks = NAV.map((item) => {
+  const navLinks = NAV_ITEMS.map((item) => {
     const activeClass = item.key === activePage ? "is-active" : "";
+
     return `
-      <a class="jw-nav-link ${activeClass}" href="${item.link}">
-        <span data-en="${item.name}" data-hi="${item.hi}">${item.name}</span>
+      <a class="jw-nav-link ${activeClass}" href="${item.href}">
+        <span data-en="${item.labelEn}" data-hi="${item.labelHi}">${item.labelEn}</span>
       </a>
     `;
   }).join("");
 
   headerRoot.innerHTML = `
+    <a href="#main-content" class="jw-skip-link">Skip to main content</a>
     <header class="sticky top-0 z-40 border-b border-stone-200 bg-white/95 backdrop-blur">
       <div class="jw-container py-3">
         <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div class="flex items-start justify-between gap-4">
-            <a href="/index.html" class="flex min-w-0 items-center gap-3 no-underline">
+            <a href="/index.html" class="flex min-w-0 items-center gap-3 no-underline" aria-label="JainWorld home">
               <div class="flex h-11 w-11 items-center justify-center rounded-full border border-amber-700/20 bg-amber-50 text-lg font-bold text-amber-800">JW</div>
               <div>
                 <div class="text-lg font-bold tracking-tight text-stone-900">JainWorld.in</div>
-                <p class="m-0 text-sm text-stone-600" data-en="Jain digital knowledge ecosystem" data-hi="जैन डिजिटल नॉलेज इकोसिस्टम">Jain digital knowledge ecosystem</p>
+                <p
+                  class="m-0 text-sm text-stone-600"
+                  data-en="Knowledge, community, and everyday Jain guidance."
+                  data-hi="ज्ञान, समुदाय और दैनिक जैन मार्गदर्शन."
+                >
+                  Knowledge, community, and everyday Jain guidance.
+                </p>
               </div>
             </a>
             <div class="jw-lang-toggle shrink-0" data-lang-toggle>
@@ -66,14 +65,20 @@ function renderHeader() {
               <button type="button" data-lang="hi" aria-pressed="false">हिं</button>
             </div>
           </div>
-          <form class="jw-search-shell flex w-full items-center gap-2 lg:max-w-xl" data-global-search-form>
+          <form
+            class="jw-search-shell flex w-full items-center gap-2 lg:max-w-xl"
+            data-global-search-form
+            role="search"
+            aria-label="Search JainWorld"
+          >
             <input
               type="search"
               name="q"
               data-global-search-input
-              data-placeholder-en="Search literature, audio, temples, food, courses, and blogs"
-              data-placeholder-hi="साहित्य, ऑडियो, मंदिर, आहार, पाठ्यक्रम और ब्लॉग खोजें"
-              placeholder="Search literature, audio, temples, food, courses, and blogs"
+              data-placeholder-en="Search literature, temples, food, audio, news, and resources"
+              data-placeholder-hi="साहित्य, मंदिर, आहार, ऑडियो, समाचार और संसाधन खोजें"
+              placeholder="Search literature, temples, food, audio, news, and resources"
+              aria-label="Search JainWorld"
             />
             <button type="submit" class="jw-btn jw-btn-primary">
               <span data-en="Search" data-hi="खोज">Search</span>

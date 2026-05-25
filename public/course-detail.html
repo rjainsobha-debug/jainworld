@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Course Detail | JainWorld.in</title>
+    <title>Course Detail | JainWorld</title>
     <meta
       name="description"
-      content="Course lesson detail page for JainWorld.in with learning content, quiz JSON, and level-based structure."
+      content="Read a JainWorld lesson with course structure, study content, and future-ready quiz support."
     />
-    <link rel="canonical" href="https://jainworld.in/education/detail" />
+    <link rel="canonical" href="https://jainworld.in/course-detail.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Course Detail | JainWorld.in" />
+    <meta property="og:title" content="Course Detail | JainWorld" />
     <meta property="og:description" content="Detailed Jain education lesson page for structured learning." />
-    <meta property="og:url" content="https://jainworld.in/education/detail" />
+    <meta property="og:url" content="https://jainworld.in/course-detail.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/style.css" />
     <script type="application/ld+json">
@@ -37,24 +37,22 @@
   </head>
   <body data-page="course-detail" class="jw-shell">
     <div id="app">
-    <div id="app-header"></div>
-    <main class="py-10">
-      <div class="jw-container">
-        <div class="mb-6 text-sm text-stone-500">
-          <a href="/index.html" class="hover:text-stone-900">Home</a> /
-          <a href="/education.html" class="hover:text-stone-900">Education</a> /
-          <span>Lesson</span>
+      <div id="app-header"></div>
+      <noscript><div class="jw-noscript">Enable JavaScript to load the lesson detail page.</div></noscript>
+      <main id="main-content" class="py-10">
+        <div class="jw-container">
+          <div class="mb-6 text-sm text-stone-500">
+            <a href="/index.html" class="hover:text-stone-900">Home</a> /
+            <a href="/education.html" class="hover:text-stone-900">Education</a> /
+            <span>Lesson</span>
+          </div>
+          <div id="course-detail" aria-live="polite"></div>
         </div>
-        <div id="course-detail"></div>
-      </div>
-    </main>
-    <div id="app-footer"></div>
-    <div id="app-overlay"></div>
-        </div>
+      </main>
+      <div id="app-footer"></div>
+      <div id="app-overlay"></div>
+    </div>
     <script type="module" src="/js/header.js"></script>
     <script type="module" src="/js/app.js"></script>
   </body>
 </html>
-
-
-

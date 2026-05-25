@@ -24,6 +24,22 @@ a {
   color: inherit;
 }
 
+.jw-skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.7rem 1rem;
+  border-radius: 0.75rem;
+  background: #1c1917;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.jw-skip-link:focus {
+  top: 1rem;
+}
+
 .jw-shell {
   min-height: 100vh;
 }
@@ -335,12 +351,23 @@ a {
 }
 
 .jw-meta span::after {
-  content: "•";
+  content: "\2022";
   margin-left: 0.75rem;
 }
 
 .jw-meta span:last-child::after {
   display: none;
+}
+
+.jw-noscript {
+  margin: 1rem auto 0;
+  width: min(1120px, calc(100% - 1.5rem));
+  padding: 0.9rem 1rem;
+  border: 1px solid #f5c98f;
+  border-radius: 0.8rem;
+  background: #fff6e5;
+  color: #92400e;
+  font-size: 0.95rem;
 }
 
 @media (min-width: 768px) {
@@ -360,4 +387,3 @@ a {
     padding: 3.5rem 0 2.5rem;
   }
 }
-

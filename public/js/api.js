@@ -11,17 +11,18 @@ const LOCAL_FILES = {
   food: "/data/sample-food.json",
   education: "/data/sample-education.json",
   calendar: "/data/sample-calendar.json",
-  audio: "/data/sample-audio.json"
+  audio: "/data/sample-audio.json",
+  resources: "/data/sample-resources.json"
 };
 
 const SAMPLE_NEWS = [
   {
     id: "news-1",
     title: "Mahavir Jayanti preparation guide for temples and local communities",
-    link: "https://jainworld.in/news/mahavir-jayanti-preparation-guide",
+    link: "https://jainworld.in/news.html#mahavir-jayanti-preparation-guide",
     source: "JainWorld Starter Feed",
     category: "Festival",
-    summary: "Starter item showing how RSS summaries, categories, and dates will render on the frontend.",
+    summary: "Starter item showing how news summaries, sources, and review labels appear on the site.",
     image: "",
     published_at: "2026-04-20",
     hash: "mahavir-jayanti-guide",
@@ -30,7 +31,7 @@ const SAMPLE_NEWS = [
   {
     id: "news-2",
     title: "Pilgrimage planning checklist for Palitana and Girnar season",
-    link: "https://jainworld.in/news/pilgrimage-planning-checklist",
+    link: "https://jainworld.in/news.html#pilgrimage-planning-checklist",
     source: "JainWorld Starter Feed",
     category: "Pilgrimage",
     summary: "A sample travel-oriented update covering routes, food discipline, and family planning tips.",
@@ -42,10 +43,10 @@ const SAMPLE_NEWS = [
   {
     id: "news-3",
     title: "Community education drive launches beginner Ahimsa study circle",
-    link: "https://jainworld.in/news/ahimsa-study-circle",
+    link: "https://jainworld.in/news.html#ahimsa-study-circle",
     source: "JainWorld Starter Feed",
     category: "Education",
-    summary: "This sample card represents filtered Jain education news from RSS or manual sources.",
+    summary: "This sample card represents Jain education updates from curated or automated feeds.",
     image: "",
     published_at: "2026-04-15",
     hash: "ahimsa-study-circle",
@@ -54,7 +55,7 @@ const SAMPLE_NEWS = [
   {
     id: "news-4",
     title: "Temple volunteer teams expand boiled water and no-wastage awareness",
-    link: "https://jainworld.in/news/temple-volunteer-awareness",
+    link: "https://jainworld.in/news.html#temple-volunteer-awareness",
     source: "JainWorld Starter Feed",
     category: "Community",
     summary: "Sample operational update for temple or sangh announcements on food discipline and seva.",
@@ -67,6 +68,7 @@ const SAMPLE_NEWS = [
 
 async function fetchJson(path, params = {}) {
   const url = new URL(path, API_BASE);
+
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== "") {
       url.searchParams.set(key, value);
@@ -155,7 +157,7 @@ function applyFilters(items, params = {}) {
     );
   }
 
-  const query = (params.search || params.q || "").toLowerCase().trim();
+  const query = String(params.search || params.q || "").toLowerCase().trim();
   if (query) {
     results = results.filter((item) => JSON.stringify(item).toLowerCase().includes(query));
   }
@@ -298,39 +300,69 @@ export async function getCommunity(params = {}) {
   return [];
 }
 
+export async function getResources(params = {}) {
+  // TODO: Switch this to /api/resources when the backend endpoint is available.
+  return applyFilters(await readLocalCollection("resources"), params);
+}
+
 export async function searchAll(query, params = {}) {
+  const lowerQuery = String(query || "").toLowerCase().trim();
+  if (!lowerQuery) {
+    return [];
+  }
+
+  let apiResults = [];
+
   if (!shouldUseLocalFallback()) {
     try {
       const data = await fetchJson("/api/search", { q: query, ...params });
-      return normalizeCollection(data);
+      apiResults = normalizeCollection(data);
     } catch (error) {
       console.warn("Using local search fallback", error);
     }
   }
 
-  const collections = await Promise.all([
+  const [blogs, audio, literature, temples, food, education, news, resources] = await Promise.all([
     readLocalCollection("blogs"),
     readLocalCollection("audio"),
     readLocalCollection("literature"),
     readLocalCollection("temples"),
     readLocalCollection("food"),
     readLocalCollection("education"),
-    readLocalCollection("news")
+    readLocalCollection("news"),
+    readLocalCollection("resources")
   ]);
 
-  const types = ["blogs", "audio", "literature", "temples", "food", "education", "news"];
-  const lowerQuery = String(query || "").toLowerCase().trim();
+  const localCollections = [
+    { type: "blogs", items: blogs },
+    { type: "audio", items: audio },
+    { type: "literature", items: literature },
+    { type: "temples", items: temples },
+    { type: "food", items: food },
+    { type: "education", items: education },
+    { type: "news", items: news },
+    { type: "resources", items: resources }
+  ];
 
-  if (!lowerQuery) {
-    return [];
-  }
-
-  return collections.flatMap((items, index) => {
-    return items
+  const localResults = localCollections.flatMap(({ type, items }) =>
+    items
       .filter((item) => JSON.stringify(item).toLowerCase().includes(lowerQuery))
       .slice(0, 10)
-      .map((item) => ({ type: types[index], ...item }));
+      .map((item) => ({ type, ...item }))
+  );
+
+  const seen = new Set();
+  const merged = [...apiResults, ...localResults].filter((item) => {
+    const key = `${item.type || "item"}::${item.slug || item.id || item.title || item.name}`;
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
   });
+
+  return applyClientLimit(merged, Number(params.limit || 50));
 }
 
 export async function submitCommunity(payload) {
@@ -361,6 +393,7 @@ export async function submitCommunity(payload) {
   return {
     success: true,
     verification_status: "pending",
-    message: "Community request saved in starter mode. Connect Apps Script later for live writing."
+    message:
+      "Thank you. Your request has been received. The JainWorld team will review it and contact you if more details are needed."
   };
 }

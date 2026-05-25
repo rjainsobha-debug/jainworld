@@ -7,23 +7,24 @@ import {
   getFood,
   getLiterature,
   getNews,
+  getResources,
   getTemples
 } from "./api.js";
 import { initCalendarPage } from "./calendar.js";
 import { initCommunityForm } from "./community.js";
 import { getLanguage, initLanguageToggle, updateLanguageDOM } from "./language.js";
 import {
-  buildDetailUrl,
   renderAudio,
   renderAudioDetail,
   renderArticleDetail,
   renderBlogs,
   renderCards,
+  renderCourseDetail,
   renderCourses,
   renderFoodRules,
   renderNews,
+  renderResources,
   renderStaticInfoCards,
-  renderCourseDetail,
   renderTempleDetail,
   renderTemples
 } from "./render.js";
@@ -35,13 +36,15 @@ import {
   EDUCATION_LEVELS,
   FEATURED_PILGRIMAGES,
   FOOD_RESTRICTIONS,
-  QUICK_CATEGORIES
+  QUICK_CATEGORIES,
+  START_HERE_ITEMS
 } from "./templates.js";
 import { initGlobalSearch } from "./search.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("App loaded");
   console.log("Page loaded:", document.body.dataset.page || "home");
+  ensureMainContentTarget();
   injectShell();
   initLanguageToggle();
   initGlobalSearch();
@@ -90,6 +93,9 @@ async function loadPage(page) {
     case "calendar":
       await initCalendarPage();
       break;
+    case "resources":
+      await loadResourcesPage();
+      break;
     case "article":
       await loadArticlePage();
       break;
@@ -104,6 +110,14 @@ async function loadPage(page) {
       break;
     default:
       break;
+  }
+}
+
+function ensureMainContentTarget() {
+  const main = document.querySelector("main");
+  if (main && !main.id) {
+    main.id = "main-content";
+    main.setAttribute("tabindex", "-1");
   }
 }
 
@@ -134,17 +148,19 @@ function setFooterYear() {
 
 async function loadHomePage() {
   renderQuickCategories();
+  renderStartHere();
   renderEducationLevels();
   renderPilgrimages();
   renderFoodRules("#food-guide-rules", FOOD_RESTRICTIONS.slice(0, 4));
 
-  const [literature, courses, temples, food, news, blogs] = await Promise.all([
+  const [literature, courses, temples, food, news, blogs, resources] = await Promise.all([
     getLiterature({ limit: 4 }),
     getCourses({ limit: 4 }),
     getTemples({ limit: 4 }),
     getFood({ limit: 4 }),
     getNews({ limit: 4 }),
-    getBlogs({ limit: 5 })
+    getBlogs({ limit: 5 }),
+    getResources({ limit: 4 })
   ]);
 
   renderSimpleLiterature(literature);
@@ -153,6 +169,7 @@ async function loadHomePage() {
   renderFoodHighlights(food);
   renderNews("#news-column", news);
   renderBlogs("#blogs-column", blogs);
+  renderResources("#resources-preview", resources);
   renderCommunityCta();
 }
 
@@ -194,9 +211,9 @@ async function loadCulturePage() {
   const festivals = await getCalendar({ limit: 6 });
   const cards = festivals.map((item) => ({
     title_en: item.festival_en,
-    title_hi: item.festival_hi,
+    title_hi: item.festival_hi || item.festival_en,
     summary_en: item.description_en,
-    summary_hi: item.description_hi
+    summary_hi: item.description_hi || item.description_en
   }));
   renderStaticInfoCards("#culture-festivals", cards);
 }
@@ -220,6 +237,11 @@ async function loadBlogsPage() {
 function loadCommunityPage() {
   renderStaticInfoCards("#community-benefits", COMMUNITY_BENEFITS);
   initCommunityForm();
+}
+
+async function loadResourcesPage() {
+  const items = await getResources({ limit: 50 });
+  renderResources("#resources-list", items);
 }
 
 async function loadArticlePage() {
@@ -316,6 +338,26 @@ function renderQuickCategories() {
   `;
 }
 
+function renderStartHere() {
+  const root = document.getElementById("start-here-grid");
+  if (!root) {
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="jw-grid-3">
+      ${START_HERE_ITEMS.map(
+        (item) => `
+          <a href="${item.href}" class="jw-card p-5 no-underline transition hover:border-amber-300">
+            <h3 class="m-0 text-lg font-semibold text-stone-900" data-en="${item.titleEn}" data-hi="${item.titleHi}">${item.titleEn}</h3>
+            <p class="m-0 mt-3 text-sm leading-7 text-stone-600" data-en="${item.summaryEn}" data-hi="${item.summaryHi}">${item.summaryEn}</p>
+          </a>
+        `
+      ).join("")}
+    </div>
+  `;
+}
+
 function renderEducationLevels(targetSelector = "#education-levels") {
   const root = document.querySelector(targetSelector);
   if (!root) {
@@ -356,14 +398,24 @@ function renderPilgrimages() {
 function renderSimpleLiterature(items, targetSelector = "#featured-literature") {
   renderCards(targetSelector, items, {
     type: "literature",
-    metaBuilder: (item) => [item.category, item.subcategory, item.difficulty].filter(Boolean)
+    metaBuilder: (item) => [
+      item.category,
+      item.subcategory,
+      item.difficulty,
+      "Reviewed by JainWorld Editorial"
+    ].filter(Boolean)
   });
 }
 
 function renderFoodHighlights(items) {
   renderCards("#food-guide-list", items, {
     type: "food",
-    metaBuilder: (item) => [item.category, item.type, item.allowed_status].filter(Boolean)
+    metaBuilder: (item) => [
+      item.category,
+      item.type,
+      item.allowed_status,
+      "Reviewed by JainWorld Editorial"
+    ].filter(Boolean)
   });
 }
 
@@ -378,12 +430,24 @@ function renderCommunityCta() {
       <div class="jw-grid-2 items-center">
         <div>
           <span class="jw-kicker">Community</span>
-          <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900" data-en="Build a verified Jain network" data-hi="सत्यापित जैन नेटवर्क बनाएं">Build a verified Jain network</h2>
-          <p class="m-0 mt-3 text-sm leading-7 text-stone-600" data-en="Collect student, business, volunteer, and city-based interest data now, then add approval workflows and private groups later." data-hi="अभी छात्र, व्यवसाय, स्वयंसेवक और शहर-आधारित रुचि डेटा एकत्र करें, फिर आगे अप्रूवल वर्कफ्लो और निजी समूह जोड़ें।">Collect student, business, volunteer, and city-based interest data now, then add approval workflows and private groups later.</p>
+          <h2
+            class="mt-3 text-2xl font-semibold tracking-tight text-stone-900"
+            data-en="Join the JainWorld community."
+            data-hi="जैनवर्ल्ड समुदाय से जुड़ें."
+          >
+            Join the JainWorld community.
+          </h2>
+          <p
+            class="m-0 mt-3 text-sm leading-7 text-stone-600"
+            data-en="Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks."
+            data-hi="भारत और दुनिया भर के जैनों से सीखने, सेवा, व्यवसाय, मंदिर और परिवार के लिए जुड़ें."
+          >
+            Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks.
+          </p>
         </div>
         <div class="flex flex-wrap gap-3 lg:justify-end">
-          <a href="/community.html" class="jw-btn jw-btn-primary">Open Community</a>
-          <a href="/education.html" class="jw-btn">Explore Education</a>
+          <a href="/community.html" class="jw-btn jw-btn-primary">Request to join</a>
+          <a href="/resources.html" class="jw-btn">View resources</a>
         </div>
       </div>
     </div>
@@ -406,7 +470,12 @@ function renderCategoryPills(targetSelector, items) {
 function renderSimpleFood(items) {
   renderCards("#food-recipes", items, {
     type: "food",
-    metaBuilder: (item) => [item.category, item.allowed_status, item.tags].filter(Boolean)
+    metaBuilder: (item) => [
+      item.category,
+      item.allowed_status,
+      item.tags,
+      "Reviewed by JainWorld Editorial"
+    ].filter(Boolean)
   });
 }
 

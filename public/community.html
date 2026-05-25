@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jain Community | Signup, Students, Jobs, Business, Volunteer Network</title>
+    <title>Jain Community | Join, contribute, and connect responsibly</title>
     <meta
       name="description"
-      content="JainWorld.in community starter for verified signup, student support, jobs, business networking, volunteer groups, and future approvals."
+      content="Join the JainWorld community to connect with families, students, temples, volunteers, institutions, and contributors. Every submission is reviewed before approval."
     />
-    <link rel="canonical" href="https://jainworld.in/community" />
+    <link rel="canonical" href="https://jainworld.in/community.html" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Jain Community | JainWorld.in" />
-    <meta property="og:description" content="A clean and future-ready Jain community signup and directory module." />
-    <meta property="og:url" content="https://jainworld.in/community" />
+    <meta property="og:title" content="Jain Community | JainWorld" />
+    <meta property="og:description" content="Connect with Jains across India and the world for learning, volunteering, business, temples, and family." />
+    <meta property="og:url" content="https://jainworld.in/community.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/style.css" />
     <script type="application/ld+json">
@@ -20,8 +20,8 @@
         "@context": "https://schema.org",
         "@type": "WebPage",
         "name": "Jain Community",
-        "url": "https://jainworld.in/community",
-        "description": "Community signup and discovery module on JainWorld.in."
+        "url": "https://jainworld.in/community.html",
+        "description": "Community joining and contribution page on JainWorld."
       }
     </script>
     <!-- Google Analytics -->
@@ -35,103 +35,142 @@
   </head>
   <body data-page="community" class="jw-shell">
     <div id="app">
-    <div id="app-header"></div>
-    <main>
-      <section class="jw-page-hero">
-        <div class="jw-container jw-page-hero-inner">
-          <span class="jw-kicker">Community</span>
-          <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900" data-en="Build a verified Jain community layer" data-hi="सत्यापित जैन समुदाय परत बनाएं">
-            Build a verified Jain community layer
-          </h1>
-          <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600" data-en="Collect members now through a simple form and add manual approval, directory views, jobs, and private groups in later phases." data-hi="अभी एक सरल फॉर्म से सदस्यों को जोड़ें, और आगे मैनुअल अप्रूवल, डायरेक्टरी, जॉब्स और निजी समूह जोड़ें।">
-            Collect members now through a simple form and add manual approval, directory views, jobs, and private groups in later phases.
-          </p>
-        </div>
-      </section>
-      <section class="py-10">
-        <div class="jw-container">
-          <div class="jw-grid-2 gap-6">
-            <section class="jw-card p-6">
-              <h2 class="m-0 text-2xl font-semibold text-stone-900">Join the community</h2>
-              <p class="m-0 mt-3 text-sm leading-7 text-stone-600">Submissions are marked pending until manual verification is added into the workflow.</p>
-              <form id="community-form" class="jw-form-grid mt-6">
-                <div class="jw-grid-2">
-                  <div class="jw-search-shell">
-                    <label class="mb-2 block text-sm font-semibold text-stone-900">Name</label>
-                    <input type="text" name="name" required />
-                  </div>
-                  <div class="jw-search-shell">
-                    <label class="mb-2 block text-sm font-semibold text-stone-900">Mobile</label>
-                    <input type="tel" name="mobile" required />
-                  </div>
-                </div>
-                <div class="jw-grid-2">
-                  <div class="jw-search-shell">
-                    <label class="mb-2 block text-sm font-semibold text-stone-900">Email</label>
-                    <input type="email" name="email" required />
-                  </div>
-                  <div class="jw-search-shell">
-                    <label class="mb-2 block text-sm font-semibold text-stone-900">City</label>
-                    <input type="text" name="city" required />
-                  </div>
-                </div>
-                <div class="jw-grid-2">
-                  <div class="jw-search-shell">
-                    <label class="mb-2 block text-sm font-semibold text-stone-900">Country</label>
-                    <input type="text" name="country" required />
-                  </div>
-                  <div class="jw-search-shell">
-                    <label class="mb-2 block text-sm font-semibold text-stone-900">Interest Category</label>
-                    <select name="interest_category">
-                      <option value="Students">Students</option>
-                      <option value="Business">Business</option>
-                      <option value="Volunteer">Volunteer</option>
-                      <option value="Temple">Temple</option>
-                      <option value="Family">Family</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="jw-grid-2">
-                  <div class="jw-search-shell">
-                    <label class="mb-2 block text-sm font-semibold text-stone-900">Profession</label>
-                    <input type="text" name="profession" />
-                  </div>
-                  <div class="jw-search-shell">
-                    <label class="mb-2 block text-sm font-semibold text-stone-900">WhatsApp Group Preference</label>
-                    <select name="whatsapp_group_preference">
-                      <option value="Yes">Yes</option>
-                      <option value="No">No</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="jw-search-shell">
-                  <label class="mb-2 block text-sm font-semibold text-stone-900">Business Name</label>
-                  <input type="text" name="business_name" />
-                </div>
-                <button type="submit" class="jw-btn jw-btn-primary">Submit for verification</button>
-              </form>
-              <div id="community-message" aria-live="polite"></div>
-            </section>
-            <section>
-              <div class="jw-section-title">
-                <div>
-                  <span class="jw-kicker">Why This Module Matters</span>
-                  <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">Built for future network effects</h2>
-                </div>
-              </div>
-              <div id="community-benefits"></div>
-            </section>
+      <div id="app-header"></div>
+      <noscript><div class="jw-noscript">Enable JavaScript to send your community request securely.</div></noscript>
+      <main id="main-content">
+        <section class="jw-page-hero">
+          <div class="jw-container jw-page-hero-inner">
+            <span class="jw-kicker">Community</span>
+            <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">Join the JainWorld community.</h1>
+            <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">
+              Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks.
+            </p>
           </div>
-        </div>
-      </section>
-    </main>
-    <div id="app-footer"></div>
-    <div id="app-overlay"></div>
-        </div>
+        </section>
+        <section class="py-10">
+          <div class="jw-container">
+            <div class="jw-grid-2 gap-6">
+              <section class="jw-card p-6">
+                <h2 class="m-0 text-2xl font-semibold text-stone-900">Request to join</h2>
+                <p class="m-0 mt-3 text-sm leading-7 text-stone-600">
+                  Your mobile number and email will not be shown publicly. Every community submission is reviewed before approval.
+                </p>
+                <form id="community-form" class="jw-form-grid mt-6">
+                  <input type="hidden" name="website" autocomplete="off" tabindex="-1" class="hidden" />
+                  <input type="hidden" name="interest_category" value="" />
+
+                  <div class="jw-grid-2">
+                    <div class="jw-search-shell">
+                      <label for="community-name" class="mb-2 block text-sm font-semibold text-stone-900">Full name</label>
+                      <input id="community-name" type="text" name="name" autocomplete="name" required />
+                    </div>
+                    <div class="jw-search-shell">
+                      <label for="community-mobile" class="mb-2 block text-sm font-semibold text-stone-900">Mobile number</label>
+                      <input id="community-mobile" type="tel" name="mobile" autocomplete="tel" required />
+                    </div>
+                  </div>
+
+                  <div class="jw-grid-2">
+                    <div class="jw-search-shell">
+                      <label for="community-email" class="mb-2 block text-sm font-semibold text-stone-900">Email address</label>
+                      <input id="community-email" type="email" name="email" autocomplete="email" required />
+                    </div>
+                    <div class="jw-search-shell">
+                      <label for="community-city" class="mb-2 block text-sm font-semibold text-stone-900">City</label>
+                      <input id="community-city" type="text" name="city" autocomplete="address-level2" required />
+                    </div>
+                  </div>
+
+                  <div class="jw-grid-2">
+                    <div class="jw-search-shell">
+                      <label for="community-country" class="mb-2 block text-sm font-semibold text-stone-900">Country</label>
+                      <input id="community-country" type="text" name="country" autocomplete="country-name" required />
+                    </div>
+                    <div class="jw-search-shell">
+                      <label for="community-join-as" class="mb-2 block text-sm font-semibold text-stone-900">Join as</label>
+                      <select id="community-join-as" name="join_as" required>
+                        <option value="">Select one</option>
+                        <option value="Student">Student</option>
+                        <option value="Parent / Family">Parent / Family</option>
+                        <option value="Volunteer">Volunteer</option>
+                        <option value="Scholar / Teacher">Scholar / Teacher</option>
+                        <option value="Temple Representative">Temple Representative</option>
+                        <option value="Jain Business Owner">Jain Business Owner</option>
+                        <option value="Content Contributor">Content Contributor</option>
+                        <option value="Audio / Bhajan Contributor">Audio / Bhajan Contributor</option>
+                        <option value="Trust / NGO Representative">Trust / NGO Representative</option>
+                        <option value="General Member">General Member</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="jw-grid-2">
+                    <div class="jw-search-shell">
+                      <label for="community-language" class="mb-2 block text-sm font-semibold text-stone-900">Preferred language</label>
+                      <select id="community-language" name="preferred_language" required>
+                        <option value="">Select one</option>
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Gujarati">Gujarati</option>
+                        <option value="Marwari">Marwari</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div class="jw-search-shell">
+                      <label for="community-profession" class="mb-2 block text-sm font-semibold text-stone-900">Profession or role</label>
+                      <input id="community-profession" type="text" name="profession" />
+                    </div>
+                  </div>
+
+                  <div class="jw-grid-2">
+                    <div class="jw-search-shell">
+                      <label for="community-business" class="mb-2 block text-sm font-semibold text-stone-900">Business or organization name</label>
+                      <input id="community-business" type="text" name="business_name" />
+                    </div>
+                    <div class="jw-search-shell">
+                      <label for="community-contribution" class="mb-2 block text-sm font-semibold text-stone-900">Contribution interest</label>
+                      <input id="community-contribution" type="text" name="contribution_interest" placeholder="Examples: teaching, translations, youth support, temple data" />
+                    </div>
+                  </div>
+
+                  <div class="jw-search-shell">
+                    <label for="community-notes" class="mb-2 block text-sm font-semibold text-stone-900">Message or notes</label>
+                    <textarea id="community-notes" name="message" rows="4" placeholder="Tell us how you would like to participate or what support you are looking for."></textarea>
+                  </div>
+
+                  <div class="space-y-3 rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-700">
+                    <label class="flex items-start gap-3">
+                      <input type="checkbox" name="privacy_consent" value="Yes" class="mt-1" required />
+                      <span>I agree to the <a href="/privacy.html" class="font-semibold text-amber-800">Privacy Policy</a> and <a href="/terms.html" class="font-semibold text-amber-800">Terms of Use</a>.</span>
+                    </label>
+                    <label class="flex items-start gap-3">
+                      <input type="checkbox" name="whatsapp_updates" value="Yes" class="mt-1" />
+                      <span>I agree to be contacted on WhatsApp for JainWorld community updates.</span>
+                    </label>
+                  </div>
+
+                  <button type="submit" class="jw-btn jw-btn-primary">Request to join</button>
+                </form>
+                <div id="community-message" aria-live="polite"></div>
+              </section>
+
+              <section>
+                <div class="jw-section-title">
+                  <div>
+                    <span class="jw-kicker">Why Join</span>
+                    <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">Built for trust, care, and long-term community usefulness</h2>
+                  </div>
+                </div>
+                <div id="community-benefits"></div>
+              </section>
+            </div>
+          </div>
+        </section>
+      </main>
+      <div id="app-footer"></div>
+      <div id="app-overlay"></div>
+    </div>
     <script type="module" src="/js/header.js"></script>
     <script type="module" src="/js/app.js"></script>
   </body>
 </html>
-
-
-
