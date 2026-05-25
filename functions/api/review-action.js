@@ -17,5 +17,5 @@ export async function onRequestPost(context) {
     return errorResponse(parsed.error, 400);
   }
 
-  return applyReviewAction(context.env, parsed.data, "admin-token");
+  return applyReviewAction(context.env, parsed.data, auth.adminLabel || "admin-token");
 }

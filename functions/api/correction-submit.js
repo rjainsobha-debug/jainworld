@@ -1,13 +1,18 @@
 import {
   createId,
+  clampText,
+  containsUrl,
   errorResponse,
   hasDb,
+  isLikelyRepeatedSpam,
   jsonResponse,
   normalizeString,
   nowIso,
   readJson,
   requireMethod
 } from "../_lib/http.js";
+import { checkRateLimit } from "../_lib/rate-limit.js";
+import { verifyTurnstileToken } from "../_lib/http.js";
 
 export async function onRequestPost(context) {
   const methodError = requireMethod(context.request, "POST");
@@ -20,18 +25,23 @@ export async function onRequestPost(context) {
     return errorResponse(parsed.error, 400);
   }
   const payload = parsed.data;
+  const rateLimit = await checkRateLimit(context.request, context.env, "correction-submit", 10, 3600);
+  if (!rateLimit.ok) {
+    return errorResponse(rateLimit.error, 429);
+  }
 
-  const correctionType = normalizeString(payload.correction_type);
-  const relatedSlug = normalizeString(payload.related_slug);
-  const relatedPage = normalizeString(payload.related_page);
-  const title = normalizeString(payload.title);
-  const description = normalizeString(payload.description);
-  const sourceUrl = normalizeString(payload.source_url);
-  const submittedByName = normalizeString(payload.submitted_by_name);
-  const submittedByEmail = normalizeString(payload.submitted_by_email);
-  const templeSlug = normalizeString(payload.temple_slug || relatedSlug);
-  const currentValue = normalizeString(payload.current_value);
-  const suggestedValue = normalizeString(payload.suggested_value);
+  const correctionType = clampText(payload.correction_type, 120);
+  const relatedSlug = clampText(payload.related_slug, 180);
+  const relatedPage = clampText(payload.related_page, 300);
+  const title = clampText(payload.title, 180);
+  const description = clampText(payload.description, 2000);
+  const sourceUrl = clampText(payload.source_url, 300);
+  const submittedByName = clampText(payload.submitted_by_name, 120);
+  const submittedByEmail = clampText(payload.submitted_by_email, 180);
+  const templeSlug = clampText(payload.temple_slug || relatedSlug, 180);
+  const currentValue = clampText(payload.current_value, 500);
+  const suggestedValue = clampText(payload.suggested_value, 1000);
+  const turnstileToken = normalizeString(payload.turnstile_token);
 
   if (!correctionType) {
     return errorResponse("correction_type is required.", 400);
@@ -41,8 +51,29 @@ export async function onRequestPost(context) {
     return errorResponse("description is required.", 400);
   }
 
+  if (description.length < 20) {
+    return errorResponse("Please provide a little more detail so the correction can be reviewed.", 400);
+  }
+
   if (!relatedPage && !relatedSlug) {
     return errorResponse("related_page or related_slug is required.", 400);
+  }
+
+  if (containsUrl(submittedByName)) {
+    return errorResponse("Please enter a valid name.", 400);
+  }
+
+  if (isLikelyRepeatedSpam(description, title, submittedByName)) {
+    return errorResponse("Please review your correction details and try again.", 400);
+  }
+
+  const turnstile = await verifyTurnstileToken(
+    context.env,
+    turnstileToken,
+    normalizeString(context.request.headers.get("cf-connecting-ip"))
+  );
+  if (!turnstile.ok) {
+    return errorResponse(turnstile.error, 403);
   }
 
   if (!hasDb(context.env)) {

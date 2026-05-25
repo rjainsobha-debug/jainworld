@@ -1,0 +1,42 @@
+[
+  {
+    "id": "news-1",
+    "title_en": "Mahavir Jayanti planning notes for temples and local communities",
+    "title_hi": "Mahavir Jayanti planning notes for temples and local communities",
+    "slug": "mahavir-jayanti-planning-notes",
+    "summary_en": "A curated summary of preparation themes temples and sanghs often review before Mahavir Jayanti programs.",
+    "summary_hi": "Mahavir Jayanti planning notes for temples and local communities",
+    "source_name": "JainWorld curated summary",
+    "source_url": "https://jainworld.in/news.html#mahavir-jayanti-planning-notes",
+    "published_at": "2026-05-18",
+    "category": "Festival",
+    "region": "India",
+    "language": "en",
+    "canonical_url": "https://jainworld.in/news.html#mahavir-jayanti-planning-notes",
+    "content_hash": "mahavir-jayanti-planning-notes",
+    "duplicate_group_id": "festival-mahavir-jayanti-2026",
+    "relevance_score": 94,
+    "review_status": "pending_review",
+    "status": "draft"
+  },
+  {
+    "id": "news-2",
+    "title_en": "Pilgrimage season update for Palitana and Girnar travellers",
+    "title_hi": "Pilgrimage season update for Palitana and Girnar travellers",
+    "slug": "pilgrimage-season-update-palitana-girnar",
+    "summary_en": "A reviewed travel note covering route planning, timing verification, and basic discipline reminders for yatris.",
+    "summary_hi": "Pilgrimage season update for Palitana and Girnar travellers",
+    "source_name": "JainWorld curated summary",
+    "source_url": "https://jainworld.in/news.html#pilgrimage-season-update-palitana-girnar",
+    "published_at": "2026-05-16",
+    "category": "Pilgrimage",
+    "region": "Gujarat",
+    "language": "en",
+    "canonical_url": "https://jainworld.in/news.html#pilgrimage-season-update-palitana-girnar",
+    "content_hash": "pilgrimage-season-update-palitana-girnar",
+    "duplicate_group_id": "pilgrimage-palitana-girnar-2026",
+    "relevance_score": 91,
+    "review_status": "pending_review",
+    "status": "draft"
+  }
+]

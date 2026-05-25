@@ -40,6 +40,10 @@ export function normalizeString(value) {
   return normalized || "";
 }
 
+export function normalizeWhitespace(value) {
+  return normalizeString(value).replace(/\s+/g, " ");
+}
+
 export function normalizeBoolean(value) {
   if (typeof value === "boolean") {
     return value;
@@ -92,6 +96,19 @@ export function getAdminTokenFromRequest(request) {
 }
 
 export function requireAdminToken(request, env) {
+  const accessModeEnabled = normalizeString(env?.ENABLE_ACCESS_AUTH).toLowerCase() === "true";
+  const accessUserEmail = normalizeString(request.headers.get("cf-access-authenticated-user-email"));
+
+  // TODO: In production, pair this with Cloudflare Access policies so these headers
+  // are only present after verified Access authentication.
+  if (accessModeEnabled && accessUserEmail) {
+    return {
+      ok: true,
+      adminLabel: accessUserEmail,
+      authMode: "cloudflare-access"
+    };
+  }
+
   const configuredToken = normalizeString(env?.ADMIN_TOKEN);
   if (!configuredToken) {
     return {
@@ -108,7 +125,11 @@ export function requireAdminToken(request, env) {
     };
   }
 
-  return { ok: true };
+  return {
+    ok: true,
+    adminLabel: "admin-token",
+    authMode: "token"
+  };
 }
 
 export function isAdminAuthorized(request, env) {
@@ -165,4 +186,78 @@ export function maskPhone(phone) {
   const prefix = digits.slice(0, Math.min(2, digits.length - 2));
   const suffix = digits.slice(-2);
   return `${prefix}${"X".repeat(Math.max(4, digits.length - prefix.length - suffix.length))}${suffix}`;
+}
+
+export function containsUrl(value) {
+  return /(https?:\/\/|www\.)/i.test(normalizeString(value));
+}
+
+export function isLikelyRepeatedSpam(...values) {
+  const normalized = values.map((value) => normalizeWhitespace(value).toLowerCase()).filter(Boolean);
+  if (normalized.length < 2) {
+    return false;
+  }
+
+  const unique = new Set(normalized);
+  return unique.size === 1;
+}
+
+export function clampText(value, maxLength) {
+  return normalizeWhitespace(value).slice(0, maxLength);
+}
+
+export async function verifyTurnstileToken(env, token, ipAddress = "") {
+  const secret = normalizeString(env?.TURNSTILE_SECRET_KEY);
+  if (!secret) {
+    return {
+      ok: true,
+      enforced: false
+    };
+  }
+
+  const turnstileToken = normalizeString(token);
+  if (!turnstileToken) {
+    return {
+      ok: false,
+      enforced: true,
+      error: "Turnstile verification failed."
+    };
+  }
+
+  try {
+    const formData = new URLSearchParams();
+    formData.set("secret", secret);
+    formData.set("response", turnstileToken);
+    if (ipAddress) {
+      formData.set("remoteip", ipAddress);
+    }
+
+    const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: formData.toString()
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data.success !== true) {
+      return {
+        ok: false,
+        enforced: true,
+        error: "Turnstile verification failed."
+      };
+    }
+
+    return {
+      ok: true,
+      enforced: true
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      enforced: true,
+      error: "Turnstile verification failed."
+    };
+  }
 }

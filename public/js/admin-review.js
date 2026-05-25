@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const tokenInput = document.getElementById("admin-token-input");
   const liveButton = document.getElementById("admin-load-live");
+  const refreshButton = document.getElementById("admin-refresh-live");
   const sampleButton = document.getElementById("admin-load-sample");
 
   currentState.token = sessionStorage.getItem(SESSION_TOKEN_KEY) || "";
@@ -43,11 +44,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     tokenInput.value = currentState.token;
   }
 
-  bindActionBar(tokenInput, liveButton, sampleButton);
+  bindActionBar(tokenInput, liveButton, refreshButton, sampleButton);
   await loadFallbackMode("Loading sample review queues...");
 });
 
-function bindActionBar(tokenInput, liveButton, sampleButton) {
+function bindActionBar(tokenInput, liveButton, refreshButton, sampleButton) {
   liveButton?.addEventListener("click", async () => {
     const token = String(tokenInput?.value || "").trim();
     if (!token) {
@@ -58,6 +59,15 @@ function bindActionBar(tokenInput, liveButton, sampleButton) {
     sessionStorage.setItem(SESSION_TOKEN_KEY, token);
     currentState.token = token;
     await loadLiveMode();
+  });
+
+  refreshButton?.addEventListener("click", async () => {
+    if (currentState.token) {
+      await loadLiveMode();
+      return;
+    }
+
+    await loadFallbackMode("Showing sample JSON fallback queues.");
   });
 
   sampleButton?.addEventListener("click", async () => {
@@ -75,6 +85,7 @@ async function loadFallbackMode(message) {
   currentState.sourceLabel = "Sample JSON fallback";
   currentState.collections = await loadCollectionsFromFallback();
   renderDashboard(currentState.collections, false);
+  updateModeLabel("Sample fallback mode", "jw-badge jw-badge--pending-review");
   setFeedback(message, "neutral");
 }
 
@@ -85,6 +96,7 @@ async function loadLiveMode() {
     currentState.sourceLabel = "Live D1 data";
     currentState.collections = collections;
     renderDashboard(collections, true);
+    updateModeLabel("Live D1 mode", "jw-badge jw-badge--approved");
     setFeedback("Live D1 review queues loaded.", "success");
   } catch (error) {
     console.warn("Falling back to sample review queues", error);
@@ -487,6 +499,16 @@ function setFeedback(text, tone = "neutral") {
 
   node.textContent = text;
   node.className = styles[tone] || styles.neutral;
+}
+
+function updateModeLabel(text, className) {
+  const node = document.getElementById("admin-mode-label");
+  if (!node) {
+    return;
+  }
+
+  node.textContent = text;
+  node.className = className;
 }
 
 function buildStatusClass(status) {

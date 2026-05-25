@@ -52,12 +52,14 @@
                 </div>
                 <div class="flex flex-wrap items-end gap-3">
                   <button id="admin-load-live" type="button" class="jw-btn jw-btn-primary">Load live review queues</button>
+                  <button id="admin-refresh-live" type="button" class="jw-btn">Refresh queues</button>
                   <button id="admin-load-sample" type="button" class="jw-btn">Use sample fallback</button>
                 </div>
               </div>
               <div class="mt-4 flex flex-wrap items-center gap-3">
                 <span class="jw-badge jw-badge--draft">Source</span>
                 <span id="admin-source-label" class="text-sm text-stone-600">Sample JSON fallback</span>
+                <span class="jw-badge jw-badge--pending-review" id="admin-mode-label">Sample fallback mode</span>
               </div>
               <div id="admin-review-feedback" class="mt-4 rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-600">
                 Internal admin prototype. Do not expose private data publicly.
