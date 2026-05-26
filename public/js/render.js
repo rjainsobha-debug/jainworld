@@ -1,6 +1,18 @@
-import { getLanguage, pickLocalized, translate } from "./language.js";
+import { currentLanguage, getLanguage, pickLocalized, translate, translateLabel } from "./language.js";
 
 const DEFAULT_IMAGE = "/images/default.jpg";
+const CATEGORY_VISUAL_LABELS = {
+  literature: { en: "Scripture", hi: "शास्त्र" },
+  philosophy: { en: "Philosophy", hi: "दर्शन" },
+  temples: { en: "Temple", hi: "मंदिर" },
+  food: { en: "Food", hi: "भोजन" },
+  audio: { en: "Audio", hi: "ऑडियो" },
+  resources: { en: "Resources", hi: "संसाधन" },
+  calendar: { en: "Calendar", hi: "कैलेंडर" },
+  children: { en: "Children", hi: "बच्चे" },
+  bhajan: { en: "Bhajan", hi: "भजन" },
+  aarti: { en: "Aarti", hi: "आरती" }
+};
 
 function resolveTarget(target) {
   return typeof target === "string" ? document.querySelector(target) : target;
@@ -55,8 +67,95 @@ function metaLabel(enLabel, hiLabel, value) {
   return `${getLanguage() === "hi" ? hiLabel : enLabel}: ${value}`;
 }
 
+function currentLang() {
+  return currentLanguage();
+}
+
+function getLocalizedField(item, base, fallback = "") {
+  return pickLocalized(item, base, currentLang()) || fallback;
+}
+
+function localizeLabel(label, fallback = "") {
+  return translateLabel(label, fallback || label);
+}
+
+function isUsableImage(value) {
+  const normalized = String(value || "").trim().toLowerCase();
+  if (!normalized) {
+    return false;
+  }
+
+  return !(
+    normalized === DEFAULT_IMAGE.toLowerCase() ||
+    normalized.endsWith("/default.jpg") ||
+    normalized.includes("default.jpg")
+  );
+}
+
+function getVisualCategory(type, item = {}) {
+  const raw = [type, item.category, item.subcategory, item.tags].filter(Boolean).join(" ").toLowerCase();
+  if (raw.includes("temple") || raw.includes("tirth")) return "temples";
+  if (raw.includes("food") || raw.includes("diet") || raw.includes("ingredient")) return "food";
+  if (raw.includes("audio") || raw.includes("mantra") || raw.includes("pravachan") || raw.includes("bhajan") || raw.includes("aarti") || raw.includes("stavan")) return raw.includes("bhajan") ? "bhajan" : raw.includes("aarti") ? "aarti" : "audio";
+  if (raw.includes("resource") || raw.includes("scholarship") || raw.includes("document")) return "resources";
+  if (raw.includes("calendar") || raw.includes("festival") || raw.includes("tithi")) return "calendar";
+  if (raw.includes("kid") || raw.includes("child")) return "children";
+  if (raw.includes("philosophy") || raw.includes("sutra") || raw.includes("samayasara") || raw.includes("tattvartha")) return "philosophy";
+  if (raw.includes("literature") || raw.includes("agama") || raw.includes("scripture") || raw.includes("story")) return "literature";
+  return type === "resources" ? "resources" : type === "audio" ? "audio" : type === "temples" ? "temples" : type === "food" ? "food" : "literature";
+}
+
+function getVisualLabel(visualType) {
+  const lang = currentLang();
+  return CATEGORY_VISUAL_LABELS[visualType]?.[lang] || CATEGORY_VISUAL_LABELS[visualType]?.en || translate("jainworld", "JainWorld");
+}
+
+function renderCategoryVisual(type, item, title) {
+  const visualType = getVisualCategory(type, item);
+  const visualLabel = getVisualLabel(visualType);
+  const icon = visualType === "temples"
+    ? "तीर्थ"
+    : visualType === "food"
+      ? "आहार"
+      : visualType === "audio" || visualType === "bhajan" || visualType === "aarti"
+        ? "श्रवण"
+        : visualType === "resources"
+          ? "सहाय"
+          : visualType === "calendar"
+            ? "पर्व"
+            : visualType === "children"
+              ? "परिवार"
+              : "ज्ञान";
+
+  return `
+    <div class="category-visual category-visual--${visualType}" role="img" aria-label="${escapeHtml(title)}">
+      <span class="category-visual__icon" aria-hidden="true">${escapeHtml(icon)}</span>
+      <span class="category-visual__label">${escapeHtml(visualLabel)}</span>
+    </div>
+  `;
+}
+
+function renderCardMedia(type, item, title) {
+  const imageSrc = getImageSrc(item);
+  if (isUsableImage(imageSrc)) {
+    const alt = getLocalizedField(item, "title", title) || title;
+    return `
+      <img
+        src="${escapeHtml(imageSrc)}"
+        alt="${escapeHtml(alt)}"
+        class="h-40 w-full rounded-xl border border-stone-200 object-cover"
+        onerror="this.onerror=null;this.closest('article')?.querySelector('[data-fallback-visual]')?.classList.remove('hidden'); this.classList.add('hidden');"
+        loading="lazy"
+      />
+      <div class="hidden" data-fallback-visual>${renderCategoryVisual(type, item, title)}</div>
+    `;
+  }
+
+  return renderCategoryVisual(type, item, title);
+}
+
 function renderBadges(badges = []) {
-  const clean = badges.filter(Boolean);
+  const clean = badges.map((badge) => localizeLabel(badge, badge)).filter(Boolean);
   if (!clean.length) {
     return "";
   }
@@ -216,20 +315,17 @@ export function renderCards(target, items, options = {}) {
             item.description ||
             item.excerpt ||
             "Structured JainWorld content.";
-          const meta = metaBuilder(item).filter(Boolean);
+          const meta = metaBuilder(item).map((entry) => localizeLabel(entry, entry)).filter(Boolean);
           const href = linkBuilder(item);
-          const imageSrc = getImageSrc(item);
+          const badges = [
+            getLocalizedField(item, "category", item.category) || localizeLabel(item.category, item.category),
+            getLocalizedField(item, "difficulty", item.difficulty) || localizeLabel(item.difficulty, item.difficulty)
+          ];
 
           return `
             <article class="jw-card p-5">
-              <img
-                src="${escapeHtml(imageSrc)}"
-                alt="${escapeHtml(title)}"
-                class="h-40 w-full rounded-xl border border-stone-200 object-cover"
-                onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
-                loading="lazy"
-              />
-              ${renderBadges([item.category, item.difficulty])}
+              ${renderCardMedia(type, item, title)}
+              ${renderBadges(badges)}
               <h3 class="mt-3 text-lg font-semibold leading-snug text-stone-900">
                 <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(title)}</a>
               </h3>
@@ -267,7 +363,6 @@ export function renderNews(target, items) {
       ${items
         .map((item) => {
           const href = buildDetailUrl("news", item);
-          const imageSrc = getImageSrc(item);
           const title = pickLocalized(item, "title", lang) || item.title || item.title_en || "Untitled news entry";
           const summary =
             pickLocalized(item, "summary", lang) || item.summary || item.summary_en || "Curated news for the Jain community.";
@@ -278,14 +373,8 @@ export function renderNews(target, items) {
 
           return `
             <article class="jw-card p-5">
-              <img
-                src="${escapeHtml(imageSrc)}"
-                alt="${escapeHtml(title)}"
-                class="h-40 w-full rounded-xl border border-stone-200 object-cover"
-                onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
-                loading="lazy"
-              />
-              ${renderBadges([item.category || "General", item.region, status])}
+              ${renderCardMedia("news", item, title)}
+              ${renderBadges([localizeLabel(item.category || "General", item.category || "General"), item.region, status])}
               <h3 class="mt-3 text-lg font-semibold leading-snug text-stone-900">
                 <a href="${escapeHtml(href)}" ${item.source_url ? 'target="_blank" rel="noopener noreferrer"' : ""} class="hover:text-amber-800">${escapeHtml(title)}</a>
               </h3>
@@ -404,13 +493,23 @@ export function renderTemples(target, items) {
     <div class="jw-grid-3">
       ${items
         .map((item) => {
-          const name = item.name_en || item.name_hi || item.name || item.slug || "Temple";
+          const name =
+            (getLanguage() === "hi" ? item.name_hi || item.name : item.name_en || item.name) ||
+            item.name_en ||
+            item.name_hi ||
+            item.slug ||
+            "Temple";
           const location = [item.city, item.state, item.country].filter(Boolean).join(", ") || "Location pending";
           const href = buildDetailUrl("temples", item);
 
           return `
             <article class="jw-card p-5">
-              ${renderBadges([item.category, item.tradition, item.main_deity])}
+              ${renderCategoryVisual("temples", item, name)}
+              ${renderBadges([
+                getLocalizedField(item, "category", item.category) || localizeLabel(item.category, item.category),
+                getLocalizedField(item, "tradition", item.tradition) || item.tradition,
+                getLocalizedField(item, "main_deity", item.main_deity) || item.main_deity
+              ])}
               <h3 class="mt-4 text-lg font-semibold leading-snug text-stone-900">
                 <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(name)}</a>
               </h3>
@@ -508,7 +607,12 @@ export function renderResources(target, items) {
 
           return `
             <article class="jw-card p-5">
-              ${renderBadges([item.category, item.state, reviewStatus])}
+              ${renderCardMedia("resources", item, title)}
+              ${renderBadges([
+                getLocalizedField(item, "category", item.category) || localizeLabel(item.category, item.category),
+                getLocalizedField(item, "state", item.state) || item.state,
+                reviewStatus
+              ])}
               <h3 class="mt-4 text-lg font-semibold leading-snug text-stone-900">${escapeHtml(title)}</h3>
               <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
               ${renderTrustMeta([
@@ -537,14 +641,14 @@ export function renderGroupedSearch(target, groups, query) {
   }
 
   const groupNames = {
-    blogs: "Blogs",
-    audio: "Audio",
-    literature: "Literature",
-    temples: "Temples",
-    food: "Food",
-    education: "Education",
-    news: "News",
-    resources: "Resources"
+    blogs: translate("blogs", "Blogs"),
+    audio: translate("audio", "Audio"),
+    literature: translate("literature", "Literature"),
+    temples: translate("temples", "Temples"),
+    food: translate("food", "Food"),
+    education: translate("education", "Education"),
+    news: translate("news", "News"),
+    resources: translate("resources", "Resources")
   };
 
   const nonEmptyGroups = Object.entries(groups).filter(([, items]) => items.length);

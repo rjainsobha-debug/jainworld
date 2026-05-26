@@ -12,7 +12,7 @@ import {
 } from "./api.js";
 import { initCalendarPage } from "./calendar.js";
 import { initCommunityForm } from "./community.js";
-import { getLanguage, initLanguageToggle, translate, updateLanguageDOM } from "./language.js";
+import { getLanguage, initLanguageToggle, translate, translateLabel, updateLanguageDOM } from "./language.js";
 import {
   formatDate,
   renderAudio,
@@ -629,7 +629,7 @@ function renderSimpleLiterature(items, targetSelector = "#featured-literature") 
       item.category,
       item.subcategory,
       item.difficulty,
-      "Reviewed by JainWorld Editorial"
+      translate("reviewed_by_editorial", "Reviewed by JainWorld Editorial")
     ].filter(Boolean)
   });
 }
@@ -643,7 +643,7 @@ function renderFoodHighlights(items) {
       item.category,
       item.type,
       item.allowed_status,
-      "Reviewed by JainWorld Editorial"
+      translate("reviewed_by_editorial", "Reviewed by JainWorld Editorial")
     ].filter(Boolean)
   });
 }
@@ -691,7 +691,13 @@ function renderCategoryPills(targetSelector, items) {
 
   root.innerHTML = `
     <div class="jw-inline-scroll">
-      ${items.map((item) => `<span class="topic-chip whitespace-nowrap">${typeof item === "string" ? item : item.en}</span>`).join("")}
+      ${items
+        .map((item) => {
+          const label = typeof item === "string" ? item : getLanguage() === "hi" ? item.hi || item.en : item.en;
+          const localized = typeof item === "string" ? translateLabel(item, item) : label;
+          return `<span class="topic-chip whitespace-nowrap">${localized}</span>`;
+        })
+        .join("")}
     </div>
   `;
 }
@@ -762,7 +768,7 @@ function renderSimpleFood(items) {
       item.category,
       item.allowed_status,
       item.tags,
-      "Reviewed by JainWorld Editorial"
+      translate("reviewed_by_editorial", "Reviewed by JainWorld Editorial")
     ].filter(Boolean)
   });
 }

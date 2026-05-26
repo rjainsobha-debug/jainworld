@@ -108,6 +108,119 @@ mark {
   backdrop-filter: blur(10px);
 }
 
+.category-visual {
+  position: relative;
+  display: flex;
+  min-height: 10rem;
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--jw-border);
+  border-radius: 1rem;
+  padding: 1.15rem;
+  color: var(--jw-text);
+  background:
+    radial-gradient(circle at top right, rgba(217, 154, 43, 0.26), transparent 42%),
+    radial-gradient(circle at 10% 20%, rgba(122, 31, 43, 0.1), transparent 36%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.98), rgba(244, 231, 208, 0.98));
+}
+
+.category-visual::before,
+.category-visual::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.category-visual::before {
+  inset: auto auto 1rem -1.5rem;
+  width: 6rem;
+  height: 6rem;
+  border: 1px solid rgba(122, 31, 43, 0.12);
+}
+
+.category-visual::after {
+  inset: 0.9rem 1rem auto auto;
+  width: 3.2rem;
+  height: 3.2rem;
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 0 1px rgba(122, 31, 43, 0.08);
+}
+
+.category-visual__icon {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  width: fit-content;
+  padding: 0.55rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(122, 31, 43, 0.1);
+  color: var(--jw-maroon);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.category-visual__label {
+  position: relative;
+  z-index: 1;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.category-visual--literature,
+.category-visual--philosophy {
+  background:
+    linear-gradient(140deg, rgba(255, 248, 234, 0.98), rgba(245, 235, 214, 0.98)),
+    linear-gradient(0deg, rgba(122, 31, 43, 0.06), rgba(122, 31, 43, 0.06));
+}
+
+.category-visual--temples {
+  background:
+    radial-gradient(circle at top center, rgba(217, 154, 43, 0.3), transparent 35%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.98), rgba(238, 222, 191, 0.98));
+}
+
+.category-visual--food {
+  background:
+    radial-gradient(circle at top right, rgba(111, 143, 95, 0.24), transparent 34%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.98), rgba(241, 234, 214, 0.98));
+}
+
+.category-visual--audio,
+.category-visual--bhajan,
+.category-visual--aarti {
+  background:
+    radial-gradient(circle at top center, rgba(217, 154, 43, 0.32), transparent 35%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.98), rgba(248, 230, 199, 0.98));
+}
+
+.category-visual--resources {
+  background:
+    radial-gradient(circle at right center, rgba(111, 143, 95, 0.18), transparent 35%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.98), rgba(240, 231, 213, 0.98));
+}
+
+.category-visual--calendar {
+  background:
+    radial-gradient(circle at top left, rgba(217, 154, 43, 0.28), transparent 35%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.98), rgba(248, 226, 197, 0.98));
+}
+
+.category-visual--children {
+  background:
+    radial-gradient(circle at top center, rgba(111, 143, 95, 0.22), transparent 35%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.98), rgba(242, 236, 220, 0.98));
+}
+
 .jw-card {
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
