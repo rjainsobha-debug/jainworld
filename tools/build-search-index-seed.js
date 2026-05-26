@@ -3,7 +3,10 @@ const path = require("path");
 
 const rootDir = path.resolve(__dirname, "..");
 const dataDir = path.join(rootDir, "public", "data");
-const outputPath = path.join(rootDir, "db", "seed-search-index.sql");
+const outputPaths = [
+  path.join(rootDir, "db", "seed-search-index.sql"),
+  path.join(rootDir, "db", "seed-search-index-d1.sql")
+];
 
 const SOURCES = [
   { type: "literature", file: "sample-literature.json", weight: 5, mapper: mapLiterature },
@@ -14,7 +17,11 @@ const SOURCES = [
   { type: "audio", file: "sample-audio.json", weight: 4, mapper: mapAudio },
   { type: "news", file: "sample-news.json", weight: 3, mapper: mapNews },
   { type: "resources", file: "sample-resources.json", weight: 5, mapper: mapResources },
-  { type: "calendar", file: "sample-calendar.json", weight: 3, mapper: mapCalendar }
+  { type: "calendar", file: "sample-calendar.json", weight: 3, mapper: mapCalendar },
+  { type: "directory", file: "sample-directory.json", weight: 5, mapper: mapDirectory },
+  { type: "speakers", file: "sample-speakers.json", weight: 3, mapper: mapSpeakers },
+  { type: "names", file: "sample-names.json", weight: 2, mapper: mapNames },
+  { type: "dictionary", file: "sample-dictionary.json", weight: 4, mapper: mapDictionary }
 ];
 
 function main() {
@@ -45,8 +52,10 @@ function main() {
   });
 
   const sql = buildSql(rows);
-  fs.writeFileSync(outputPath, sql, "utf8");
-  console.log(`Wrote ${outputPath}`);
+  outputPaths.forEach((outputPath) => {
+    fs.writeFileSync(outputPath, sql, "utf8");
+    console.log(`Wrote ${outputPath}`);
+  });
   Object.entries(counts).forEach(([type, count]) => {
     console.log(`${type}: ${count}`);
   });
@@ -278,6 +287,82 @@ function mapCalendar(item, weight) {
       published_at: item.date_gregorian,
       updated_at: item.date_gregorian,
       created_at: item.date_gregorian
+    }
+  );
+}
+
+function mapDirectory(item, weight) {
+  return baseRow(
+    "directory",
+    item,
+    weight,
+    item.title || item.title_hi,
+    item.summary || item.summary_hi,
+    [item.summary, item.category, item.tags, item.related_sections].filter(Boolean).join(" "),
+    item.url || "/directory.html",
+    {
+      category: item.category,
+      tags: item.tags,
+      review_status: item.review_status || "needs_review",
+      source_name: "JainWorld Directory",
+      created_at: "2026-05-26"
+    }
+  );
+}
+
+function mapSpeakers(item, weight) {
+  return baseRow(
+    "speakers",
+    item,
+    weight,
+    item.name || item.name_hi,
+    item.summary || item.summary_hi,
+    [item.summary, item.tradition_or_context, item.topics, item.related_audio, item.related_literature].filter(Boolean).join(" "),
+    "/speakers.html",
+    {
+      category: item.tradition_or_context,
+      tags: item.topics,
+      review_status: item.review_status || "needs_review",
+      source_name: "JainWorld Speakers",
+      created_at: "2026-05-26"
+    }
+  );
+}
+
+function mapNames(item, weight) {
+  return baseRow(
+    "names",
+    item,
+    weight,
+    item.name || item.name_hi,
+    item.meaning || item.meaning_hi,
+    [item.name, item.name_hi, item.meaning, item.meaning_hi, item.gender, item.source_note].filter(Boolean).join(" "),
+    "/names.html",
+    {
+      category: item.gender,
+      tags: item.meaning,
+      review_status: item.review_status || "needs_review",
+      source_name: "JainWorld Names",
+      created_at: "2026-05-26"
+    }
+  );
+}
+
+function mapDictionary(item, weight) {
+  return baseRow(
+    "dictionary",
+    item,
+    weight,
+    item.term || item.term_hi,
+    item.simple_meaning || item.simple_meaning_hi,
+    [item.term, item.term_hi, item.simple_meaning, item.simple_meaning_hi, item.category].filter(Boolean).join(" "),
+    "/dictionary.html",
+    {
+      category: item.category,
+      tags: item.term,
+      review_status: item.review_status || "needs_review",
+      source_name: "JainWorld Dictionary",
+      created_at: "2026-05-26"
     }
   );
 }

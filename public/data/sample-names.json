@@ -1,0 +1,102 @@
+[
+  {
+    "id": "name-1",
+    "name": "Ahimsa",
+    "name_hi": "अहिंसा",
+    "gender": "unisex",
+    "meaning": "non-violence",
+    "meaning_hi": "अहिंसा, किसी को हानि न पहुँचाने का भाव",
+    "source_note": "Meaning should be reviewed with family preference and language context.",
+    "review_status": "curated"
+  },
+  {
+    "id": "name-2",
+    "name": "Samyak",
+    "name_hi": "सम्यक",
+    "gender": "unisex",
+    "meaning": "right, wholesome, or well-directed",
+    "meaning_hi": "सम्यक, सही या सद्दिशा वाला",
+    "source_note": "Common Jain philosophical usage.",
+    "review_status": "curated"
+  },
+  {
+    "id": "name-3",
+    "name": "Darshan",
+    "name_hi": "दर्शन",
+    "gender": "male",
+    "meaning": "vision or insight",
+    "meaning_hi": "दर्शन, दृष्टि या अंतर्दृष्टि",
+    "source_note": "May be used in broader Indian traditions as well.",
+    "review_status": "curated"
+  },
+  {
+    "id": "name-4",
+    "name": "Veer",
+    "name_hi": "वीर",
+    "gender": "male",
+    "meaning": "brave or courageous",
+    "meaning_hi": "वीर, साहसी",
+    "source_note": "Simple cultural meaning; not a biographical claim.",
+    "review_status": "curated"
+  },
+  {
+    "id": "name-5",
+    "name": "Mahavir",
+    "name_hi": "महावीर",
+    "gender": "male",
+    "meaning": "great hero",
+    "meaning_hi": "महावीर, महान वीर",
+    "source_note": "Use respectfully due to its strong religious association.",
+    "review_status": "curated"
+  },
+  {
+    "id": "name-6",
+    "name": "Jinendra",
+    "name_hi": "जिनेन्द्र",
+    "gender": "male",
+    "meaning": "lord of the conquerors",
+    "meaning_hi": "जिनेन्द्र, जिनों के स्वामी",
+    "source_note": "Meaning should be reviewed for family naming preference.",
+    "review_status": "needs_review"
+  },
+  {
+    "id": "name-7",
+    "name": "Arihant",
+    "name_hi": "अरिहंत",
+    "gender": "male",
+    "meaning": "one who has conquered inner enemies",
+    "meaning_hi": "अरिहंत, जिसने आंतरिक शत्रुओं को जीता हो",
+    "source_note": "Use respectfully because of strong doctrinal meaning.",
+    "review_status": "needs_review"
+  },
+  {
+    "id": "name-8",
+    "name": "Siddhi",
+    "name_hi": "सिद्धि",
+    "gender": "female",
+    "meaning": "accomplishment or attainment",
+    "meaning_hi": "सिद्धि, उपलब्धि या सिद्ध अवस्था",
+    "source_note": "Simple broad meaning; review if doctrinal nuance is needed.",
+    "review_status": "curated"
+  },
+  {
+    "id": "name-9",
+    "name": "Shrut",
+    "name_hi": "श्रुत",
+    "gender": "male",
+    "meaning": "learning or scriptural knowledge",
+    "meaning_hi": "श्रुत, अध्ययन या शास्त्रीय ज्ञान",
+    "source_note": "Meaning should be reviewed for spelling preference.",
+    "review_status": "needs_review"
+  },
+  {
+    "id": "name-10",
+    "name": "Maitri",
+    "name_hi": "मैत्री",
+    "gender": "female",
+    "meaning": "friendship or goodwill",
+    "meaning_hi": "मैत्री, मित्रभाव या सद्भावना",
+    "source_note": "Common value-oriented Jain and Indic meaning.",
+    "review_status": "curated"
+  }
+]

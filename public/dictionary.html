@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jain Dictionary | JainWorld</title>
+    <meta name="description" content="Browse a simple bilingual Jain glossary with beginner-friendly meanings for common Jain terms." />
+    <link rel="canonical" href="https://jainworld.in/dictionary.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Jain Dictionary | JainWorld" />
+    <meta property="og:description" content="A simple bilingual Jain glossary with beginner-friendly meanings for common terms." />
+    <meta property="og:url" content="https://jainworld.in/dictionary.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body data-page="dictionary" class="jw-shell">
+    <div id="app">
+      <div id="app-header"></div>
+      <noscript><div class="jw-noscript">Enable JavaScript to browse the Jain dictionary.</div></noscript>
+      <main id="main-content">
+        <section class="page-banner devotional-hero jain-motif-bg">
+          <div class="jw-container jw-page-hero-inner">
+            <div class="breadcrumb">
+              <a href="/index.html" data-en="Home" data-hi="होम">Home</a>
+              <span aria-hidden="true">/</span>
+              <span data-en="Jain dictionary" data-hi="जैन शब्दकोश">Jain dictionary</span>
+            </div>
+            <div class="page-banner-copy">
+              <span class="jw-kicker" data-en="Simple meanings" data-hi="सरल अर्थ">Simple meanings</span>
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900" data-en="Jain dictionary" data-hi="जैन शब्दकोश">Jain dictionary</h1>
+              <p
+                class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600"
+                data-en="A bilingual starter glossary for common Jain terms, values, practices, and festival words."
+                data-hi="सामान्य जैन शब्दों, मूल्यों, साधनाओं और पर्व-संबंधी शब्दों के लिए द्विभाषी प्रारंभिक शब्दकोश।"
+              >
+                A bilingual starter glossary for common Jain terms, values, practices, and festival words.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="py-8">
+          <div class="jw-container jw-page-stack">
+            <div class="soft-card p-5">
+              <label for="dictionary-search" class="mb-2 block text-sm font-semibold text-stone-900" data-en="Search terms" data-hi="शब्द खोजें">Search terms</label>
+              <input id="dictionary-search" type="search" data-placeholder-en="Search Ahimsa, Samayik, Moksha, Karma..." data-placeholder-hi="अहिंसा, सामायिक, मोक्ष, कर्म आदि खोजें" placeholder="Search Ahimsa, Samayik, Moksha, Karma..." />
+            </div>
+            <div id="dictionary-list" aria-live="polite"></div>
+          </div>
+        </section>
+      </main>
+      <div id="app-footer"></div>
+      <div id="app-overlay"></div>
+    </div>
+    <script type="module" src="/js/header.js"></script>
+    <script type="module" src="/js/app.js"></script>
+    <script type="module" src="/js/dictionary-page.js"></script>
+  </body>
+</html>

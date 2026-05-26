@@ -1,0 +1,155 @@
+[
+  {
+    "term": "Ahimsa",
+    "term_hi": "अहिंसा",
+    "simple_meaning": "non-violence in thought, word, and action",
+    "simple_meaning_hi": "विचार, वचन और कर्म में अहिंसा",
+    "category": "Values",
+    "review_status": "verified",
+    "related_links": "/search.html?q=Ahimsa"
+  },
+  {
+    "term": "Aparigraha",
+    "term_hi": "अपरिग्रह",
+    "simple_meaning": "non-possessiveness or restraint in attachment",
+    "simple_meaning_hi": "अधिक संग्रह और आसक्ति से संयम",
+    "category": "Values",
+    "review_status": "verified",
+    "related_links": "/search.html?q=Aparigraha"
+  },
+  {
+    "term": "Anekantavada",
+    "term_hi": "अनेकांतवाद",
+    "simple_meaning": "the idea that truth can have many aspects",
+    "simple_meaning_hi": "यह विचार कि सत्य के अनेक पक्ष हो सकते हैं",
+    "category": "Philosophy",
+    "review_status": "verified",
+    "related_links": "/search.html?q=Anekantavada"
+  },
+  {
+    "term": "Samyak Darshan",
+    "term_hi": "सम्यक दर्शन",
+    "simple_meaning": "right vision or right faith",
+    "simple_meaning_hi": "सम्यक दृष्टि या सम्यक श्रद्धा",
+    "category": "Philosophy",
+    "review_status": "needs_review",
+    "related_links": "/search.html?q=Samyak%20Darshan"
+  },
+  {
+    "term": "Samyak Jnan",
+    "term_hi": "सम्यक ज्ञान",
+    "simple_meaning": "right knowledge",
+    "simple_meaning_hi": "सम्यक ज्ञान",
+    "category": "Philosophy",
+    "review_status": "needs_review",
+    "related_links": "/search.html?q=Samyak%20Jnan"
+  },
+  {
+    "term": "Samyak Charitra",
+    "term_hi": "सम्यक चरित्र",
+    "simple_meaning": "right conduct",
+    "simple_meaning_hi": "सम्यक आचरण",
+    "category": "Philosophy",
+    "review_status": "needs_review",
+    "related_links": "/search.html?q=Samyak%20Charitra"
+  },
+  {
+    "term": "Tirthankar",
+    "term_hi": "तीर्थंकर",
+    "simple_meaning": "a ford-maker who shows the path to liberation",
+    "simple_meaning_hi": "मोक्ष का मार्ग दिखाने वाले तीर्थ-प्रवर्तक",
+    "category": "Jain Dharma",
+    "review_status": "verified",
+    "related_links": "/search.html?q=Tirthankar"
+  },
+  {
+    "term": "Arihant",
+    "term_hi": "अरिहंत",
+    "simple_meaning": "one who has conquered inner enemies",
+    "simple_meaning_hi": "जिसने आंतरिक शत्रुओं को जीता हो",
+    "category": "Jain Dharma",
+    "review_status": "needs_review",
+    "related_links": "/search.html?q=Arihant"
+  },
+  {
+    "term": "Siddha",
+    "term_hi": "सिद्ध",
+    "simple_meaning": "a liberated soul",
+    "simple_meaning_hi": "मुक्त आत्मा",
+    "category": "Jain Dharma",
+    "review_status": "verified",
+    "related_links": "/search.html?q=Siddha"
+  },
+  {
+    "term": "Sadhu",
+    "term_hi": "साधु",
+    "simple_meaning": "a Jain monk devoted to discipline and renunciation",
+    "simple_meaning_hi": "संयम और त्याग में स्थित जैन मुनि",
+    "category": "Community",
+    "review_status": "needs_review",
+    "related_links": "/search.html?q=Sadhu"
+  },
+  {
+    "term": "Sadhvi",
+    "term_hi": "साध्वी",
+    "simple_meaning": "a Jain nun devoted to discipline and renunciation",
+    "simple_meaning_hi": "संयम और त्याग में स्थित जैन साध्वी",
+    "category": "Community",
+    "review_status": "needs_review",
+    "related_links": "/search.html?q=Sadhvi"
+  },
+  {
+    "term": "Samayik",
+    "term_hi": "सामायिक",
+    "simple_meaning": "a period of calm reflection and equanimity",
+    "simple_meaning_hi": "शांत मनन और समता का अभ्यास",
+    "category": "Practice",
+    "review_status": "verified",
+    "related_links": "/search.html?q=Samayik"
+  },
+  {
+    "term": "Pratikraman",
+    "term_hi": "प्रतिक्रमण",
+    "simple_meaning": "reflection, repentance, and renewal of conduct",
+    "simple_meaning_hi": "आत्मचिंतन, क्षमा और आचरण का सुधार",
+    "category": "Practice",
+    "review_status": "verified",
+    "related_links": "/search.html?q=Pratikraman"
+  },
+  {
+    "term": "Paryushan",
+    "term_hi": "पर्युषण",
+    "simple_meaning": "an important Jain festival period of reflection and discipline",
+    "simple_meaning_hi": "मनन और अनुशासन का महत्वपूर्ण जैन पर्वकाल",
+    "category": "Festival",
+    "review_status": "verified",
+    "related_links": "/calendar.html"
+  },
+  {
+    "term": "Samvatsari",
+    "term_hi": "संवत्सरी",
+    "simple_meaning": "a day associated with reflection and seeking forgiveness",
+    "simple_meaning_hi": "मनन और क्षमा-याचना से जुड़ा विशेष दिन",
+    "category": "Festival",
+    "review_status": "verified",
+    "related_links": "/calendar.html"
+  },
+  {
+    "term": "Moksha",
+    "term_hi": "मोक्ष",
+    "simple_meaning": "liberation from the cycle of birth and death",
+    "simple_meaning_hi": "जन्म और मृत्यु के चक्र से मुक्ति",
+    "category": "Philosophy",
+    "review_status": "verified",
+    "related_links": "/search.html?q=Moksha"
+  },
+  {
+    "term": "Karma",
+    "term_hi": "कर्म",
+    "simple_meaning": "actions and their subtle effects on the soul",
+    "simple_meaning_hi": "कर्म और उनके आत्मा पर सूक्ष्म प्रभाव",
+    "category": "Philosophy",
+    "review_status": "needs_review",
+    "related_links": "/search.html?q=Karma"
+  }
+]

@@ -13,7 +13,11 @@ const PAGE_GROUP_MAP = {
   news: "search",
   audio: "search",
   community: "resources",
-  ask: "search"
+  ask: "search",
+  directory: "directory",
+  dictionary: "directory",
+  names: "directory",
+  speakers: "directory"
 };
 
 function getActivePage() {

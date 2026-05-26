@@ -1,0 +1,11 @@
+[
+  {
+    "id": "review-name-1",
+    "title": "Jain names starter list",
+    "summary": "Meanings are intentionally simple and should be reviewed before treating them as authoritative naming guidance.",
+    "review_status": "needs_review",
+    "priority": "medium",
+    "status": "draft",
+    "created_at": "2026-05-26"
+  }
+]

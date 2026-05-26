@@ -1,0 +1,138 @@
+[
+  {
+    "id": "community-directory-1",
+    "type": "jain_sangh",
+    "name": "Jain sangh listing placeholder",
+    "country": "India",
+    "review_status": "needs_review",
+    "quality_score": 35,
+    "quality_label": "needs_review",
+    "missing_fields": [
+      "city",
+      "state",
+      "website",
+      "source_url"
+    ],
+    "notes": "Directory record placeholder. City, website, and verification source are still needed.",
+    "created_at": "2026-05-26"
+  },
+  {
+    "id": "community-directory-2",
+    "type": "society_center",
+    "name": "Jain society or center reference placeholder",
+    "country": "Global",
+    "review_status": "needs_review",
+    "quality_score": 35,
+    "quality_label": "needs_review",
+    "missing_fields": [
+      "city",
+      "state",
+      "website",
+      "source_url"
+    ],
+    "notes": "Useful as a structure record, but no verified center details are attached yet.",
+    "created_at": "2026-05-26"
+  },
+  {
+    "id": "community-directory-3",
+    "type": "youth_group",
+    "name": "Youth group listing placeholder",
+    "country": "Global",
+    "review_status": "needs_review",
+    "quality_score": 35,
+    "quality_label": "needs_review",
+    "missing_fields": [
+      "city",
+      "state",
+      "website",
+      "source_url"
+    ],
+    "notes": "Future youth group references should be added only after website or trusted source verification.",
+    "created_at": "2026-05-26"
+  },
+  {
+    "id": "community-directory-4",
+    "type": "global_event",
+    "name": "Global Jain event placeholder",
+    "country": "Global",
+    "review_status": "pending_review",
+    "quality_score": 35,
+    "quality_label": "needs_review",
+    "missing_fields": [
+      "city",
+      "state",
+      "website",
+      "source_url"
+    ],
+    "notes": "Event dates and organizers should not be published without a verified source.",
+    "created_at": "2026-05-26"
+  },
+  {
+    "id": "community-directory-5",
+    "type": "scholar_speaker",
+    "name": "Scholar or speaker reference placeholder",
+    "country": "India",
+    "review_status": "needs_review",
+    "quality_score": 35,
+    "quality_label": "needs_review",
+    "missing_fields": [
+      "city",
+      "state",
+      "website",
+      "source_url"
+    ],
+    "notes": "Profile should remain generic until topic, context, and source link are verified.",
+    "created_at": "2026-05-26"
+  },
+  {
+    "id": "community-directory-6",
+    "type": "monk_nun_reference",
+    "name": "Monk or nun reference placeholder",
+    "country": "India",
+    "review_status": "needs_review",
+    "quality_score": 35,
+    "quality_label": "needs_review",
+    "missing_fields": [
+      "city",
+      "state",
+      "website",
+      "source_url"
+    ],
+    "notes": "Biographical or sect-specific details should be added only after careful review.",
+    "created_at": "2026-05-26"
+  },
+  {
+    "id": "community-directory-7",
+    "type": "institution",
+    "name": "Jain educational institution placeholder",
+    "country": "India",
+    "review_status": "needs_review",
+    "quality_score": 35,
+    "quality_label": "needs_review",
+    "missing_fields": [
+      "city",
+      "state",
+      "website",
+      "source_url"
+    ],
+    "notes": "Institution name, website, and location need verification before use as a trusted directory record.",
+    "created_at": "2026-05-26"
+  },
+  {
+    "id": "community-directory-8",
+    "type": "trust_resource",
+    "name": "Jain trust or support resource placeholder",
+    "country": "India",
+    "review_status": "needs_review",
+    "quality_score": 35,
+    "quality_label": "needs_review",
+    "missing_fields": [
+      "city",
+      "state",
+      "website",
+      "source_url"
+    ],
+    "notes": "Trust/support entries should include a verified source before publication.",
+    "created_at": "2026-05-26"
+  }
+]

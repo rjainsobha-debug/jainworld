@@ -1,0 +1,20 @@
+[
+  {
+    "id": "review-resource-quality-1",
+    "title": "Scholarship and minority resource verification",
+    "summary": "Official links, document lists, and deadlines should always be confirmed before broader publication.",
+    "review_status": "needs_review",
+    "priority": "high",
+    "status": "draft",
+    "created_at": "2026-05-26"
+  },
+  {
+    "id": "review-resource-quality-2",
+    "title": "Trust and directory placeholder records",
+    "summary": "Directory placeholders are useful for structure, but they still need verified websites or source notes.",
+    "review_status": "needs_review",
+    "priority": "medium",
+    "status": "draft",
+    "created_at": "2026-05-26"
+  }
+]

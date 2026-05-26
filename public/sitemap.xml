@@ -61,6 +61,26 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://jainworld.in/directory.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jainworld.in/dictionary.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://jainworld.in/names.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://jainworld.in/speakers.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://jainworld.in/search.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

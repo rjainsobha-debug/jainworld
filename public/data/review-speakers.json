@@ -1,0 +1,22 @@
+[
+  {
+    "id": "review-speaker-1",
+    "title": "Jain philosophy speaker profile placeholder",
+    "summary": "Profile exists only as a placeholder and still needs verified source context.",
+    "review_status": "needs_review",
+    "priority": "medium",
+    "status": "draft",
+    "source_url": "",
+    "created_at": "2026-05-26"
+  },
+  {
+    "id": "review-speaker-2",
+    "title": "Festival pravachan reference placeholder",
+    "summary": "Festival lecture references should not be treated as verified until source links are added.",
+    "review_status": "pending_review",
+    "priority": "high",
+    "status": "draft",
+    "source_url": "",
+    "created_at": "2026-05-26"
+  }
+]

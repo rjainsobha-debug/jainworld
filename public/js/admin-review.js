@@ -21,7 +21,13 @@ const FALLBACK_FILES = {
   templeCorrections: "/data/review-temple-corrections.json",
   images: "/data/review-images.json",
   ask: "/data/review-ask.json",
-  contentGaps: "/data/review-content-gaps.json"
+  contentGaps: "/data/review-content-gaps.json",
+  communityDirectory: "/data/review-community-directory.json",
+  communityDirectoryQuality: "/data/review-community-directory-quality.json",
+  speakersReview: "/data/review-speakers.json",
+  namesReview: "/data/review-names.json",
+  dictionaryReview: "/data/review-dictionary.json",
+  resourceQuality: "/data/review-resource-quality.json"
 };
 
 const STATUS_ORDER = ["pending_review", "approved", "verified", "needs_update", "rejected", "published", "draft", "archived"];
@@ -283,6 +289,24 @@ function renderDashboard(collections, isLive) {
     }),
     renderSection("Pending Resources", "resources", collections.resources, isLive, {
       subtitle: "Watch for stale links, missing official sources, and needs-update items."
+    }),
+    renderSection("Community Directory Review", "community-directory", collections.communityDirectory, false, {
+      subtitle: "Review-first placeholders for sanghs, centers, events, trusts, and institutional references."
+    }),
+    renderSection("Community Directory Quality", "community-directory-quality", collections.communityDirectoryQuality, false, {
+      subtitle: "Generated quality signals for missing city, state, website, source, or review fields."
+    }),
+    renderSection("Speaker/Profile Review", "speakers-review", collections.speakersReview, false, {
+      subtitle: "Speaker and lecture references remain placeholder-first until source and permission checks are complete."
+    }),
+    renderSection("Names Review", "names-review", collections.namesReview, false, {
+      subtitle: "Simple name meanings should still be reviewed for spelling, nuance, and family preference."
+    }),
+    renderSection("Dictionary Review", "dictionary-review", collections.dictionaryReview, false, {
+      subtitle: "Starter glossary entries are designed for beginners and still benefit from doctrinal nuance review."
+    }),
+    renderSection("Resource Quality Review", "resource-quality", collections.resourceQuality, false, {
+      subtitle: "Track where official links, document notes, and verification warnings still need work."
     }),
     renderSection("Pending Audio", "audio", collections.audio, isLive, {
       subtitle: "Review permission status, source attribution, and speaker or singer metadata."

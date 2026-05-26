@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jain Names | JainWorld</title>
+    <meta name="description" content="Explore a small bilingual starter list of Jain-inspired names and simple meaning notes." />
+    <link rel="canonical" href="https://jainworld.in/names.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Jain Names | JainWorld" />
+    <meta property="og:description" content="A family-friendly starter list of Jain-inspired names with simple bilingual meanings." />
+    <meta property="og:url" content="https://jainworld.in/names.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body data-page="names" class="jw-shell">
+    <div id="app">
+      <div id="app-header"></div>
+      <noscript><div class="jw-noscript">Enable JavaScript to browse Jain names.</div></noscript>
+      <main id="main-content">
+        <section class="page-banner devotional-hero jain-motif-bg">
+          <div class="jw-container jw-page-hero-inner">
+            <div class="breadcrumb">
+              <a href="/index.html" data-en="Home" data-hi="होम">Home</a>
+              <span aria-hidden="true">/</span>
+              <span data-en="Jain names" data-hi="जैन नाम">Jain names</span>
+            </div>
+            <div class="page-banner-copy">
+              <span class="jw-kicker" data-en="Family reference" data-hi="परिवार संदर्भ">Family reference</span>
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900" data-en="Jain names" data-hi="जैन नाम">Jain names</h1>
+              <p
+                class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600"
+                data-en="A small bilingual starter list of Jain-inspired names and simple meaning notes. Families may still prefer local spelling or guidance."
+                data-hi="जैन प्रेरित नामों और सरल अर्थों की छोटी द्विभाषी प्रारंभिक सूची। परिवार स्थानीय वर्तनी या मार्गदर्शन को प्राथमिकता दे सकते हैं।"
+              >
+                A small bilingual starter list of Jain-inspired names and simple meaning notes. Families may still prefer local spelling or guidance.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="py-8">
+          <div class="jw-container jw-page-stack">
+            <div class="soft-card p-5">
+              <div class="jw-grid-2 gap-5">
+                <div>
+                  <label for="names-search" class="mb-2 block text-sm font-semibold text-stone-900" data-en="Search names" data-hi="नाम खोजें">Search names</label>
+                  <input id="names-search" type="search" data-placeholder-en="Search Ahimsa, Mahavir, Maitri..." data-placeholder-hi="अहिंसा, महावीर, मैत्री आदि खोजें" placeholder="Search Ahimsa, Mahavir, Maitri..." />
+                </div>
+                <div>
+                  <label for="names-gender" class="mb-2 block text-sm font-semibold text-stone-900" data-en="Filter by gender" data-hi="लिंग के अनुसार चुनें">Filter by gender</label>
+                  <select id="names-gender">
+                    <option value="" data-en="All" data-hi="सभी">All</option>
+                    <option value="male" data-en="Male" data-hi="पुरुष">Male</option>
+                    <option value="female" data-en="Female" data-hi="महिला">Female</option>
+                    <option value="unisex" data-en="Unisex" data-hi="दोनों के लिए">Unisex</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div id="names-list" aria-live="polite"></div>
+          </div>
+        </section>
+      </main>
+      <div id="app-footer"></div>
+      <div id="app-overlay"></div>
+    </div>
+    <script type="module" src="/js/header.js"></script>
+    <script type="module" src="/js/app.js"></script>
+    <script type="module" src="/js/names-page.js"></script>
+  </body>
+</html>

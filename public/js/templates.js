@@ -5,6 +5,7 @@ export const NAV_ITEMS = [
   { key: "food", href: "/food.html", labelEn: "Food", labelHi: "भोजन" },
   { key: "calendar", href: "/calendar.html", labelEn: "Calendar", labelHi: "कैलेंडर" },
   { key: "resources", href: "/resources.html", labelEn: "Resources", labelHi: "संसाधन" },
+  { key: "directory", href: "/directory.html", labelEn: "Directory", labelHi: "निर्देशिका" },
   { key: "search", href: "/ask.html", labelEn: "Ask", labelHi: "जैनवर्ल्ड से पूछें" }
 ];
 
@@ -314,6 +315,7 @@ const FOOTER_LINK_GROUPS = [
       { href: "/contact.html", label: "Contact", labelHi: "संपर्क करें" },
       { href: "/contribute.html", label: "Contribute", labelHi: "योगदान दें" },
       { href: "/search.html", label: "Search", labelHi: "खोजें" },
+      { href: "/directory.html", label: "Directory", labelHi: "निर्देशिका" },
       { href: "/ask.html", label: "Ask JainWorld", labelHi: "जैनवर्ल्ड से पूछें" }
     ]
   },
@@ -324,7 +326,8 @@ const FOOTER_LINK_GROUPS = [
       { href: "/education.html", label: "Learn Jainism", labelHi: "जैन धर्म सीखें" },
       { href: "/temples.html", label: "Temples", labelHi: "मंदिर" },
       { href: "/food.html", label: "Food", labelHi: "भोजन" },
-      { href: "/calendar.html", label: "Calendar", labelHi: "कैलेंडर" }
+      { href: "/calendar.html", label: "Calendar", labelHi: "कैलेंडर" },
+      { href: "/directory.html", label: "Directory", labelHi: "निर्देशिका" }
     ]
   },
   {
@@ -332,6 +335,9 @@ const FOOTER_LINK_GROUPS = [
     headingHi: "ज्ञान और भक्ति",
     links: [
       { href: "/literature.html", label: "Literature", labelHi: "साहित्य" },
+      { href: "/dictionary.html", label: "Dictionary", labelHi: "जैन शब्दकोश" },
+      { href: "/names.html", label: "Names", labelHi: "जैन नाम" },
+      { href: "/speakers.html", label: "Speakers", labelHi: "वक्ता" },
       { href: "/audio.html", label: "Audio", labelHi: "ऑडियो" },
       { href: "/news.html", label: "News", labelHi: "समाचार" },
       { href: "/blogs.html", label: "Blogs", labelHi: "ब्लॉग" }

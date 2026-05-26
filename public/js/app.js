@@ -47,6 +47,13 @@ import { initGlobalSearch } from "./search.js";
 
 const HOME_DISCOVERY_ITEMS = [
   {
+    titleEn: "Explore the JainWorld directory",
+    titleHi: "JainWorld निर्देशिका देखें",
+    summaryEn: "Browse Jain Dharma, literature, temples, names, devotional audio, and community resources in one place.",
+    summaryHi: "जैन धर्म, साहित्य, मंदिर, नाम, भक्ति ऑडियो और सामुदायिक संसाधन एक ही स्थान पर देखें।",
+    href: "/directory.html"
+  },
+  {
     titleEn: "Ask from JainWorld's verified sources",
     titleHi: "जैनवर्ल्ड के सत्यापित स्रोतों से पूछें",
     summaryEn: "Use Ask JainWorld carefully for source-based answers across learning, temples, food, festivals, and support topics.",
@@ -932,7 +939,7 @@ function fillSelect(select, values) {
   const placeholder = firstOption ? firstOption.outerHTML : `<option value="">All</option>`;
 
   select.innerHTML = `${placeholder}${values
-    .map((value) => `<option value="${value}">${value}</option>`)
+    .map((value) => `<option value="${value}">${translateLabel(value, value)}</option>`)
     .join("")}`;
 }
 

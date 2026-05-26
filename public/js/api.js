@@ -13,7 +13,11 @@ const LOCAL_FILES = {
   calendar: "/data/sample-calendar.json",
   audio: "/data/sample-audio.json",
   news: "/data/sample-news.json",
-  resources: "/data/sample-resources.json"
+  resources: "/data/sample-resources.json",
+  directory: "/data/sample-directory.json",
+  speakers: "/data/sample-speakers.json",
+  names: "/data/sample-names.json",
+  dictionary: "/data/sample-dictionary.json"
 };
 
 async function fetchJson(path, params = {}) {
@@ -313,6 +317,22 @@ export async function getResources(params = {}) {
   return applyFilters(await readLocalCollection("resources"), params);
 }
 
+export async function getDirectory(params = {}) {
+  return applyFilters(await readLocalCollection("directory"), params);
+}
+
+export async function getSpeakers(params = {}) {
+  return applyFilters(await readLocalCollection("speakers"), params);
+}
+
+export async function getNames(params = {}) {
+  return applyFilters(await readLocalCollection("names"), params);
+}
+
+export async function getDictionary(params = {}) {
+  return applyFilters(await readLocalCollection("dictionary"), params);
+}
+
 export async function searchAll(query, params = {}) {
   const lowerQuery = String(query || "").toLowerCase().trim();
   if (!lowerQuery) {
@@ -330,7 +350,7 @@ export async function searchAll(query, params = {}) {
     }
   }
 
-  const [blogs, audio, literature, temples, food, education, news, resources, calendar] = await Promise.all([
+  const [blogs, audio, literature, temples, food, education, news, resources, calendar, directory, speakers, names, dictionary] = await Promise.all([
     readLocalCollection("blogs"),
     readLocalCollection("audio"),
     readLocalCollection("literature"),
@@ -339,7 +359,11 @@ export async function searchAll(query, params = {}) {
     readLocalCollection("education"),
     readLocalCollection("news"),
     readLocalCollection("resources"),
-    readLocalCollection("calendar")
+    readLocalCollection("calendar"),
+    readLocalCollection("directory"),
+    readLocalCollection("speakers"),
+    readLocalCollection("names"),
+    readLocalCollection("dictionary")
   ]);
 
   const localCollections = [
@@ -351,7 +375,11 @@ export async function searchAll(query, params = {}) {
     { type: "education", items: education },
     { type: "news", items: news },
     { type: "resources", items: resources },
-    { type: "calendar", items: calendar }
+    { type: "calendar", items: calendar },
+    { type: "directory", items: directory },
+    { type: "speakers", items: speakers },
+    { type: "names", items: names },
+    { type: "dictionary", items: dictionary }
   ];
 
   const filteredCollections =
@@ -385,8 +413,10 @@ function mapLocalSearchResult(type, item) {
   const title =
     item.title_en ||
     item.title ||
+    item.title ||
     item.name_en ||
     item.name ||
+    item.term ||
     item.course_title_en ||
     item.lesson_title_en ||
     item.festival_en ||
@@ -398,6 +428,7 @@ function mapLocalSearchResult(type, item) {
     item.content_en ||
     item.history_en ||
     item.meaning_en ||
+    item.simple_meaning ||
     item.description ||
     "";
 
@@ -431,6 +462,18 @@ function buildSearchResultUrl(type, slug, item) {
   if (type === "resources") {
     return "/resources.html";
   }
+  if (type === "directory") {
+    return "/directory.html";
+  }
+  if (type === "speakers") {
+    return "/speakers.html";
+  }
+  if (type === "names") {
+    return "/names.html";
+  }
+  if (type === "dictionary") {
+    return "/dictionary.html";
+  }
   if (type === "news") {
     return "/news.html";
   }
@@ -455,6 +498,18 @@ function buildSearchMeta(type, item) {
   }
   if (type === "calendar") {
     return [item.category, item.date_gregorian, item.tithi].filter(Boolean);
+  }
+  if (type === "directory") {
+    return [item.category, item.priority, item.review_status].filter(Boolean);
+  }
+  if (type === "speakers") {
+    return [item.tradition_or_context, item.topics, item.review_status].filter(Boolean);
+  }
+  if (type === "names") {
+    return [item.gender, item.meaning, item.review_status].filter(Boolean);
+  }
+  if (type === "dictionary") {
+    return [item.category, item.simple_meaning, item.review_status].filter(Boolean);
   }
   return [item.category, item.tags, item.author].filter(Boolean);
 }

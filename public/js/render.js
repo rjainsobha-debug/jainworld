@@ -15,6 +15,19 @@ const CATEGORY_VISUAL_LABELS_CLEAN = {
   course: { en: "Learning", hi: "अध्ययन" }
 };
 const CATEGORY_VISUAL_LABELS = CATEGORY_VISUAL_LABELS_CLEAN;
+const CATEGORY_VISUAL_LABELS_FIXED = {
+  literature: { en: "Scripture", hi: "शास्त्र" },
+  philosophy: { en: "Philosophy", hi: "दर्शन" },
+  temples: { en: "Temple", hi: "मंदिर" },
+  food: { en: "Food", hi: "भोजन" },
+  audio: { en: "Audio", hi: "ऑडियो" },
+  resources: { en: "Resources", hi: "संसाधन" },
+  calendar: { en: "Calendar", hi: "कैलेंडर" },
+  children: { en: "Children", hi: "बच्चे" },
+  bhajan: { en: "Bhajan", hi: "भजन" },
+  aarti: { en: "Aarti", hi: "आरती" },
+  course: { en: "Learning", hi: "अध्ययन" }
+};
 
 function resolveTarget(target) {
   return typeof target === "string" ? document.querySelector(target) : target;
@@ -66,7 +79,8 @@ function metaLabel(enLabel, hiLabel, value) {
     return "";
   }
 
-  return `${getLanguage() === "hi" ? hiLabel : enLabel}: ${value}`;
+  const localized = localizeLabel(enLabel, hiLabel || enLabel) || hiLabel || enLabel;
+  return `${localized}: ${value}`;
 }
 
 function currentLang() {
@@ -109,7 +123,7 @@ function getVisualCategory(type, item = {}) {
 
 function getVisualLabel(visualType) {
   const lang = currentLang();
-  return CATEGORY_VISUAL_LABELS_CLEAN[visualType]?.[lang] || CATEGORY_VISUAL_LABELS_CLEAN[visualType]?.en || translate("jainworld", "JainWorld");
+  return CATEGORY_VISUAL_LABELS_FIXED[visualType]?.[lang] || CATEGORY_VISUAL_LABELS_FIXED[visualType]?.en || "JainWorld";
 }
 
 function renderCategoryVisual(type, item, title) {
@@ -152,9 +166,23 @@ function renderCategoryVisualClean(type, item, title) {
               ? "परिवार"
               : "ज्ञान";
 
+  const fixedIcon = visualType === "temples"
+    ? "तीर्थ"
+    : visualType === "food"
+      ? "आहार"
+      : visualType === "audio" || visualType === "bhajan" || visualType === "aarti"
+        ? "श्रवण"
+        : visualType === "resources"
+          ? "सहाय"
+          : visualType === "calendar"
+            ? "पर्व"
+            : visualType === "children"
+              ? "परिवार"
+              : "ज्ञान";
+
   return `
     <div class="category-visual category-visual--${visualType}" role="img" aria-label="${escapeHtml(title)}">
-      <span class="category-visual__icon" aria-hidden="true">${escapeHtml(icon)}</span>
+      <span class="category-visual__icon" aria-hidden="true">${escapeHtml(fixedIcon || icon)}</span>
       <span class="category-visual__label">${escapeHtml(visualLabel)}</span>
     </div>
   `;
@@ -503,8 +531,8 @@ export function renderCards(target, items, options = {}) {
     <div class="${layoutClass}">
       ${items
         .map((item) => {
-          const title =
-            pickLocalized(item, titleBase, lang) || item.title || item.name || item.slug || "Untitled";
+          const fallbackTitle = item.title || item.name || item.slug || "Untitled";
+          const title = pickLocalized(item, titleBase, lang) || localizeLabel(fallbackTitle, fallbackTitle);
           const summary =
             (typeof summaryBuilder === "function" ? summaryBuilder(item, lang) : "") ||
             pickLocalized(item, summaryBase, lang) ||
@@ -654,7 +682,7 @@ export function renderAudio(target, items) {
                 <h3 class="m-0 text-lg font-semibold leading-snug text-stone-900">
                   <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(title)}</a>
                 </h3>
-                <span class="text-xs text-stone-500">${escapeHtml(item.duration || "Duration pending")}</span>
+                <span class="text-xs text-stone-500">${escapeHtml(item.duration || translate("not_available_yet", "Not available yet"))}</span>
               </div>
               ${renderTrustMeta([
                 people,
@@ -690,13 +718,14 @@ export function renderTemples(target, items) {
     <div class="jw-grid-3">
       ${items
         .map((item) => {
-          const name =
+          const rawName =
             (getLanguage() === "hi" ? item.name_hi || item.name : item.name_en || item.name) ||
             item.name_en ||
             item.name_hi ||
             item.slug ||
             "Temple";
-          const location = [item.city, item.state, item.country].filter(Boolean).join(", ") || "Location pending";
+          const name = getLanguage() === "hi" ? localizeLabel(rawName, rawName) : rawName;
+          const location = [item.city, item.state, item.country].map((entry) => localizeLabel(entry, entry)).filter(Boolean).join(", ") || translate("not_available_yet", "Not available yet");
           const href = buildDetailUrl("temples", item);
 
           return `
@@ -755,9 +784,9 @@ export function renderFoodRules(target, items) {
       ${items
         .map((item) => {
           const lang = getLanguage();
-          const spiritualLabel = translate("spiritual_label", "Spiritual");
-          const practicalLabel = translate("practical_label", "Practical");
-          const alternativeLabel = translate("alternative_label", "Alternative");
+          const spiritualLabel = translate("spiritual", "Spiritual");
+          const practicalLabel = translate("practical", "Practical");
+          const alternativeLabel = translate("alternative", "Alternative");
 
           return `
             <article class="jw-card p-5">
