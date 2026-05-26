@@ -20,7 +20,8 @@ const FALLBACK_FILES = {
   audio: "/data/review-audio.json",
   templeCorrections: "/data/review-temple-corrections.json",
   images: "/data/review-images.json",
-  ask: "/data/review-ask.json"
+  ask: "/data/review-ask.json",
+  contentGaps: "/data/review-content-gaps.json"
 };
 
 const STATUS_ORDER = ["pending_review", "approved", "verified", "needs_update", "rejected", "published", "draft", "archived"];
@@ -108,7 +109,7 @@ async function loadLiveMode() {
 }
 
 async function loadCollectionsFromApi(token) {
-  const entries = await Promise.all(
+  const queueEntries = await Promise.all(
     LIVE_REVIEW_TYPES.map(async (item) => {
       const response = await fetch(`${item.path}?limit=50`, {
         headers: {
@@ -125,7 +126,20 @@ async function loadCollectionsFromApi(token) {
     })
   );
 
-  return Object.fromEntries(entries);
+  const contentGapResponse = await fetch("/api/content-gaps?limit=30", {
+    headers: {
+      "x-admin-token": token
+    }
+  });
+  const contentGapData = await contentGapResponse.json().catch(() => ({}));
+  if (!contentGapResponse.ok || contentGapData.ok !== true) {
+    throw new Error(contentGapData.error || "Content gaps API request failed.");
+  }
+
+  return Object.fromEntries([
+    ...queueEntries,
+    ["contentGaps", Array.isArray(contentGapData.items) ? contentGapData.items : []]
+  ]);
 }
 
 async function loadCollectionsFromFallback() {
@@ -276,6 +290,7 @@ function renderDashboard(collections, isLive) {
     renderSection("Ask Review Queue", "ask", collections.ask, isLive, {
       subtitle: "Questions with limited source coverage or higher safety sensitivity are queued here."
     }),
+    renderContentGapSection(collections.contentGaps || []),
     renderSection("Pending Temple Corrections", "temple-corrections", collections.templeCorrections, isLive, {
       subtitle: "Review correction categories before pushing any temple detail changes."
     }),
@@ -288,6 +303,69 @@ function renderDashboard(collections, isLive) {
   if (isLive) {
     bindReviewActionButtons();
   }
+}
+
+function renderContentGapSection(items = []) {
+  const topItems = items.slice(0, 8);
+  return `
+    <section class="py-4">
+      <div class="jw-section-title">
+        <div>
+          <span class="jw-kicker">Content Gaps</span>
+          <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">Content Gaps / Unanswered Questions</h2>
+        </div>
+        <span class="text-sm text-stone-500">${items.length} item(s)</span>
+      </div>
+      <p class="m-0 mb-4 text-sm leading-7 text-stone-600">Track repeated unanswered questions, weak source coverage, and opportunities for future content planning.</p>
+      <div class="jw-grid-2">
+        <article class="jw-card p-5">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="m-0 text-lg font-semibold text-stone-900">Latest unanswered themes</h3>
+            <span class="jw-badge jw-badge--pending-review">${topItems.length}</span>
+          </div>
+          <div class="jw-admin-item mt-4">
+            ${renderContentGapItems(topItems)}
+          </div>
+        </article>
+        <article class="jw-card p-5">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="m-0 text-lg font-semibold text-stone-900">Highest frequency gaps</h3>
+            <span class="jw-badge jw-badge--needs-update">${items.filter((item) => Number(item.frequency_count || 0) > 1).length}</span>
+          </div>
+          <div class="jw-admin-item mt-4">
+            ${renderContentGapItems([...items].sort((a, b) => Number(b.frequency_count || 0) - Number(a.frequency_count || 0)).slice(0, 6), "No repeated gaps yet.")}
+          </div>
+        </article>
+      </div>
+    </section>
+  `;
+}
+
+function renderContentGapItems(items = [], emptyText = "No content gaps are currently recorded.") {
+  if (!items.length) {
+    return `<p class="m-0 text-sm text-stone-600">${escapeHtml(emptyText)}</p>`;
+  }
+
+  return items
+    .map(
+      (item) => `
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="jw-badge jw-badge--pending-review">${escapeHtml(String(item.status || "open").replace(/_/g, " "))}</span>
+            <span class="jw-badge jw-badge--draft">${escapeHtml(item.priority || "medium")}</span>
+            ${item.detected_intent ? `<span class="jw-badge jw-badge--verified">${escapeHtml(item.detected_intent)}</span>` : ""}
+          </div>
+          <h4 class="m-0 mt-3 text-base font-semibold text-stone-900">${escapeHtml(item.question || "Untitled gap")}</h4>
+          <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(item.missing_topic || "Source coverage is not yet strong enough for this topic.")}</p>
+          <div class="jw-meta mt-3">
+            <span>Sources: ${escapeHtml(String(item.source_count || 0))}</span>
+            <span>Frequency: ${escapeHtml(String(item.frequency_count || 1))}</span>
+            ${item.last_asked_at ? `<span>Last asked: ${escapeHtml(formatDate(item.last_asked_at))}</span>` : ""}
+          </div>
+        </div>
+      `
+    )
+    .join("");
 }
 
 function renderSection(title, itemType, items = [], isLive = false, options = {}) {

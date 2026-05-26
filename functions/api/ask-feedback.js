@@ -60,7 +60,7 @@ export async function onRequestPost(context) {
       sourceHelpful
     }, createdAt);
 
-    if (feedback === "needs_correction" || feedback === "unsafe_or_wrong") {
+    if (feedback === "needs_correction" || feedback === "unsafe_or_wrong" || feedback === "missing_source") {
       await context.env.DB
         .prepare(
           `INSERT INTO ask_review_queue (id, question, reason, safety_level, review_status, created_at, reviewed_at, reviewed_by)
@@ -70,8 +70,10 @@ export async function onRequestPost(context) {
           createId("ask-review"),
           question || "Feedback-linked Ask JainWorld response",
           feedback === "unsafe_or_wrong"
-            ? "User marked the Ask JainWorld response as unsafe or wrong."
-            : "User marked the Ask JainWorld response as needing correction.",
+            ? "user_reported_issue"
+            : feedback === "missing_source"
+              ? "missing_source"
+              : "user_reported_issue",
           createdAt
         )
         .run();

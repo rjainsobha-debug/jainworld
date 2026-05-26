@@ -1,16 +1,85 @@
 import { normalizeString } from "./http.js";
 
+const REQUEST_TIMEOUT_MS = 18000;
+const MAX_PROMPT_CHARS = 12000;
+
 export function getConfiguredProvider(env = {}) {
   const explicitProvider = normalizeString(env.AI_PROVIDER).toLowerCase();
   const model = normalizeString(env.AI_MODEL);
 
-  if (explicitProvider && hasProviderCredentials(explicitProvider, env)) {
+  if (explicitProvider === "none") {
+    return null;
+  }
+
+  if (!explicitProvider) {
+    return inferProviderFromCredentials(env, model);
+  }
+
+  if (!hasProviderCredentials(explicitProvider, env)) {
+    return null;
+  }
+
+  return {
+    provider: explicitProvider,
+    model: model || ""
+  };
+}
+
+export async function generateGroundedAnswer({ question, sources, safetyLevel, language, env, prompt }) {
+  const config = getConfiguredProvider(env);
+  if (!config) {
     return {
-      provider: explicitProvider,
-      model: model || ""
+      ok: false,
+      answer: "",
+      provider_used: "",
+      model_used: "",
+      raw_error_safe: ""
     };
   }
 
+  const trimmedPrompt = normalizePrompt(prompt, sources);
+  if (!trimmedPrompt) {
+    return {
+      ok: false,
+      answer: "",
+      provider_used: config.provider,
+      model_used: config.model || "",
+      raw_error_safe: "empty_prompt"
+    };
+  }
+
+  try {
+    switch (config.provider) {
+      case "openai":
+        return await requestOpenAi(config, trimmedPrompt, env);
+      case "openrouter":
+        return await requestOpenRouter(config, trimmedPrompt, env);
+      case "gemini":
+        return await requestGemini(config, trimmedPrompt, env);
+      case "cloudflare":
+      case "cloudflare-ai":
+        return await requestCloudflareAi(config, trimmedPrompt, env);
+      default:
+        return {
+          ok: false,
+          answer: "",
+          provider_used: "",
+          model_used: "",
+          raw_error_safe: "unsupported_provider"
+        };
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      answer: "",
+      provider_used: config.provider,
+      model_used: config.model || "",
+      raw_error_safe: sanitizeProviderError(error)
+    };
+  }
+}
+
+function inferProviderFromCredentials(env, model) {
   if (normalizeString(env.OPENAI_API_KEY)) {
     return { provider: "openai", model: model || "" };
   }
@@ -24,34 +93,10 @@ export function getConfiguredProvider(env = {}) {
   }
 
   if (normalizeString(env.CLOUDFLARE_AI_ENABLED).toLowerCase() === "true") {
-    return { provider: "cloudflare-ai", model: model || "" };
+    return { provider: "cloudflare", model: model || "" };
   }
 
   return null;
-}
-
-export async function generateGroundedAnswer({ question, sources, safetyLevel, language, env, prompt }) {
-  const config = getConfiguredProvider(env);
-  if (!config) {
-    return null;
-  }
-
-  try {
-    switch (config.provider) {
-      case "openai":
-        return await requestOpenAi(config, prompt, env);
-      case "openrouter":
-        return await requestOpenRouter(config, prompt, env);
-      case "gemini":
-        return await requestGemini(config, prompt, env);
-      case "cloudflare-ai":
-        return await requestCloudflareAi(config, prompt, env);
-      default:
-        return null;
-    }
-  } catch (error) {
-    return null;
-  }
 }
 
 function hasProviderCredentials(provider, env) {
@@ -64,20 +109,40 @@ function hasProviderCredentials(provider, env) {
   if (provider === "openrouter") {
     return Boolean(normalizeString(env.OPENROUTER_API_KEY));
   }
-  if (provider === "cloudflare-ai") {
+  if (provider === "cloudflare" || provider === "cloudflare-ai") {
     return normalizeString(env.CLOUDFLARE_AI_ENABLED).toLowerCase() === "true";
   }
   return false;
 }
 
-async function requestOpenAi(config, prompt, env) {
-  const apiKey = normalizeString(env.OPENAI_API_KEY);
-  const model = config.model;
-  if (!apiKey || !model) {
-    return null;
+function normalizePrompt(prompt, sources = []) {
+  const sourceText = Array.isArray(sources)
+    ? sources
+        .slice(0, 5)
+        .map((source) =>
+          [normalizeString(source.title), normalizeString(source.summary), normalizeString(source.url)]
+            .filter(Boolean)
+            .join(" | ")
+        )
+        .join("\n")
+    : "";
+
+  const value = normalizeString(prompt || `${sourceText}`);
+  if (!value) {
+    return "";
   }
 
-  const response = await fetch("https://api.openai.com/v1/responses", {
+  return value.slice(0, MAX_PROMPT_CHARS);
+}
+
+async function requestOpenAi(config, prompt, env) {
+  const apiKey = normalizeString(env.OPENAI_API_KEY);
+  const model = normalizeString(config.model);
+  if (!apiKey || !model) {
+    return buildFailure(config.provider, model, "missing_credentials_or_model");
+  }
+
+  const response = await fetchWithTimeout("https://api.openai.com/v1/responses", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -90,21 +155,21 @@ async function requestOpenAi(config, prompt, env) {
   });
 
   if (!response.ok) {
-    return null;
+    return buildFailure(config.provider, model, `http_${response.status}`);
   }
 
   const data = await response.json().catch(() => ({}));
-  return extractResponseText(data);
+  return buildSuccess(config.provider, model, extractResponseText(data));
 }
 
 async function requestOpenRouter(config, prompt, env) {
   const apiKey = normalizeString(env.OPENROUTER_API_KEY);
-  const model = config.model;
+  const model = normalizeString(config.model);
   if (!apiKey || !model) {
-    return null;
+    return buildFailure(config.provider, model, "missing_credentials_or_model");
   }
 
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  const response = await fetchWithTimeout("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -117,21 +182,21 @@ async function requestOpenRouter(config, prompt, env) {
   });
 
   if (!response.ok) {
-    return null;
+    return buildFailure(config.provider, model, `http_${response.status}`);
   }
 
   const data = await response.json().catch(() => ({}));
-  return normalizeString(data?.choices?.[0]?.message?.content);
+  return buildSuccess(config.provider, model, normalizeString(data?.choices?.[0]?.message?.content));
 }
 
 async function requestGemini(config, prompt, env) {
   const apiKey = normalizeString(env.GEMINI_API_KEY);
-  const model = config.model;
+  const model = normalizeString(config.model);
   if (!apiKey || !model) {
-    return null;
+    return buildFailure(config.provider, model, "missing_credentials_or_model");
   }
 
-  const response = await fetch(
+  const response = await fetchWithTimeout(
     `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`,
     {
       method: "POST",
@@ -150,24 +215,27 @@ async function requestGemini(config, prompt, env) {
   );
 
   if (!response.ok) {
-    return null;
+    return buildFailure(config.provider, model, `http_${response.status}`);
   }
 
   const data = await response.json().catch(() => ({}));
-  return normalizeString(data?.candidates?.[0]?.content?.parts?.map((part) => part.text).join(" "));
+  const answer = normalizeString(
+    data?.candidates?.[0]?.content?.parts?.map((part) => part?.text || "").join(" ")
+  );
+  return buildSuccess(config.provider, model, answer);
 }
 
 async function requestCloudflareAi(config, prompt, env) {
   const accountId = normalizeString(env.CLOUDFLARE_ACCOUNT_ID);
   const apiToken = normalizeString(env.CLOUDFLARE_API_TOKEN);
-  const model = config.model;
+  const model = normalizeString(config.model);
 
-  // TODO: Prefer native Workers AI bindings when they are available in this repo's Pages Functions environment.
+  // TODO: Prefer native Workers AI bindings when they are available for Pages Functions in this repo.
   if (!accountId || !apiToken || !model) {
-    return null;
+    return buildFailure(config.provider, model, "missing_credentials_or_model");
   }
 
-  const response = await fetch(
+  const response = await fetchWithTimeout(
     `https://api.cloudflare.com/client/v4/accounts/${encodeURIComponent(accountId)}/ai/run/${encodeURIComponent(model)}`,
     {
       method: "POST",
@@ -182,11 +250,51 @@ async function requestCloudflareAi(config, prompt, env) {
   );
 
   if (!response.ok) {
-    return null;
+    return buildFailure(config.provider, model, `http_${response.status}`);
   }
 
   const data = await response.json().catch(() => ({}));
-  return normalizeString(data?.result?.response || data?.result?.text);
+  const answer = normalizeString(data?.result?.response || data?.result?.text);
+  return buildSuccess(config.provider, model, answer);
+}
+
+async function fetchWithTimeout(url, options) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+function buildSuccess(provider, model, answer) {
+  const normalizedAnswer = normalizeString(answer);
+  if (!normalizedAnswer) {
+    return buildFailure(provider, model, "empty_answer");
+  }
+
+  return {
+    ok: true,
+    answer: normalizedAnswer,
+    provider_used: provider,
+    model_used: model || "",
+    raw_error_safe: ""
+  };
+}
+
+function buildFailure(provider, model, code) {
+  return {
+    ok: false,
+    answer: "",
+    provider_used: provider || "",
+    model_used: model || "",
+    raw_error_safe: code || "provider_failed"
+  };
 }
 
 function extractResponseText(data) {
@@ -203,4 +311,21 @@ function extractResponseText(data) {
     : "";
 
   return normalizeString(content);
+}
+
+function sanitizeProviderError(error) {
+  const raw = normalizeString(error?.name || error?.message || "provider_failed")
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, "_")
+    .slice(0, 80);
+
+  if (!raw) {
+    return "provider_failed";
+  }
+
+  if (raw.includes("abort")) {
+    return "timeout";
+  }
+
+  return raw;
 }

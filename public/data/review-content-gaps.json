@@ -1,0 +1,30 @@
+[
+  {
+    "id": "gap-1",
+    "question": "What are the exact Jain scholarship deadlines this year?",
+    "normalized_question": "what are the exact jain scholarship deadlines this year",
+    "detected_intent": "scholarship_resources",
+    "missing_topic": "Official deadline coverage is not yet strong enough for a safe public answer.",
+    "source_count": 1,
+    "frequency_count": 4,
+    "last_asked_at": "2026-05-26T08:20:00.000Z",
+    "first_asked_at": "2026-05-22T10:10:00.000Z",
+    "status": "open",
+    "priority": "high",
+    "admin_notes": "Review official minority scholarship sources before publishing stronger coverage."
+  },
+  {
+    "id": "gap-2",
+    "question": "Which temples have both dharamshala and bhojanshala near Palitana?",
+    "normalized_question": "which temples have both dharamshala and bhojanshala near palitana",
+    "detected_intent": "temple_visit",
+    "missing_topic": "Temple facility coverage is still partial across pilgrimage listings.",
+    "source_count": 1,
+    "frequency_count": 2,
+    "last_asked_at": "2026-05-25T14:15:00.000Z",
+    "first_asked_at": "2026-05-23T09:45:00.000Z",
+    "status": "open",
+    "priority": "medium",
+    "admin_notes": "Collect reviewed facility details from temple or trust sources."
+  }
+]

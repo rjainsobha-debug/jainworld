@@ -1,43 +1,22 @@
 import { askJainWorld, searchAll, submitAskFeedback } from "./api.js";
-import { getLanguage, translate, updateLanguageDOM } from "./language.js";
+import { getLanguage, updateLanguageDOM } from "./language.js";
 
 const SUGGESTIONS = [
-  {
-    en: "Why do Jains follow Ahimsa?",
-    hi: "जैन अहिंसा का पालन क्यों करते हैं?"
-  },
-  {
-    en: "What are Jain food rules?",
-    hi: "जैन भोजन के नियम क्या हैं?"
-  },
-  {
-    en: "What is Paryushan?",
-    hi: "पर्युषण क्या है?"
-  },
-  {
-    en: "Find Jain scholarships",
-    hi: "जैन छात्रवृत्ति खोजें"
-  },
-  {
-    en: "Explain Namokar Mantra",
-    hi: "णमोकार मंत्र समझाइए"
-  },
-  {
-    en: "Find temples with dharamshala",
-    hi: "धर्मशाला वाले मंदिर खोजें"
-  },
-  {
-    en: "What documents are needed for minority scholarships?",
-    hi: "अल्पसंख्यक छात्रवृत्ति के लिए कौन से दस्तावेज़ चाहिए?"
-  }
+  { en: "Why do Jains follow Ahimsa?", hi: "जैन अहिंसा का पालन क्यों करते हैं?" },
+  { en: "What are Jain food rules?", hi: "जैन भोजन के नियम क्या हैं?" },
+  { en: "What is Paryushan?", hi: "पर्युषण क्या है?" },
+  { en: "Find Jain scholarships", hi: "जैन छात्रवृत्ति खोजें" },
+  { en: "Explain Namokar Mantra", hi: "णमोकार मंत्र समझाइए" },
+  { en: "Find temples with dharamshala", hi: "धर्मशाला वाले मंदिर खोजें" },
+  { en: "What documents are needed for minority scholarships?", hi: "अल्पसंख्यक छात्रवृत्ति के लिए कौन से दस्तावेज़ चाहिए?" }
 ];
 
 const FEEDBACK_ACTIONS = [
   { key: "helpful", en: "Helpful", hi: "उपयोगी" },
   { key: "not_helpful", en: "Not helpful", hi: "उपयोगी नहीं" },
   { key: "needs_correction", en: "Needs correction", hi: "सुधार चाहिए" },
-  { key: "unsafe_or_wrong", en: "Unsafe or wrong", hi: "गलत या असुरक्षित" },
-  { key: "missing_source", en: "Missing source", hi: "स्रोत अधूरा है" }
+  { key: "missing_source", en: "Missing source", hi: "स्रोत अधूरा है" },
+  { key: "unsafe_or_wrong", en: "Unsafe or wrong", hi: "गलत या असुरक्षित" }
 ];
 
 const state = {
@@ -104,7 +83,7 @@ async function runAsk(question) {
   suggestionsRoot.innerHTML = "";
 
   try {
-    const data = await askJainWorld({ question, language: getLanguage() });
+    const data = await askJainWorld({ question, language: currentLanguage() });
     state.payload = data;
     state.mode = "answer";
     renderAskAnswer(data);
@@ -167,26 +146,23 @@ function renderAskAnswer(payload) {
         <h2 class="mt-4 text-2xl font-semibold text-stone-900">${escapeHtml(copy().answerHeading)}</h2>
         <p class="m-0 mt-3 text-sm leading-8 text-stone-700">${escapeHtml(payload.answer || copy().noAnswer)}</p>
         ${payload.safety_level === "high_review" ? `<p class="m-0 mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-7 text-amber-900">${escapeHtml(copy().verifyImportant)}</p>` : ""}
-        <div class="jw-page-actions mt-5">${renderFeedbackActions(payload.ask_query_id, payload.question, payload.answer_mode)}</div>
+        <div class="mt-5 border-t border-stone-200 pt-4">
+          <p class="m-0 text-sm font-semibold text-stone-900">${escapeHtml(copy().helpfulPrompt)}</p>
+          <div class="jw-page-actions mt-3">${renderFeedbackActions(payload.ask_query_id, payload.question, payload.answer_mode)}</div>
+        </div>
       </div>
     `;
   }
 
   if (sourcesRoot) {
-    sourcesRoot.innerHTML = renderSources(
-      payload.sources || [],
-      payload.question,
-      payload.citations || [],
-      payload.confidence,
-      payload.safety_level
-    );
+    sourcesRoot.innerHTML = renderSources(payload.sources || [], payload.question, payload.citations || [], payload.confidence, payload.safety_level);
   }
 
   if (suggestionsRoot) {
     suggestionsRoot.innerHTML = renderSuggestions(payload.suggestions || []);
   }
 
-  bindFeedbackButtons(payload);
+  bindFeedbackButtons();
   updateLanguageDOM(getLanguage());
 }
 
@@ -204,6 +180,7 @@ function rerenderState() {
   const answerRoot = document.getElementById("ask-answer");
   const sourcesRoot = document.getElementById("ask-sources");
   const suggestionsRoot = document.getElementById("ask-suggestions");
+
   if (answerRoot) {
     answerRoot.innerHTML = "";
   }
@@ -213,6 +190,7 @@ function rerenderState() {
   if (suggestionsRoot) {
     suggestionsRoot.innerHTML = renderSuggestions(SUGGESTIONS);
   }
+
   updateLanguageDOM(getLanguage());
 }
 
@@ -223,7 +201,7 @@ function renderSources(sources, question, citations, confidence, safetyLevel) {
   if (!hasSources) {
     return `
       <div class="soft-card p-5">
-        <h3 class="m-0 text-xl font-semibold text-stone-900">${translate("sources", "Sources")}</h3>
+        <h3 class="m-0 text-xl font-semibold text-stone-900">${escapeHtml(copy().sourcesUsed)}</h3>
         <p class="m-0 mt-3 text-sm leading-7 text-stone-600">${escapeHtml(copy().noSources)}</p>
         <p class="m-0 mt-3 text-sm"><a href="/search.html?q=${encodeURIComponent(question || "")}" class="text-amber-800 hover:text-amber-900">${escapeHtml(copy().openSearchInstead)}</a></p>
       </div>
@@ -234,21 +212,23 @@ function renderSources(sources, question, citations, confidence, safetyLevel) {
     <div class="jw-grid-2 gap-6">
       <div class="soft-card p-5">
         <div class="flex flex-wrap items-center gap-2">
-          <span class="jw-badge jw-badge--approved">${escapeHtml(formatConfidence(confidence))}</span>
+          <span class="${buildConfidenceBadgeClass(confidence)}">${escapeHtml(formatConfidence(confidence))}</span>
           <span class="${safetyLevel === "high_review" ? "jw-badge jw-badge--needs-update" : "jw-badge jw-badge--verified"}">${escapeHtml(formatSafety(safetyLevel))}</span>
         </div>
-        <h3 class="m-0 mt-4 text-xl font-semibold text-stone-900">${translate("sources", "Sources")}</h3>
+        <h3 class="m-0 mt-4 text-xl font-semibold text-stone-900">${escapeHtml(copy().sourcesUsed)}</h3>
         <div class="jw-list mt-4">
           ${sources
             .map(
-              (source) => `
+              (source, index) => `
                 <article class="jw-card p-5">
                   <div class="flex flex-wrap items-center gap-2">
-                    <span class="jw-badge">${escapeHtml(formatType(source.type))}</span>
-                    ${source.score ? `<span class="jw-badge jw-badge--verified">${escapeHtml(currentLanguage() === "hi" ? `स्कोर ${source.score}` : `Score ${source.score}`)}</span>` : ""}
+                    <span class="jw-badge">${escapeHtml(copy().sourceNumber(index + 1))}</span>
+                    <span class="jw-badge jw-badge--verified">${escapeHtml(formatType(source.type))}</span>
+                    ${source.score ? `<span class="jw-badge">${escapeHtml(currentLanguage() === "hi" ? `स्कोर ${source.score}` : `Score ${source.score}`)}</span>` : ""}
                   </div>
                   <h4 class="mt-3 text-lg font-semibold text-stone-900"><a href="${escapeHtml(source.url || "/search.html")}" class="hover:text-amber-800">${escapeHtml(source.title || copy().untitledSource)}</a></h4>
                   <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(source.summary || copy().noSummary)}</p>
+                  <p class="m-0 mt-3 text-sm"><a href="${escapeHtml(source.url || "/search.html")}" class="text-amber-800 hover:text-amber-900">${escapeHtml(copy().viewSource)}</a></p>
                 </article>
               `
             )
@@ -256,7 +236,7 @@ function renderSources(sources, question, citations, confidence, safetyLevel) {
         </div>
       </div>
       <div class="soft-card p-5">
-        <h3 class="m-0 text-xl font-semibold text-stone-900">${translate("citations", "Citations")}</h3>
+        <h3 class="m-0 text-xl font-semibold text-stone-900">${escapeHtml(copy().citationsTitle)}</h3>
         ${
           hasCitations
             ? `<ol class="mt-4 space-y-3 pl-5 text-sm leading-7 text-stone-700">
@@ -265,6 +245,7 @@ function renderSources(sources, question, citations, confidence, safetyLevel) {
                     (citation) => `
                       <li>
                         <a href="${escapeHtml(citation.url || "/search.html")}" class="font-semibold text-amber-800 hover:text-amber-900">${escapeHtml(citation.title || copy().untitledSource)}</a>
+                        <div class="mt-1 text-stone-500">${escapeHtml(formatType(citation.type))}</div>
                         ${citation.summary ? `<div class="text-stone-600">${escapeHtml(citation.summary)}</div>` : ""}
                       </li>
                     `
@@ -283,19 +264,12 @@ function renderSuggestions(suggestions) {
   const items = Array.isArray(suggestions) && suggestions.length ? suggestions : SUGGESTIONS;
   return `
     <div class="soft-card p-5">
-      <h3 class="m-0 text-xl font-semibold text-stone-900">${translate("what_to_explore_next", "What to explore next")}</h3>
+      <h3 class="m-0 text-xl font-semibold text-stone-900">${escapeHtml(copy().whatNext)}</h3>
       <div class="jw-search-suggestions mt-4">
         ${items
           .map((item) => {
-            const label =
-              typeof item === "string"
-                ? item
-                : item.label || item[currentLanguage()] || item.en || item.hi;
-            const url =
-              typeof item === "string"
-                ? `/search.html?q=${encodeURIComponent(item)}`
-                : item.url || `/search.html?q=${encodeURIComponent(item.en || item.label || "")}`;
-
+            const label = typeof item === "string" ? item : item.label || item[currentLanguage()] || item.en || item.hi;
+            const url = typeof item === "string" ? `/search.html?q=${encodeURIComponent(item)}` : item.url || `/search.html?q=${encodeURIComponent(item.en || item.label || "")}`;
             return `<a href="${escapeHtml(url || "/search.html")}" class="topic-chip">${escapeHtml(label || copy().exploreMore)}</a>`;
           })
           .join("")}
@@ -322,7 +296,7 @@ function renderFeedbackActions(askQueryId, question, answerMode) {
   ).join("");
 }
 
-function bindFeedbackButtons(payload) {
+function bindFeedbackButtons() {
   document.querySelectorAll("[data-ask-feedback]").forEach((button) => {
     if (button.dataset.bound === "true") {
       return;
@@ -406,12 +380,12 @@ function buildConfidenceBadgeClass(confidence) {
 
 function formatMode(mode) {
   if (mode === "ai_grounded") {
-    return translate("ai_assisted", "AI-assisted from sources");
+    return copy().aiAssisted;
   }
   if (mode === "insufficient") {
-    return translate("limited_source_coverage", "Limited source coverage");
+    return copy().limitedCoverage;
   }
-  return translate("source_based_answer", "Source-based answer");
+  return copy().sourceBased;
 }
 
 function formatType(type) {
@@ -467,7 +441,7 @@ function formatConfidence(confidence) {
 
 function formatSafety(level) {
   if (level === "high_review") {
-    return currentLanguage() === "hi" ? "अतिरिक्त पुष्टि आवश्यक" : "Needs extra verification";
+    return currentLanguage() === "hi" ? "इस उत्तर को समीक्षा चाहिए" : "This answer needs review";
   }
   return currentLanguage() === "hi" ? "सामान्य समीक्षा स्तर" : "Normal review level";
 }
@@ -495,10 +469,18 @@ function copy() {
       exploreMore: "और जानें",
       feedbackSaved: "धन्यवाद। आपकी प्रतिक्रिया प्राप्त हो गई है।",
       feedbackError: "प्रतिक्रिया अभी सहेजी नहीं जा सकी। कृपया बाद में फिर प्रयास करें।",
-      verifyImportant:
-        "महत्वपूर्ण धार्मिक, सरकारी, छात्रवृत्ति, स्वास्थ्य, कानूनी, यात्रा या मंदिर-संबंधी जानकारी के लिए कृपया आधिकारिक या विश्वसनीय स्रोत से पुष्टि करें।",
+      verifyImportant: "महत्वपूर्ण धार्मिक, सरकारी, छात्रवृत्ति, स्वास्थ्य, कानूनी, यात्रा या मंदिर-संबंधी जानकारी के लिए कृपया आधिकारिक या विश्वसनीय स्रोत से पुष्टि करें।",
       untitledSource: "बिना शीर्षक स्रोत",
-      noSummary: "सारांश उपलब्ध नहीं है।"
+      noSummary: "सारांश उपलब्ध नहीं है।",
+      aiAssisted: "जैनवर्ल्ड स्रोतों से एआई-सहायित",
+      sourceBased: "स्रोत-आधारित उत्तर",
+      limitedCoverage: "सीमित स्रोत उपलब्धता",
+      sourcesUsed: "उपयोग किए गए स्रोत",
+      citationsTitle: "संदर्भ",
+      helpfulPrompt: "क्या यह उत्तर उपयोगी था?",
+      whatNext: "आगे क्या देखें",
+      viewSource: "स्रोत देखें",
+      sourceNumber: (value) => `स्रोत ${value}`
     };
   }
 
@@ -523,10 +505,18 @@ function copy() {
     exploreMore: "Explore",
     feedbackSaved: "Thank you. Your feedback was received.",
     feedbackError: "Feedback could not be saved right now. Please try again later.",
-    verifyImportant:
-      "Please verify important religious, government, scholarship, medical, legal, travel, or temple-related details with official or trusted sources.",
+    verifyImportant: "Please verify important religious, government, scholarship, medical, legal, travel, or temple-related details with official or trusted sources.",
     untitledSource: "Untitled source",
-    noSummary: "No summary available."
+    noSummary: "No summary available.",
+    aiAssisted: "AI-assisted from JainWorld sources",
+    sourceBased: "Source-based answer",
+    limitedCoverage: "Limited source coverage",
+    sourcesUsed: "Sources used",
+    citationsTitle: "Citations",
+    helpfulPrompt: "Was this answer helpful?",
+    whatNext: "What to explore next",
+    viewSource: "View source",
+    sourceNumber: (value) => `Source ${value}`
   };
 }
 

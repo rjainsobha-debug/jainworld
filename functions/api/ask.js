@@ -8,20 +8,24 @@ import {
   requireMethod
 } from "../_lib/http.js";
 import {
+  buildContentGapReason,
   buildExtractiveAnswer,
   buildGroundedPrompt,
   buildSuggestions,
-  detectQuestionLanguage,
+  buildCitationList,
+  computeAnswerQuality,
+  detectLanguage,
+  detectQuestionIntent,
   detectSafetyLevel,
   estimateAnswerConfidence,
-  extractCitations,
+  estimateSourceCoverage,
   normalizeQuestion,
   shouldQueueForReview,
   shouldUseAi,
   summarizeSources,
   validateAiAnswer
 } from "../_lib/ask.js";
-import { generateGroundedAnswer, getConfiguredProvider } from "../_lib/ai-provider.js";
+import { generateGroundedAnswer } from "../_lib/ai-provider.js";
 import { buildResult, expandQueryVariants, safePublicStatus } from "../_lib/search.js";
 
 export async function onRequestPost(context) {
@@ -45,8 +49,10 @@ export async function onRequestPost(context) {
   }
 
   const question = rawQuestion;
-  const language = detectQuestionLanguage(question, body.data?.language);
+  const normalizedQuestion = normalizeQuestion(question);
+  const language = detectLanguage(question, body.data?.language);
   const safetyLevel = detectSafetyLevel(question);
+  const detectedIntent = detectQuestionIntent(question);
   const askQueryId = createId("ask");
   const db = hasDb(context.env) ? context.env.DB : null;
 
@@ -59,7 +65,11 @@ export async function onRequestPost(context) {
     }
   }
 
+  const sourceCoverage = estimateSourceCoverage(question, results);
   const summarizedSources = summarizeSources(results, language);
+  const citations = buildCitationList(results, language);
+  const suggestions = buildSuggestions(question, results, language);
+
   let answerPayload = buildExtractiveAnswer(question, results, {
     language,
     safetyLevel
@@ -68,10 +78,13 @@ export async function onRequestPost(context) {
   let providerUsed = "";
   let modelUsed = "";
 
-  if (summarizedSources.length && shouldUseAi(question, results, context.env)) {
-    const provider = getConfiguredProvider(context.env);
+  if (sourceCoverage.coverage === "insufficient") {
+    answerMode = "insufficient";
+    answerPayload.answer_mode = "insufficient";
+    answerPayload.confidence = "insufficient";
+  } else if (shouldUseAi(question, results, context.env)) {
     const prompt = buildGroundedPrompt(question, results, safetyLevel, language);
-    const aiAnswer = await generateGroundedAnswer({
+    const aiResponse = await generateGroundedAnswer({
       question,
       sources: results,
       safetyLevel,
@@ -80,45 +93,73 @@ export async function onRequestPost(context) {
       prompt
     });
 
-    if (provider && validateAiAnswer(aiAnswer, results, language)) {
+    if (aiResponse.ok && validateAiAnswer(aiResponse.answer, results)) {
       answerPayload = {
-        answer: aiAnswer,
-        confidence: estimateAnswerConfidence(aiAnswer, results, {
+        answer: aiResponse.answer,
+        confidence: estimateAnswerConfidence(aiResponse.answer, results, {
           language,
           safetyLevel
         }),
         answer_mode: "ai_grounded"
       };
       answerMode = "ai_grounded";
-      providerUsed = provider.provider;
-      modelUsed = provider.model || "";
+      providerUsed = aiResponse.provider_used || "";
+      modelUsed = aiResponse.model_used || "";
     }
   }
 
   const confidence = answerPayload.confidence || "insufficient";
-  const citations = extractCitations(answerPayload.answer, results, language);
-  const suggestions = buildSuggestions(question, results, language);
+  const quality = computeAnswerQuality({
+    answer: answerPayload.answer,
+    sources: results,
+    confidence,
+    safetyLevel
+  });
 
   if (db) {
     await logAskQuery(db, {
       id: askQueryId,
       question,
-      normalizedQuestion: normalizeQuestion(question),
+      normalizedQuestion,
       answerMode,
       answerSummary: answerPayload.answer,
       sourceCount: summarizedSources.length,
       confidence,
       safetyLevel,
-      sourceIds: results.map((item) => normalizeString(item.id)).filter(Boolean).join(","),
+      detectedIntent,
+      sourceIds: results.map((item) => normalizeString(item.id || item.source_id)).filter(Boolean).join(","),
       providerUsed,
-      modelUsed
+      modelUsed,
+      qualityScore: quality.quality_score,
+      qualityLabel: quality.quality_label
     });
 
-    if (shouldQueueForReview(question, confidence, safetyLevel)) {
+    if (sourceCoverage.coverage === "insufficient" || sourceCoverage.coverage === "limited") {
+      await upsertContentGap(db, {
+        question,
+        normalizedQuestion,
+        detectedIntent,
+        missingTopic: buildContentGapReason(question, results),
+        sourceCount: summarizedSources.length,
+        priority: safetyLevel === "high_review" ? "high" : "medium"
+      });
+    }
+
+    if (
+      shouldQueueForReview(question, confidence, safetyLevel) ||
+      quality.quality_label === "needs_review" ||
+      (answerMode === "ai_grounded" && sourceCoverage.coverage === "limited")
+    ) {
       await queueAskReview(db, {
         question,
         safetyLevel,
-        reason: buildQueueReason(confidence, safetyLevel, summarizedSources.length, answerMode)
+        reason: buildQueueReason({
+          safetyLevel,
+          sourceCoverage: sourceCoverage.coverage,
+          qualityLabel: quality.quality_label,
+          answerMode,
+          confidence
+        })
       });
     }
   }
@@ -187,8 +228,8 @@ async function logAskQuery(db, payload) {
     await db
       .prepare(
         `INSERT INTO ask_queries
-        (id, question, normalized_question, answer_mode, answer_summary, source_count, confidence, safety_level, source_ids, provider_used, model_used, created_at)
-        VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)`
+        (id, question, normalized_question, answer_mode, answer_summary, source_ids, provider_used, model_used, source_count, confidence, safety_level, detected_intent, quality_score, quality_label, created_at)
+        VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15)`
       )
       .bind(
         payload.id,
@@ -196,12 +237,15 @@ async function logAskQuery(db, payload) {
         payload.normalizedQuestion,
         payload.answerMode,
         payload.answerSummary.slice(0, 1600),
+        payload.sourceIds || null,
+        payload.providerUsed || null,
+        payload.modelUsed || null,
         Number(payload.sourceCount || 0),
         payload.confidence,
         payload.safetyLevel,
-        payload.sourceIds,
-        payload.providerUsed || null,
-        payload.modelUsed || null,
+        payload.detectedIntent || null,
+        Number(payload.qualityScore || 0),
+        payload.qualityLabel || null,
         nowIso()
       )
       .run();
@@ -210,8 +254,9 @@ async function logAskQuery(db, payload) {
     try {
       await db
         .prepare(
-          `INSERT INTO ask_queries (id, question, normalized_question, answer_mode, answer_summary, source_count, confidence, safety_level, created_at)
-           VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)`
+          `INSERT INTO ask_queries
+          (id, question, normalized_question, answer_mode, answer_summary, source_count, confidence, safety_level, created_at)
+          VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)`
         )
         .bind(
           payload.id,
@@ -247,18 +292,72 @@ async function queueAskReview(db, payload) {
   }
 }
 
-function buildQueueReason(confidence, safetyLevel, sourceCount, answerMode) {
+async function upsertContentGap(db, payload) {
+  try {
+    const existing = await db
+      .prepare(
+        `SELECT id, frequency_count
+         FROM content_gaps
+         WHERE normalized_question = ?1
+         LIMIT 1`
+      )
+      .bind(payload.normalizedQuestion)
+      .first();
+
+    if (existing?.id) {
+      await db
+        .prepare(
+          `UPDATE content_gaps
+           SET frequency_count = coalesce(frequency_count, 0) + 1,
+               last_asked_at = ?1,
+               source_count = ?2,
+               detected_intent = ?3,
+               missing_topic = ?4,
+               priority = ?5
+           WHERE id = ?6`
+        )
+        .bind(nowIso(), Number(payload.sourceCount || 0), payload.detectedIntent, payload.missingTopic, payload.priority, existing.id)
+        .run();
+      return true;
+    }
+
+    const createdAt = nowIso();
+    await db
+      .prepare(
+        `INSERT INTO content_gaps
+         (id, question, normalized_question, detected_intent, missing_topic, source_count, frequency_count, last_asked_at, first_asked_at, status, priority, admin_notes)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, 1, ?7, ?8, 'open', ?9, NULL)`
+      )
+      .bind(
+        createId("gap"),
+        payload.question,
+        payload.normalizedQuestion,
+        payload.detectedIntent,
+        payload.missingTopic,
+        Number(payload.sourceCount || 0),
+        createdAt,
+        createdAt,
+        payload.priority
+      )
+      .run();
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function buildQueueReason({ safetyLevel, sourceCoverage, qualityLabel, answerMode, confidence }) {
   if (safetyLevel === "high_review") {
-    return "High-review question with sensitive subject matter.";
+    return "high_risk_question";
   }
-  if (sourceCount === 0) {
-    return "No verified sources found for this question.";
+  if (sourceCoverage === "insufficient") {
+    return "insufficient_sources";
   }
-  if (answerMode === "insufficient") {
-    return "Insufficient source coverage for a safe answer.";
+  if (qualityLabel === "needs_review" || confidence === "low" || confidence === "insufficient") {
+    return "low_quality_answer";
   }
-  if (confidence === "low" || confidence === "insufficient") {
-    return "Source coverage was limited for this question.";
+  if (answerMode === "ai_grounded" && sourceCoverage === "limited") {
+    return "low_quality_answer";
   }
-  return "Editorial follow-up suggested.";
+  return "editorial_follow_up";
 }
