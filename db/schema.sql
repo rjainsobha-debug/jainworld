@@ -185,6 +185,9 @@ CREATE TABLE IF NOT EXISTS ask_queries (
   normalized_question TEXT,
   answer_mode TEXT,
   answer_summary TEXT,
+  source_ids TEXT,
+  provider_used TEXT,
+  model_used TEXT,
   source_count INTEGER DEFAULT 0,
   confidence TEXT,
   safety_level TEXT,
@@ -196,6 +199,9 @@ CREATE TABLE IF NOT EXISTS ask_feedback (
   ask_query_id TEXT,
   question TEXT,
   feedback TEXT,
+  answer_mode TEXT,
+  source_helpful INTEGER DEFAULT 0,
+  feedback_category TEXT,
   notes TEXT,
   created_at TEXT NOT NULL
 );

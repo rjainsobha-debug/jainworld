@@ -1,4 +1,4 @@
-import { getLanguage, pickLocalized } from "./language.js";
+import { getLanguage, pickLocalized, translate } from "./language.js";
 
 const DEFAULT_IMAGE = "/images/default.jpg";
 
@@ -45,6 +45,14 @@ function renderEmptyState(title, body, actionHtml = "") {
       ${actionHtml ? `<div class="mt-4">${actionHtml}</div>` : ""}
     </div>
   `;
+}
+
+function metaLabel(enLabel, hiLabel, value) {
+  if (!value) {
+    return "";
+  }
+
+  return `${getLanguage() === "hi" ? hiLabel : enLabel}: ${value}`;
 }
 
 function renderBadges(badges = []) {
@@ -243,8 +251,10 @@ export function renderNews(target, items) {
 
   if (!Array.isArray(items) || items.length === 0) {
     root.innerHTML = renderEmptyState(
-      "No news items are available right now",
-      "Curated Jain updates will appear here after review. Please check back soon."
+      getLanguage() === "hi" ? "??? ??? ?????? ?????? ???? ??" : "No news items are available right now",
+      getLanguage() === "hi"
+        ? "??????? ?? ??? ????? ??? ????? ???? ????? ?????? ????? ??? ?? ??????"
+        : "Curated Jain updates will appear here after review. Please check back soon."
     );
     return;
   }
@@ -263,7 +273,7 @@ export function renderNews(target, items) {
           const source = item.source_name || item.source || "Source pending";
           const published = formatDate(item.published_at || item.created_at);
           const status = formatReviewStatus(item.review_status);
-          const externalLabel = item.source_url ? "External source" : "";
+          const externalLabel = item.source_url ? translate("external_source", "External source") : "";
 
           return `
             <article class="jw-card p-5">
@@ -280,10 +290,10 @@ export function renderNews(target, items) {
               </h3>
               <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
               ${renderTrustMeta([
-                `Source: ${source}`,
-                published ? `Published: ${published}` : "",
+                metaLabel("Source", "?????", source),
+                published ? metaLabel("Published", "????????", published) : "",
                 externalLabel,
-                item.review_status === "approved" ? "Curated by JainWorld" : ""
+                item.review_status === "approved" ? (getLanguage() === "hi" ? "JainWorld ?????? ?????" : "Curated by JainWorld") : ""
               ])}
             </article>
           `;
@@ -300,12 +310,12 @@ export function renderBlogs(target, items) {
     emptyTitle: "No blog articles are available yet",
     emptyBody: "Fresh Jain perspectives will appear here after they are reviewed and published.",
     metaBuilder: (item) => [
-      item.author ? `Author: ${item.author}` : "",
+      item.author ? metaLabel("Author", "????", item.author) : "",
       item.category,
       formatDate(item.updated_at || item.created_at)
-        ? `Last updated: ${formatDate(item.updated_at || item.created_at)}`
+        ? metaLabel("Last updated", "????? ?????", formatDate(item.updated_at || item.created_at))
         : "",
-      "Reviewed by JainWorld Editorial"
+      getLanguage() === "hi" ? "JainWorld ???????? ?????? ????????" : "Reviewed by JainWorld Editorial"
     ]
   });
 }
@@ -318,8 +328,10 @@ export function renderAudio(target, items) {
 
   if (!Array.isArray(items) || items.length === 0) {
     root.innerHTML = renderEmptyState(
-      "No audio entries are available yet",
-      "Audio entries will appear here once they are reviewed and approved for listing."
+      getLanguage() === "hi" ? "??? ??? ????? ????????? ?????? ???? ??" : "No audio entries are available yet",
+      getLanguage() === "hi"
+        ? "??????? ?? ???????? ?? ??? ????? ???????????? ???? ????? ??????"
+        : "Audio entries will appear here once they are reviewed and approved for listing."
     );
     return;
   }
@@ -353,8 +365,8 @@ export function renderAudio(target, items) {
               </div>
               ${renderTrustMeta([
                 people,
-                item.source ? `Source: ${item.source}` : "",
-                item.published_at ? `Published: ${formatDate(item.published_at)}` : ""
+                item.source ? metaLabel("Source", "?????", item.source) : "",
+                item.published_at ? metaLabel("Published", "????????", formatDate(item.published_at)) : ""
               ])}
             </article>
           `;
@@ -372,8 +384,10 @@ export function renderTemples(target, items) {
 
   if (!Array.isArray(items) || items.length === 0) {
     root.innerHTML = renderEmptyState(
-      "No temples found",
-      "Try changing the country, state, city, temple type, or search terms."
+      getLanguage() === "hi" ? "??? ????? ???? ????" : "No temples found",
+      getLanguage() === "hi"
+        ? "???, ?????, ???, ????? ?????? ?? ??? ???? ????? ??????"
+        : "Try changing the country, state, city, temple type, or search terms."
     );
     return;
   }
@@ -460,9 +474,9 @@ export function renderResources(target, items) {
 
   if (!Array.isArray(items) || items.length === 0) {
     root.innerHTML = renderEmptyState(
-      "No matching resources found",
-      "Try a different category, state, or search term.",
-      `<a href="/corrections.html" class="jw-btn">Suggest a resource or correction</a>`
+      getLanguage() === "hi" ? "??? ???? ?????? ???? ????" : "No matching resources found",
+      getLanguage() === "hi" ? "??? ???? ??????, ????? ?? ??? ???? ????????" : "Try a different category, state, or search term.",
+      `<a href="/corrections.html" class="jw-btn">${getLanguage() === "hi" ? "?????? ?? ????? ??????" : "Suggest a resource or correction"}</a>`
     );
     return;
   }
@@ -485,9 +499,9 @@ export function renderResources(target, items) {
               <h3 class="mt-4 text-lg font-semibold leading-snug text-stone-900">${escapeHtml(title)}</h3>
               <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
               ${renderTrustMeta([
-                item.source_name ? `Source: ${item.source_name}` : "",
-                item.eligibility_en ? `Eligibility: ${item.eligibility_en}` : "",
-                lastVerified ? `Last verified: ${lastVerified}` : ""
+                item.source_name ? metaLabel("Source", "?????", item.source_name) : "",
+                item.eligibility_en ? metaLabel("Eligibility", "???????", item.eligibility_en) : "",
+                lastVerified ? metaLabel("Last verified", "????? ???????", lastVerified) : ""
               ])}
               ${
                 officialUrl
@@ -524,8 +538,10 @@ export function renderGroupedSearch(target, groups, query) {
 
   if (!nonEmptyGroups.length) {
     root.innerHTML = renderEmptyState(
-      "No results found",
-      `No results matched "${query}". Try a broader term like Ahimsa, Mahavir, temple, or Paryushan.`
+      getLanguage() === "hi" ? "??? ?????? ???? ????" : "No results found",
+      getLanguage() === "hi"
+        ? `"${query}" ?? ??? ??? ?????? ???? ????? ??????, ??????, ????? ?? ??????? ???? ??? ???? ????????`
+        : `No results matched "${query}". Try a broader term like Ahimsa, Mahavir, temple, or Paryushan.`
     );
     return;
   }
@@ -865,45 +881,68 @@ export function formatDate(value) {
 
 function formatReviewStatus(value) {
   const key = String(value || "").trim().toLowerCase();
-  const labels = {
-    pending_review: "Pending review",
-    approved: "Curated",
-    verified: "Verified",
-    rejected: "Rejected",
-    needs_update: "Needs update"
-  };
+  const labels =
+    getLanguage() === "hi"
+      ? {
+          pending_review: "समीक्षा लंबित",
+          approved: "संपादित",
+          verified: "सत्यापित",
+          rejected: "अस्वीकृत",
+          needs_update: "अपडेट आवश्यक"
+        }
+      : {
+          pending_review: "Pending review",
+          approved: "Curated",
+          verified: "Verified",
+          rejected: "Rejected",
+          needs_update: "Needs update"
+        };
 
   return labels[key] || "";
 }
 
 function formatPermissionStatus(value) {
   const key = String(value || "").trim().toLowerCase();
-  const labels = {
-    embedded: "Embedded",
-    permission_received: "Permission received",
-    public_domain: "Public domain",
-    needs_review: "Needs review"
-  };
+  const labels =
+    getLanguage() === "hi"
+      ? {
+          embedded: "एम्बेडेड",
+          permission_received: "अनुमति प्राप्त",
+          public_domain: "सार्वजनिक डोमेन",
+          needs_review: "समीक्षा आवश्यक"
+        }
+      : {
+          embedded: "Embedded",
+          permission_received: "Permission received",
+          public_domain: "Public domain",
+          needs_review: "Needs review"
+        };
 
   return labels[key] || "";
 }
 
 function formatBooleanLabel(value) {
   if (typeof value === "boolean") {
-    return value ? "Available" : "Not listed";
+    return value
+      ? getLanguage() === "hi"
+        ? "उपलब्ध"
+        : "Available"
+      : getLanguage() === "hi"
+        ? "सूचीबद्ध नहीं"
+        : "Not listed";
   }
 
   const normalized = String(value || "").trim().toLowerCase();
   if (!normalized) {
-    return "Please verify locally";
+    return getLanguage() === "hi" ? "कृपया स्थानीय रूप से पुष्टि करें" : "Please verify locally";
   }
 
   if (["yes", "true", "available"].includes(normalized)) {
-    return "Available";
+    return getLanguage() === "hi" ? "उपलब्ध" : "Available";
   }
 
   if (["no", "false", "not available"].includes(normalized)) {
-    return "Not available";
+    return getLanguage() === "hi" ? "उपलब्ध नहीं" : "Not available";
   }
 
   return String(value);

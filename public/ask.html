@@ -32,32 +32,56 @@
   <body data-page="ask" class="jw-shell">
     <div id="app">
       <div id="app-header"></div>
-      <noscript><div class="jw-noscript">Enable JavaScript to ask JainWorld and review source-based answers.</div></noscript>
+      <noscript>
+        <div class="jw-noscript">Enable JavaScript to ask JainWorld and review source-based answers.</div>
+      </noscript>
       <main id="main-content">
         <section class="page-banner">
           <div class="jw-container jw-page-hero-inner">
-            <div class="breadcrumb"><a href="/index.html">Home</a><span aria-hidden="true">/</span><span>Ask JainWorld</span></div>
+            <div class="breadcrumb">
+              <a href="/index.html" data-en="Home" data-hi="होम">Home</a>
+              <span aria-hidden="true">/</span>
+              <span data-en="Ask JainWorld" data-hi="जैनवर्ल्ड से पूछें">Ask JainWorld</span>
+            </div>
             <div class="page-banner-copy">
-              <span class="jw-kicker">JainWorld Knowledge Assistant</span>
-              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">Ask JainWorld</h1>
-              <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">
+              <span class="jw-kicker" data-en="JainWorld Knowledge Assistant" data-hi="जैनवर्ल्ड ज्ञान सहायक">JainWorld Knowledge Assistant</span>
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900" data-en="Ask JainWorld" data-hi="जैनवर्ल्ड से पूछें">Ask JainWorld</h1>
+              <p
+                class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600"
+                data-en="Ask about Jain principles, food discipline, temples, festivals, literature, audio, scholarships, resources, and community information. JainWorld answers from available verified sources."
+                data-hi="जैन सिद्धांत, भोजन अनुशासन, मंदिर, पर्व, साहित्य, ऑडियो, छात्रवृत्ति, संसाधन और समुदाय की जानकारी के बारे में पूछें। JainWorld उपलब्ध सत्यापित स्रोतों से उत्तर देता है।"
+              >
                 Ask about Jain principles, food discipline, temples, festivals, literature, audio, scholarships, resources, and community information. JainWorld answers from available verified sources.
               </p>
             </div>
             <div class="hero-search-panel mt-6">
               <form id="ask-page-form" class="jw-search-shell space-y-3" aria-label="Ask JainWorld">
-                <label for="ask-page-input" class="mb-2 block text-sm font-semibold text-stone-900">Your question</label>
-                <textarea id="ask-page-input" name="question" rows="4" placeholder="Ask a question about Jain life, values, food guidance, temples, festivals, literature, scholarships, or resources"></textarea>
-                <button type="submit" class="jw-btn jw-btn-primary">Ask JainWorld</button>
+                <label for="ask-page-input" class="mb-2 block text-sm font-semibold text-stone-900" data-en="Your question" data-hi="आपका प्रश्न">Your question</label>
+                <textarea
+                  id="ask-page-input"
+                  name="question"
+                  rows="4"
+                  data-placeholder-en="Ask a question about Jain life, values, food guidance, temples, festivals, literature, scholarships, or resources"
+                  data-placeholder-hi="जैन जीवन, मूल्यों, भोजन मार्गदर्शन, मंदिरों, पर्वों, साहित्य, छात्रवृत्ति या संसाधनों के बारे में प्रश्न पूछें"
+                  placeholder="Ask a question about Jain life, values, food guidance, temples, festivals, literature, scholarships, or resources"
+                ></textarea>
+                <button type="submit" class="jw-btn jw-btn-primary" data-en="Ask JainWorld" data-hi="जैनवर्ल्ड से पूछें">Ask JainWorld</button>
               </form>
               <div class="jw-search-suggestions mt-4">
-                <a href="/ask.html?q=Why%20do%20Jains%20follow%20Ahimsa%3F" class="topic-chip">Why do Jains follow Ahimsa?</a>
-                <a href="/ask.html?q=What%20are%20Jain%20food%20rules%3F" class="topic-chip">What are Jain food rules?</a>
-                <a href="/ask.html?q=What%20is%20Paryushan%3F" class="topic-chip">What is Paryushan?</a>
-                <a href="/ask.html?q=Find%20Jain%20scholarships" class="topic-chip">Find Jain scholarships</a>
-                <a href="/ask.html?q=Explain%20Namokar%20Mantra" class="topic-chip">Explain Namokar Mantra</a>
-                <a href="/ask.html?q=Find%20temples%20with%20dharamshala" class="topic-chip">Find temples with dharamshala</a>
-                <a href="/ask.html?q=What%20documents%20are%20needed%20for%20minority%20scholarships%3F" class="topic-chip">What documents are needed for minority scholarships?</a>
+                <a href="/ask.html?q=Why%20do%20Jains%20follow%20Ahimsa%3F" class="topic-chip" data-en="Why do Jains follow Ahimsa?" data-hi="जैन अहिंसा का पालन क्यों करते हैं?">Why do Jains follow Ahimsa?</a>
+                <a href="/ask.html?q=What%20are%20Jain%20food%20rules%3F" class="topic-chip" data-en="What are Jain food rules?" data-hi="जैन भोजन के नियम क्या हैं?">What are Jain food rules?</a>
+                <a href="/ask.html?q=What%20is%20Paryushan%3F" class="topic-chip" data-en="What is Paryushan?" data-hi="पर्युषण क्या है?">What is Paryushan?</a>
+                <a href="/ask.html?q=Find%20Jain%20scholarships" class="topic-chip" data-en="Find Jain scholarships" data-hi="जैन छात्रवृत्ति खोजें">Find Jain scholarships</a>
+                <a href="/ask.html?q=Explain%20Namokar%20Mantra" class="topic-chip" data-en="Explain Namokar Mantra" data-hi="णमोकार मंत्र समझाइए">Explain Namokar Mantra</a>
+                <a href="/ask.html?q=Find%20temples%20with%20dharamshala" class="topic-chip" data-en="Find temples with dharamshala" data-hi="धर्मशाला वाले मंदिर खोजें">Find temples with dharamshala</a>
+                <a
+                  href="/ask.html?q=What%20documents%20are%20needed%20for%20minority%20scholarships%3F"
+                  class="topic-chip"
+                  data-en="What documents are needed for minority scholarships?"
+                  data-hi="अल्पसंख्यक छात्रवृत्ति के लिए कौन से दस्तावेज़ चाहिए?"
+                >
+                  What documents are needed for minority scholarships?
+                </a>
               </div>
             </div>
           </div>
@@ -66,13 +90,23 @@
         <section class="py-8">
           <div class="jw-container jw-page-stack">
             <div class="soft-card p-5">
-              <p class="m-0 text-sm leading-7 text-stone-700">
-                Answers are based on JainWorld’s available sources. Please verify important religious, legal, government, medical, or travel decisions with trusted authorities.
+              <p
+                class="m-0 text-sm leading-7 text-stone-700"
+                data-en="Answers are based on JainWorld's available sources. Please verify important religious, legal, government, medical, or travel decisions with trusted authorities."
+                data-hi="उत्तर JainWorld के उपलब्ध स्रोतों पर आधारित हैं। महत्वपूर्ण धार्मिक, कानूनी, सरकारी, चिकित्सीय या यात्रा संबंधी निर्णयों के लिए कृपया विश्वसनीय प्राधिकरणों से पुष्टि करें।"
+              >
+                Answers are based on JainWorld's available sources. Please verify important religious, legal, government, medical, or travel decisions with trusted authorities.
               </p>
             </div>
 
             <div id="ask-feedback-banner" class="soft-card p-5">
-              <p class="m-0 text-sm text-stone-600">Ask JainWorld will answer from source-linked JainWorld content when enough verified coverage exists.</p>
+              <p
+                class="m-0 text-sm text-stone-600"
+                data-en="Ask JainWorld will answer from source-linked JainWorld content when enough verified coverage exists."
+                data-hi="जब पर्याप्त सत्यापित सामग्री उपलब्ध हो, तब Ask JainWorld स्रोत-आधारित JainWorld सामग्री से उत्तर देगा।"
+              >
+                Ask JainWorld will answer from source-linked JainWorld content when enough verified coverage exists.
+              </p>
             </div>
 
             <div id="ask-answer" aria-live="polite"></div>

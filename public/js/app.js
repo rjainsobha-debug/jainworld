@@ -12,7 +12,7 @@ import {
 } from "./api.js";
 import { initCalendarPage } from "./calendar.js";
 import { initCommunityForm } from "./community.js";
-import { getLanguage, initLanguageToggle, updateLanguageDOM } from "./language.js";
+import { getLanguage, initLanguageToggle, translate, updateLanguageDOM } from "./language.js";
 import {
   formatDate,
   renderAudio,
@@ -48,34 +48,42 @@ import { initGlobalSearch } from "./search.js";
 const HOME_DISCOVERY_ITEMS = [
   {
     titleEn: "Jain Audio",
+    titleHi: "जैन ऑडियो",
     summaryEn: "Listen to bhajan, aarti, stavan, pravachan, mantra recitation, and calm reflective audio.",
+    summaryHi: "भजन, आरती, स्तवन, प्रवचन, मंत्र-पाठ और शांत चिंतन के लिए ऑडियो सुनें।",
     href: "/audio.html"
   },
   {
     titleEn: "Curated Jain updates",
+    titleHi: "चयनित जैन अपडेट",
     summaryEn: "Follow festival notices, temple updates, pilgrimages, sangh activities, and community developments.",
+    summaryHi: "त्योहार सूचनाएँ, मंदिर अपडेट, तीर्थ, संघ गतिविधियाँ और समुदाय की खबरें देखें।",
     href: "/news.html"
   },
   {
     titleEn: "Scholarships and support",
+    titleHi: "छात्रवृत्ति और सहयोग",
     summaryEn: "Review scholarships, minority resources, educational directories, and official-ready support links.",
+    summaryHi: "छात्रवृत्ति, अल्पसंख्यक संसाधन, शैक्षणिक निर्देशिका और उपयोगी आधिकारिक लिंक देखें।",
     href: "/resources.html"
   },
   {
     titleEn: "Community and participation",
+    titleHi: "समुदाय और सहभागिता",
     summaryEn: "Join JainWorld, contribute knowledge, and stay close to families, volunteers, temples, and institutions.",
+    summaryHi: "JainWorld से जुड़ें, ज्ञान साझा करें और परिवारों, स्वयंसेवकों, मंदिरों और संस्थानों के साथ जुड़े रहें।",
     href: "/community.html"
   }
 ];
 
 const SEARCH_CHIPS = [
-  "Paryushan",
-  "Navkar Mantra",
-  "Jain food rules",
-  "Ahimsa",
-  "Samayik",
-  "Temples near me",
-  "Scholarships"
+  { en: "Paryushan", hi: "पर्युषण" },
+  { en: "Navkar Mantra", hi: "णमोकार मंत्र" },
+  { en: "Jain food rules", hi: "जैन भोजन नियम" },
+  { en: "Ahimsa", hi: "अहिंसा" },
+  { en: "Samayik", hi: "समायिक" },
+  { en: "Temples near me", hi: "मेरे पास के मंदिर" },
+  { en: "Scholarships", hi: "छात्रवृत्ति" }
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -443,7 +451,8 @@ function renderSearchChips() {
   }
 
   root.innerHTML = SEARCH_CHIPS.map(
-    (item) => `<a href="/search.html?q=${encodeURIComponent(item)}" class="topic-chip">${item}</a>`
+    (item) =>
+      `<a href="/search.html?q=${encodeURIComponent(item.en)}" class="topic-chip" data-en="${item.en}" data-hi="${item.hi}">${item.en}</a>`
   ).join("");
 }
 
@@ -459,9 +468,9 @@ function renderDailyJain() {
         (item) => `
           <article class="daily-card">
             <span class="card-icon" aria-hidden="true">${getCardIcon(item.titleEn)}</span>
-            <p class="mt-4 mb-0 text-xs uppercase tracking-[0.16em] text-stone-500">${item.meta}</p>
-            <h3 class="mt-3 text-xl font-semibold text-stone-900">${item.titleEn}</h3>
-            <p>${item.summaryEn}</p>
+            <p class="mt-4 mb-0 text-xs uppercase tracking-[0.16em] text-stone-500" data-en="${item.metaEn}" data-hi="${item.metaHi}">${item.metaEn}</p>
+            <h3 class="mt-3 text-xl font-semibold text-stone-900" data-en="${item.titleEn}" data-hi="${item.titleHi}">${item.titleEn}</h3>
+            <p data-en="${item.summaryEn}" data-hi="${item.summaryHi}">${item.summaryEn}</p>
           </article>
         `
       ).join("")}
@@ -480,10 +489,10 @@ function renderEducationLevels(targetSelector = "#education-levels") {
       ${EDUCATION_LEVELS.map(
         (level) => `
           <article class="feature-card">
-            <span class="jw-badge">${level.level}</span>
-            <h3 class="mt-3 text-lg font-semibold text-stone-900">${level.level}</h3>
+            <span class="jw-badge" data-en="${level.level}" data-hi="${level.levelHi || level.level}">${level.level}</span>
+            <h3 class="mt-3 text-lg font-semibold text-stone-900" data-en="${level.level}" data-hi="${level.levelHi || level.level}">${level.level}</h3>
             <p class="m-0 mt-2 text-sm leading-7 text-stone-600" data-en="${level.titleEn}" data-hi="${level.titleHi}">${level.titleEn}</p>
-            <p class="m-0 mt-3 text-xs uppercase tracking-[0.16em] text-stone-500">${level.topics}</p>
+            <p class="m-0 mt-3 text-xs uppercase tracking-[0.16em] text-stone-500" data-en="${level.topicsEn}" data-hi="${level.topicsHi}">${level.topicsEn}</p>
           </article>
         `
       ).join("")}
@@ -529,14 +538,24 @@ function renderCalendarPreview(items) {
   root.innerHTML = `
     <div class="jw-grid-2">
       ${items
-        .map((item) => `
+        .map((item) => {
+          const title =
+            getLanguage() === "hi"
+              ? item.festival_hi || item.festival_en || "जैन पर्व"
+              : item.festival_en || item.festival_hi || "Jain observance";
+          const description =
+            getLanguage() === "hi"
+              ? item.description_hi || item.description_en || "त्योहार और पालन की जानकारी यहाँ दिखाई जाएगी।"
+              : item.description_en || item.description_hi || "Festival and observance detail will appear here.";
+          return `
           <article class="daily-card">
-            <span class="jw-badge">${item.category || "Calendar"}</span>
-            <h3 class="mt-3 text-lg font-semibold text-stone-900">${item.festival_en || item.festival_hi || "Jain observance"}</h3>
-            <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${item.description_en || "Festival and observance detail will appear here."}</p>
+            <span class="jw-badge">${item.category || translate("calendar", "Calendar")}</span>
+            <h3 class="mt-3 text-lg font-semibold text-stone-900">${title}</h3>
+            <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${description}</p>
             <p class="m-0 mt-3 text-sm text-stone-500">${formatDate(item.date_gregorian)}${item.tithi ? ` | ${item.tithi}` : ""}</p>
           </article>
-        `)
+        `;
+        })
         .join("")}
     </div>
   `;
@@ -581,24 +600,24 @@ function renderCommunityCta() {
       <div class="jw-grid-2 items-center">
         <div>
           <span class="jw-kicker">Community</span>
-          <h2
-            class="mt-3 text-2xl font-semibold tracking-tight text-stone-900"
-            data-en="Join the JainWorld community."
-            data-hi="Join the JainWorld community."
-          >
-            Join the JainWorld community.
-          </h2>
-          <p
-            class="m-0 mt-3 text-sm leading-7"
-            data-en="Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks."
-            data-hi="Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks."
-          >
-            Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks.
-          </p>
+        <h2
+          class="mt-3 text-2xl font-semibold tracking-tight text-stone-900"
+          data-en="Join the JainWorld community."
+          data-hi="JainWorld समुदाय से जुड़ें।"
+        >
+          Join the JainWorld community.
+        </h2>
+        <p
+          class="m-0 mt-3 text-sm leading-7"
+          data-en="Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks."
+          data-hi="सीखने, सेवा, व्यवसाय, मंदिरों और पारिवारिक संपर्कों के लिए भारत और दुनिया भर के जैनों से जुड़ें।"
+        >
+          Connect with Jains across India and the world for learning, volunteering, business, temples, and family networks.
+        </p>
         </div>
         <div class="flex flex-wrap gap-3 lg:justify-end">
-          <a href="/community.html" class="jw-btn jw-btn-primary">Request to join</a>
-          <a href="/resources.html" class="jw-btn">View resources</a>
+          <a href="/community.html" class="jw-btn jw-btn-primary" data-en="Request to join" data-hi="जुड़ने का अनुरोध करें">Request to join</a>
+          <a href="/resources.html" class="jw-btn" data-en="View resources" data-hi="संसाधन देखें">View resources</a>
         </div>
       </div>
     </div>
@@ -613,7 +632,7 @@ function renderCategoryPills(targetSelector, items) {
 
   root.innerHTML = `
     <div class="jw-inline-scroll">
-      ${items.map((item) => `<span class="topic-chip whitespace-nowrap">${item}</span>`).join("")}
+      ${items.map((item) => `<span class="topic-chip whitespace-nowrap">${typeof item === "string" ? item : item.en}</span>`).join("")}
     </div>
   `;
 }
@@ -629,9 +648,9 @@ function renderLearningPaths() {
       ${LEARNING_PATHS.map(
         (item) => `
           <a href="${item.href}" class="feature-card">
-            <span class="jw-badge">Learning path</span>
-            <h3 class="mt-4 text-xl font-semibold text-stone-900">${item.titleEn}</h3>
-            <p class="m-0 mt-3 text-sm leading-7 text-stone-600">${item.summaryEn}</p>
+            <span class="jw-badge" data-en="Learning path" data-hi="सीखने का मार्ग">Learning path</span>
+            <h3 class="mt-4 text-xl font-semibold text-stone-900" data-en="${item.titleEn}" data-hi="${item.titleHi || item.titleEn}">${item.titleEn}</h3>
+            <p class="m-0 mt-3 text-sm leading-7 text-stone-600" data-en="${item.summaryEn}" data-hi="${item.summaryHi || item.summaryEn}">${item.summaryEn}</p>
           </a>
         `
       ).join("")}
@@ -647,7 +666,7 @@ function renderPopularTopics() {
 
   root.innerHTML = `
     <div class="jw-inline-scroll">
-      ${POPULAR_TOPICS.map((item) => `<a href="/search.html?q=${encodeURIComponent(item)}" class="topic-chip whitespace-nowrap">${item}</a>`).join("")}
+      ${POPULAR_TOPICS.map((item) => `<a href="/search.html?q=${encodeURIComponent(item.en)}" class="topic-chip whitespace-nowrap" data-en="${item.en}" data-hi="${item.hi}">${item.en}</a>`).join("")}
     </div>
   `;
 }
@@ -839,9 +858,11 @@ function setLoadingState(targetSelector, text = "Loading...") {
     return;
   }
 
+  const nextText = text === "Loading..." ? (getLanguage() === "hi" ? "लोड हो रहा है..." : "Loading...") : text;
+
   root.innerHTML = `
     <div class="soft-card p-5">
-      <p class="m-0 text-sm text-stone-600">${text}</p>
+      <p class="m-0 text-sm text-stone-600">${nextText}</p>
     </div>
   `;
 }

@@ -32,24 +32,42 @@
   <body data-page="search" class="jw-shell">
     <div id="app">
       <div id="app-header"></div>
-      <noscript><div class="jw-noscript">Enable JavaScript to search across JainWorld content and source-linked results.</div></noscript>
+      <noscript>
+        <div class="jw-noscript">Enable JavaScript to search across JainWorld content and source-linked results.</div>
+      </noscript>
       <main id="main-content">
         <section class="page-banner">
           <div class="jw-container jw-page-hero-inner">
-            <div class="breadcrumb"><a href="/index.html">Home</a><span aria-hidden="true">/</span><span>Ask JainWorld</span></div>
+            <div class="breadcrumb">
+              <a href="/index.html" data-en="Home" data-hi="होम">Home</a>
+              <span aria-hidden="true">/</span>
+              <span data-en="Search JainWorld" data-hi="जैनवर्ल्ड में खोजें">Search JainWorld</span>
+            </div>
             <div class="page-banner-copy">
-              <span class="jw-kicker">JainWorld Search</span>
-              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">Search JainWorld</h1>
-              <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">
+              <span class="jw-kicker" data-en="JainWorld Search" data-hi="जैनवर्ल्ड खोज">JainWorld Search</span>
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900" data-en="Search JainWorld" data-hi="जैनवर्ल्ड में खोजें">Search JainWorld</h1>
+              <p
+                class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600"
+                data-en="Find Jain literature, temples, food guidance, audio, news, scholarships, resources, and community information in one place."
+                data-hi="जैन साहित्य, मंदिर, भोजन मार्गदर्शन, ऑडियो, समाचार, छात्रवृत्ति, संसाधन और समुदाय की जानकारी एक ही जगह पाएँ।"
+              >
                 Find Jain literature, temples, food guidance, audio, news, scholarships, resources, and community information in one place.
               </p>
             </div>
             <div class="hero-search-panel mt-6">
               <form id="search-page-form" class="jw-search-shell space-y-3" data-search-page-form role="search" aria-label="Search JainWorld">
-                <input id="search-page-input" type="search" name="q" placeholder="Ask about Jain values, temples, food rules, scholarships, prayers..." aria-label="Search JainWorld" />
+                <input
+                  id="search-page-input"
+                  type="search"
+                  name="q"
+                  data-placeholder-en="Ask about Jain values, temples, food rules, scholarships, prayers..."
+                  data-placeholder-hi="जैन मूल्य, मंदिर, भोजन नियम, छात्रवृत्ति, प्रार्थना या पर्व के बारे में खोजें..."
+                  placeholder="Ask about Jain values, temples, food rules, scholarships, prayers..."
+                  aria-label="Search JainWorld"
+                />
                 <div class="jw-grid-2">
                   <div>
-                    <label for="search-page-type" class="mb-2 block text-sm font-semibold text-stone-900">Content type</label>
+                    <label for="search-page-type" class="mb-2 block text-sm font-semibold text-stone-900" data-en="Content type" data-hi="सामग्री प्रकार">Content type</label>
                     <select id="search-page-type" name="type" class="w-full rounded-xl border border-stone-300 px-4 py-3 text-sm text-stone-900">
                       <option value="all">All</option>
                       <option value="literature">Literature</option>
@@ -64,17 +82,17 @@
                     </select>
                   </div>
                   <div class="flex items-end">
-                    <button type="submit" class="jw-btn jw-btn-primary w-full">Search</button>
+                    <button type="submit" class="jw-btn jw-btn-primary w-full" data-en="Search" data-hi="खोजें">Search</button>
                   </div>
                 </div>
               </form>
               <div class="jw-search-suggestions mt-4">
-                <a href="/search.html?q=Paryushan" class="topic-chip">Paryushan</a>
-                <a href="/search.html?q=Navkar+Mantra" class="topic-chip">Navkar Mantra</a>
-                <a href="/search.html?q=Jain+food+rules" class="topic-chip">Jain food rules</a>
-                <a href="/search.html?q=Ahimsa" class="topic-chip">Ahimsa</a>
-                <a href="/search.html?q=Samayik" class="topic-chip">Samayik</a>
-                <a href="/search.html?q=Scholarships" class="topic-chip">Scholarships</a>
+                <a href="/search.html?q=Paryushan" class="topic-chip" data-en="Paryushan" data-hi="पर्युषण">Paryushan</a>
+                <a href="/search.html?q=Navkar+Mantra" class="topic-chip" data-en="Navkar Mantra" data-hi="णमोकार मंत्र">Navkar Mantra</a>
+                <a href="/search.html?q=Jain+food+rules" class="topic-chip" data-en="Jain food rules" data-hi="जैन भोजन नियम">Jain food rules</a>
+                <a href="/search.html?q=Ahimsa" class="topic-chip" data-en="Ahimsa" data-hi="अहिंसा">Ahimsa</a>
+                <a href="/search.html?q=Samayik" class="topic-chip" data-en="Samayik" data-hi="समायिक">Samayik</a>
+                <a href="/search.html?q=Scholarships" class="topic-chip" data-en="Scholarships" data-hi="छात्रवृत्ति">Scholarships</a>
               </div>
             </div>
           </div>
@@ -84,16 +102,16 @@
           <div class="jw-container jw-page-stack">
             <div class="soft-card p-5">
               <div class="jw-inline-scroll" aria-label="Search type filters">
-                <button type="button" class="topic-chip" data-search-type-link="all">All</button>
-                <button type="button" class="topic-chip" data-search-type-link="literature">Literature</button>
-                <button type="button" class="topic-chip" data-search-type-link="education">Education</button>
-                <button type="button" class="topic-chip" data-search-type-link="temples">Temples</button>
-                <button type="button" class="topic-chip" data-search-type-link="food">Food</button>
-                <button type="button" class="topic-chip" data-search-type-link="news">News</button>
-                <button type="button" class="topic-chip" data-search-type-link="blogs">Blogs</button>
-                <button type="button" class="topic-chip" data-search-type-link="audio">Audio</button>
-                <button type="button" class="topic-chip" data-search-type-link="resources">Resources</button>
-                <button type="button" class="topic-chip" data-search-type-link="calendar">Calendar</button>
+                <button type="button" class="topic-chip" data-search-type-link="all" data-en="All" data-hi="सभी">All</button>
+                <button type="button" class="topic-chip" data-search-type-link="literature" data-en="Literature" data-hi="साहित्य">Literature</button>
+                <button type="button" class="topic-chip" data-search-type-link="education" data-en="Education" data-hi="शिक्षा">Education</button>
+                <button type="button" class="topic-chip" data-search-type-link="temples" data-en="Temples" data-hi="मंदिर">Temples</button>
+                <button type="button" class="topic-chip" data-search-type-link="food" data-en="Food" data-hi="भोजन">Food</button>
+                <button type="button" class="topic-chip" data-search-type-link="news" data-en="News" data-hi="समाचार">News</button>
+                <button type="button" class="topic-chip" data-search-type-link="blogs" data-en="Blogs" data-hi="ब्लॉग">Blogs</button>
+                <button type="button" class="topic-chip" data-search-type-link="audio" data-en="Audio" data-hi="ऑडियो">Audio</button>
+                <button type="button" class="topic-chip" data-search-type-link="resources" data-en="Resources" data-hi="संसाधन">Resources</button>
+                <button type="button" class="topic-chip" data-search-type-link="calendar" data-en="Calendar" data-hi="कैलेंडर">Calendar</button>
               </div>
             </div>
 
@@ -103,13 +121,17 @@
             <div id="popular-searches"></div>
 
             <div class="jw-page-cta">
-              <span class="jw-kicker">Ask JainWorld</span>
-              <h2 class="mt-3 text-2xl font-semibold tracking-tight">Want a direct answer?</h2>
-              <p class="m-0 mt-3 text-sm leading-7">
+              <span class="jw-kicker" data-en="Ask JainWorld" data-hi="जैनवर्ल्ड से पूछें">Ask JainWorld</span>
+              <h2 class="mt-3 text-2xl font-semibold tracking-tight" data-en="Want a direct answer?" data-hi="क्या आप सीधा उत्तर चाहते हैं?">Want a direct answer?</h2>
+              <p
+                class="m-0 mt-3 text-sm leading-7"
+                data-en="Ask JainWorld can now build careful source-based answers from verified JainWorld content when enough coverage exists."
+                data-hi="जब पर्याप्त सामग्री उपलब्ध हो, तब Ask JainWorld सत्यापित JainWorld सामग्री से सावधानीपूर्वक स्रोत-आधारित उत्तर दे सकता है।"
+              >
                 Ask JainWorld can now build careful source-based answers from verified JainWorld content when enough coverage exists.
               </p>
               <div class="jw-page-actions mt-5">
-                <a id="search-ask-link" href="/ask.html" class="jw-btn">Ask JainWorld</a>
+                <a id="search-ask-link" href="/ask.html" class="jw-btn" data-en="Ask JainWorld" data-hi="जैनवर्ल्ड से पूछें">Ask JainWorld</a>
               </div>
             </div>
           </div>

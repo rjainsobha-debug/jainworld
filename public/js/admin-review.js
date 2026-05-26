@@ -349,6 +349,7 @@ function renderQueueItems(itemType, items = [], isLive = false, emptyText = "No 
             <span class="${buildStatusClass(item.review_status)}">${formatStatus(item.review_status)}</span>
             <span class="jw-badge jw-badge--draft">${escapeHtml(item.priority || "low")}</span>
             ${item.status ? `<span class="jw-badge jw-badge--published">${escapeHtml(item.status)}</span>` : ""}
+            ${item.safety_level ? `<span class="${String(item.safety_level).toLowerCase() === "high_review" ? "jw-badge jw-badge--needs-update" : "jw-badge jw-badge--verified"}">${escapeHtml(String(item.safety_level).toLowerCase() === "high_review" ? "High risk" : "Normal risk")}</span>` : ""}
           </div>
           <h4 class="m-0 mt-3 text-base font-semibold text-stone-900">${escapeHtml(title)}</h4>
           <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>

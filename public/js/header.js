@@ -68,7 +68,7 @@ function renderHeader() {
                   <span
                     class="site-logo-tagline"
                     data-en="Learn, practice, and stay connected with Jain life."
-                    data-hi="Learn, practice, and stay connected with Jain life."
+                    data-hi="जैन जीवन से सीखें, जुड़ें और साधना में साथ रहें।"
                   >
                     Learn, practice, and stay connected with Jain life.
                   </span>
@@ -91,12 +91,12 @@ function renderHeader() {
                   name="q"
                   data-global-search-input
                   data-placeholder-en="Search JainWorld for temples, prayers, food rules, festivals, and resources"
-                  data-placeholder-hi="Search JainWorld for temples, prayers, food rules, festivals, and resources"
+                  data-placeholder-hi="मंदिर, प्रार्थना, भोजन नियम, पर्व और संसाधनों के लिए JainWorld में खोजें"
                   placeholder="Search JainWorld for temples, prayers, food rules, festivals, and resources"
                   aria-label="Search JainWorld"
                 />
                 <button type="submit" class="jw-btn jw-btn-primary">
-                  <span data-en="Search" data-hi="Search">Search</span>
+                  <span data-en="Search" data-hi="खोजें">Search</span>
                 </button>
               </form>
             </div>
@@ -106,7 +106,7 @@ function renderHeader() {
               ${navLinks}
             </nav>
             <div class="jw-header-cta">
-              <a href="/ask.html" class="jw-btn jw-btn-secondary">Ask JainWorld</a>
+              <a href="/ask.html" class="jw-btn jw-btn-secondary" data-en="Ask JainWorld" data-hi="जैनवर्ल्ड से पूछें">Ask JainWorld</a>
             </div>
           </div>
         </div>

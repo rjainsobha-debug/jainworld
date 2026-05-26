@@ -1,6 +1,22 @@
-import { createId, errorResponse, hasDb, jsonResponse, normalizeString, nowIso, readJson, requireMethod } from "../_lib/http.js";
+import {
+  createId,
+  errorResponse,
+  hasDb,
+  jsonResponse,
+  normalizeBoolean,
+  normalizeString,
+  nowIso,
+  readJson,
+  requireMethod
+} from "../_lib/http.js";
 
-const ALLOWED_FEEDBACK = new Set(["helpful", "not_helpful", "needs_correction"]);
+const ALLOWED_FEEDBACK = new Set([
+  "helpful",
+  "not_helpful",
+  "needs_correction",
+  "unsafe_or_wrong",
+  "missing_source"
+]);
 
 export async function onRequestPost(context) {
   const methodError = requireMethod(context.request, "POST");
@@ -17,6 +33,8 @@ export async function onRequestPost(context) {
   const question = normalizeString(body.data?.question).slice(0, 500);
   const feedback = normalizeString(body.data?.feedback).toLowerCase();
   const notes = normalizeString(body.data?.notes).slice(0, 800);
+  const answerMode = normalizeString(body.data?.answer_mode).slice(0, 64);
+  const sourceHelpful = body.data?.source_helpful;
 
   if (!askQueryId && !question) {
     return errorResponse("ask_query_id or question is required.", 400);
@@ -33,22 +51,27 @@ export async function onRequestPost(context) {
   const createdAt = nowIso();
 
   try {
-    await context.env.DB.prepare(
-      `INSERT INTO ask_feedback (id, ask_query_id, question, feedback, notes, created_at)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6)`
-    )
-      .bind(createId("ask-feedback"), askQueryId || null, question || null, feedback, notes || null, createdAt)
-      .run();
+    await insertFeedback(context.env.DB, {
+      askQueryId,
+      question,
+      feedback,
+      notes,
+      answerMode,
+      sourceHelpful
+    }, createdAt);
 
-    if (feedback === "needs_correction") {
-      await context.env.DB.prepare(
-        `INSERT INTO ask_review_queue (id, question, reason, safety_level, review_status, created_at, reviewed_at, reviewed_by)
-         VALUES (?1, ?2, ?3, 'high_review', 'pending_review', ?4, NULL, NULL)`
-      )
+    if (feedback === "needs_correction" || feedback === "unsafe_or_wrong") {
+      await context.env.DB
+        .prepare(
+          `INSERT INTO ask_review_queue (id, question, reason, safety_level, review_status, created_at, reviewed_at, reviewed_by)
+           VALUES (?1, ?2, ?3, 'high_review', 'pending_review', ?4, NULL, NULL)`
+        )
         .bind(
           createId("ask-review"),
           question || "Feedback-linked Ask JainWorld response",
-          "User marked the Ask JainWorld response as needing correction.",
+          feedback === "unsafe_or_wrong"
+            ? "User marked the Ask JainWorld response as unsafe or wrong."
+            : "User marked the Ask JainWorld response as needing correction.",
           createdAt
         )
         .run();
@@ -61,4 +84,35 @@ export async function onRequestPost(context) {
     ok: true,
     message: "Feedback received. Thank you for helping improve JainWorld."
   });
+}
+
+async function insertFeedback(db, payload, createdAt) {
+  try {
+    await db
+      .prepare(
+        `INSERT INTO ask_feedback
+        (id, ask_query_id, question, feedback, notes, answer_mode, source_helpful, feedback_category, created_at)
+        VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)`
+      )
+      .bind(
+        createId("ask-feedback"),
+        payload.askQueryId || null,
+        payload.question || null,
+        payload.feedback,
+        payload.notes || null,
+        payload.answerMode || null,
+        typeof payload.sourceHelpful === "undefined" ? null : normalizeBoolean(payload.sourceHelpful) ? 1 : 0,
+        payload.feedback,
+        createdAt
+      )
+      .run();
+  } catch (error) {
+    await db
+      .prepare(
+        `INSERT INTO ask_feedback (id, ask_query_id, question, feedback, notes, created_at)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6)`
+      )
+      .bind(createId("ask-feedback"), payload.askQueryId || null, payload.question || null, payload.feedback, payload.notes || null, createdAt)
+      .run();
+  }
 }
