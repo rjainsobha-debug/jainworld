@@ -68,7 +68,7 @@ function renderHeader() {
                   <span
                     class="site-logo-tagline"
                     data-en="Learn, practice, and stay connected with Jain life."
-                    data-hi="जैन जीवन से सीखें, जुड़े रहें और साधना में साथ बढ़ें।"
+                    data-hi="जैन जीवन से सीखें, साधना करें और जुड़े रहें।"
                   >
                     Learn, practice, and stay connected with Jain life.
                   </span>
@@ -106,7 +106,14 @@ function renderHeader() {
               ${navLinks}
             </nav>
             <div class="jw-header-cta">
-              <a href="/ask.html" class="jw-btn jw-btn-secondary" data-en="Ask JainWorld" data-hi="जैनवर्ल्ड से पूछें">Ask JainWorld</a>
+              <a
+                href="/ask.html"
+                class="jw-btn jw-btn-secondary"
+                data-en="Ask JainWorld"
+                data-hi="जैनवर्ल्ड से पूछें"
+              >
+                Ask JainWorld
+              </a>
             </div>
           </div>
         </div>

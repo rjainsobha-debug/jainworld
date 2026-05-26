@@ -1,12 +1,12 @@
 import { askJainWorld, searchAll, submitAskFeedback } from "./api.js";
-import { getLanguage, updateLanguageDOM } from "./language.js";
+import { getLanguage, translate, updateLanguageDOM } from "./language.js";
 
 const SUGGESTIONS = [
   { en: "Why do Jains follow Ahimsa?", hi: "जैन अहिंसा का पालन क्यों करते हैं?" },
   { en: "What are Jain food rules?", hi: "जैन भोजन के नियम क्या हैं?" },
   { en: "What is Paryushan?", hi: "पर्युषण क्या है?" },
   { en: "Find Jain scholarships", hi: "जैन छात्रवृत्ति खोजें" },
-  { en: "Explain Namokar Mantra", hi: "णमोकार मंत्र समझाइए" },
+  { en: "Explain Namokar Mantra", hi: "नमोकार मंत्र समझाइए" },
   { en: "Find temples with dharamshala", hi: "धर्मशाला वाले मंदिर खोजें" },
   { en: "What documents are needed for minority scholarships?", hi: "अल्पसंख्यक छात्रवृत्ति के लिए कौन से दस्तावेज़ चाहिए?" }
 ];
@@ -31,74 +31,76 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  const form = document.getElementById("ask-page-form");
-  const input = document.getElementById("ask-page-input");
   const params = new URLSearchParams(window.location.search);
   state.question = params.get("q") || "";
 
+  const input = document.getElementById("ask-page-input");
   if (input) {
     input.value = state.question;
   }
 
+  bindForm();
+
   if (state.question) {
     await runAsk(state.question);
   } else {
-    rerenderState();
+    renderEmptyState();
   }
-
-  form?.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const nextQuestion = String(input?.value || "").trim();
-    updateUrl(nextQuestion);
-    await runAsk(nextQuestion);
-  });
 
   window.addEventListener("jainworld:language-change", () => {
     rerenderState();
   });
 });
 
+function bindForm() {
+  const form = document.getElementById("ask-page-form");
+  const input = document.getElementById("ask-page-input");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const question = String(input?.value || "").trim();
+    updateUrl(question);
+    await runAsk(question);
+  });
+}
+
 async function runAsk(question) {
-  const answerRoot = document.getElementById("ask-answer");
-  const sourcesRoot = document.getElementById("ask-sources");
-  const suggestionsRoot = document.getElementById("ask-suggestions");
-
-  if (!answerRoot || !sourcesRoot || !suggestionsRoot) {
-    return;
-  }
-
   state.question = question;
   state.payload = null;
   state.fallbackResults = [];
 
   if (!question) {
     state.mode = "empty";
-    rerenderState();
+    renderEmptyState();
     setBanner(copy().askPrompt, "neutral");
     return;
   }
 
-  answerRoot.innerHTML = `<div class="soft-card p-5"><p class="m-0 text-sm text-stone-600">${escapeHtml(copy().loading)}</p></div>`;
-  sourcesRoot.innerHTML = "";
-  suggestionsRoot.innerHTML = "";
+  const answerRoot = document.getElementById("ask-answer");
+  if (answerRoot) {
+    answerRoot.innerHTML = `<div class="soft-card p-5"><p class="m-0 text-sm text-stone-600">${escapeHtml(copy().loading)}</p></div>`;
+  }
+
+  clearSecondaryPanels();
 
   try {
-    const data = await askJainWorld({ question, language: currentLanguage() });
-    state.payload = data;
+    const payload = await askJainWorld({ question, language: currentLanguage() });
+    state.payload = payload;
     state.mode = "answer";
-    renderAskAnswer(data);
+    renderAnswer(payload);
     setBanner(copy().ready, "success");
   } catch (error) {
     state.mode = "fallback";
-    await renderFallback(question, error.message || copy().fallbackError);
+    await renderFallback(question);
   }
 }
 
-async function renderFallback(question, message) {
+async function renderFallback(question) {
+  state.fallbackResults = await searchAll(question, { limit: 10 }).catch(() => []);
+
   const answerRoot = document.getElementById("ask-answer");
   const sourcesRoot = document.getElementById("ask-sources");
   const suggestionsRoot = document.getElementById("ask-suggestions");
-  state.fallbackResults = await searchAll(question, { limit: 10 }).catch(() => []);
 
   setBanner(copy().fallbackBanner, "error");
 
@@ -106,17 +108,17 @@ async function renderFallback(question, message) {
     answerRoot.innerHTML = `
       <div class="soft-card p-5">
         <div class="flex flex-wrap items-center gap-2">
-          <span class="jw-badge jw-badge--pending-review">${escapeHtml(copy().limitedMode)}</span>
+          <span class="jw-badge jw-badge--pending-review">${escapeHtml(copy().limitedCoverage)}</span>
           <span class="jw-badge jw-badge--needs-update">${escapeHtml(copy().insufficientCoverage)}</span>
         </div>
         <h2 class="mt-4 text-2xl font-semibold text-stone-900">${escapeHtml(copy().fallbackHeading)}</h2>
-        <p class="m-0 mt-3 text-sm leading-8 text-stone-700">${escapeHtml(message)}</p>
+        <p class="m-0 mt-3 text-sm leading-8 text-stone-700">${escapeHtml(copy().fallbackError)}</p>
       </div>
     `;
   }
 
   if (sourcesRoot) {
-    sourcesRoot.innerHTML = renderSources(state.fallbackResults.slice(0, 5), question, [], "insufficient", "normal");
+    sourcesRoot.innerHTML = renderSources(state.fallbackResults.slice(0, 5), [], "insufficient", "normal");
   }
 
   if (suggestionsRoot) {
@@ -130,7 +132,7 @@ async function renderFallback(question, message) {
   updateLanguageDOM(getLanguage());
 }
 
-function renderAskAnswer(payload) {
+function renderAnswer(payload) {
   const answerRoot = document.getElementById("ask-answer");
   const sourcesRoot = document.getElementById("ask-sources");
   const suggestionsRoot = document.getElementById("ask-suggestions");
@@ -139,8 +141,8 @@ function renderAskAnswer(payload) {
     answerRoot.innerHTML = `
       <div class="soft-card p-5">
         <div class="flex flex-wrap items-center gap-2">
-          <span class="${buildModeBadgeClass(payload.answer_mode)}">${escapeHtml(formatMode(payload.answer_mode))}</span>
-          <span class="${buildConfidenceBadgeClass(payload.confidence)}">${escapeHtml(formatConfidence(payload.confidence))}</span>
+          <span class="${modeBadgeClass(payload.answer_mode)}">${escapeHtml(formatMode(payload.answer_mode))}</span>
+          <span class="${confidenceBadgeClass(payload.confidence)}">${escapeHtml(formatConfidence(payload.confidence))}</span>
           <span class="${payload.safety_level === "high_review" ? "jw-badge jw-badge--needs-update" : "jw-badge jw-badge--verified"}">${escapeHtml(formatSafety(payload.safety_level))}</span>
         </div>
         <h2 class="mt-4 text-2xl font-semibold text-stone-900">${escapeHtml(copy().answerHeading)}</h2>
@@ -155,7 +157,7 @@ function renderAskAnswer(payload) {
   }
 
   if (sourcesRoot) {
-    sourcesRoot.innerHTML = renderSources(payload.sources || [], payload.question, payload.citations || [], payload.confidence, payload.safety_level);
+    sourcesRoot.innerHTML = renderSources(payload.sources || [], payload.citations || [], payload.confidence, payload.safety_level);
   }
 
   if (suggestionsRoot) {
@@ -166,44 +168,13 @@ function renderAskAnswer(payload) {
   updateLanguageDOM(getLanguage());
 }
 
-function rerenderState() {
-  if (state.mode === "answer" && state.payload) {
-    renderAskAnswer(state.payload);
-    return;
-  }
-
-  if (state.mode === "fallback") {
-    renderFallback(state.question, copy().fallbackError);
-    return;
-  }
-
-  const answerRoot = document.getElementById("ask-answer");
-  const sourcesRoot = document.getElementById("ask-sources");
-  const suggestionsRoot = document.getElementById("ask-suggestions");
-
-  if (answerRoot) {
-    answerRoot.innerHTML = "";
-  }
-  if (sourcesRoot) {
-    sourcesRoot.innerHTML = "";
-  }
-  if (suggestionsRoot) {
-    suggestionsRoot.innerHTML = renderSuggestions(SUGGESTIONS);
-  }
-
-  updateLanguageDOM(getLanguage());
-}
-
-function renderSources(sources, question, citations, confidence, safetyLevel) {
-  const hasSources = Array.isArray(sources) && sources.length > 0;
-  const hasCitations = Array.isArray(citations) && citations.length > 0;
-
-  if (!hasSources) {
+function renderSources(sources, citations, confidence, safetyLevel) {
+  if (!Array.isArray(sources) || !sources.length) {
     return `
       <div class="soft-card p-5">
         <h3 class="m-0 text-xl font-semibold text-stone-900">${escapeHtml(copy().sourcesUsed)}</h3>
         <p class="m-0 mt-3 text-sm leading-7 text-stone-600">${escapeHtml(copy().noSources)}</p>
-        <p class="m-0 mt-3 text-sm"><a href="/search.html?q=${encodeURIComponent(question || "")}" class="text-amber-800 hover:text-amber-900">${escapeHtml(copy().openSearchInstead)}</a></p>
+        <p class="m-0 mt-3 text-sm"><a href="/search.html?q=${encodeURIComponent(state.question || "")}" class="text-amber-800 hover:text-amber-900">${escapeHtml(copy().openSearchInstead)}</a></p>
       </div>
     `;
   }
@@ -212,7 +183,7 @@ function renderSources(sources, question, citations, confidence, safetyLevel) {
     <div class="jw-grid-2 gap-6">
       <div class="soft-card p-5">
         <div class="flex flex-wrap items-center gap-2">
-          <span class="${buildConfidenceBadgeClass(confidence)}">${escapeHtml(formatConfidence(confidence))}</span>
+          <span class="${confidenceBadgeClass(confidence)}">${escapeHtml(formatConfidence(confidence))}</span>
           <span class="${safetyLevel === "high_review" ? "jw-badge jw-badge--needs-update" : "jw-badge jw-badge--verified"}">${escapeHtml(formatSafety(safetyLevel))}</span>
         </div>
         <h3 class="m-0 mt-4 text-xl font-semibold text-stone-900">${escapeHtml(copy().sourcesUsed)}</h3>
@@ -224,7 +195,6 @@ function renderSources(sources, question, citations, confidence, safetyLevel) {
                   <div class="flex flex-wrap items-center gap-2">
                     <span class="jw-badge">${escapeHtml(copy().sourceNumber(index + 1))}</span>
                     <span class="jw-badge jw-badge--verified">${escapeHtml(formatType(source.type))}</span>
-                    ${source.score ? `<span class="jw-badge">${escapeHtml(currentLanguage() === "hi" ? `स्कोर ${source.score}` : `Score ${source.score}`)}</span>` : ""}
                   </div>
                   <h4 class="mt-3 text-lg font-semibold text-stone-900"><a href="${escapeHtml(source.url || "/search.html")}" class="hover:text-amber-800">${escapeHtml(source.title || copy().untitledSource)}</a></h4>
                   <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(source.summary || copy().noSummary)}</p>
@@ -238,7 +208,7 @@ function renderSources(sources, question, citations, confidence, safetyLevel) {
       <div class="soft-card p-5">
         <h3 class="m-0 text-xl font-semibold text-stone-900">${escapeHtml(copy().citationsTitle)}</h3>
         ${
-          hasCitations
+          Array.isArray(citations) && citations.length
             ? `<ol class="mt-4 space-y-3 pl-5 text-sm leading-7 text-stone-700">
                 ${citations
                   .map(
@@ -260,17 +230,17 @@ function renderSources(sources, question, citations, confidence, safetyLevel) {
   `;
 }
 
-function renderSuggestions(suggestions) {
-  const items = Array.isArray(suggestions) && suggestions.length ? suggestions : SUGGESTIONS;
+function renderSuggestions(items) {
+  const suggestions = Array.isArray(items) && items.length ? items : SUGGESTIONS;
   return `
     <div class="soft-card p-5">
       <h3 class="m-0 text-xl font-semibold text-stone-900">${escapeHtml(copy().whatNext)}</h3>
       <div class="jw-search-suggestions mt-4">
-        ${items
+        ${suggestions
           .map((item) => {
             const label = typeof item === "string" ? item : item.label || item[currentLanguage()] || item.en || item.hi;
             const url = typeof item === "string" ? `/search.html?q=${encodeURIComponent(item)}` : item.url || `/search.html?q=${encodeURIComponent(item.en || item.label || "")}`;
-            return `<a href="${escapeHtml(url || "/search.html")}" class="topic-chip">${escapeHtml(label || copy().exploreMore)}</a>`;
+            return `<a href="${escapeHtml(url)}" class="topic-chip">${escapeHtml(label)}</a>`;
           })
           .join("")}
       </div>
@@ -290,7 +260,7 @@ function renderFeedbackActions(askQueryId, question, answerMode) {
         data-ask-answer-mode="${escapeHtml(answerMode || "")}"
         data-source-helpful="${String(action.key === "helpful")}"
       >
-        ${escapeHtml(action[currentLanguage()] || action.en)}
+        ${escapeHtml(currentLanguage() === "hi" ? action.hi : action.en)}
       </button>
     `
   ).join("");
@@ -316,7 +286,7 @@ function bindFeedbackButtons() {
         });
 
         if (!response?.ok) {
-          throw new Error(response?.error || copy().feedbackError);
+          throw new Error("Feedback failed");
         }
 
         setBanner(copy().feedbackSaved, "success");
@@ -329,33 +299,70 @@ function bindFeedbackButtons() {
   });
 }
 
-function setBanner(text, tone = "neutral") {
-  const node = document.getElementById("ask-feedback-banner");
-  if (!node) {
+function renderEmptyState() {
+  state.mode = "empty";
+  clearSecondaryPanels();
+  const answerRoot = document.getElementById("ask-answer");
+  const suggestionsRoot = document.getElementById("ask-suggestions");
+
+  if (answerRoot) {
+    answerRoot.innerHTML = "";
+  }
+  if (suggestionsRoot) {
+    suggestionsRoot.innerHTML = renderSuggestions([]);
+  }
+  setBanner(copy().askPrompt, "neutral");
+  updateLanguageDOM(getLanguage());
+}
+
+function rerenderState() {
+  if (state.mode === "answer" && state.payload) {
+    renderAnswer(state.payload);
     return;
   }
 
-  const classes = {
+  if (state.mode === "fallback") {
+    renderFallback(state.question);
+    return;
+  }
+
+  renderEmptyState();
+}
+
+function clearSecondaryPanels() {
+  const sourcesRoot = document.getElementById("ask-sources");
+  const suggestionsRoot = document.getElementById("ask-suggestions");
+  if (sourcesRoot) {
+    sourcesRoot.innerHTML = "";
+  }
+  if (suggestionsRoot) {
+    suggestionsRoot.innerHTML = "";
+  }
+}
+
+function setBanner(text, tone = "neutral") {
+  const banner = document.getElementById("ask-feedback-banner");
+  if (!banner) {
+    return;
+  }
+
+  const classMap = {
     neutral: "soft-card p-5",
     success: "soft-card p-5 border border-amber-200 bg-amber-50",
     error: "soft-card p-5 border border-red-200 bg-red-50"
   };
 
-  node.className = classes[tone] || classes.neutral;
-  node.innerHTML = `<p class="m-0 text-sm text-stone-600">${escapeHtml(text)}</p>`;
+  banner.className = classMap[tone] || classMap.neutral;
+  banner.innerHTML = `<p class="m-0 text-sm text-stone-600">${escapeHtml(text)}</p>`;
 }
 
 function updateUrl(question) {
   const url = new URL(window.location.href);
-  if (question) {
-    url.searchParams.set("q", question);
-  } else {
-    url.searchParams.delete("q");
-  }
+  question ? url.searchParams.set("q", question) : url.searchParams.delete("q");
   window.history.replaceState({}, "", url);
 }
 
-function buildModeBadgeClass(mode) {
+function modeBadgeClass(mode) {
   if (mode === "ai_grounded") {
     return "jw-badge jw-badge--approved";
   }
@@ -365,7 +372,7 @@ function buildModeBadgeClass(mode) {
   return "jw-badge jw-badge--verified";
 }
 
-function buildConfidenceBadgeClass(confidence) {
+function confidenceBadgeClass(confidence) {
   if (confidence === "high") {
     return "jw-badge jw-badge--approved";
   }
@@ -386,30 +393,6 @@ function formatMode(mode) {
     return copy().limitedCoverage;
   }
   return copy().sourceBased;
-}
-
-function formatType(type) {
-  const normalized = String(type || "source").replace(/-/g, " ").toLowerCase();
-  const map = {
-    literature: { en: "Literature", hi: "साहित्य" },
-    education: { en: "Education", hi: "शिक्षा" },
-    temples: { en: "Temples", hi: "मंदिर" },
-    food: { en: "Food", hi: "भोजन" },
-    news: { en: "News", hi: "समाचार" },
-    blogs: { en: "Blogs", hi: "ब्लॉग" },
-    audio: { en: "Audio", hi: "ऑडियो" },
-    resources: { en: "Resources", hi: "संसाधन" },
-    calendar: { en: "Calendar", hi: "कैलेंडर" },
-    source: { en: "Source", hi: "स्रोत" }
-  };
-
-  if (map[normalized]) {
-    return map[normalized][currentLanguage()] || map[normalized].en;
-  }
-
-  return String(type || "source")
-    .replace(/-/g, " ")
-    .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
 function formatConfidence(confidence) {
@@ -440,84 +423,98 @@ function formatConfidence(confidence) {
 }
 
 function formatSafety(level) {
-  if (level === "high_review") {
-    return currentLanguage() === "hi" ? "इस उत्तर को समीक्षा चाहिए" : "This answer needs review";
-  }
-  return currentLanguage() === "hi" ? "सामान्य समीक्षा स्तर" : "Normal review level";
+  return level === "high_review"
+    ? currentLanguage() === "hi"
+      ? "इस उत्तर को समीक्षा चाहिए"
+      : "This answer needs review"
+    : currentLanguage() === "hi"
+      ? "सामान्य समीक्षा स्तर"
+      : "Normal review level";
+}
+
+function formatType(type) {
+  const normalized = String(type || "source").toLowerCase();
+  const labels = {
+    literature: { en: "Literature", hi: "साहित्य" },
+    education: { en: "Education", hi: "शिक्षा" },
+    temples: { en: "Temples", hi: "मंदिर" },
+    food: { en: "Food", hi: "भोजन" },
+    news: { en: "News", hi: "समाचार" },
+    blogs: { en: "Blogs", hi: "ब्लॉग" },
+    audio: { en: "Audio", hi: "ऑडियो" },
+    resources: { en: "Resources", hi: "संसाधन" },
+    calendar: { en: "Calendar", hi: "कैलेंडर" },
+    source: { en: "Source", hi: "स्रोत" }
+  };
+  return labels[normalized] ? labels[normalized][currentLanguage()] || labels[normalized].en : String(type || "Source");
 }
 
 function copy() {
-  if (currentLanguage() === "hi") {
-    return {
-      askPrompt: "स्रोत-आधारित JainWorld उत्तर देखने के लिए स्पष्ट प्रश्न पूछें।",
-      loading: "JainWorld उत्तर तैयार कर रहा है...",
-      ready: "स्रोत-आधारित उत्तर तैयार है।",
-      fallbackBanner: "JainWorld ने संबंधित स्रोत ढूँढे, लेकिन अभी सत्यापित उत्तर तैयार नहीं कर सका।",
-      fallbackHeading: "JainWorld को संबंधित स्रोत मिले, लेकिन अभी सत्यापित उत्तर तैयार नहीं हो सका।",
-      fallbackError: "JainWorld अभी सत्यापित उत्तर तैयार नहीं कर सका।",
-      answerHeading: "जैनवर्ल्ड ज्ञान सहायक",
-      noAnswer: "उत्तर उपलब्ध नहीं है।",
-      limitedMode: "सीमित उत्तर मोड",
-      insufficientCoverage: "पर्याप्त स्रोत उपलब्ध नहीं",
-      trySearch: "जैनवर्ल्ड खोज आज़माएँ",
-      browseLearn: "जैन धर्म सीखें",
-      exploreResources: "संसाधन देखें",
-      noSources: "इस प्रश्न के लिए JainWorld के पास अभी पर्याप्त स्रोत नहीं हैं।",
-      openSearchInstead: "इसके बजाय JainWorld खोज खोलें",
-      citationsLimited: "अभी विस्तृत संदर्भ सूची उपलब्ध नहीं है।",
-      sourceOnlyNote: "उत्तर उपलब्ध जैनवर्ल्ड स्रोतों पर आधारित है। महत्वपूर्ण निर्णयों से पहले आधिकारिक या विश्वसनीय स्रोतों से पुष्टि करें।",
-      exploreMore: "और जानें",
-      feedbackSaved: "धन्यवाद। आपकी प्रतिक्रिया प्राप्त हो गई है।",
-      feedbackError: "प्रतिक्रिया अभी सहेजी नहीं जा सकी। कृपया बाद में फिर प्रयास करें।",
-      verifyImportant: "महत्वपूर्ण धार्मिक, सरकारी, छात्रवृत्ति, स्वास्थ्य, कानूनी, यात्रा या मंदिर-संबंधी जानकारी के लिए कृपया आधिकारिक या विश्वसनीय स्रोत से पुष्टि करें।",
-      untitledSource: "बिना शीर्षक स्रोत",
-      noSummary: "सारांश उपलब्ध नहीं है।",
-      aiAssisted: "जैनवर्ल्ड स्रोतों से एआई-सहायित",
-      sourceBased: "स्रोत-आधारित उत्तर",
-      limitedCoverage: "सीमित स्रोत उपलब्धता",
-      sourcesUsed: "उपयोग किए गए स्रोत",
-      citationsTitle: "संदर्भ",
-      helpfulPrompt: "क्या यह उत्तर उपयोगी था?",
-      whatNext: "आगे क्या देखें",
-      viewSource: "स्रोत देखें",
-      sourceNumber: (value) => `स्रोत ${value}`
-    };
-  }
-
-  return {
-    askPrompt: "Ask a clear question to see a source-based JainWorld answer.",
-    loading: "Asking JainWorld...",
-    ready: "Source-based answer ready.",
-    fallbackBanner: "JainWorld found related sources, but could not generate a verified answer right now.",
-    fallbackHeading: "JainWorld found these related sources, but cannot generate a verified answer right now.",
-    fallbackError: "JainWorld could not generate a verified answer right now.",
-    answerHeading: "JainWorld Knowledge Assistant",
-    noAnswer: "No answer available.",
-    limitedMode: "Limited answer mode",
-    insufficientCoverage: "Insufficient source coverage",
-    trySearch: "Try JainWorld Search",
-    browseLearn: "Browse Learn Jainism",
-    exploreResources: "Explore Resources",
-    noSources: "JainWorld does not have enough linked sources for this question yet.",
-    openSearchInstead: "Open JainWorld Search instead",
-    citationsLimited: "Detailed citations are not available yet for this answer.",
-    sourceOnlyNote: "Answers are based on available JainWorld sources. Please verify important details with trusted authorities.",
-    exploreMore: "Explore",
-    feedbackSaved: "Thank you. Your feedback was received.",
-    feedbackError: "Feedback could not be saved right now. Please try again later.",
-    verifyImportant: "Please verify important religious, government, scholarship, medical, legal, travel, or temple-related details with official or trusted sources.",
-    untitledSource: "Untitled source",
-    noSummary: "No summary available.",
-    aiAssisted: "AI-assisted from JainWorld sources",
-    sourceBased: "Source-based answer",
-    limitedCoverage: "Limited source coverage",
-    sourcesUsed: "Sources used",
-    citationsTitle: "Citations",
-    helpfulPrompt: "Was this answer helpful?",
-    whatNext: "What to explore next",
-    viewSource: "View source",
-    sourceNumber: (value) => `Source ${value}`
-  };
+  return currentLanguage() === "hi"
+    ? {
+        askPrompt: "स्रोत-आधारित JainWorld उत्तर देखने के लिए स्पष्ट प्रश्न पूछें।",
+        loading: "JainWorld उत्तर तैयार कर रहा है...",
+        ready: "स्रोत-आधारित उत्तर तैयार है।",
+        fallbackBanner: "JainWorld ने संबंधित स्रोत ढूँढ़े, लेकिन अभी सत्यापित उत्तर तैयार नहीं कर सका।",
+        fallbackHeading: "JainWorld को संबंधित स्रोत मिले, लेकिन अभी सत्यापित उत्तर तैयार नहीं हो सका।",
+        fallbackError: "JainWorld अभी सत्यापित उत्तर तैयार नहीं कर सका।",
+        answerHeading: "जैनवर्ल्ड ज्ञान सहायक",
+        noAnswer: "उत्तर उपलब्ध नहीं है।",
+        insufficientCoverage: "पर्याप्त स्रोत उपलब्ध नहीं",
+        limitedCoverage: "सीमित स्रोत उपलब्धता",
+        trySearch: "जैनवर्ल्ड खोज आज़माएँ",
+        browseLearn: "जैन धर्म सीखें",
+        exploreResources: "संसाधन देखें",
+        sourcesUsed: "उपयोग किए गए स्रोत",
+        noSources: "इस प्रश्न के लिए JainWorld के पास अभी पर्याप्त स्रोत नहीं हैं।",
+        openSearchInstead: "इसके बजाय JainWorld खोज खोलें",
+        citationsTitle: "संदर्भ",
+        citationsLimited: "अभी विस्तृत संदर्भ सूची उपलब्ध नहीं है।",
+        sourceOnlyNote: "उत्तर उपलब्ध JainWorld स्रोतों पर आधारित है। महत्वपूर्ण निर्णयों से पहले विश्वसनीय स्रोतों से पुष्टि करें।",
+        whatNext: "आगे क्या देखें",
+        helpfulPrompt: "क्या यह उत्तर उपयोगी था?",
+        feedbackSaved: "धन्यवाद। आपकी प्रतिक्रिया प्राप्त हो गई है।",
+        feedbackError: "प्रतिक्रिया अभी सहेजी नहीं जा सकी। कृपया बाद में फिर प्रयास करें।",
+        verifyImportant: "महत्वपूर्ण धार्मिक, सरकारी, छात्रवृत्ति, स्वास्थ्य, कानूनी, यात्रा या मंदिर-संबंधी जानकारी के लिए कृपया आधिकारिक या विश्वसनीय स्रोत से पुष्टि करें।",
+        untitledSource: "बिना शीर्षक स्रोत",
+        noSummary: "सारांश उपलब्ध नहीं है।",
+        aiAssisted: "जैनवर्ल्ड स्रोतों से एआई-सहायित",
+        sourceBased: "स्रोत-आधारित उत्तर",
+        viewSource: "स्रोत देखें",
+        sourceNumber: (value) => `स्रोत ${value}`
+      }
+    : {
+        askPrompt: "Ask a clear question to see a source-based JainWorld answer.",
+        loading: "Asking JainWorld...",
+        ready: "Source-based answer ready.",
+        fallbackBanner: "JainWorld found related sources, but could not generate a verified answer right now.",
+        fallbackHeading: "JainWorld found these related sources, but cannot generate a verified answer right now.",
+        fallbackError: "JainWorld could not generate a verified answer right now.",
+        answerHeading: "JainWorld Knowledge Assistant",
+        noAnswer: "No answer available.",
+        insufficientCoverage: "Insufficient source coverage",
+        limitedCoverage: "Limited source coverage",
+        trySearch: "Try JainWorld Search",
+        browseLearn: "Browse Learn Jainism",
+        exploreResources: "Explore Resources",
+        sourcesUsed: "Sources used",
+        noSources: "JainWorld does not have enough linked sources for this question yet.",
+        openSearchInstead: "Open JainWorld Search instead",
+        citationsTitle: "Citations",
+        citationsLimited: "Detailed citations are not available yet for this answer.",
+        sourceOnlyNote: "Answers are based on available JainWorld sources. Please verify important details with trusted authorities.",
+        whatNext: "What to explore next",
+        helpfulPrompt: "Was this answer helpful?",
+        feedbackSaved: "Thank you. Your feedback was received.",
+        feedbackError: "Feedback could not be saved right now. Please try again later.",
+        verifyImportant: "Please verify important religious, government, scholarship, medical, legal, travel, or temple-related details with official or trusted sources.",
+        untitledSource: "Untitled source",
+        noSummary: "No summary available.",
+        aiAssisted: "AI-assisted from JainWorld sources",
+        sourceBased: "Source-based answer",
+        viewSource: "View source",
+        sourceNumber: (value) => `Source ${value}`
+      };
 }
 
 function currentLanguage() {

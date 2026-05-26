@@ -1,7 +1,7 @@
 import { currentLanguage, getLanguage, pickLocalized, translate, translateLabel } from "./language.js";
 
 const DEFAULT_IMAGE = "/images/default.jpg";
-const CATEGORY_VISUAL_LABELS = {
+const CATEGORY_VISUAL_LABELS_CLEAN = {
   literature: { en: "Scripture", hi: "शास्त्र" },
   philosophy: { en: "Philosophy", hi: "दर्शन" },
   temples: { en: "Temple", hi: "मंदिर" },
@@ -11,8 +11,10 @@ const CATEGORY_VISUAL_LABELS = {
   calendar: { en: "Calendar", hi: "कैलेंडर" },
   children: { en: "Children", hi: "बच्चे" },
   bhajan: { en: "Bhajan", hi: "भजन" },
-  aarti: { en: "Aarti", hi: "आरती" }
+  aarti: { en: "Aarti", hi: "आरती" },
+  course: { en: "Learning", hi: "अध्ययन" }
 };
+const CATEGORY_VISUAL_LABELS = CATEGORY_VISUAL_LABELS_CLEAN;
 
 function resolveTarget(target) {
   return typeof target === "string" ? document.querySelector(target) : target;
@@ -107,10 +109,33 @@ function getVisualCategory(type, item = {}) {
 
 function getVisualLabel(visualType) {
   const lang = currentLang();
-  return CATEGORY_VISUAL_LABELS[visualType]?.[lang] || CATEGORY_VISUAL_LABELS[visualType]?.en || translate("jainworld", "JainWorld");
+  return CATEGORY_VISUAL_LABELS_CLEAN[visualType]?.[lang] || CATEGORY_VISUAL_LABELS_CLEAN[visualType]?.en || translate("jainworld", "JainWorld");
 }
 
 function renderCategoryVisual(type, item, title) {
+  return renderCategoryVisualClean(type, item, title);
+}
+
+function renderCardMedia(type, item, title) {
+  const imageSrc = getImageSrc(item);
+  if (isUsableImage(imageSrc)) {
+    const alt = getLocalizedField(item, "title", title) || title;
+    return `
+      <img
+        src="${escapeHtml(imageSrc)}"
+        alt="${escapeHtml(alt)}"
+        class="h-40 w-full rounded-xl border border-stone-200 object-cover"
+        onerror="this.onerror=null;this.closest('article')?.querySelector('[data-fallback-visual]')?.classList.remove('hidden'); this.classList.add('hidden');"
+        loading="lazy"
+      />
+      <div class="hidden" data-fallback-visual>${renderCategoryVisualClean(type, item, title)}</div>
+    `;
+  }
+
+  return renderCategoryVisualClean(type, item, title);
+}
+
+function renderCategoryVisualClean(type, item, title) {
   const visualType = getVisualCategory(type, item);
   const visualLabel = getVisualLabel(visualType);
   const icon = visualType === "temples"
@@ -133,25 +158,6 @@ function renderCategoryVisual(type, item, title) {
       <span class="category-visual__label">${escapeHtml(visualLabel)}</span>
     </div>
   `;
-}
-
-function renderCardMedia(type, item, title) {
-  const imageSrc = getImageSrc(item);
-  if (isUsableImage(imageSrc)) {
-    const alt = getLocalizedField(item, "title", title) || title;
-    return `
-      <img
-        src="${escapeHtml(imageSrc)}"
-        alt="${escapeHtml(alt)}"
-        class="h-40 w-full rounded-xl border border-stone-200 object-cover"
-        onerror="this.onerror=null;this.closest('article')?.querySelector('[data-fallback-visual]')?.classList.remove('hidden'); this.classList.add('hidden');"
-        loading="lazy"
-      />
-      <div class="hidden" data-fallback-visual>${renderCategoryVisual(type, item, title)}</div>
-    `;
-  }
-
-  return renderCategoryVisual(type, item, title);
 }
 
 function renderBadges(badges = []) {
@@ -199,6 +205,197 @@ export function buildDetailUrl(type, item) {
 
 function getImageSrc(item) {
   return item?.image || DEFAULT_IMAGE;
+}
+
+function displayValue(value, fallback = translate("not_available_yet", "Not available yet")) {
+  const text = String(value || "").trim();
+  return text || fallback;
+}
+
+function estimateReadingTime(...segments) {
+  const words = segments
+    .filter(Boolean)
+    .join(" ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+
+  if (!words) {
+    return "";
+  }
+
+  const minutes = Math.max(1, Math.round(words / 190));
+  return getLanguage() === "hi" ? `${minutes} मिनट` : `${minutes} min`;
+}
+
+function detailMetaItem(labelKey, value) {
+  if (!value) {
+    return "";
+  }
+
+  return `<span><strong>${escapeHtml(translate(labelKey, labelKey))}:</strong> ${escapeHtml(value)}</span>`;
+}
+
+function renderDetailMeta(items = []) {
+  const clean = items.filter(Boolean);
+  return clean.length ? `<div class="detail-meta">${clean.join("")}</div>` : "";
+}
+
+function renderDetailNote(title, body, extraClass = "") {
+  if (!body) {
+    return "";
+  }
+
+  return `
+    <div class="detail-note ${extraClass}">
+      <h3>${escapeHtml(title)}</h3>
+      <p>${escapeHtml(body)}</p>
+    </div>
+  `;
+}
+
+function renderActionLink(href, label, variant = "secondary") {
+  return `<a href="${escapeHtml(href)}" class="jw-button jw-button--${variant}">${escapeHtml(label)}</a>`;
+}
+
+function renderDetailActions(actions = []) {
+  const clean = actions.filter(Boolean);
+  return clean.length ? `<div class="detail-cta">${clean.join("")}</div>` : "";
+}
+
+function renderSourceCard(title, summary, href, typeLabel) {
+  return `
+    <article class="source-card">
+      <span class="jw-badge">${escapeHtml(typeLabel)}</span>
+      <h3>${href ? `<a href="${escapeHtml(href)}">${escapeHtml(title)}</a>` : escapeHtml(title)}</h3>
+      <p>${escapeHtml(summary)}</p>
+    </article>
+  `;
+}
+
+function renderRelatedCards(items = []) {
+  if (!items.length) {
+    return "";
+  }
+
+  return `
+    <section class="detail-section">
+      <div class="section-header">
+        <span class="section-kicker">${escapeHtml(translate("related_content", "Related content"))}</span>
+        <h2>${escapeHtml(translate("related_content", "Related content"))}</h2>
+      </div>
+      <div class="related-grid">
+        ${items.map((item) => renderSourceCard(item.title, item.summary, item.href, item.typeLabel)).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderFaqSection(items = []) {
+  if (!Array.isArray(items) || !items.length) {
+    return "";
+  }
+
+  return `
+    <section class="detail-section faq-accordion">
+      <div class="section-header">
+        <span class="section-kicker">${escapeHtml(translate("faq", "FAQ"))}</span>
+        <h2>${escapeHtml(translate("faq", "FAQ"))}</h2>
+      </div>
+      ${items
+        .map(
+          (item) => `
+            <details>
+              <summary>${escapeHtml(item.q)}</summary>
+              <p>${escapeHtml(item.a)}</p>
+            </details>
+          `
+        )
+        .join("")}
+    </section>
+  `;
+}
+
+function renderBreadcrumb(items = []) {
+  const clean = items.filter(Boolean);
+  if (!clean.length) {
+    return "";
+  }
+
+  return `
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      ${clean
+        .map((item) =>
+          item.href
+            ? `<a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>`
+            : `<span>${escapeHtml(item.label)}</span>`
+        )
+        .join("<span>/</span>")}
+    </nav>
+  `;
+}
+
+function renderDetailHero({ badge, title, subtitle, meta = "", note = "", visual = "", breadcrumb = "" }) {
+  return `
+    <header class="detail-hero devotional-hero jain-motif-bg">
+      ${breadcrumb}
+      <div class="detail-hero-grid">
+        <div class="page-banner-copy">
+          ${badge ? `<span class="jw-badge">${escapeHtml(badge)}</span>` : ""}
+          <h1 class="hero-title">${escapeHtml(title)}</h1>
+          ${subtitle ? `<p class="hero-subtitle">${escapeHtml(subtitle)}</p>` : ""}
+          ${meta}
+          ${note}
+        </div>
+        <div class="detail-hero-visual">${visual}</div>
+      </div>
+    </header>
+  `;
+}
+
+function renderMissingDetailState(titleKey, fallbackTitle, browseHref) {
+  return `
+    <section class="detail-shell">
+      ${renderDetailHero({
+        badge: translate(titleKey, fallbackTitle),
+        title: translate(titleKey, fallbackTitle),
+        subtitle: translate("search_suggestion", "Try JainWorld Search or open the related section below."),
+        breadcrumb: renderBreadcrumb([
+          { href: "/index.html", label: translate("home", "Home") },
+          { label: translate(titleKey, fallbackTitle) }
+        ]),
+        visual: renderCategoryVisualClean(titleKey === "course" ? "course" : titleKey === "article" ? "literature" : titleKey === "audio" ? "audio" : "temples", {}, translate(titleKey, fallbackTitle))
+      })}
+      <section class="detail-section">
+        ${renderEmptyState(
+          translate(titleKey, fallbackTitle),
+          translate(`no_${titleKey}_found`, `The requested ${fallbackTitle.toLowerCase()} could not be found.`),
+          renderActionLink("/search.html", translate("search_jainworld", "Search JainWorld"), "primary")
+        )}
+        ${browseHref ? `<div class="mt-5">${renderActionLink(browseHref, fallbackTitle, "ghost")}</div>` : ""}
+      </section>
+    </section>
+  `;
+}
+
+function parseFaqData(item) {
+  const raw = item?.faq_json || item?.faq || "";
+  if (!raw) {
+    return [];
+  }
+
+  try {
+    const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+    if (Array.isArray(parsed)) {
+      return parsed
+        .map((entry) => ({ q: entry.q || entry.question || "", a: entry.a || entry.answer || "" }))
+        .filter((entry) => entry.q && entry.a);
+    }
+  } catch (error) {
+    return [];
+  }
+
+  return [];
 }
 
 function getTempleImageSrc(item) {
@@ -719,54 +916,89 @@ export function renderArticleDetail(target, item, type = "blogs") {
   }
 
   if (!item) {
-    root.innerHTML = `<div class="jw-card p-6 text-stone-600">Not Found</div>`;
+    root.innerHTML = renderMissingDetailState("article", "Article", "/literature.html");
     return;
   }
 
-  const title =
-    pickLocalized(item, "title") ||
-    pickLocalized(item, "lesson_title") ||
-    item.title ||
-    item.slug ||
-    "Untitled article";
-
-  const summary =
-    pickLocalized(item, "summary") ||
-    item.summary ||
-    "Detailed JainWorld article.";
-
-  const content = pickLocalized(item, "content") || item.content || item.method_en || item.content_en || "";
-  const spiritualReason = pickLocalized(item, "spiritual_reason") || item.spiritual_reason_en || "";
-  const scientificReason = pickLocalized(item, "scientific_reason") || item.scientific_reason_en || "";
-  const ingredients = pickLocalized(item, "ingredients") || item.ingredients_en || "";
-  const method = pickLocalized(item, "method") || item.method_en || "";
-  const imageSrc = getImageSrc(item);
+  const title = getLocalizedField(item, "title", item.title || item.slug || "Untitled article");
+  const summary = getLocalizedField(item, "summary", item.summary || "Detailed JainWorld article.");
+  const content = getLocalizedField(item, "content", item.content || item.method_en || item.content_en || "");
+  const spiritualReason = getLocalizedField(item, "spiritual_reason", item.spiritual_reason_en || "");
+  const scientificReason = getLocalizedField(item, "scientific_reason", item.scientific_reason_en || "");
+  const ingredients = getLocalizedField(item, "ingredients", item.ingredients_en || "");
+  const method = getLocalizedField(item, "method", item.method_en || "");
+  const readingTime = estimateReadingTime(summary, content, spiritualReason, scientificReason, ingredients, method);
   const lastUpdated = formatDate(item.updated_at || item.created_at);
+  const contentType = localizeLabel(type, type);
+  const faqItems = parseFaqData(item);
+  const relatedItems = [
+    {
+      title: translate("ask_jainworld", "Ask JainWorld"),
+      summary: translate("ask_topic_cta", "Have a question about this topic? Ask JainWorld."),
+      href: `/ask.html?q=${encodeURIComponent(title)}`,
+      typeLabel: translate("ask", "Ask")
+    },
+    {
+      title: translate("search_jainworld", "Search JainWorld"),
+      summary: summary,
+      href: `/search.html?q=${encodeURIComponent(item.tags || item.category || title)}`,
+      typeLabel: translate("search", "Search")
+    },
+    {
+      title: translate("report_correction", "Report correction"),
+      summary: translate("suggest_improvement", "Suggest improvement"),
+      href: "/corrections.html",
+      typeLabel: translate("reviewed", "Reviewed")
+    }
+  ];
 
   root.innerHTML = `
-    <article class="jw-card p-6 lg:p-8">
-      <img
-        src="${escapeHtml(imageSrc)}"
-        alt="${escapeHtml(title)}"
-        class="h-56 w-full rounded-2xl border border-stone-200 object-cover"
-        onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
-        loading="lazy"
-      />
-      ${renderBadges([item.category, item.tags])}
-      <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(title)}</h1>
-      <p class="m-0 mt-4 text-base leading-8 text-stone-600">${escapeHtml(summary)}</p>
-      ${renderTrustMeta([
-        item.author ? `Author: ${item.author}` : "",
-        item.source_note ? `Source: ${item.source_note}` : "",
-        lastUpdated ? `Last updated: ${lastUpdated}` : "",
-        `Type: ${type}`,
-        "Reviewed by JainWorld Editorial"
+    <article class="detail-shell">
+      ${renderDetailHero({
+        badge: contentType,
+        title,
+        subtitle: summary,
+        breadcrumb: renderBreadcrumb([
+          { href: "/index.html", label: translate("home", "Home") },
+          { href: type === "food" ? "/food.html" : type === "literature" ? "/literature.html" : "/blogs.html", label: contentType },
+          { label: title }
+        ]),
+        meta: renderDetailMeta([
+          detailMetaItem("source", item.source_note || translate("source_details_reviewed", "Source details are being reviewed")),
+          detailMetaItem("last_updated", lastUpdated),
+          detailMetaItem("reading_time", readingTime),
+          `<span><strong>${escapeHtml(translate("reviewed_by", "Reviewed by"))}:</strong> ${escapeHtml(translate("reviewed_by_editorial", "Reviewed by JainWorld Editorial"))}</span>`
+        ]),
+        note: renderDetailNote(
+          translate("read_with_care", "Read with care"),
+          getLanguage() === "hi"
+            ? "यह सामग्री अध्ययन और मनन के लिए है। औपचारिक धार्मिक अध्ययन के लिए योग्य आचार्य, शिक्षक या परंपरागत स्रोतों का सहारा लें।"
+            : "Use this page for thoughtful reading and reflection. For formal religious study, please consult qualified teachers or traditional sources."
+        ),
+        visual: renderCardMedia(type === "food" ? "food" : "literature", item, title)
+      })}
+      <section class="detail-section">
+        ${renderBadges([
+          getLocalizedField(item, "category", localizeLabel(item.category, item.category)),
+          getLocalizedField(item, "subcategory", localizeLabel(item.subcategory, item.subcategory)),
+          getLocalizedField(item, "difficulty", localizeLabel(item.difficulty, item.difficulty)),
+          item.review_status ? formatReviewStatus(item.review_status) : translate("reviewed", "Reviewed")
+        ])}
+      </section>
+      <section class="detail-section detail-body">
+        ${content ? normalizeParagraphs(content) : `<p>${escapeHtml(translate("not_available_yet", "Not available yet"))}</p>`}
+      </section>
+      ${ingredients ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("food", "Food"))}</span><h2>${escapeHtml(localizeLabel("Ingredients", "Ingredients"))}</h2></div><div class="detail-body">${normalizeParagraphs(ingredients)}</div></section>` : ""}
+      ${method ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("guide", "Guide"))}</span><h2>${escapeHtml(localizeLabel("Method", "Method"))}</h2></div><div class="detail-body">${normalizeParagraphs(method)}</div></section>` : ""}
+      ${spiritualReason ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("philosophy", "Philosophy"))}</span><h2>${escapeHtml(localizeLabel("Spiritual reason", "Spiritual reason"))}</h2></div><div class="detail-body">${normalizeParagraphs(spiritualReason)}</div></section>` : ""}
+      ${scientificReason ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("guide", "Guide"))}</span><h2>${escapeHtml(localizeLabel("Scientific or practical reason", "Scientific or practical reason"))}</h2></div><div class="detail-body">${normalizeParagraphs(scientificReason)}</div></section>` : ""}
+      ${renderDetailActions([
+        renderActionLink(`/ask.html?q=${encodeURIComponent(title)}`, translate("ask_topic_cta", "Have a question about this topic? Ask JainWorld."), "primary"),
+        renderActionLink("/corrections.html", translate("report_correction", "Report correction"), "secondary"),
+        renderActionLink("/contribute.html", translate("contribute_information", "Contribute information"), "ghost")
       ])}
-      ${content ? `<div class="jw-prose mt-8">${normalizeParagraphs(content)}</div>` : ""}
-      ${ingredients ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Ingredients</h2><p class="mt-3 text-stone-600">${escapeHtml(ingredients)}</p></section>` : ""}
-      ${method ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Method</h2><p class="mt-3 text-stone-600">${escapeHtml(method)}</p></section>` : ""}
-      ${spiritualReason ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Spiritual reason</h2><p class="mt-3 text-stone-600">${escapeHtml(spiritualReason)}</p></section>` : ""}
-      ${scientificReason ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Scientific or practical reason</h2><p class="mt-3 text-stone-600">${escapeHtml(scientificReason)}</p></section>` : ""}
+      ${renderRelatedCards(relatedItems)}
+      ${renderFaqSection(faqItems)}
     </article>
   `;
 }
@@ -778,73 +1010,106 @@ export function renderTempleDetail(target, item) {
   }
 
   if (!item) {
-    root.innerHTML = `<div class="jw-card p-6 text-stone-600">Temple Not Found</div>`;
+    root.innerHTML = renderMissingDetailState("temple", "Temple", "/temples.html");
     return;
   }
 
-  const nameEn = item.name_en || pickLocalized(item, "name") || item.slug || "Temple detail";
-  const nameHi = item.name_hi || "";
-  const history = item.history_en || pickLocalized(item, "history") || "";
-  const rituals = item.rituals_en || pickLocalized(item, "rituals") || "";
-  const imageSrc = getTempleImageSrc(item);
+  const title = getLocalizedField(item, "name", item.name_en || item.slug || "Temple detail");
+  const history = getLocalizedField(item, "history", item.history_en || "");
+  const rituals = getLocalizedField(item, "rituals", item.rituals_en || "");
   const location = [item.city, item.state, item.country].filter(Boolean).join(", ");
   const correctionUrl = item.correction_url || "/corrections.html";
+  const lastVerified = formatDate(item.last_verified_at);
+  const relatedItems = [
+    {
+      title: translate("search_jainworld", "Search JainWorld"),
+      summary: getLanguage() === "hi" ? "इसी तीर्थ, शहर या परंपरा से जुड़े और परिणाम देखें।" : "Explore more results for this tirth, city, or tradition.",
+      href: `/search.html?q=${encodeURIComponent(item.city || item.main_deity || title)}&type=temples`,
+      typeLabel: translate("temples", "Temples")
+    },
+    {
+      title: translate("resources", "Resources"),
+      summary: getLanguage() === "hi" ? "यात्रा, समुदाय और व्यावहारिक सहायता संसाधन देखें।" : "Open practical travel and community support resources.",
+      href: "/resources.html",
+      typeLabel: translate("resources", "Resources")
+    },
+    {
+      title: translate("ask_jainworld", "Ask JainWorld"),
+      summary: translate("ask_topic_cta", "Have a question about this topic? Ask JainWorld."),
+      href: `/ask.html?q=${encodeURIComponent(`${title} temple visit`)}`,
+      typeLabel: translate("ask", "Ask")
+    }
+  ];
 
   root.innerHTML = `
-    <article class="jw-card p-6 lg:p-8">
-      <img
-        src="${escapeHtml(imageSrc)}"
-        alt="${escapeHtml(nameEn)}"
-        class="h-56 w-full rounded-2xl border border-stone-200 object-cover"
-        onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
-        loading="lazy"
-      />
-      ${renderBadges([item.category, item.country, item.tradition, item.main_deity])}
-      <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(nameEn)}</h1>
-      ${nameHi ? `<p class="m-0 mt-2 text-base text-stone-600">${escapeHtml(nameHi)}</p>` : ""}
-      ${renderTrustMeta([
-        `Location: ${location || "Location will be updated"}`,
-        item.timings ? `Timings: ${item.timings}` : "",
-        item.last_verified_at ? `Last verified: ${formatDate(item.last_verified_at)}` : "",
-        item.verified_by ? `Verified by: ${item.verified_by}` : ""
+    <article class="detail-shell">
+      ${renderDetailHero({
+        badge: getLocalizedField(item, "category", localizeLabel(item.category, item.category)),
+        title,
+        subtitle: location || translate("not_available_yet", "Not available yet"),
+        breadcrumb: renderBreadcrumb([
+          { href: "/index.html", label: translate("home", "Home") },
+          { href: "/temples.html", label: translate("temples", "Temples") },
+          { label: title }
+        ]),
+        meta: renderDetailMeta([
+          detailMetaItem("city", item.city),
+          detailMetaItem("state", item.state),
+          detailMetaItem("country", item.country),
+          detailMetaItem("last_verified", lastVerified),
+          detailMetaItem("reviewed_by", item.verified_by || translate("reviewed_by_editorial", "Reviewed by JainWorld Editorial"))
+        ]),
+        note: renderDetailNote(
+          translate("respectful_visit_reminder", "Respectful visit reminder"),
+          getLanguage() === "hi"
+            ? "समय, धर्मशाला, भोजनशाला और विशेष पर्व व्यवस्था के लिए यात्रा से पहले स्थानीय ट्रस्ट या मंदिर से पुष्टि करें।"
+            : "Please confirm timings, stay, meal arrangements, and festival-day access with the local trust before you travel."
+        ),
+        visual: renderCardMedia("temples", { ...item, image: getTempleImageSrc(item) }, title)
+      })}
+      <section class="detail-section">
+        ${renderBadges([
+          getLocalizedField(item, "tradition", localizeLabel(item.tradition, item.tradition)),
+          getLocalizedField(item, "main_deity", item.main_deity),
+          formatReviewStatus(item.review_status || "verified")
+        ])}
+      </section>
+      <section class="detail-section">
+        <div class="jw-grid-2">
+          <article class="soft-card p-5">
+            <h2>${escapeHtml(translate("before_you_visit", "Before you visit"))}</h2>
+            <div class="visit-checklist">
+              <span>${escapeHtml(translate("timings", "Timings"))}: ${escapeHtml(displayValue(item.timings))}</span>
+              <span>${escapeHtml(translate("dharamshala", "Dharamshala"))}: ${escapeHtml(formatBooleanLabel(item.dharamshala_available))}</span>
+              <span>${escapeHtml(translate("bhojanshala", "Bhojanshala"))}: ${escapeHtml(formatBooleanLabel(item.bhojanshala_available))}</span>
+              <span>${escapeHtml(translate("parking", "Parking"))}: ${escapeHtml(formatBooleanLabel(item.parking))}</span>
+              <span>${escapeHtml(translate("accessibility", "Accessibility"))}: ${escapeHtml(displayValue(item.accessibility, getLanguage() === "hi" ? "कृपया स्थानीय रूप से पुष्टि करें" : "Please verify locally"))}</span>
+              <span>${escapeHtml(translate("best_time_to_visit", "Best time to visit"))}: ${escapeHtml(displayValue(item.best_time_to_visit, getLanguage() === "hi" ? "कृपया स्थानीय रूप से पुष्टि करें" : "Please verify locally"))}</span>
+            </div>
+          </article>
+          <article class="soft-card p-5">
+            <h2>${escapeHtml(translate("source", "Source"))}</h2>
+            <div class="visit-checklist">
+              <span>${escapeHtml(translate("address", "Address"))}: ${escapeHtml(displayValue(item.address))}</span>
+              <span>${escapeHtml(translate("contact_label", "Contact"))}: ${escapeHtml(displayValue(item.phone || item.contact))}</span>
+              <span>${escapeHtml(translate("website_label", "Website"))}: ${escapeHtml(displayValue(item.website))}</span>
+              <span>${escapeHtml(translate("map", "Map"))}: ${escapeHtml(item.map_link ? (getLanguage() === "hi" ? "लिंक उपलब्ध" : "Link available") : translate("not_available_yet", "Not available yet"))}</span>
+            </div>
+            <div class="detail-cta">
+              ${item.map_link ? renderActionLink(item.map_link, translate("map", "Map"), "ghost") : ""}
+              ${item.website ? renderActionLink(item.website, translate("website_label", "Website"), "ghost") : ""}
+            </div>
+          </article>
+        </div>
+      </section>
+      ${history ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("temple", "Temple"))}</span><h2>${escapeHtml(translate("history", "History"))}</h2></div><div class="detail-body">${normalizeParagraphs(history)}</div></section>` : ""}
+      ${rituals ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("devotional", "Devotional"))}</span><h2>${escapeHtml(translate("rituals", "Rituals"))}</h2></div><div class="detail-body">${normalizeParagraphs(rituals)}</div></section>` : ""}
+      ${renderDetailActions([
+        renderActionLink(correctionUrl, translate("report_correction", "Report correction"), "primary"),
+        renderActionLink("/contribute.html", translate("contribute_information", "Contribute information"), "secondary"),
+        renderActionLink(`/ask.html?q=${encodeURIComponent(`${title} ${item.city || ""}`)}`, translate("ask_jainworld", "Ask JainWorld"), "ghost")
       ])}
-      <p class="m-0 mt-4 text-sm leading-7 text-stone-600">
-        Temple details can change. Please verify timings and facilities with the temple or trust before visiting.
-      </p>
-      <div class="jw-grid-2 mt-8">
-        <section class="jw-card-flat p-5">
-          <h2 class="m-0 text-lg font-semibold text-stone-900">Location</h2>
-          <p class="m-0 mt-3 text-sm leading-7 text-stone-600">${escapeHtml(location || "Location will be updated from the CMS.")}</p>
-          <p class="m-0 mt-3 text-sm leading-7 text-stone-600">
-            <strong class="text-stone-900">Address:</strong> ${escapeHtml(item.address || "Address will be added after review.")}
-          </p>
-          ${
-            item.map_link
-              ? `<a href="${escapeHtml(item.map_link)}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Open Google Maps</a>`
-              : ""
-          }
-          ${
-            item.website
-              ? `<a href="${escapeHtml(item.website)}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Temple website</a>`
-              : ""
-          }
-        </section>
-        <section class="jw-card-flat p-5">
-          <h2 class="m-0 text-lg font-semibold text-stone-900">Temple details</h2>
-          <div class="mt-3 grid gap-2 text-sm text-stone-600">
-            <span><strong class="text-stone-900">Timings:</strong> ${escapeHtml(item.timings || "To be updated")}</span>
-            <span><strong class="text-stone-900">Phone:</strong> ${escapeHtml(item.phone || item.contact || "To be updated")}</span>
-            <span><strong class="text-stone-900">Dharamshala:</strong> ${escapeHtml(formatBooleanLabel(item.dharamshala_available))}</span>
-            <span><strong class="text-stone-900">Bhojanshala:</strong> ${escapeHtml(formatBooleanLabel(item.bhojanshala_available))}</span>
-            <span><strong class="text-stone-900">Parking:</strong> ${escapeHtml(formatBooleanLabel(item.parking))}</span>
-            <span><strong class="text-stone-900">Accessibility:</strong> ${escapeHtml(item.accessibility || "Please verify locally")}</span>
-            <span><strong class="text-stone-900">Best time to visit:</strong> ${escapeHtml(item.best_time_to_visit || "Please verify locally")}</span>
-          </div>
-          <a href="${escapeHtml(correctionUrl)}" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Report correction</a>
-        </section>
-      </div>
-      ${history ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">History</h2><p class="mt-3 text-stone-600">${escapeHtml(history)}</p></section>` : ""}
-      ${rituals ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Rituals</h2><p class="mt-3 text-stone-600">${escapeHtml(rituals)}</p></section>` : ""}
+      ${renderRelatedCards(relatedItems)}
     </article>
   `;
 }
@@ -856,50 +1121,79 @@ export function renderAudioDetail(target, item) {
   }
 
   if (!item) {
-    root.innerHTML = `<div class="jw-card p-6 text-stone-600">Audio Not Found</div>`;
+    root.innerHTML = renderMissingDetailState("audio", "Audio", "/audio.html");
     return;
   }
 
-  const title = item.title || item.slug || "Audio detail";
+  const title = getLocalizedField(item, "title", item.title || item.slug || "Audio detail");
   const embedUrl = getAudioEmbedUrl(item);
   const lastUpdated = formatDate(item.published_at || item.created_at);
+  const meaning = getLocalizedField(item, "meaning", item.meaning_en || "");
+  const lyrics = item.permission_status === "needs_review" ? "" : getLocalizedField(item, "lyrics", item.lyrics_en || "");
+  const relatedItems = [
+    {
+      title: translate("related_audio", "Related audio"),
+      summary: getLanguage() === "hi" ? "उसी श्रेणी के और जैन श्रवण विकल्प खोलें।" : "Explore more listening options from the same devotional category.",
+      href: `/search.html?q=${encodeURIComponent(item.category || title)}&type=audio`,
+      typeLabel: translate("audio", "Audio")
+    },
+    {
+      title: translate("literature", "Literature"),
+      summary: getLanguage() === "hi" ? "इसी विषय पर साहित्य और अर्थ पढ़ें।" : "Read literature and meaning notes around this topic.",
+      href: `/search.html?q=${encodeURIComponent(item.category || title)}&type=literature`,
+      typeLabel: translate("literature", "Literature")
+    }
+  ];
 
   root.innerHTML = `
-    <article class="jw-card p-6 lg:p-8">
-      ${renderIframeCard(embedUrl, title, 360)}
-      ${renderBadges([
-        item.category,
-        item.duration,
-        item.language,
-        item.tradition,
-        formatPermissionStatus(item.permission_status),
-        item.verified_status === "verified" ? "Verified" : ""
-      ])}
-      <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(title)}</h1>
-      ${renderTrustMeta([
-        item.speaker ? `Speaker: ${item.speaker}` : "",
-        item.singer ? `Singer: ${item.singer}` : "",
-        item.source ? `Source: ${item.source}` : "",
-        lastUpdated ? `Published: ${lastUpdated}` : ""
-      ])}
-      <p class="m-0 mt-4 text-sm leading-7 text-stone-600">
-        Audio is embedded or listed only with source and permission status. Copyrighted content should not be uploaded without permission.
-      </p>
-      ${
-        item.meaning_en
-          ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Meaning or notes</h2><p class="mt-3 text-stone-600">${escapeHtml(item.meaning_en)}</p></section>`
-          : ""
-      }
-      ${
-        item.lyrics_en
-          ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Lyrics or excerpt</h2><p class="mt-3 text-stone-600">${escapeHtml(item.lyrics_en)}</p></section>`
-          : ""
-      }
-      ${
-        item.audio_url
-          ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Source link</h2><a href="${escapeHtml(item.audio_url)}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Open external source</a></section>`
-          : ""
-      }
+    <article class="detail-shell">
+      ${renderDetailHero({
+        badge: getLocalizedField(item, "category", localizeLabel(item.category, item.category)),
+        title,
+        subtitle: meaning || (getLanguage() === "hi" ? "भक्ति, मनन और शांत श्रवण के लिए एक जैन ऑडियो संदर्भ।" : "A Jain audio reference for devotion, reflection, and calm listening."),
+        breadcrumb: renderBreadcrumb([
+          { href: "/index.html", label: translate("home", "Home") },
+          { href: "/audio.html", label: translate("audio", "Audio") },
+          { label: title }
+        ]),
+        meta: renderDetailMeta([
+          detailMetaItem("speaker", item.speaker),
+          detailMetaItem("singer", item.singer),
+          detailMetaItem("language", item.language),
+          detailMetaItem("duration", item.duration),
+          detailMetaItem("source", item.source),
+          detailMetaItem("last_updated", lastUpdated)
+        ]),
+        note: renderDetailNote(
+          translate("listen_with_reflection", "Listen with reflection"),
+          item.permission_status === "needs_review"
+            ? getLanguage() === "hi"
+              ? "इस ऑडियो का अनुमति या स्रोत सत्यापन जारी है। कृपया साझा या पुनर्प्रकाशित करने से पहले अनुमति की पुष्टि करें।"
+              : "Permission or source verification is still under review for this audio. Please confirm reuse rights before sharing."
+            : getLanguage() === "hi"
+              ? "इस ऑडियो को मनन, शांति और आदर के साथ सुनें।"
+              : "Listen with reflection and use this audio respectfully."
+        ),
+        visual: renderIframeCard(embedUrl, title, 340)
+      })}
+      <section class="detail-section">
+        ${renderBadges([
+          getLocalizedField(item, "category", localizeLabel(item.category, item.category)),
+          item.tradition ? localizeLabel(item.tradition, item.tradition) : "",
+          formatPermissionStatus(item.permission_status),
+          item.verified_status === "verified" ? translate("verified", "Verified") : ""
+        ])}
+      </section>
+      ${meaning ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("meaning", "Meaning"))}</span><h2>${escapeHtml(translate("meaning", "Meaning"))}</h2></div><div class="detail-body">${normalizeParagraphs(meaning)}</div></section>` : ""}
+      ${lyrics ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("audio", "Audio"))}</span><h2>${escapeHtml(localizeLabel("Transcript", "Transcript"))}</h2></div><div class="detail-body">${normalizeParagraphs(lyrics)}</div></section>` : ""}
+      <section class="detail-section">
+        <div class="trust-strip">
+          <strong>${escapeHtml(translate("source", "Source"))}</strong>
+          <span>${escapeHtml(item.audio_url ? displayValue(item.audio_url) : translate("source_details_are_being_reviewed", "Source details are being reviewed."))}</span>
+        </div>
+        ${item.audio_url ? `<div class="detail-cta">${renderActionLink(item.audio_url, translate("open_external_source", "Open external source"), "ghost")}${renderActionLink("/corrections.html", translate("report_correction", "Report correction"), "secondary")}${renderActionLink(`/ask.html?q=${encodeURIComponent(title)}`, translate("ask_jainworld", "Ask JainWorld"), "primary")}</div>` : ""}
+      </section>
+      ${renderRelatedCards(relatedItems)}
     </article>
   `;
 }
@@ -911,40 +1205,89 @@ export function renderCourseDetail(target, item) {
   }
 
   if (!item) {
-    root.innerHTML = `<div class="jw-card p-6 text-stone-600">The requested course lesson was not found.</div>`;
+    root.innerHTML = renderMissingDetailState("course", "Course", "/education.html");
     return;
   }
 
-  const courseTitle = pickLocalized(item, "course_title") || item.course_title_en || item.course_level || "Course";
-  const lessonTitle = pickLocalized(item, "lesson_title") || item.lesson_title_en || item.slug || "Lesson";
-  const content = pickLocalized(item, "content") || item.content_en || "";
-  const imageSrc = getImageSrc(item);
+  const courseTitle = getLocalizedField(item, "course_title", item.course_title_en || item.course_level || "Course");
+  const lessonTitle = getLocalizedField(item, "lesson_title", item.lesson_title_en || item.slug || "Lesson");
+  const content = getLocalizedField(item, "content", item.content_en || "");
   const lastUpdated = formatDate(item.updated_at || item.created_at);
+  const relatedItems = [
+    {
+      title: translate("literature", "Literature"),
+      summary: getLanguage() === "hi" ? "इसी विषय से संबंधित अध्ययन सामग्री पढ़ें।" : "Read related literature for this learning topic.",
+      href: `/search.html?q=${encodeURIComponent(item.topic || lessonTitle)}&type=literature`,
+      typeLabel: translate("literature", "Literature")
+    },
+    {
+      title: translate("ask_jainworld", "Ask JainWorld"),
+      summary: translate("ask_topic_cta", "Have a question about this topic? Ask JainWorld."),
+      href: `/ask.html?q=${encodeURIComponent(lessonTitle)}`,
+      typeLabel: translate("ask", "Ask")
+    }
+  ];
 
   root.innerHTML = `
-    <article class="jw-card p-6 lg:p-8">
-      <img
-        src="${escapeHtml(imageSrc)}"
-        alt="${escapeHtml(lessonTitle)}"
-        class="h-56 w-full rounded-2xl border border-stone-200 object-cover"
-        onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
-        loading="lazy"
-      />
-      ${renderBadges([item.course_level, item.difficulty, item.certificate_ready])}
-      <h1 class="mt-4 text-3xl font-bold tracking-tight text-stone-900">${escapeHtml(lessonTitle)}</h1>
-      <p class="m-0 mt-3 text-base text-stone-600">${escapeHtml(courseTitle)}</p>
-      ${renderTrustMeta([
-        item.topic ? `Topic: ${item.topic}` : "",
-        item.lesson_no ? `Lesson ${item.lesson_no}` : "",
-        lastUpdated ? `Last updated: ${lastUpdated}` : "",
-        "Reviewed by JainWorld Editorial"
+    <article class="detail-shell">
+      ${renderDetailHero({
+        badge: getLocalizedField(item, "difficulty", localizeLabel(item.difficulty || item.course_level, item.difficulty || item.course_level)),
+        title: lessonTitle,
+        subtitle: courseTitle,
+        breadcrumb: renderBreadcrumb([
+          { href: "/index.html", label: translate("home", "Home") },
+          { href: "/education.html", label: translate("education", "Education") },
+          { label: lessonTitle }
+        ]),
+        meta: renderDetailMeta([
+          detailMetaItem("learning_objectives", item.topic),
+          item.lesson_no ? `<span><strong>${escapeHtml(translate("lesson", "Lesson"))}:</strong> ${escapeHtml(item.lesson_no)}</span>` : "",
+          detailMetaItem("last_updated", lastUpdated),
+          `<span><strong>${escapeHtml(translate("reviewed_by", "Reviewed by"))}:</strong> ${escapeHtml(translate("reviewed_by_editorial", "Reviewed by JainWorld Editorial"))}</span>`
+        ]),
+        note: renderDetailNote(
+          translate("family_learning_note", "Learn with family"),
+          getLanguage() === "hi"
+            ? "इस पाठ को परिवार, बच्चों या अध्ययन समूह के साथ भी शांत गति में पढ़ा जा सकता है।"
+            : "This lesson works well for individual study and for calm family or group learning."
+        ),
+        visual: renderCardMedia("education", item, lessonTitle)
+      })}
+      <section class="detail-section">
+        ${renderBadges([
+          getLocalizedField(item, "course_level", localizeLabel(item.course_level, item.course_level)),
+          getLocalizedField(item, "difficulty", localizeLabel(item.difficulty, item.difficulty)),
+          item.certificate_ready ? displayValue(item.certificate_ready) : ""
+        ])}
+      </section>
+      <section class="detail-section">
+        <div class="section-header">
+          <span class="section-kicker">${escapeHtml(translate("learning_objectives", "Learning objectives"))}</span>
+          <h2>${escapeHtml(translate("learning_objectives", "Learning objectives"))}</h2>
+        </div>
+        <div class="visit-checklist">
+          <span>${escapeHtml(item.topic || lessonTitle)}</span>
+          <span>${escapeHtml(getLanguage() === "hi" ? "एक मुख्य विचार शांत मन से समझें।" : "Understand one key idea with calm attention.")}</span>
+          <span>${escapeHtml(getLanguage() === "hi" ? "अभ्यास को दैनिक जीवन से जोड़ें।" : "Connect the lesson to daily practice.")}</span>
+        </div>
+      </section>
+      <section class="detail-section detail-body">${content ? normalizeParagraphs(content) : `<p>${escapeHtml(translate("not_available_yet", "Not available yet"))}</p>`}</section>
+      <section class="detail-section">
+        <div class="section-header">
+          <span class="section-kicker">${escapeHtml(translate("practice_this_today", "Practice this today"))}</span>
+          <h2>${escapeHtml(translate("practice_this_today", "Practice this today"))}</h2>
+        </div>
+        <div class="devotional-note">
+          <p>${escapeHtml(getLanguage() === "hi" ? "आज एक छोटी बात चुनें: नम्रता से पढ़ें, एक विचार लिखें, या परिवार के साथ इस विषय पर बातचीत करें।" : "Choose one small practice today: read slowly, write one reflection, or discuss the lesson with family.")}</p>
+        </div>
+      </section>
+      ${item.quiz_json ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("learning_path", "Learning path"))}</span><h2>${escapeHtml(localizeLabel("Lesson prompts", "Lesson prompts"))}</h2></div><pre class="rounded-xl bg-stone-900 p-4 text-sm text-stone-100">${escapeHtml(item.quiz_json)}</pre></section>` : ""}
+      ${renderDetailActions([
+        renderActionLink(`/ask.html?q=${encodeURIComponent(lessonTitle)}`, translate("ask_jainworld", "Ask JainWorld"), "primary"),
+        renderActionLink("/corrections.html", translate("report_correction", "Report correction"), "secondary"),
+        renderActionLink("/contribute.html", translate("contribute_information", "Contribute information"), "ghost")
       ])}
-      <div class="jw-prose mt-8">${normalizeParagraphs(content)}</div>
-      ${
-        item.quiz_json
-          ? `<section class="mt-8"><h2 class="text-xl font-semibold text-stone-900">Quiz JSON</h2><pre class="mt-3 overflow-auto rounded-xl bg-stone-900 p-4 text-sm text-stone-100">${escapeHtml(item.quiz_json)}</pre></section>`
-          : ""
-      }
+      ${renderRelatedCards(relatedItems)}
     </article>
   `;
 }
@@ -989,7 +1332,7 @@ export function formatDate(value) {
     return String(value);
   }
 
-  return new Intl.DateTimeFormat("en-IN", {
+  return new Intl.DateTimeFormat(getLanguage() === "hi" ? "hi-IN" : "en-IN", {
     day: "2-digit",
     month: "short",
     year: "numeric"

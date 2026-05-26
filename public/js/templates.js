@@ -28,7 +28,7 @@ export const QUICK_CATEGORIES = [
     titleEn: "Food & Lifestyle",
     titleHi: "भोजन और जीवनशैली",
     summaryEn: "Understand Jain food discipline with respect and clarity.",
-    summaryHi: "जैन भोजन अनुशासन को सम्मान और स्पष्टता से समझें।"
+    summaryHi: "जैन भोजन अनुशासन को सम्मान और स्पष्टता के साथ समझें।"
   },
   {
     href: "/calendar.html",
@@ -173,7 +173,7 @@ export const LEARNING_PATHS = [
 export const POPULAR_TOPICS = [
   { en: "Ahimsa", hi: "अहिंसा" },
   { en: "Paryushan", hi: "पर्युषण" },
-  { en: "Navkar Mantra", hi: "णमोकार मंत्र" },
+  { en: "Navkar Mantra", hi: "नवकार मंत्र" },
   { en: "Samayik", hi: "समायिक" },
   { en: "Pratikraman", hi: "प्रतिक्रमण" },
   { en: "Bhaktamar", hi: "भक्तामर" },
@@ -212,14 +212,7 @@ export const EDUCATION_LEVELS = [
   }
 ];
 
-export const FEATURED_PILGRIMAGES = [
-  "Palitana",
-  "Shikharji",
-  "Ranakpur",
-  "Shankheshwar",
-  "Girnar",
-  "Sonagiri"
-];
+export const FEATURED_PILGRIMAGES = ["Palitana", "Shikharji", "Ranakpur", "Shankheshwar", "Girnar", "Sonagiri"];
 
 export const FOOD_RESTRICTIONS = [
   {
@@ -265,9 +258,24 @@ export const FOOD_RESTRICTIONS = [
 ];
 
 export const CULTURE_MODULES = [
-  { titleEn: "Jain stories", titleHi: "जैन कथाएँ", summaryEn: "Stories and values for family learning.", summaryHi: "पारिवारिक सीख के लिए कथाएँ और मूल्य।" },
-  { titleEn: "Festivals", titleHi: "पर्व", summaryEn: "Observe the rhythm of important Jain festivals.", summaryHi: "महत्वपूर्ण जैन पर्वों की लय को समझें।" },
-  { titleEn: "Daily practices", titleHi: "दैनिक अभ्यास", summaryEn: "Bring prayer, restraint, and reflection into everyday life.", summaryHi: "प्रार्थना, संयम और चिंतन को दैनिक जीवन में लाएँ।" }
+  {
+    titleEn: "Jain stories",
+    titleHi: "जैन कथाएँ",
+    summaryEn: "Stories and values for family learning.",
+    summaryHi: "पारिवारिक सीख के लिए कथाएँ और मूल्य।"
+  },
+  {
+    titleEn: "Festivals",
+    titleHi: "पर्व",
+    summaryEn: "Observe the rhythm of important Jain festivals.",
+    summaryHi: "महत्वपूर्ण जैन पर्वों की लय को समझें।"
+  },
+  {
+    titleEn: "Daily practices",
+    titleHi: "दैनिक अभ्यास",
+    summaryEn: "Bring prayer, restraint, and reflection into everyday life.",
+    summaryHi: "प्रार्थना, संयम और चिंतन को दैनिक जीवन में लाएँ।"
+  }
 ];
 
 export const COMMUNITY_BENEFITS = [
