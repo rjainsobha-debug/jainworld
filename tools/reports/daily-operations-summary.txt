@@ -1,0 +1,39 @@
+JainWorld Daily Operations Summary
+Run time: 2026-05-26T17:56:54.067Z
+
+Tools run:
+- Community Directory Review Preview [community-directory-review-preview]
+- News Ingestion Preview [news-ingestion-preview]
+- Resources Monitor Preview [resources-monitor-preview-root]
+
+Tools skipped:
+- News Bot Preview [news-bot-preview] (tool_not_found)
+- Resources Monitor Preview [resources-monitor-preview] (tool_not_found)
+- Temple Data Review Preview [temple-data-review-preview] (tool_not_found)
+- Audio Permission Review Preview [audio-permission-review-preview] (tool_not_found)
+- Literature Content Gap Preview [literature-content-gap-preview] (tool_not_found)
+- Image Suggestion Preview [image-suggestion-preview] (tool_not_found)
+- Marketing Content Ideas Preview [marketing-content-ideas-preview] (tool_not_found)
+- Search Index Refresh [search-index-refresh] (tool_not_found)
+- Content Gap Export [content-gap-export] (tool_not_found)
+- Final Validation [final-validation] (tool_not_found)
+
+Tools failed:
+- none
+
+Reports generated:
+- public/data/review-community-directory-quality.json
+- public/data/review-news-preview.json
+- public/data/review-resources-monitor-preview.json
+- tools/reports/community-directory-review-report.json
+- tools/reports/daily-operations-summary.json
+- tools/reports/daily-operations-summary.txt
+
+Review items count: 29
+
+Warnings:
+- 10 tool(s) were skipped because the script file does not exist yet.
+
+Next actions:
+- Inspect generated review reports before updating any public data.
+- Add or wire missing preview scripts when those review workflows are ready.

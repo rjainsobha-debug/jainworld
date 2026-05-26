@@ -1,0 +1,102 @@
+{
+  "run_time": "2026-05-26T17:56:54.067Z",
+  "tools_run": [
+    {
+      "key": "community-directory-review-preview",
+      "label": "Community Directory Review Preview",
+      "script_path": "tools/bots/community-directory-review-preview.js",
+      "reason": ""
+    },
+    {
+      "key": "news-ingestion-preview",
+      "label": "News Ingestion Preview",
+      "script_path": "tools/news-ingestion-preview.js",
+      "reason": ""
+    },
+    {
+      "key": "resources-monitor-preview-root",
+      "label": "Resources Monitor Preview",
+      "script_path": "tools/resources-monitor-preview.js",
+      "reason": ""
+    }
+  ],
+  "tools_skipped": [
+    {
+      "key": "news-bot-preview",
+      "label": "News Bot Preview",
+      "script_path": "tools/bots/news-bot-preview.js",
+      "reason": "tool_not_found"
+    },
+    {
+      "key": "resources-monitor-preview",
+      "label": "Resources Monitor Preview",
+      "script_path": "tools/bots/resources-monitor-preview.js",
+      "reason": "tool_not_found"
+    },
+    {
+      "key": "temple-data-review-preview",
+      "label": "Temple Data Review Preview",
+      "script_path": "tools/bots/temple-data-review-preview.js",
+      "reason": "tool_not_found"
+    },
+    {
+      "key": "audio-permission-review-preview",
+      "label": "Audio Permission Review Preview",
+      "script_path": "tools/bots/audio-permission-review-preview.js",
+      "reason": "tool_not_found"
+    },
+    {
+      "key": "literature-content-gap-preview",
+      "label": "Literature Content Gap Preview",
+      "script_path": "tools/bots/literature-content-gap-preview.js",
+      "reason": "tool_not_found"
+    },
+    {
+      "key": "image-suggestion-preview",
+      "label": "Image Suggestion Preview",
+      "script_path": "tools/bots/image-suggestion-preview.js",
+      "reason": "tool_not_found"
+    },
+    {
+      "key": "marketing-content-ideas-preview",
+      "label": "Marketing Content Ideas Preview",
+      "script_path": "tools/bots/marketing-content-ideas-preview.js",
+      "reason": "tool_not_found"
+    },
+    {
+      "key": "search-index-refresh",
+      "label": "Search Index Refresh",
+      "script_path": "tools/bots/search-index-refresh.js",
+      "reason": "tool_not_found"
+    },
+    {
+      "key": "content-gap-export",
+      "label": "Content Gap Export",
+      "script_path": "tools/bots/content-gap-export.js",
+      "reason": "tool_not_found"
+    },
+    {
+      "key": "final-validation",
+      "label": "Final Validation",
+      "script_path": "tools/final-validation.js",
+      "reason": "tool_not_found"
+    }
+  ],
+  "tools_failed": [],
+  "generated_files": [
+    "public/data/review-community-directory-quality.json",
+    "public/data/review-news-preview.json",
+    "public/data/review-resources-monitor-preview.json",
+    "tools/reports/community-directory-review-report.json",
+    "tools/reports/daily-operations-summary.json",
+    "tools/reports/daily-operations-summary.txt"
+  ],
+  "review_items_count": 29,
+  "warnings": [
+    "10 tool(s) were skipped because the script file does not exist yet."
+  ],
+  "next_actions": [
+    "Inspect generated review reports before updating any public data.",
+    "Add or wire missing preview scripts when those review workflows are ready."
+  ]
+}
