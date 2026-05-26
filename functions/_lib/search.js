@@ -12,7 +12,11 @@ const ALLOWED_TYPES = new Set([
   "blogs",
   "audio",
   "resources",
-  "calendar"
+  "calendar",
+  "directory",
+  "speakers",
+  "names",
+  "dictionary"
 ]);
 
 const STOP_WORDS = new Set([
@@ -39,7 +43,27 @@ const STOP_WORDS = new Set([
   "find",
   "explain",
   "tell",
-  "me"
+  "me",
+  "क्या",
+  "क्यों",
+  "कैसे",
+  "कौन",
+  "है",
+  "हैं",
+  "था",
+  "थी",
+  "थे",
+  "का",
+  "की",
+  "के",
+  "को",
+  "से",
+  "में",
+  "पर",
+  "और",
+  "या",
+  "यह",
+  "वह"
 ]);
 
 const STEM_MAP = new Map([
@@ -51,6 +75,30 @@ const STEM_MAP = new Map([
   ["applications", "application"],
   ["certificates", "certificate"],
   ["papers", "paper"]
+]);
+
+const HINDI_TOKEN_MAP = new Map([
+  ["सामायिक", "samayik"],
+  ["अनेकांतवाद", "anekantavada"],
+  ["अहिंसा", "ahimsa"],
+  ["अपरिग्रह", "aparigraha"],
+  ["नमोकार", "namokar"],
+  ["नवकार", "navkar"],
+  ["पर्युषण", "paryushan"],
+  ["संवत्सरी", "samvatsari"],
+  ["प्रतिक्रमण", "pratikraman"],
+  ["तीर्थंकर", "tirthankar"],
+  ["मोक्ष", "moksha"],
+  ["कर्म", "karma"],
+  ["भजन", "bhajan"],
+  ["आरती", "aarti"],
+  ["मंदिर", "temple"],
+  ["तीर्थ", "tirth"],
+  ["भोजन", "food"],
+  ["छात्रवृत्ति", "scholarship"],
+  ["दस्तावेज़", "document"],
+  ["दस्तावेज", "document"],
+  ["कागज़ात", "document"]
 ]);
 
 const TOKEN_SYNONYMS = {
@@ -66,7 +114,7 @@ const TOKEN_SYNONYMS = {
 export function normalizeQuery(text) {
   return normalizeString(text)
     .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s-]/gu, " ")
+    .replace(/[^\p{L}\p{M}\p{N}\s-]/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -77,23 +125,49 @@ export function normalizeToken(token) {
     return "";
   }
 
+  if (HINDI_TOKEN_MAP.has(normalized)) {
+    return HINDI_TOKEN_MAP.get(normalized) || "";
+  }
+
   return STEM_MAP.get(normalized) || normalized;
 }
 
 export function tokenizeQuery(text) {
-  const baseTokens = normalizeQuery(text)
+  const rawTokens = normalizeQuery(text)
     .split(" ")
-    .map((token) => normalizeToken(token.trim()))
+    .map((token) => token.trim())
     .filter((token) => token && !STOP_WORDS.has(token));
 
-  const expanded = new Set(baseTokens);
-  baseTokens.forEach((token) => {
-    (TOKEN_SYNONYMS[token] || []).forEach((synonym) => {
+  const expanded = new Set();
+  rawTokens.forEach((token) => {
+    expanded.add(token);
+
+    const normalizedToken = normalizeToken(token);
+    if (normalizedToken && !STOP_WORDS.has(normalizedToken)) {
+      expanded.add(normalizedToken);
+    }
+
+    [token, normalizedToken].filter(Boolean).forEach((entry) => {
+      (TOKEN_SYNONYMS[entry] || []).forEach((synonym) => {
+        normalizeQuery(synonym)
+          .split(" ")
+          .map((value) => normalizeToken(value) || normalizeQuery(value))
+          .filter((value) => value && !STOP_WORDS.has(value))
+          .forEach((value) => expanded.add(value));
+      });
+    });
+  });
+
+  rawTokens.forEach((token) => {
+    const mapped = normalizeToken(token);
+    [token, mapped].filter(Boolean).forEach((entry) => {
+      (TOKEN_SYNONYMS[entry] || []).forEach((synonym) => {
       normalizeQuery(synonym)
         .split(" ")
-        .map((entry) => normalizeToken(entry))
-        .filter(Boolean)
-        .forEach((entry) => expanded.add(entry));
+        .map((value) => normalizeToken(value) || normalizeQuery(value))
+        .filter((value) => value && !STOP_WORDS.has(value))
+        .forEach((value) => expanded.add(value));
+      });
     });
   });
 
@@ -368,6 +442,18 @@ function buildMeta(type, item) {
   if (type === "calendar") {
     return [item.category, item.date_gregorian, item.tithi].filter(Boolean);
   }
+  if (type === "directory") {
+    return [item.category, item.priority, item.review_status].filter(Boolean);
+  }
+  if (type === "speakers") {
+    return [item.tradition_or_context, item.topics, item.review_status].filter(Boolean);
+  }
+  if (type === "names") {
+    return [item.gender, item.meaning, item.review_status].filter(Boolean);
+  }
+  if (type === "dictionary") {
+    return [item.category, item.review_status].filter(Boolean);
+  }
   return [item.category, item.tags, item.author].filter(Boolean);
 }
 
@@ -390,6 +476,18 @@ function buildUrl(type, item) {
   }
   if (type === "calendar") {
     return "/calendar.html";
+  }
+  if (type === "directory") {
+    return item.url || "/directory.html";
+  }
+  if (type === "speakers") {
+    return "/speakers.html";
+  }
+  if (type === "names") {
+    return "/names.html";
+  }
+  if (type === "dictionary") {
+    return "/dictionary.html";
   }
   if (type === "blogs") {
     return `/article.html?type=blogs&slug=${slug}`;

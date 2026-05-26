@@ -4,8 +4,9 @@ const path = require("path");
 const rootDir = path.resolve(__dirname, "..");
 const dataDir = path.join(rootDir, "public", "data");
 const outputPaths = [
-  path.join(rootDir, "db", "seed-search-index.sql"),
-  path.join(rootDir, "db", "seed-search-index-d1.sql")
+  { path: path.join(rootDir, "db", "seed-search-index.sql"), transactional: true },
+  { path: path.join(rootDir, "db", "seed-search-index-d1.sql"), transactional: true },
+  { path: path.join(rootDir, "db", "seed-search-index-d1-clean.sql"), transactional: false }
 ];
 
 const SOURCES = [
@@ -51,17 +52,17 @@ function main() {
     });
   });
 
-  const sql = buildSql(rows);
-  outputPaths.forEach((outputPath) => {
-    fs.writeFileSync(outputPath, sql, "utf8");
-    console.log(`Wrote ${outputPath}`);
+  outputPaths.forEach((output) => {
+    const sql = buildSql(rows, output.transactional);
+    fs.writeFileSync(output.path, sql, "utf8");
+    console.log(`Wrote ${output.path}`);
   });
   Object.entries(counts).forEach(([type, count]) => {
     console.log(`${type}: ${count}`);
   });
 }
 
-function buildSql(rows) {
+function buildSql(rows, transactional = true) {
   if (!rows.length) {
     return "-- No search index rows generated.\n";
   }
@@ -91,6 +92,10 @@ function buildSql(rows) {
     return `INSERT OR REPLACE INTO search_index (${columns.join(", ")}) VALUES (${values.join(", ")});`;
   });
 
+  if (!transactional) {
+    return `-- Generated universal search index seed\n${statements.join("\n")}\n`;
+  }
+
   return `-- Generated universal search index seed\nBEGIN TRANSACTION;\n${statements.join("\n")}\nCOMMIT;\n`;
 }
 
@@ -100,20 +105,20 @@ function baseRow(type, item, weight, title, summary, body, url, extra = {}) {
     id: `search-index-${type}-${sourceId}`,
     content_type: type,
     source_id: sourceId,
-    title: clean(title),
-    summary: clean(summary),
-    body: clean(body),
+    title: cleanSearchText(title),
+    summary: cleanSearchText(summary),
+    body: cleanSearchText(body),
     url,
-    category: clean(extra.category || ""),
-    tags: clean(extra.tags || ""),
+    category: cleanSearchText(extra.category || ""),
+    tags: cleanSearchText(extra.tags || ""),
     language: clean(extra.language || "en"),
     status: "published",
-    review_status: clean(extra.review_status || "verified"),
-    source_name: clean(extra.source_name || "JainWorld"),
-    published_at: clean(extra.published_at || item.created_at || ""),
-    updated_at: clean(extra.updated_at || item.updated_at || item.created_at || ""),
+    review_status: cleanSearchText(extra.review_status || "verified"),
+    source_name: cleanSearchText(extra.source_name || "JainWorld"),
+    published_at: cleanSearchText(extra.published_at || item.created_at || ""),
+    updated_at: cleanSearchText(extra.updated_at || item.updated_at || item.created_at || ""),
     search_weight: weight,
-    created_at: clean(extra.created_at || item.created_at || item.published_at || "2026-01-01")
+    created_at: cleanSearchText(extra.created_at || item.created_at || item.published_at || "2026-01-01")
   };
 }
 
@@ -124,7 +129,15 @@ function mapLiterature(item, weight) {
     weight,
     item.title_en || item.title_hi,
     item.summary_en || item.summary_hi,
-    [item.summary_en, item.content_en, item.category, item.subcategory, item.tags].filter(Boolean).join(" "),
+    [
+      item.summary_en,
+      item.summary_hi,
+      item.content_en,
+      item.content_hi,
+      item.category,
+      item.subcategory,
+      item.tags
+    ].filter(Boolean).join(" "),
     `/article.html?type=literature&slug=${encodeURIComponent(item.slug || item.id || "")}`,
     {
       category: item.category,
@@ -179,7 +192,16 @@ function mapEducation(item, weight) {
     weight,
     item.lesson_title_en || item.course_title_en,
     item.course_title_en || item.topic,
-    [item.course_title_en, item.lesson_title_en, item.topic, item.content_en, item.difficulty].filter(Boolean).join(" "),
+    [
+      item.course_title_en,
+      item.course_title_hi,
+      item.lesson_title_en,
+      item.lesson_title_hi,
+      item.topic,
+      item.content_en,
+      item.content_hi,
+      item.difficulty
+    ].filter(Boolean).join(" "),
     `/course-detail.html?slug=${encodeURIComponent(item.slug || item.id || "")}`,
     {
       category: item.course_level,
@@ -196,7 +218,20 @@ function mapTemples(item, weight) {
     weight,
     item.name_en || item.name_hi,
     [item.city, item.state, item.country].filter(Boolean).join(", "),
-    [item.name_en, item.city, item.state, item.country, item.address, item.history_en, item.rituals_en, item.category].filter(Boolean).join(" "),
+    [
+      item.name_en,
+      item.name_hi,
+      item.city,
+      item.state,
+      item.country,
+      item.address,
+      item.history_en,
+      item.history_hi,
+      item.rituals_en,
+      item.rituals_hi,
+      item.category,
+      item.main_deity
+    ].filter(Boolean).join(" "),
     `/temple-detail.html?slug=${encodeURIComponent(item.slug || item.id || "")}`,
     {
       category: item.category,
@@ -215,7 +250,17 @@ function mapAudio(item, weight) {
     weight,
     item.title,
     item.meaning_en || item.category,
-    [item.title, item.category, item.speaker, item.singer, item.tradition, item.language, item.meaning_en].filter(Boolean).join(" "),
+    [
+      item.title,
+      item.title_hi,
+      item.category,
+      item.speaker,
+      item.singer,
+      item.tradition,
+      item.language,
+      item.meaning_en,
+      item.meaning_hi
+    ].filter(Boolean).join(" "),
     `/audio-detail.html?slug=${encodeURIComponent(item.slug || item.id || "")}`,
     {
       category: item.category,
@@ -257,7 +302,18 @@ function mapResources(item, weight) {
     weight,
     item.title_en || item.title_hi,
     item.summary_en || item.summary_hi,
-    [item.summary_en, item.eligibility_en, item.benefit_en, item.documents_required_en, item.category, item.state].filter(Boolean).join(" "),
+    [
+      item.summary_en,
+      item.summary_hi,
+      item.eligibility_en,
+      item.eligibility_hi,
+      item.benefit_en,
+      item.benefit_hi,
+      item.documents_required_en,
+      item.documents_required_hi,
+      item.category,
+      item.state
+    ].filter(Boolean).join(" "),
     "/resources.html",
     {
       category: item.category,
@@ -278,7 +334,16 @@ function mapCalendar(item, weight) {
     weight,
     item.festival_en || item.festival_hi || item.tithi,
     item.description_en || item.description_hi || item.tithi,
-    [item.festival_en, item.description_en, item.tithi, item.category, item.rituals_en].filter(Boolean).join(" "),
+    [
+      item.festival_en,
+      item.festival_hi,
+      item.description_en,
+      item.description_hi,
+      item.tithi,
+      item.category,
+      item.rituals_en,
+      item.rituals_hi
+    ].filter(Boolean).join(" "),
     "/calendar.html",
     {
       category: item.category,
@@ -379,6 +444,39 @@ function sqlValue(value) {
 
 function clean(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+const MOJIBAKE_FRAGMENTS = [
+  "\u00e0\u00a4",
+  "\u00e0\u00a5",
+  "\u00e2\u0080\u00a2",
+  "\u00c2\u00a9",
+  "\u00e2\u0080\u0094",
+  "\u00e2\u0080\u0093",
+  "\u00e2\u0080\u0099",
+  "\u00e2\u0080\u009c",
+  "\u00e2\u0080\u009d"
+];
+
+function isMojibake(text) {
+  return MOJIBAKE_FRAGMENTS.some((fragment) => String(text || "").includes(fragment));
+}
+
+function cleanSearchText(value) {
+  const text = clean(value);
+  if (!text) {
+    return "";
+  }
+
+  if (isMojibake(text)) {
+    return "";
+  }
+
+  return text
+    .replace(/[“”]/g, '"')
+    .replace(/[’]/g, "'")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 main();
