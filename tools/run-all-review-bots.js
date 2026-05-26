@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { spawnSync } = require("child_process");
+const { sendTelegramMessage } = require("./lib/telegram");
 
 const rootDir = path.resolve(__dirname, "..");
 const reportDir = path.join(rootDir, "tools", "reports");
@@ -81,7 +82,7 @@ const TOOL_RUNNERS = [
   }
 ];
 
-function main() {
+async function main() {
   ensureDir(reportDir);
   const runTime = new Date().toISOString();
   const results = TOOL_RUNNERS.map(runTool);
@@ -93,6 +94,7 @@ function main() {
   fs.writeFileSync(summaryTextPath, formatTextSummary(summary), "utf8");
 
   printConsoleSummary(summary);
+  await notifyTelegram(summary);
 }
 
 function runTool(tool) {
@@ -285,6 +287,49 @@ function printConsoleSummary(summary) {
   formatLines(summary.next_actions).forEach((line) => console.log(line));
 }
 
+async function notifyTelegram(summary) {
+  const telegramText = buildTelegramSummary(summary);
+  const result = await sendTelegramMessage(telegramText);
+
+  if (result.skipped && result.reason === "env_not_configured") {
+    console.log("Telegram skipped: env vars not configured");
+    return;
+  }
+
+  if (result.skipped && result.reason === "dry_run") {
+    console.log("Telegram dry run: message prepared but not sent");
+    return;
+  }
+
+  if (!result.ok) {
+    console.log(`Telegram failed: ${result.reason}`);
+    return;
+  }
+
+  console.log("Telegram sent: daily review summary delivered");
+}
+
+function buildTelegramSummary(summary) {
+  return [
+    "JainWorld Daily Review",
+    "",
+    `Tools run: ${summary.tools_run.length}`,
+    `Tools skipped: ${summary.tools_skipped.length}`,
+    `Tools failed: ${summary.tools_failed.length}`,
+    `Review items: ${summary.review_items_count}`,
+    "",
+    "Reports generated:",
+    "- daily-operations-summary.json",
+    "- daily-operations-summary.txt",
+    "",
+    "Next actions:",
+    "- Review pending directory/resource/news/audio items",
+    "- Do not publish without review",
+    "",
+    "No content auto-published."
+  ].join("\n");
+}
+
 function formatToolLines(items) {
   if (!items.length) {
     return ["- none"];
@@ -332,4 +377,7 @@ function relativePath(filePath) {
   return path.relative(rootDir, path.resolve(filePath)).replace(/\\/g, "/");
 }
 
-main();
+main().catch((error) => {
+  console.error(error.message);
+  process.exitCode = 1;
+});
