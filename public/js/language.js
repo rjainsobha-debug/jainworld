@@ -1,8 +1,7 @@
 const LANGUAGE_KEY = "lang";
 const LEGACY_LANGUAGE_KEY = "jainworld-language";
 const DEFAULT_LANGUAGE = "en";
-const MOJIBAKE_PATTERN =
-  /(?:\u00E0\u00A4|\\u00E0\\u00A4|\u00E0\u00A5|\\u00E0\\u00A5|\u00E2\u0080\u00A2|\\u00E2\\u0080\\u00A2|\u00C2\u00A9|\\u00C2\\u00A9|\u00E2\u0080\u0094|\\u00E2\\u0080\\u0094|\u00E2\u0080\u0093|\\u00E2\\u0080\\u0093)/;
+const MOJIBAKE_PATTERN = /(?:\u00E0\u00A4|\u00E0\u00A5|\u00E2\u0080\u00A2|\u00C2\u00A9|\u00E2\u0080\u0094|\u00E2\u0080\u0093)/;
 
 const TRANSLATIONS = {
   home: { en: "Home", hi: "होम" },
@@ -28,7 +27,7 @@ const TRANSLATIONS = {
   search: { en: "Search", hi: "खोजें" },
   quick_actions: { en: "Quick Actions", hi: "त्वरित विकल्प" },
   start_here: { en: "Start Here", hi: "यहाँ से शुरू करें" },
-  daily_jain: { en: "Daily Jain", hi: "दैनिक जैन" },
+  daily_jain: { en: "Today on JainWorld", hi: "आज जैनवर्ल्ड पर" },
   learning_paths: { en: "Learning paths", hi: "सीखने के मार्ग" },
   popular_topics: { en: "Popular topics", hi: "लोकप्रिय विषय" },
   thought_of_the_day: { en: "Thought of the day", hi: "आज का विचार" },
@@ -47,7 +46,7 @@ const TRANSLATIONS = {
   verified: { en: "Verified", hi: "सत्यापित" },
   curated: { en: "Curated", hi: "संपादित" },
   external_source: { en: "External source", hi: "बाहरी स्रोत" },
-  ai_assisted: { en: "AI-assisted from sources", hi: "स्रोतों से एआई-सहायित" },
+  ai_assisted: { en: "AI-assisted from JainWorld sources", hi: "जैनवर्ल्ड स्रोतों से एआई-सहायित" },
   limited_source_coverage: { en: "Limited source coverage", hi: "सीमित स्रोत उपलब्धता" },
   confidence: { en: "Confidence", hi: "विश्वास स्तर" },
   answer_mode: { en: "Answer mode", hi: "उत्तर मोड" },
@@ -58,9 +57,7 @@ const TRANSLATIONS = {
 };
 
 export function getLanguage() {
-  const saved =
-    window.localStorage.getItem(LANGUAGE_KEY) ||
-    window.localStorage.getItem(LEGACY_LANGUAGE_KEY);
+  const saved = window.localStorage.getItem(LANGUAGE_KEY) || window.localStorage.getItem(LEGACY_LANGUAGE_KEY);
   return saved === "hi" ? "hi" : DEFAULT_LANGUAGE;
 }
 
@@ -109,6 +106,7 @@ export function updateLanguageDOM(lang = getLanguage()) {
       node.dataset[`placeholder${lang === "hi" ? "Hi" : "En"}`],
       node.dataset.placeholderEn
     );
+
     if (typeof nextPlaceholder === "string" && nextPlaceholder.trim()) {
       node.setAttribute("placeholder", nextPlaceholder);
     }
@@ -119,6 +117,7 @@ export function updateLanguageDOM(lang = getLanguage()) {
       node.dataset[`title${lang === "hi" ? "Hi" : "En"}`],
       node.dataset.titleEn
     );
+
     if (typeof nextTitle === "string" && nextTitle.trim()) {
       node.setAttribute("title", nextTitle);
     }
@@ -129,6 +128,7 @@ export function updateLanguageDOM(lang = getLanguage()) {
       node.dataset[`value${lang === "hi" ? "Hi" : "En"}`],
       node.dataset.valueEn
     );
+
     if (typeof nextValue === "string" && nextValue.trim()) {
       node.setAttribute("value", nextValue);
     }
@@ -142,11 +142,7 @@ export function pickLocalized(item, base, lang = getLanguage()) {
     return "";
   }
 
-  const preferredKeys = [
-    `${base}_${lang}`,
-    base,
-    `${base}_${lang === "hi" ? "en" : "hi"}`
-  ];
+  const preferredKeys = [`${base}_${lang}`, base, `${base}_${lang === "hi" ? "en" : "hi"}`];
 
   for (const key of preferredKeys) {
     const value = item[key];

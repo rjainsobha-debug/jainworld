@@ -91,7 +91,16 @@ mark {
 .feature-card,
 .journey-card,
 .quick-action-card,
-.daily-card {
+.daily-card,
+.mantra-card,
+.daily-dharma-card,
+.festival-highlight-card,
+.practice-card,
+.scripture-card,
+.audio-devotion-card,
+.family-learning-card,
+.tirth-card,
+.seva-card {
   background: rgba(255, 253, 248, 0.92);
   border: 1px solid var(--jw-border);
   border-radius: var(--jw-radius-sm);
@@ -302,6 +311,231 @@ summary:focus-visible {
   overflow: hidden;
   background: var(--jw-gradient-soft);
   border-bottom: 1px solid rgba(122, 31, 43, 0.08);
+}
+
+.jain-motif-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.jain-motif-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 14% 18%, rgba(217, 154, 43, 0.14), transparent 18%),
+    radial-gradient(circle at 86% 12%, rgba(122, 31, 43, 0.08), transparent 18%),
+    radial-gradient(circle at 82% 82%, rgba(111, 143, 95, 0.08), transparent 20%);
+  pointer-events: none;
+}
+
+.calm-ornament {
+  position: relative;
+}
+
+.calm-ornament::after {
+  content: "";
+  display: block;
+  width: 76px;
+  height: 10px;
+  margin-top: 0.9rem;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(217, 154, 43, 0.95) 0 18%, transparent 22%),
+    linear-gradient(90deg, rgba(217, 154, 43, 0.18), rgba(122, 31, 43, 0.18), rgba(217, 154, 43, 0.18));
+}
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--jw-maroon);
+}
+
+.section-kicker::before,
+.section-kicker::after {
+  content: "";
+  width: 0.85rem;
+  height: 0.12rem;
+  border-radius: 999px;
+  background: var(--jw-gold);
+}
+
+.saffron-divider {
+  width: 100%;
+  height: 1px;
+  margin: 1.1rem 0 0;
+  background: linear-gradient(90deg, transparent, rgba(217, 154, 43, 0.92), transparent);
+}
+
+.prayer-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  gap: 0.4rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(122, 31, 43, 0.08);
+  border: 1px solid rgba(122, 31, 43, 0.12);
+  color: var(--jw-maroon);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.prayer-chip:hover {
+  transform: translateY(-1px);
+  border-color: rgba(217, 154, 43, 0.42);
+  background: rgba(217, 154, 43, 0.14);
+}
+
+.devotional-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(217, 154, 43, 0.22), transparent 20%),
+    radial-gradient(circle at 88% 16%, rgba(122, 31, 43, 0.12), transparent 18%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.98), rgba(244, 231, 208, 0.72), rgba(255, 253, 248, 0.98));
+  border-bottom: 1px solid rgba(122, 31, 43, 0.08);
+}
+
+.devotional-hero::before {
+  content: "";
+  position: absolute;
+  right: -24px;
+  bottom: -38px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(217, 154, 43, 0.18) 0 12%, transparent 13% 20%, rgba(217, 154, 43, 0.08) 21% 24%, transparent 25% 100%);
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+.devotional-hero::after {
+  content: "";
+  position: absolute;
+  left: 6%;
+  bottom: 0;
+  width: min(320px, 38vw);
+  height: 118px;
+  border-radius: 180px 180px 0 0;
+  border: 1px solid rgba(122, 31, 43, 0.08);
+  border-bottom: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.12), rgba(255, 253, 248, 0)),
+    radial-gradient(circle at 50% 92%, rgba(217, 154, 43, 0.16), transparent 55%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.mantra-card,
+.daily-dharma-card,
+.festival-highlight-card,
+.practice-card,
+.scripture-card,
+.audio-devotion-card,
+.family-learning-card,
+.tirth-card,
+.seva-card {
+  position: relative;
+  display: block;
+  padding: 1.35rem;
+  text-decoration: none;
+}
+
+.mantra-card::before,
+.daily-dharma-card::before,
+.festival-highlight-card::before,
+.practice-card::before,
+.scripture-card::before,
+.audio-devotion-card::before,
+.family-learning-card::before,
+.tirth-card::before,
+.seva-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px 999px 0 0;
+  background: linear-gradient(90deg, rgba(217, 154, 43, 0.92), rgba(122, 31, 43, 0.92));
+}
+
+.mantra-card h3,
+.daily-dharma-card h3,
+.festival-highlight-card h3,
+.practice-card h3,
+.scripture-card h3,
+.audio-devotion-card h3,
+.family-learning-card h3,
+.tirth-card h3,
+.seva-card h3 {
+  margin: 0.2rem 0 0;
+  color: var(--jw-text);
+  font-size: 1.15rem;
+}
+
+.mantra-card p,
+.daily-dharma-card p,
+.festival-highlight-card p,
+.practice-card p,
+.scripture-card p,
+.audio-devotion-card p,
+.family-learning-card p,
+.tirth-card p,
+.seva-card p {
+  margin: 0.8rem 0 0;
+  color: var(--jw-muted);
+  font-size: 0.96rem;
+  line-height: 1.75;
+}
+
+.mantra-card {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(217, 154, 43, 0.12), transparent 45%),
+    rgba(255, 253, 248, 0.94);
+}
+
+.daily-dharma-card {
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.96), rgba(244, 231, 208, 0.56));
+}
+
+.festival-highlight-card {
+  background:
+    radial-gradient(circle at 85% 15%, rgba(122, 31, 43, 0.08), transparent 28%),
+    rgba(255, 253, 248, 0.94);
+}
+
+.practice-card,
+.scripture-card,
+.audio-devotion-card,
+.family-learning-card,
+.tirth-card,
+.seva-card {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.practice-card:hover,
+.scripture-card:hover,
+.audio-devotion-card:hover,
+.family-learning-card:hover,
+.tirth-card:hover,
+.seva-card:hover,
+.mantra-card:hover,
+.daily-dharma-card:hover,
+.festival-highlight-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--jw-shadow);
+  border-color: var(--jw-border-strong);
 }
 
 .hero-section::after,

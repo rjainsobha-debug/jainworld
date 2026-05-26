@@ -17,112 +17,84 @@ export const QUICK_CATEGORIES = [
     summaryHi: "बच्चों, परिवारों और पहली बार सीखने वालों के लिए सरल शुरुआत।"
   },
   {
-    href: "/literature.html",
-    titleEn: "Read Jain Literature",
-    titleHi: "जैन साहित्य पढ़ें",
-    summaryEn: "Agamas, sutras, stories, bhajans, and devotional reading.",
-    summaryHi: "आगम, सूत्र, कथाएँ, भजन और भक्ति-पाठ एक साथ।"
-  },
-  {
     href: "/temples.html",
-    titleEn: "Find Temples",
-    titleHi: "मंदिर खोजें",
-    summaryEn: "Search temples by city, state, pilgrimage route, and country.",
-    summaryHi: "शहर, राज्य, तीर्थ मार्ग और देश के अनुसार मंदिर खोजें।"
+    titleEn: "Explore Temples",
+    titleHi: "मंदिर देखें",
+    summaryEn: "Search for temples, tirths, darshan locations, and travel support.",
+    summaryHi: "मंदिर, तीर्थ, दर्शन स्थल और यात्रा सहायता खोजें।"
   },
   {
     href: "/food.html",
-    titleEn: "Jain Food & Lifestyle",
-    titleHi: "जैन भोजन और जीवनशैली",
-    summaryEn: "Everyday food guidance, fasting practices, and respectful explanations.",
-    summaryHi: "दैनिक भोजन मार्गदर्शन, उपवास अभ्यास और सरल व्याख्या।"
+    titleEn: "Food & Lifestyle",
+    titleHi: "भोजन और जीवनशैली",
+    summaryEn: "Understand Jain food discipline with respect and clarity.",
+    summaryHi: "जैन भोजन अनुशासन को सम्मान और स्पष्टता से समझें।"
   },
   {
     href: "/calendar.html",
     titleEn: "Jain Calendar",
     titleHi: "जैन कैलेंडर",
-    summaryEn: "Festivals, tithis, fasting days, and observance reminders.",
-    summaryHi: "त्योहार, तिथियाँ, उपवास दिवस और पालन की याद दिलाने वाली जानकारी।"
-  },
-  {
-    href: "/audio.html",
-    titleEn: "Jain Audio",
-    titleHi: "जैन ऑडियो",
-    summaryEn: "Bhajan, aarti, stavan, pravachan, and mantra listening.",
-    summaryHi: "भजन, आरती, स्तवन, प्रवचन और मंत्र सुनने के लिए।"
-  },
-  {
-    href: "/news.html",
-    titleEn: "Jain News",
-    titleHi: "जैन समाचार",
-    summaryEn: "Temple updates, festival announcements, and community news.",
-    summaryHi: "मंदिर अपडेट, त्योहार घोषणाएँ और समुदाय समाचार।"
+    summaryEn: "Follow festivals, fasting days, tithis, and observances.",
+    summaryHi: "पर्व, उपवास, तिथि और पालन की जानकारी साथ रखें।"
   },
   {
     href: "/resources.html",
-    titleEn: "Jain Resources",
-    titleHi: "जैन संसाधन",
-    summaryEn: "Scholarships, institutions, minority resources, and official links.",
-    summaryHi: "छात्रवृत्ति, संस्थान, अल्पसंख्यक संसाधन और आधिकारिक लिंक।"
+    titleEn: "Resources",
+    titleHi: "संसाधन",
+    summaryEn: "Find scholarships, institutions, and community support.",
+    summaryHi: "छात्रवृत्ति, संस्थान और सामुदायिक सहयोग खोजें।"
   },
   {
-    href: "/community.html",
-    titleEn: "Jain Community",
-    titleHi: "जैन समुदाय",
-    summaryEn: "Join, contribute, and connect with Jain families and institutions.",
-    summaryHi: "जुड़ें, योगदान दें और जैन परिवारों व संस्थानों से संपर्क करें।"
+    href: "/ask.html",
+    titleEn: "Ask JainWorld",
+    titleHi: "जैनवर्ल्ड से पूछें",
+    summaryEn: "Ask from JainWorld's verified sources with calm, careful guidance.",
+    summaryHi: "जैनवर्ल्ड के सत्यापित स्रोतों से शांत और सावधान मार्गदर्शन के साथ पूछें।"
   }
 ];
 
 export const START_HERE_ITEMS = [
   {
     href: "/education.html",
-    titleEn: "New to Jainism",
-    titleHi: "जैन धर्म में नए हैं",
+    titleEn: "I am new to Jainism",
+    titleHi: "मैं जैन धर्म में नया हूँ",
     summaryEn: "Begin with simple lessons on Jain values, prayers, and daily discipline.",
     summaryHi: "जैन मूल्यों, प्रार्थना और दैनिक अनुशासन की सरल सीख से शुरुआत करें।"
   },
   {
-    href: "/blogs.html",
-    titleEn: "Teach Jain values to children",
-    titleHi: "बच्चों को जैन मूल्य सिखाएँ",
-    summaryEn: "Explore family-friendly articles and simple teaching ideas.",
-    summaryHi: "परिवार के लिए उपयोगी लेख और आसान सिखाने के तरीके देखें।"
-  },
-  {
-    href: "/temples.html",
-    titleEn: "Find a Jain temple",
-    titleHi: "जैन मंदिर खोजें",
-    summaryEn: "Locate temples for darshan, travel planning, and family visits.",
-    summaryHi: "दर्शन, यात्रा योजना और परिवार के साथ जाने के लिए मंदिर खोजें।"
+    href: "/education.html",
+    titleEn: "I want content for children",
+    titleHi: "मुझे बच्चों के लिए सामग्री चाहिए",
+    summaryEn: "Use gentle stories, values, and family learning prompts for children.",
+    summaryHi: "बच्चों के लिए सरल कथाएँ, मूल्य और पारिवारिक सीख का उपयोग करें।"
   },
   {
     href: "/food.html",
-    titleEn: "Understand Jain food rules",
-    titleHi: "जैन भोजन नियम समझें",
-    summaryEn: "Learn why certain foods are avoided and what families choose instead.",
-    summaryHi: "समझें कि कुछ खाद्य पदार्थ क्यों टाले जाते हैं और परिवार उनके स्थान पर क्या चुनते हैं।"
+    titleEn: "I want Jain food guidance",
+    titleHi: "मुझे जैन भोजन मार्गदर्शन चाहिए",
+    summaryEn: "Understand everyday discipline, travel choices, and fasting support.",
+    summaryHi: "दैनिक अनुशासन, यात्रा के चुनाव और उपवास सहयोग को समझें।"
   },
   {
-    href: "/audio.html",
-    titleEn: "Listen to bhajans and aartis",
-    titleHi: "भजन और आरती सुनें",
-    summaryEn: "Start with devotional, reflective, and family-friendly audio.",
-    summaryHi: "भक्ति, चिंतन और परिवार के लिए उपयुक्त ऑडियो से शुरुआत करें।"
+    href: "/temples.html",
+    titleEn: "I want temple information",
+    titleHi: "मुझे मंदिर जानकारी चाहिए",
+    summaryEn: "Find temple details, tirth guidance, and visit planning support.",
+    summaryHi: "मंदिर विवरण, तीर्थ मार्गदर्शन और यात्रा योजना की जानकारी पाएँ।"
+  },
+  {
+    href: "/literature.html",
+    titleEn: "I want scriptures and literature",
+    titleHi: "मुझे शास्त्र और साहित्य चाहिए",
+    summaryEn: "Read stories, sutras, values, and foundational Jain texts.",
+    summaryHi: "कथाएँ, सूत्र, मूल्य और आधारभूत जैन ग्रंथ पढ़ें।"
   },
   {
     href: "/resources.html",
-    titleEn: "Scholarships and minority resources",
-    titleHi: "छात्रवृत्ति और अल्पसंख्यक संसाधन",
-    summaryEn: "Browse scholarships, institutions, and official-ready resource links.",
-    summaryHi: "छात्रवृत्ति, संस्थानों और उपयोगी आधिकारिक लिंक देखें।"
-  },
-  {
-    href: "/community.html",
-    titleEn: "Join community",
-    titleHi: "समुदाय से जुड़ें",
-    summaryEn: "Request to join and connect with families, students, volunteers, and institutions.",
-    summaryHi: "जुड़ने का अनुरोध करें और परिवारों, छात्रों, स्वयंसेवकों और संस्थानों से संपर्क करें।"
+    titleEn: "I want community resources",
+    titleHi: "मुझे सामुदायिक संसाधन चाहिए",
+    summaryEn: "Explore scholarships, support links, and reliable directories.",
+    summaryHi: "छात्रवृत्ति, सहयोगी लिंक और विश्वसनीय निर्देशिका देखें।"
   }
 ];
 
@@ -130,24 +102,24 @@ export const DAILY_JAIN_ITEMS = [
   {
     titleEn: "Thought of the day",
     titleHi: "आज का विचार",
-    summaryEn: "Ahimsa begins in small choices: the way we speak, eat, think, and care for every living being.",
-    summaryHi: "अहिंसा छोटे-छोटे चुनावों से शुरू होती है: हम कैसे बोलते हैं, खाते हैं, सोचते हैं और हर जीव का ध्यान रखते हैं।",
+    summaryEn: "Ahimsa begins with awareness in thought, word, and action.",
+    summaryHi: "अहिंसा विचार, वचन और कर्म में सजगता से शुरू होती है।",
     metaEn: "Daily reflection",
     metaHi: "दैनिक चिंतन"
   },
   {
     titleEn: "Festival highlight",
-    titleHi: "त्योहार विशेष",
-    summaryEn: "Use the Jain calendar to stay close to Paryushan, Samvatsari, Ayambil Oli, and other important observances.",
-    summaryHi: "पर्युषण, संवत्सरी, आयंबिल ओली और अन्य महत्वपूर्ण पर्वों से जुड़े रहने के लिए जैन कैलेंडर देखें।",
+    titleHi: "पर्व विशेष",
+    summaryEn: "Explore Jain festivals, tithis, and daily practices with calm preparation.",
+    summaryHi: "जैन पर्व, तिथि और दैनिक अभ्यास को शांत तैयारी के साथ देखें।",
     metaEn: "Calendar guidance",
     metaHi: "कैलेंडर मार्गदर्शन"
   },
   {
     titleEn: "Suggested reading",
     titleHi: "सुझाया गया पाठ",
-    summaryEn: "Start with beginner-friendly Jain lessons, then continue into stories, sutras, and values for family life.",
-    summaryHi: "शुरुआती जैन पाठों से शुरू करें, फिर कथाओं, सूत्रों और पारिवारिक जीवन के मूल्यों तक आगे बढ़ें।",
+    summaryEn: "Begin with beginner-friendly stories, values, and scriptures.",
+    summaryHi: "शुरुआती कहानियों, मूल्यों और शास्त्रों से शुरुआत करें।",
     metaEn: "Learning path",
     metaHi: "सीखने का मार्ग"
   }
@@ -158,15 +130,15 @@ export const LEARNING_PATHS = [
     href: "/education.html",
     titleEn: "Jainism for Beginners",
     titleHi: "शुरुआती लोगों के लिए जैन धर्म",
-    summaryEn: "Simple introductions to Jain beliefs, values, prayers, and everyday life.",
-    summaryHi: "जैन मान्यताओं, मूल्यों, प्रार्थनाओं और दैनिक जीवन का सरल परिचय।"
+    summaryEn: "Simple introductions to beliefs, values, prayers, and daily life.",
+    summaryHi: "मूल मान्यताओं, मूल्यों, प्रार्थना और दैनिक जीवन का सरल परिचय।"
   },
   {
     href: "/education.html",
     titleEn: "Jainism for Kids",
     titleHi: "बच्चों के लिए जैन धर्म",
-    summaryEn: "Family-friendly stories, values, and gentle learning for children.",
-    summaryHi: "बच्चों के लिए पारिवारिक कथाएँ, मूल्य और सरल सीख।"
+    summaryEn: "Family-friendly stories, values, and first learning steps.",
+    summaryHi: "परिवार के लिए कहानियाँ, मूल्य और सीख की शुरुआती सीढ़ियाँ।"
   },
   {
     href: "/food.html",
@@ -179,33 +151,33 @@ export const LEARNING_PATHS = [
     href: "/calendar.html",
     titleEn: "Jain Festivals",
     titleHi: "जैन पर्व",
-    summaryEn: "Follow tithis, fasting days, and important observances throughout the year.",
-    summaryHi: "साल भर की तिथियाँ, उपवास दिवस और महत्वपूर्ण पर्वों का पालन करें।"
+    summaryEn: "Follow tithis, fasting days, and important observances through the year.",
+    summaryHi: "साल भर तिथि, उपवास दिवस और महत्वपूर्ण पालन के साथ चलें।"
   },
   {
     href: "/literature.html",
     titleEn: "Jain Literature",
     titleHi: "जैन साहित्य",
     summaryEn: "Read foundational texts, stories, and devotional learning with clarity.",
-    summaryHi: "मूल ग्रंथ, कथाएँ और भक्ति-पाठ स्पष्ट रूप से पढ़ें।"
+    summaryHi: "मूल ग्रंथ, कथाएँ और भक्तिमय सीख को स्पष्टता के साथ पढ़ें।"
   },
   {
     href: "/temples.html",
     titleEn: "Jain Temples & Pilgrimage",
     titleHi: "जैन मंदिर और तीर्थयात्रा",
     summaryEn: "Plan darshan, learn temple traditions, and explore pilgrimage destinations.",
-    summaryHi: "दर्शन की योजना बनाएँ, मंदिर परंपराएँ जानें और तीर्थ स्थान देखें।"
+    summaryHi: "दर्शन की योजना बनाएँ, मंदिर परंपराएँ जानें और तीर्थ स्थलों को देखें।"
   }
 ];
 
 export const POPULAR_TOPICS = [
   { en: "Ahimsa", hi: "अहिंसा" },
-  { en: "Anekantavada", hi: "अनेकांतवाद" },
   { en: "Paryushan", hi: "पर्युषण" },
-  { en: "Samayik", hi: "समायिक" },
   { en: "Navkar Mantra", hi: "णमोकार मंत्र" },
+  { en: "Samayik", hi: "समायिक" },
+  { en: "Pratikraman", hi: "प्रतिक्रमण" },
   { en: "Bhaktamar", hi: "भक्तामर" },
-  { en: "Fasting", hi: "उपवास" },
+  { en: "Jain food rules", hi: "जैन भोजन नियम" },
   { en: "Temple etiquette", hi: "मंदिर मर्यादा" },
   { en: "Children's learning", hi: "बच्चों की सीख" },
   { en: "Scholarships", hi: "छात्रवृत्ति" },
@@ -220,186 +192,82 @@ export const EDUCATION_LEVELS = [
     titleEn: "Simple introductions for children, families, and first-time learners.",
     titleHi: "बच्चों, परिवारों और पहली बार सीखने वालों के लिए सरल परिचय।",
     topicsEn: "Jainism, Namokar Mantra, Ahimsa, food habits, temple basics",
-    topicsHi: "जैन धर्म, णमोकार मंत्र, अहिंसा, भोजन आदतें, मंदिर की मूल बातें"
+    topicsHi: "जैन धर्म, नमोकार मंत्र, अहिंसा, भोजन आदतें, मंदिर की मूल बातें"
   },
   {
     level: "Intermediate",
     levelHi: "मध्यम",
     titleEn: "Core Jain ideas for regular learners and families.",
-    titleHi: "नियमित सीखने वालों और परिवारों के लिए जैन धर्म के मुख्य विचार।",
+    titleHi: "नियमित सीखने वालों और परिवारों के लिए मुख्य जैन विचार।",
     topicsEn: "Five vows, Three Jewels, Karma, Anekantavada, festivals",
     topicsHi: "पाँच व्रत, तीन रत्न, कर्म, अनेकांतवाद, पर्व"
   },
   {
     level: "Advanced",
     levelHi: "उन्नत",
-    titleEn: "Text-based study for serious students of Jain philosophy.",
-    titleHi: "जैन दर्शन के गंभीर विद्यार्थियों के लिए ग्रंथ-आधारित अध्ययन।",
-    topicsEn: "Tattvartha Sutra, Samayasara, dravyas, tattvas, Jain logic",
-    topicsHi: "तत्त्वार्थ सूत्र, समयसार, द्रव्य, तत्त्व, जैन तर्क"
-  },
-  {
-    level: "Scholar",
-    levelHi: "शोध",
-    titleEn: "Research-oriented pathways for deeper study and future certification.",
-    titleHi: "गहन अध्ययन और भविष्य के प्रमाणन के लिए शोध-उन्मुख मार्ग।",
-    topicsEn: "Agamic studies, Prakrit basics, metaphysics, ethics, cosmology",
-    topicsHi: "आगमिक अध्ययन, प्राकृत की मूल बातें, तत्वमीमांसा, आचारशास्त्र, ब्रह्मांड विज्ञान"
+    titleEn: "Deeper reading and reflective study for serious learners.",
+    titleHi: "गंभीर अध्ययनकर्ताओं के लिए गहरा पाठ और चिंतन।",
+    topicsEn: "Sutras, philosophy, scripture study, doctrine, pilgrimage context",
+    topicsHi: "सूत्र, दर्शन, शास्त्र अध्ययन, सिद्धांत, तीर्थ संदर्भ"
   }
 ];
 
 export const FEATURED_PILGRIMAGES = [
   "Palitana",
-  "Sammed Shikharji",
-  "Girnar",
-  "Shankheshwar",
+  "Shikharji",
   "Ranakpur",
-  "Pawapuri",
-  "Shravanabelagola",
-  "Hastinapur",
-  "Sonagiri",
-  "Kundalpur",
-  "Taranga",
-  "Moodbidri",
-  "Kolanupaka",
-  "Jaisalmer Jain Temples",
-  "Dilwara Temples"
-];
-
-export const CULTURE_MODULES = [
-  {
-    titleEn: "Festivals",
-    titleHi: "त्योहार",
-    summaryEn: "Paryushan, Samvatsari, Mahavir Jayanti, Das Lakshan, and Ayambil Oli.",
-    summaryHi: "पर्युषण, संवत्सरी, महावीर जयंती, दशलक्षण और आयंबिल ओली।"
-  },
-  {
-    titleEn: "Rituals",
-    titleHi: "अनुष्ठान",
-    summaryEn: "Temple etiquette, pratikraman, fasting discipline, and prayer routines.",
-    summaryHi: "मंदिर मर्यादा, प्रतिक्रमण, उपवास अनुशासन और प्रार्थना दिनचर्या।"
-  },
-  {
-    titleEn: "Traditions",
-    titleHi: "परंपराएँ",
-    summaryEn: "Family customs, charity, values, and everyday discipline.",
-    summaryHi: "पारिवारिक रीति-रिवाज, दान, मूल्य और दैनिक अनुशासन।"
-  },
-  {
-    titleEn: "Lifestyle",
-    titleHi: "जीवनशैली",
-    summaryEn: "Simple living, restraint, food timings, and compassionate choices.",
-    summaryHi: "सरल जीवन, संयम, भोजन का समय और करुणापूर्ण चुनाव।"
-  },
-  {
-    titleEn: "Diaspora",
-    titleHi: "वैश्विक समुदाय",
-    summaryEn: "Jain community life in India and around the world.",
-    summaryHi: "भारत और दुनिया भर में जैन समुदाय का जीवन।"
-  }
+  "Shankheshwar",
+  "Girnar",
+  "Sonagiri"
 ];
 
 export const FOOD_RESTRICTIONS = [
   {
-    titleEn: "Meat",
-    titleHi: "मांस",
-    spiritualEn: "Many Jain families avoid meat to align food choices with Ahimsa and compassion.",
-    spiritualHi: "कई जैन परिवार भोजन को अहिंसा और करुणा के अनुरूप रखने के लिए मांस से बचते हैं।",
-    practicalEn: "Plant-based meals make it easier to follow a consistent vegetarian discipline.",
-    practicalHi: "वनस्पति-आधारित भोजन से नियमित शाकाहारी अनुशासन अपनाना आसान होता है।",
-    alternativeEn: "Use dals, beans, paneer, tofu, and millet-based meals instead.",
-    alternativeHi: "दाल, बीन्स, पनीर, टोफू और मोटे अनाज के भोजन चुनें।"
-  },
-  {
-    titleEn: "Eggs",
-    titleHi: "अंडे",
-    spiritualEn: "Eggs are often avoided as part of a disciplined vegetarian path.",
-    spiritualHi: "अनुशासित शाकाहारी जीवन के हिस्से के रूप में अंडों से भी परहेज़ किया जाता है।",
-    practicalEn: "Gram flour, curd, and flax-based substitutes work well in many recipes.",
-    practicalHi: "बेसन, दही और अलसी आधारित विकल्प कई व्यंजनों में अच्छे रहते हैं।",
-    alternativeEn: "Try besan chilla, yogurt marinades, and flaxseed binders.",
-    alternativeHi: "बेसन चीला, दही वाले मिश्रण और अलसी के विकल्प आज़माएँ।"
-  },
-  {
-    titleEn: "Seafood",
-    titleHi: "समुद्री आहार",
-    spiritualEn: "Seafood is avoided under the wider principle of non-violence toward living beings.",
-    spiritualHi: "समुद्री आहार भी सभी जीवों के प्रति अहिंसा के सिद्धांत के कारण टाला जाता है।",
-    practicalEn: "Balanced vegetarian meals can cover everyday nutrition needs well.",
-    practicalHi: "संतुलित शाकाहारी भोजन दैनिक पोषण की ज़रूरतें अच्छी तरह पूरी कर सकता है।",
-    alternativeEn: "Choose dals, seeds, nuts, and vegetable-rich curries.",
-    alternativeHi: "दालें, बीज, मेवे और सब्ज़ी-प्रधान भोजन चुनें।"
-  },
-  {
-    titleEn: "Alcohol",
-    titleHi: "मद्यपान",
-    spiritualEn: "Restraint and mindfulness are important in Jain living, so alcohol is discouraged.",
-    spiritualHi: "संयम और सजगता जैन जीवन के महत्वपूर्ण भाग हैं, इसलिए मद्यपान से बचा जाता है।",
-    practicalEn: "Avoiding alcohol can support clearer routines and healthier habits.",
-    practicalHi: "मद्यपान से दूरी साफ दिनचर्या और स्वस्थ आदतों को सहारा देती है।",
-    alternativeEn: "Choose herbal drinks, fresh juices, or festive sharbat.",
-    alternativeHi: "हर्बल पेय, ताज़ा रस या शरबत चुनें।"
-  },
-  {
     titleEn: "Root Vegetables",
     titleHi: "कंद-मूल",
-    spiritualEn: "Root vegetables are often avoided because uprooting is linked with harm to subtle life forms.",
-    spiritualHi: "कई परिवार कंद-मूल से इसलिए बचते हैं क्योंकि उन्हें उखाड़ने से सूक्ष्म जीवन को हानि मानी जाती है।",
-    practicalEn: "Many families use gourds, pumpkin, raw banana, and leafy vegetables instead.",
-    practicalHi: "कई परिवार इसके स्थान पर लौकी, कद्दू, कच्चा केला और हरी सब्ज़ियाँ लेते हैं।",
-    alternativeEn: "Swap potato and onion with lauki, pumpkin, and raw banana.",
-    alternativeHi: "आलू और प्याज़ के स्थान पर लौकी, कद्दू और कच्चा केला लें।"
+    spiritualEn: "Many Jain families avoid root vegetables as part of Ahimsa and restraint in food choices.",
+    spiritualHi: "कई जैन परिवार भोजन के चुनाव में अहिंसा और संयम के कारण कंद-मूल से परहेज़ करते हैं।",
+    practicalEn: "Simple ingredient awareness helps families make everyday meal decisions with confidence.",
+    practicalHi: "सामग्री की सजगता परिवारों को दैनिक भोजन निर्णयों में सहारा देती है।",
+    alternativeEn: "Use pumpkin, bottle gourd, ridge gourd, beans, peas, and grains instead.",
+    alternativeHi: "इसके स्थान पर कद्दू, लौकी, तुरई, बीन्स, मटर और अनाज चुनें।"
   },
   {
-    titleEn: "Honey",
-    titleHi: "शहद",
-    spiritualEn: "Honey is avoided by many due to concerns about harm and disturbance in bee life.",
-    spiritualHi: "मधुमक्खियों के जीवन में हानि और बाधा की चिंता के कारण कई लोग शहद से बचते हैं।",
-    practicalEn: "Dates, jaggery, and fruit sweetness are practical alternatives.",
-    practicalHi: "खजूर, गुड़ और फलों की मिठास अच्छे विकल्प हैं।",
-    alternativeEn: "Use date puree, jaggery syrup, or soaked raisin water.",
-    alternativeHi: "खजूर प्यूरी, गुड़ का शरबत या भीगी किशमिश का पानी लें।"
+    titleEn: "Eating Before Sunset",
+    titleHi: "सूर्यास्त से पहले भोजन",
+    spiritualEn: "Many families treat this as part of mindful discipline and a calmer daily rhythm.",
+    spiritualHi: "कई परिवार इसे सजग अनुशासन और शांत दैनिक लय का हिस्सा मानते हैं।",
+    practicalEn: "Earlier meals may support digestion and a steadier family routine.",
+    practicalHi: "जल्दी भोजन करने से पाचन और परिवार की दिनचर्या दोनों को सहारा मिल सकता है।",
+    alternativeEn: "Plan the evening meal early and keep simple food choices ready in advance.",
+    alternativeHi: "शाम का भोजन पहले से योजना बनाकर सरल विकल्प तैयार रखें।"
   },
   {
-    titleEn: "Food After Sunset",
-    titleHi: "सूर्यास्त के बाद भोजन",
-    spiritualEn: "Many families follow this as part of disciplined and mindful living.",
-    spiritualHi: "कई परिवार इसे अनुशासित और सजग जीवन का हिस्सा मानकर अपनाते हैं।",
-    practicalEn: "Earlier meals may support digestion and a steadier routine.",
-    practicalHi: "जल्दी भोजन करने से पाचन और दिनचर्या दोनों में सहूलियत हो सकती है।",
-    alternativeEn: "Plan early dinners and keep boiled water ready in advance.",
-    alternativeHi: "रात का भोजन जल्दी करें और उबला हुआ पानी पहले से तैयार रखें।"
-  },
-  {
-    titleEn: "Silver Foil",
-    titleHi: "चाँदी का वर्क",
-    spiritualEn: "Many people avoid it when sourcing and processing are unclear.",
-    spiritualHi: "जब इसकी उत्पत्ति और प्रक्रिया स्पष्ट न हो तो कई लोग इससे बचते हैं।",
-    practicalEn: "Simple garnishes can keep festive foods beautiful without uncertainty.",
-    practicalHi: "सरल सजावट से त्योहार का भोजन बिना किसी शंका के सुंदर रह सकता है।",
-    alternativeEn: "Use pistachio crumbs, saffron, rose petals, or coconut.",
-    alternativeHi: "पिस्ता कतरन, केसर, गुलाब की पंखुड़ी या नारियल का उपयोग करें।"
-  },
-  {
-    titleEn: "Excessive Processed Food",
-    titleHi: "अत्यधिक प्रसंस्कृत भोजन",
-    spiritualEn: "Simple food habits are often preferred over excess and indulgence.",
-    spiritualHi: "जैन जीवन में अधिकता और लिप्सा की बजाय सादा भोजन अधिक प्रिय माना जाता है।",
-    practicalEn: "Home-cooked food usually offers better clarity on ingredients and freshness.",
-    practicalHi: "घर का बना भोजन सामग्री और ताज़गी दोनों में अधिक स्पष्टता देता है।",
-    alternativeEn: "Keep roasted snacks, fruit, thepla, and homemade mixes ready.",
-    alternativeHi: "भुने नाश्ते, फल, थेपला और घर के बने मिश्रण साथ रखें।"
+    titleEn: "Processed Food",
+    titleHi: "प्रसंस्कृत भोजन",
+    spiritualEn: "Simple food is often preferred over excess or overly complicated eating habits.",
+    spiritualHi: "अत्यधिक या जटिल भोजन की तुलना में सादा भोजन अधिक उपयुक्त माना जाता है।",
+    practicalEn: "Home-cooked food usually offers better clarity on freshness and ingredients.",
+    practicalHi: "घर का भोजन ताजगी और सामग्री दोनों में अधिक स्पष्टता देता है।",
+    alternativeEn: "Keep fruit, roasted snacks, plain grains, and homemade mixes ready.",
+    alternativeHi: "फल, भूने नाश्ते, सादा अनाज और घर के बने मिश्रण तैयार रखें।"
   },
   {
     titleEn: "Food Wastage",
     titleHi: "भोजन की बर्बादी",
     spiritualEn: "Respect for food and restraint naturally discourage waste.",
-    spiritualHi: "भोजन के प्रति सम्मान और संयम स्वाभाविक रूप से बर्बादी को रोकते हैं।",
-    practicalEn: "Meal planning and portion control save time, money, and effort.",
-    practicalHi: "भोजन योजना और उचित मात्रा समय, धन और श्रम बचाती है।",
-    alternativeEn: "Cook smaller batches, reuse leftovers wisely, and donate safely.",
-    alternativeHi: "कम मात्रा में पकाएँ, बचा भोजन समझदारी से उपयोग करें और सुरक्षित दान करें।"
+    spiritualHi: "भोजन के प्रति सम्मान और संयम स्वाभाविक रूप से बर्बादी को कम करते हैं।",
+    practicalEn: "Meal planning and portion control help families save time, money, and effort.",
+    practicalHi: "भोजन योजना और उचित मात्रा परिवारों का समय, धन और श्रम बचाती है।",
+    alternativeEn: "Cook smaller batches, reuse leftovers wisely, and donate safely where possible.",
+    alternativeHi: "कम मात्रा में पकाएँ, बचा भोजन समझदारी से उपयोग करें और जहाँ संभव हो सुरक्षित दान करें।"
   }
+];
+
+export const CULTURE_MODULES = [
+  { titleEn: "Jain stories", titleHi: "जैन कथाएँ", summaryEn: "Stories and values for family learning.", summaryHi: "पारिवारिक सीख के लिए कथाएँ और मूल्य।" },
+  { titleEn: "Festivals", titleHi: "पर्व", summaryEn: "Observe the rhythm of important Jain festivals.", summaryHi: "महत्वपूर्ण जैन पर्वों की लय को समझें।" },
+  { titleEn: "Daily practices", titleHi: "दैनिक अभ्यास", summaryEn: "Bring prayer, restraint, and reflection into everyday life.", summaryHi: "प्रार्थना, संयम और चिंतन को दैनिक जीवन में लाएँ।" }
 ];
 
 export const COMMUNITY_BENEFITS = [
@@ -407,32 +275,32 @@ export const COMMUNITY_BENEFITS = [
     titleEn: "Reviewed submissions",
     titleHi: "समीक्षित अनुरोध",
     summaryEn: "Every request is reviewed before any future public community listing goes live.",
-    summaryHi: "किसी भी सार्वजनिक समुदाय सूची से पहले हर अनुरोध की समीक्षा की जाती है।"
+    summaryHi: "भविष्य में किसी भी सार्वजनिक सूची से पहले हर अनुरोध की समीक्षा की जाती है।"
   },
   {
     titleEn: "Families and students",
     titleHi: "परिवार और छात्र",
-    summaryEn: "Useful for learning circles, youth support, mentoring, and city-based introductions.",
-    summaryHi: "अध्ययन समूह, युवा सहयोग, मार्गदर्शन और शहर-आधारित परिचय के लिए उपयोगी।"
+    summaryEn: "Useful for learning circles, youth support, and city-based introductions.",
+    summaryHi: "अध्ययन समूह, युवा सहयोग और शहर-आधारित परिचय के लिए उपयोगी।"
   },
   {
     titleEn: "Temples and institutions",
     titleHi: "मंदिर और संस्थान",
     summaryEn: "Temple representatives, trusts, teachers, and NGOs can register interest to contribute.",
-    summaryHi: "मंदिर प्रतिनिधि, ट्रस्ट, शिक्षक और एनजीओ योगदान के लिए रुचि दर्ज कर सकते हैं।"
+    summaryHi: "मंदिर प्रतिनिधि, ट्रस्ट, शिक्षक और संस्थाएँ योगदान की रुचि दर्ज कर सकते हैं।"
   },
   {
     titleEn: "Volunteer and content support",
     titleHi: "स्वयंसेवा और सामग्री सहयोग",
     summaryEn: "A practical pathway for writers, translators, audio contributors, and local coordinators.",
-    summaryHi: "लेखकों, अनुवादकों, ऑडियो योगदानकर्ताओं और स्थानीय समन्वयकों के लिए उपयोगी मार्ग।"
+    summaryHi: "लेखक, अनुवादक, ऑडियो सहयोगी और स्थानीय समन्वयकों के लिए उपयोगी मार्ग।"
   }
 ];
 
 const FOOTER_LINK_GROUPS = [
   {
     headingEn: "JainWorld",
-    headingHi: "JainWorld",
+    headingHi: "जैनवर्ल्ड",
     links: [
       { href: "/about.html", label: "About", labelHi: "परिचय" },
       { href: "/contact.html", label: "Contact", labelHi: "संपर्क करें" },
@@ -447,28 +315,28 @@ const FOOTER_LINK_GROUPS = [
     links: [
       { href: "/education.html", label: "Learn Jainism", labelHi: "जैन धर्म सीखें" },
       { href: "/temples.html", label: "Temples", labelHi: "मंदिर" },
-      { href: "/food.html", label: "Food & Lifestyle", labelHi: "भोजन और जीवनशैली" },
+      { href: "/food.html", label: "Food", labelHi: "भोजन" },
       { href: "/calendar.html", label: "Calendar", labelHi: "कैलेंडर" }
     ]
   },
   {
-    headingEn: "Knowledge & support",
-    headingHi: "ज्ञान और सहयोग",
+    headingEn: "Knowledge and devotion",
+    headingHi: "ज्ञान और भक्ति",
     links: [
       { href: "/literature.html", label: "Literature", labelHi: "साहित्य" },
       { href: "/audio.html", label: "Audio", labelHi: "ऑडियो" },
-      { href: "/resources.html", label: "Resources", labelHi: "संसाधन" },
-      { href: "/community.html", label: "Community", labelHi: "समुदाय" }
+      { href: "/news.html", label: "News", labelHi: "समाचार" },
+      { href: "/blogs.html", label: "Blogs", labelHi: "ब्लॉग" }
     ]
   },
   {
-    headingEn: "Trust & Policies",
-    headingHi: "विश्वास और नीतियाँ",
+    headingEn: "Support and trust",
+    headingHi: "सहयोग और विश्वास",
     links: [
+      { href: "/community.html", label: "Community", labelHi: "समुदाय" },
+      { href: "/corrections.html", label: "Corrections", labelHi: "सुधार" },
       { href: "/privacy.html", label: "Privacy", labelHi: "गोपनीयता" },
-      { href: "/terms.html", label: "Terms", labelHi: "शर्तें" },
-      { href: "/editorial-policy.html", label: "Editorial Policy", labelHi: "संपादकीय नीति" },
-      { href: "/corrections.html", label: "Corrections", labelHi: "सुधार" }
+      { href: "/admin-review.html", label: "Admin Review", labelHi: "एडमिन समीक्षा" }
     ]
   }
 ];
@@ -482,9 +350,7 @@ export function createFooter() {
             <div>
               <span class="jw-kicker" data-en="For every Jain family" data-hi="हर जैन परिवार के लिए">For every Jain family</span>
               <h2 class="mt-3 text-2xl font-semibold text-stone-900" data-en="Help us make JainWorld better for every Jain family." data-hi="हर जैन परिवार के लिए JainWorld को और बेहतर बनाने में हमारी मदद करें।">Help us make JainWorld better for every Jain family.</h2>
-              <p class="m-0 mt-3 text-sm leading-7 text-stone-700" data-en="Share ideas, suggest resources, and help us shape a calm, useful Jain companion for learners, families, and global communities." data-hi="अपने विचार साझा करें, संसाधन सुझाएँ और सीखने वालों, परिवारों और दुनिया भर के जैन समुदायों के लिए JainWorld को और उपयोगी बनाने में सहयोग करें।">
-                Share ideas, suggest resources, and help us shape a calm, useful Jain companion for learners, families, and global communities.
-              </p>
+              <p class="m-0 mt-3 text-sm leading-7 text-stone-700" data-en="JainWorld is built to help Jain families, students, temples, volunteers, and community members find reliable guidance and support." data-hi="JainWorld जैन परिवारों, छात्रों, मंदिरों, स्वयंसेवकों और सामुदायिक सदस्यों को विश्वसनीय मार्गदर्शन और सहयोग खोजने में मदद करने के लिए बनाया गया है।">JainWorld is built to help Jain families, students, temples, volunteers, and community members find reliable guidance and support.</p>
             </div>
             <div class="jw-page-actions md:justify-end">
               <a href="/resources.html" class="jw-btn jw-btn-primary" data-en="Explore Resources" data-hi="संसाधन देखें">Explore Resources</a>
@@ -498,19 +364,11 @@ export function createFooter() {
               <span class="site-logo-mark" aria-hidden="true">JW</span>
               <span class="site-logo-text">
                 <span class="site-logo-title">JainWorld</span>
-                <span class="site-logo-tagline" data-en="A warm digital Jain companion for learning, practice, and community." data-hi="सीखने, साधना और समुदाय के लिए एक आत्मीय डिजिटल जैन साथी।">A warm digital Jain companion for learning, practice, and community.</span>
+                <span class="site-logo-tagline" data-en="A warm digital Jain companion for learning, practice, and community." data-hi="सीख, साधना और समुदाय के लिए एक आत्मीय डिजिटल जैन साथी।">A warm digital Jain companion for learning, practice, and community.</span>
               </span>
             </a>
-            <p
-              class="jw-muted m-0 text-sm leading-7"
-              data-en="JainWorld brings together trusted learning, temple discovery, food guidance, family support, and community resources in one peaceful place."
-              data-hi="JainWorld विश्वसनीय अध्ययन, मंदिर जानकारी, भोजन मार्गदर्शन, पारिवारिक सहयोग और सामुदायिक संसाधनों को एक शांत स्थान पर साथ लाता है।"
-            >
-              JainWorld brings together trusted learning, temple discovery, food guidance, family support, and community resources in one peaceful place.
-            </p>
-            <p class="m-0 text-xs leading-6 text-stone-500" data-en="Reviewed, evolving, and community-supported. Please verify time-sensitive details on official or institutional sources before making decisions." data-hi="समीक्षित, विकसित होती हुई और समुदाय-समर्थित जानकारी। समय-संवेदनशील विवरणों के लिए निर्णय लेने से पहले आधिकारिक या संस्थागत स्रोतों की पुष्टि करें।">
-              Reviewed, evolving, and community-supported. Please verify time-sensitive details on official or institutional sources before making decisions.
-            </p>
+            <p class="jw-muted m-0 text-sm leading-7" data-en="JainWorld brings together trusted learning, temple discovery, food guidance, family support, and community resources in one peaceful place." data-hi="JainWorld विश्वसनीय सीख, मंदिर जानकारी, भोजन मार्गदर्शन, पारिवारिक सहयोग और सामुदायिक संसाधनों को एक शांत स्थान पर साथ लाता है।">JainWorld brings together trusted learning, temple discovery, food guidance, family support, and community resources in one peaceful place.</p>
+            <p class="m-0 text-xs leading-6 text-stone-500" data-en="Reviewed, evolving, and community-supported. Please verify time-sensitive details on official or institutional sources before making decisions." data-hi="समीक्षित, विकसित और समुदाय-समर्थित जानकारी। समय-संवेदनशील निर्णयों से पहले आधिकारिक या संस्थागत स्रोतों से पुष्टि करें।">Reviewed, evolving, and community-supported. Please verify time-sensitive details on official or institutional sources before making decisions.</p>
           </div>
           ${FOOTER_LINK_GROUPS.map(
             (group) => `
@@ -531,7 +389,7 @@ export function createFooter() {
         </div>
         <div class="jw-footer-bottom">
           <span>&copy; <span id="footer-year"></span> JainWorld.in</span>
-          <span data-en="Knowledge, culture, service, and community with clarity, warmth, and care." data-hi="ज्ञान, संस्कृति, सेवा और समुदाय — स्पष्टता, आत्मीयता और संवेदनशीलता के साथ।">Knowledge, culture, service, and community with clarity, warmth, and care.</span>
+          <span data-en="Knowledge, culture, devotion, service, and community with clarity, warmth, and care." data-hi="ज्ञान, संस्कृति, भक्ति, सेवा और समुदाय — स्पष्टता, आत्मीयता और संवेदनशीलता के साथ।">Knowledge, culture, devotion, service, and community with clarity, warmth, and care.</span>
         </div>
       </div>
     </footer>
@@ -544,17 +402,8 @@ export function createSearchOverlay() {
       <div class="jw-overlay-panel">
         <div class="flex items-center justify-between border-b border-stone-200 px-5 py-4">
           <div>
-            <h2
-              id="search-overlay-title"
-              class="m-0 text-xl font-semibold text-stone-900"
-              data-en="Search Results"
-              data-hi="खोज परिणाम"
-            >
-              Search Results
-            </h2>
-            <p class="m-0 mt-1 text-sm text-stone-600" id="search-overlay-subtitle" data-en="Search across literature, education, temples, food, audio, news, blogs, and resources." data-hi="साहित्य, शिक्षा, मंदिर, भोजन, ऑडियो, समाचार, ब्लॉग और संसाधनों में खोजें।">
-              Search across literature, education, temples, food, audio, news, blogs, and resources.
-            </p>
+            <h2 id="search-overlay-title" class="m-0 text-xl font-semibold text-stone-900" data-en="Search Results" data-hi="खोज परिणाम">Search Results</h2>
+            <p class="m-0 mt-1 text-sm text-stone-600" id="search-overlay-subtitle" data-en="Search across literature, education, temples, food, audio, news, blogs, and resources." data-hi="साहित्य, शिक्षा, मंदिर, भोजन, ऑडियो, समाचार, ब्लॉग और संसाधनों में खोजें।">Search across literature, education, temples, food, audio, news, blogs, and resources.</p>
           </div>
           <button id="search-overlay-close" type="button" class="jw-btn" data-en="Close" data-hi="बंद करें">Close</button>
         </div>

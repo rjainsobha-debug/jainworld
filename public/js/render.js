@@ -251,10 +251,11 @@ export function renderNews(target, items) {
 
   if (!Array.isArray(items) || items.length === 0) {
     root.innerHTML = renderEmptyState(
-      getLanguage() === "hi" ? "??? ??? ?????? ?????? ???? ??" : "No news items are available right now",
-      getLanguage() === "hi"
-        ? "??????? ?? ??? ????? ??? ????? ???? ????? ?????? ????? ??? ?? ??????"
-        : "Curated Jain updates will appear here after review. Please check back soon."
+      translate("news_empty_title", "No news items are available right now"),
+      translate(
+        "news_empty_body",
+        "Curated Jain updates will appear here after review. Please check back soon."
+      )
     );
     return;
   }
@@ -290,10 +291,12 @@ export function renderNews(target, items) {
               </h3>
               <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
               ${renderTrustMeta([
-                metaLabel("Source", "?????", source),
-                published ? metaLabel("Published", "????????", published) : "",
+                metaLabel("Source", "स्रोत", source),
+                published ? metaLabel("Published", "प्रकाशित", published) : "",
                 externalLabel,
-                item.review_status === "approved" ? (getLanguage() === "hi" ? "JainWorld ?????? ?????" : "Curated by JainWorld") : ""
+                item.review_status === "approved"
+                  ? translate("curated_by_jainworld", "Curated by JainWorld")
+                  : ""
               ])}
             </article>
           `;
@@ -310,12 +313,12 @@ export function renderBlogs(target, items) {
     emptyTitle: "No blog articles are available yet",
     emptyBody: "Fresh Jain perspectives will appear here after they are reviewed and published.",
     metaBuilder: (item) => [
-      item.author ? metaLabel("Author", "????", item.author) : "",
+      item.author ? metaLabel("Author", "लेखक", item.author) : "",
       item.category,
       formatDate(item.updated_at || item.created_at)
-        ? metaLabel("Last updated", "????? ?????", formatDate(item.updated_at || item.created_at))
+        ? metaLabel("Last updated", "अंतिम अपडेट", formatDate(item.updated_at || item.created_at))
         : "",
-      getLanguage() === "hi" ? "JainWorld ???????? ?????? ????????" : "Reviewed by JainWorld Editorial"
+      translate("reviewed_by_editorial", "Reviewed by JainWorld Editorial")
     ]
   });
 }
@@ -328,10 +331,11 @@ export function renderAudio(target, items) {
 
   if (!Array.isArray(items) || items.length === 0) {
     root.innerHTML = renderEmptyState(
-      getLanguage() === "hi" ? "??? ??? ????? ????????? ?????? ???? ??" : "No audio entries are available yet",
-      getLanguage() === "hi"
-        ? "??????? ?? ???????? ?? ??? ????? ???????????? ???? ????? ??????"
-        : "Audio entries will appear here once they are reviewed and approved for listing."
+      translate("audio_empty_title", "No audio entries are available yet"),
+      translate(
+        "audio_empty_body",
+        "Audio entries will appear here once they are reviewed and approved for listing."
+      )
     );
     return;
   }
@@ -343,7 +347,10 @@ export function renderAudio(target, items) {
           const title = item.title || item.slug || "Untitled audio";
           const href = buildDetailUrl("audio", item);
           const embedUrl = getAudioEmbedUrl(item);
-          const people = [item.speaker ? `Speaker: ${item.speaker}` : "", item.singer ? `Singer: ${item.singer}` : ""]
+          const people = [
+            item.speaker ? metaLabel("Speaker", "वक्ता", item.speaker) : "",
+            item.singer ? metaLabel("Singer", "गायक", item.singer) : ""
+          ]
             .filter(Boolean)
             .join(" | ");
 
@@ -365,8 +372,8 @@ export function renderAudio(target, items) {
               </div>
               ${renderTrustMeta([
                 people,
-                item.source ? metaLabel("Source", "?????", item.source) : "",
-                item.published_at ? metaLabel("Published", "????????", formatDate(item.published_at)) : ""
+                item.source ? metaLabel("Source", "स्रोत", item.source) : "",
+                item.published_at ? metaLabel("Published", "प्रकाशित", formatDate(item.published_at)) : ""
               ])}
             </article>
           `;
@@ -384,10 +391,11 @@ export function renderTemples(target, items) {
 
   if (!Array.isArray(items) || items.length === 0) {
     root.innerHTML = renderEmptyState(
-      getLanguage() === "hi" ? "??? ????? ???? ????" : "No temples found",
-      getLanguage() === "hi"
-        ? "???, ?????, ???, ????? ?????? ?? ??? ???? ????? ??????"
-        : "Try changing the country, state, city, temple type, or search terms."
+      translate("temples_empty_title", "No temples found"),
+      translate(
+        "temples_empty_body",
+        "Try changing the country, state, city, temple type, or search terms."
+      )
     );
     return;
   }
@@ -408,9 +416,11 @@ export function renderTemples(target, items) {
               </h3>
               <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(location)}</p>
               ${renderTrustMeta([
-                item.timings ? `Timings: ${item.timings}` : "",
-                item.last_verified_at ? `Last verified: ${formatDate(item.last_verified_at)}` : "",
-                item.verified_by ? `Verified by: ${item.verified_by}` : ""
+                item.timings ? metaLabel("Timings", "समय", item.timings) : "",
+                item.last_verified_at
+                  ? metaLabel("Last verified", "अंतिम सत्यापन", formatDate(item.last_verified_at))
+                  : "",
+                item.verified_by ? metaLabel("Verified by", "सत्यापित द्वारा", item.verified_by) : ""
               ])}
             </article>
           `;
@@ -449,14 +459,17 @@ export function renderFoodRules(target, items) {
       ${items
         .map((item) => {
           const lang = getLanguage();
+          const spiritualLabel = translate("spiritual_label", "Spiritual");
+          const practicalLabel = translate("practical_label", "Practical");
+          const alternativeLabel = translate("alternative_label", "Alternative");
 
           return `
             <article class="jw-card p-5">
               <h3 class="m-0 text-lg font-semibold text-stone-900">${escapeHtml(pickLocalized(item, "title", lang) || item.titleEn || "")}</h3>
               <div class="mt-3 space-y-3 text-sm leading-7 text-stone-600">
-                <p class="m-0"><strong class="text-stone-900">Spiritual:</strong> ${escapeHtml(pickLocalized(item, "spiritual", lang) || item.spiritualEn || "")}</p>
-                <p class="m-0"><strong class="text-stone-900">Practical:</strong> ${escapeHtml(pickLocalized(item, "practical", lang) || item.practicalEn || "")}</p>
-                <p class="m-0"><strong class="text-stone-900">Alternative:</strong> ${escapeHtml(pickLocalized(item, "alternative", lang) || item.alternativeEn || "")}</p>
+                <p class="m-0"><strong class="text-stone-900">${escapeHtml(spiritualLabel)}:</strong> ${escapeHtml(pickLocalized(item, "spiritual", lang) || item.spiritualEn || "")}</p>
+                <p class="m-0"><strong class="text-stone-900">${escapeHtml(practicalLabel)}:</strong> ${escapeHtml(pickLocalized(item, "practical", lang) || item.practicalEn || "")}</p>
+                <p class="m-0"><strong class="text-stone-900">${escapeHtml(alternativeLabel)}:</strong> ${escapeHtml(pickLocalized(item, "alternative", lang) || item.alternativeEn || "")}</p>
               </div>
             </article>
           `;
@@ -474,9 +487,9 @@ export function renderResources(target, items) {
 
   if (!Array.isArray(items) || items.length === 0) {
     root.innerHTML = renderEmptyState(
-      getLanguage() === "hi" ? "??? ???? ?????? ???? ????" : "No matching resources found",
-      getLanguage() === "hi" ? "??? ???? ??????, ????? ?? ??? ???? ????????" : "Try a different category, state, or search term.",
-      `<a href="/corrections.html" class="jw-btn">${getLanguage() === "hi" ? "?????? ?? ????? ??????" : "Suggest a resource or correction"}</a>`
+      translate("resources_empty_title", "No matching resources found"),
+      translate("resources_empty_body", "Try a different category, state, or search term."),
+      `<a href="/corrections.html" class="jw-btn">${translate("suggest_resource_or_correction", "Suggest a resource or correction")}</a>`
     );
     return;
   }
@@ -499,16 +512,16 @@ export function renderResources(target, items) {
               <h3 class="mt-4 text-lg font-semibold leading-snug text-stone-900">${escapeHtml(title)}</h3>
               <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${escapeHtml(summary)}</p>
               ${renderTrustMeta([
-                item.source_name ? metaLabel("Source", "?????", item.source_name) : "",
-                item.eligibility_en ? metaLabel("Eligibility", "???????", item.eligibility_en) : "",
-                lastVerified ? metaLabel("Last verified", "????? ???????", lastVerified) : ""
+                item.source_name ? metaLabel("Source", "स्रोत", item.source_name) : "",
+                item.eligibility_en ? metaLabel("Eligibility", "पात्रता", item.eligibility_en) : "",
+                lastVerified ? metaLabel("Last verified", "अंतिम सत्यापन", lastVerified) : ""
               ])}
               ${
                 officialUrl
-                  ? `<a href="${escapeHtml(officialUrl)}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">Official link (external)</a>`
-                  : `<p class="m-0 mt-4 text-sm text-stone-500">Official link will be added after verification.</p>`
+                  ? `<a href="${escapeHtml(officialUrl)}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-semibold text-amber-800 hover:text-amber-900">${escapeHtml(translate("official_link_external", "Official link (external)"))}</a>`
+                  : `<p class="m-0 mt-4 text-sm text-stone-500">${escapeHtml(translate("official_link_pending", "Official link will be added after verification."))}</p>`
               }
-              <a href="/corrections.html" class="mt-3 inline-flex text-sm font-semibold text-stone-700 hover:text-stone-900">Suggest correction</a>
+              <a href="/corrections.html" class="mt-3 inline-flex text-sm font-semibold text-stone-700 hover:text-stone-900">${escapeHtml(translate("suggest_correction", "Suggest correction"))}</a>
             </article>
           `;
         })
@@ -538,9 +551,9 @@ export function renderGroupedSearch(target, groups, query) {
 
   if (!nonEmptyGroups.length) {
     root.innerHTML = renderEmptyState(
-      getLanguage() === "hi" ? "??? ?????? ???? ????" : "No results found",
+      translate("search_no_results", "No results found"),
       getLanguage() === "hi"
-        ? `"${query}" ?? ??? ??? ?????? ???? ????? ??????, ??????, ????? ?? ??????? ???? ??? ???? ????????`
+        ? `"${query}" के लिए कोई परिणाम नहीं मिला। अहिंसा, महावीर, मंदिर, या पर्युषण जैसे व्यापक शब्द आज़माएँ।`
         : `No results matched "${query}". Try a broader term like Ahimsa, Mahavir, temple, or Paryushan.`
     );
     return;
@@ -552,7 +565,7 @@ export function renderGroupedSearch(target, groups, query) {
         <section class="mb-5">
           <div class="jw-section-title">
             <h3 class="text-lg font-semibold text-stone-900">${groupNames[groupKey] || groupKey}</h3>
-            <span class="text-sm text-stone-500">${items.length} result(s)</span>
+            <span class="text-sm text-stone-500">${items.length} ${escapeHtml(translate("results_label", "result(s)"))}</span>
           </div>
           <div class="jw-list">
             ${items
@@ -571,7 +584,7 @@ export function renderGroupedSearch(target, groups, query) {
                   item.summary ||
                   item.description ||
                   item.city ||
-                  "Open the result to view more detail.";
+                  translate("open_result_more_detail", "Open the result to view more detail.");
 
                 return `
                   <article class="jw-card-flat p-4">

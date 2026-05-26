@@ -28,13 +28,13 @@
       <div id="app-header"></div>
       <noscript><div class="jw-noscript">Enable JavaScript to load the latest JainWorld content and interactive sections.</div></noscript>
       <main id="main-content">
-        <section class="page-banner">
+        <section class="page-banner devotional-hero">
           <div class="jw-container jw-page-hero-inner">
-            <div class="breadcrumb"><a href="/index.html">Home</a><span aria-hidden="true">/</span><span>Learn</span></div>
+            <div class="breadcrumb"><a href="/index.html" data-en="Home" data-hi="होम">Home</a><span aria-hidden="true">/</span><span data-en="Learn" data-hi="सीखें">Learn</span></div>
             <div class="page-banner-copy">
-              <span class="jw-kicker">Learn Jainism</span>
-              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">A gentle learning dashboard for every stage of Jain study</h1>
-              <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">
+              <span class="section-kicker" data-en="Learn Jainism" data-hi="जैन धर्म सीखें">Learn Jainism</span>
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900" data-en="A gentle dharmik learning dashboard for every stage of Jain study" data-hi="जैन अध्ययन के हर चरण के लिए एक सरल धार्मिक सीख डैशबोर्ड">A gentle dharmik learning dashboard for every stage of Jain study</h1>
+              <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600" data-en="Start with basics, explore Jain principles, build daily practice, find content for children, and continue toward deeper study when you are ready." data-hi="मूल बातों से शुरू करें, जैन सिद्धांत समझें, दैनिक अभ्यास बनाएँ, बच्चों के लिए सामग्री पाएँ और तैयार होने पर गहरे अध्ययन की ओर बढ़ें।">
                 Start with basics, explore Jain principles, build daily practice, find content for children, and continue toward deeper study when you are ready.
               </p>
             </div>
@@ -45,13 +45,22 @@
           <div class="jw-container jw-page-stack">
             <div class="soft-card p-5">
               <div class="jw-inline-scroll">
-                <span class="topic-chip">Start with basics</span>
-                <span class="topic-chip">Jain principles</span>
-                <span class="topic-chip">Daily practices</span>
-                <span class="topic-chip">For children</span>
-                <span class="topic-chip">Advanced study</span>
+                <span class="prayer-chip" data-en="Beginner" data-hi="शुरुआती">Beginner</span>
+                <span class="prayer-chip" data-en="Daily practice" data-hi="दैनिक अभ्यास">Daily practice</span>
+                <span class="prayer-chip" data-en="Children" data-hi="बच्चे">Children</span>
+                <span class="prayer-chip" data-en="Parents and teachers" data-hi="माता-पिता और शिक्षक">Parents and teachers</span>
+                <span class="prayer-chip" data-en="Advanced study" data-hi="उन्नत अध्ययन">Advanced study</span>
               </div>
             </div>
+
+            <section class="jw-grid-3 gap-6">
+              <article class="family-learning-card"><h3 data-en="Beginner" data-hi="शुरुआती">Beginner</h3><p data-en="Start with Jainism for Beginners, Namokar Mantra, Ahimsa, and temple basics." data-hi="जैन धर्म की शुरुआती सीख, नमोकार मंत्र, अहिंसा और मंदिर की मूल बातों से शुरू करें।">Start with Jainism for Beginners, Namokar Mantra, Ahimsa, and temple basics.</p></article>
+              <article class="family-learning-card"><h3 data-en="Daily practice" data-hi="दैनिक अभ्यास">Daily practice</h3><p data-en="Connect learning with food discipline, prayer, reflection, and observance." data-hi="सीख को भोजन अनुशासन, प्रार्थना, चिंतन और पालन से जोड़ें।">Connect learning with food discipline, prayer, reflection, and observance.</p></article>
+              <article class="family-learning-card"><h3 data-en="Children" data-hi="बच्चे">Children</h3><p data-en="Use simpler, family-friendly routes into stories, values, and first practices." data-hi="कहानियों, मूल्यों और प्रारंभिक अभ्यासों तक पहुँचने के लिए सरल पारिवारिक मार्ग अपनाएँ।">Use simpler, family-friendly routes into stories, values, and first practices.</p></article>
+              <article class="family-learning-card"><h3 data-en="Parents and teachers" data-hi="माता-पिता और शिक्षक">Parents and teachers</h3><p data-en="Guide young learners through calm explanation, repetition, and example." data-hi="शांत समझ, दोहराव और उदाहरण के माध्यम से बच्चों का मार्गदर्शन करें।">Guide young learners through calm explanation, repetition, and example.</p></article>
+              <article class="family-learning-card"><h3 data-en="Advanced study" data-hi="उन्नत अध्ययन">Advanced study</h3><p data-en="Move into literature, sutras, philosophy, and deeper reflection." data-hi="साहित्य, सूत्र, दर्शन और गहरे चिंतन की ओर बढ़ें।">Move into literature, sutras, philosophy, and deeper reflection.</p></article>
+              <article class="family-learning-card"><h3 data-en="Learning path" data-hi="सीखने का मार्ग">Learning path</h3><p data-en="Choose a steady path rather than trying to learn everything at once." data-hi="एक साथ सब कुछ सीखने के बजाय क्रमबद्ध मार्ग चुनें।">Choose a steady path rather than trying to learn everything at once.</p></article>
+            </section>
 
             <section>
               <div class="section-header">
@@ -108,10 +117,11 @@
               <h2 class="mt-3 text-2xl font-semibold">Continue with literature, festivals, and practice</h2>
               <p class="m-0 mt-3 text-sm leading-7">Learning becomes easier when study, reflection, and daily practice stay connected.</p>
               <div class="jw-page-actions mt-5">
-                <a href="/literature.html" class="jw-btn">Read Literature</a>
-                <a href="/calendar.html" class="jw-btn">Explore Festivals</a>
-              </div>
+              <a href="/education.html" class="jw-btn jw-btn-primary" data-en="Start with Jainism for Beginners" data-hi="जैन धर्म की शुरुआत करें">Start with Jainism for Beginners</a>
+              <a href="/literature.html" class="jw-btn">Read Literature</a>
+              <a href="/calendar.html" class="jw-btn">Explore Festivals</a>
             </div>
+          </div>
           </div>
         </section>
       </main>

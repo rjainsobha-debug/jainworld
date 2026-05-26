@@ -28,8 +28,46 @@
       <div id="app-header"></div>
       <noscript><div class="jw-noscript">Enable JavaScript to load the latest JainWorld content and interactive sections.</div></noscript>
       <main id="main-content">
-        <section class="jw-page-hero"><div class="jw-container jw-page-hero-inner"><span class="jw-kicker">audio</span><h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">Jain audio for prayer, reflection, learning, and family listening</h1><p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600">Browse bhajan, aarti, stavan, pravachan, mantra, and learning-focused audio in a clean layout with simple listening pages.</p></div></section>
-        <section class="py-10"><div class="jw-container"><div class="jw-card p-5"><p class="m-0 text-sm leading-7 text-stone-700">Audio is embedded or listed only with source and permission status. Copyrighted content should not be uploaded without permission.</p></div><form id="audio-filters" class="jw-card mt-6 p-5" aria-label="Audio filters"><div class="jw-grid-3"><div class="jw-search-shell"><label for="audio-category" class="mb-2 block text-sm font-semibold text-stone-900">Category</label><select id="audio-category"><option value="">All categories</option></select></div><div class="jw-search-shell"><label for="audio-language" class="mb-2 block text-sm font-semibold text-stone-900">Language</label><select id="audio-language"><option value="">All languages</option></select></div><div class="jw-search-shell"><label for="audio-search" class="mb-2 block text-sm font-semibold text-stone-900">Search</label><input id="audio-search" type="search" placeholder="Search mantra, bhajan, pravachan, kids audio..." aria-label="Search audio" /></div></div></form><div class="mt-8" id="audio-list" aria-live="polite"></div></div></section>
+        <section class="page-banner devotional-hero">
+          <div class="jw-container jw-page-hero-inner">
+            <div class="breadcrumb"><a href="/index.html" data-en="Home" data-hi="होम">Home</a><span aria-hidden="true">/</span><span data-en="Audio" data-hi="ऑडियो">Audio</span></div>
+            <div class="page-banner-copy">
+              <span class="section-kicker" data-en="Listen and Reflect" data-hi="सुनें और मनन करें">Listen and Reflect</span>
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900" data-en="Jain audio for prayer, reflection, learning, and family listening" data-hi="प्रार्थना, मनन, सीख और पारिवारिक श्रवण के लिए जैन ऑडियो">Jain audio for prayer, reflection, learning, and family listening</h1>
+              <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600" data-en="Browse Namokar Mantra, bhajan, aarti, stavan, pravachan, meditation, and learning-focused audio in a peaceful devotional space." data-hi="नमोकार मंत्र, भजन, आरती, स्तवन, प्रवचन, ध्यान और सीख से जुड़े ऑडियो को एक शांत भक्तिमय स्थान पर देखें।">Browse Namokar Mantra, bhajan, aarti, stavan, pravachan, meditation, and learning-focused audio in a peaceful devotional space.</p>
+            </div>
+          </div>
+        </section>
+        <section class="py-10">
+          <div class="jw-container jw-page-stack">
+            <div class="jw-grid-3">
+              <a href="/audio.html?search=Namokar%20Mantra" class="audio-devotion-card"><h3 data-en="Namokar Mantra" data-hi="नमोकार मंत्र">Namokar Mantra</h3><p data-en="Begin with a familiar and gentle devotional starting point." data-hi="एक परिचित और सरल भक्तिमय शुरुआत करें।">Begin with a familiar and gentle devotional starting point.</p></a>
+              <a href="/audio.html?category=Bhajan" class="audio-devotion-card"><h3 data-en="Bhajan" data-hi="भजन">Bhajan</h3><p data-en="Family-friendly devotional listening for calm reflection." data-hi="शांत मनन के लिए पारिवारिक भक्तिमय श्रवण।">Family-friendly devotional listening for calm reflection.</p></a>
+              <a href="/audio.html?category=Aarti" class="audio-devotion-card"><h3 data-en="Aarti" data-hi="आरती">Aarti</h3><p data-en="Listen to familiar prayerful moments with reverence." data-hi="आदर और श्रद्धा के साथ प्रार्थनामय श्रवण करें।">Listen to familiar prayerful moments with reverence.</p></a>
+              <a href="/audio.html?category=Stavan" class="audio-devotion-card"><h3 data-en="Stavan" data-hi="स्तवन">Stavan</h3><p data-en="Reflect through praise and repetition." data-hi="स्तुति और शांत पुनरावृत्ति के माध्यम से मनन करें।">Reflect through praise and repetition.</p></a>
+              <a href="/audio.html?category=Pravachan" class="audio-devotion-card"><h3 data-en="Pravachan" data-hi="प्रवचन">Pravachan</h3><p data-en="Explore learning-oriented guidance and thoughtful listening." data-hi="सीख और चिंतन से जुड़े श्रवण को अपनाएँ।">Explore learning-oriented guidance and thoughtful listening.</p></a>
+              <a href="/audio.html?category=Meditation" class="audio-devotion-card"><h3 data-en="Meditation" data-hi="ध्यान">Meditation</h3><p data-en="Choose quiet listening for inward steadiness." data-hi="भीतर की स्थिरता के लिए शांत श्रवण चुनें।">Choose quiet listening for inward steadiness.</p></a>
+              <a href="/audio.html?category=Kids%20Audio" class="audio-devotion-card"><h3 data-en="Kids Audio" data-hi="बच्चों का ऑडियो">Kids Audio</h3><p data-en="Simple listening for younger learners and families." data-hi="बच्चों और परिवारों के लिए सरल श्रवण।">Simple listening for younger learners and families.</p></a>
+              <a href="/audio.html?category=Festival%20Special" class="audio-devotion-card"><h3 data-en="Festival Special" data-hi="पर्व विशेष">Festival Special</h3><p data-en="Follow seasonal devotional and festival listening paths." data-hi="मौसमी भक्तिमय और पर्व-आधारित श्रवण का अनुसरण करें।">Follow seasonal devotional and festival listening paths.</p></a>
+            </div>
+
+            <div class="jw-grid-2 gap-6">
+              <div class="soft-card p-5">
+                <span class="section-kicker" data-en="Begin here" data-hi="यहाँ से शुरू करें">Begin here</span>
+                <h2 class="mt-3 text-2xl font-semibold text-stone-900" data-en="Start with Namokar Mantra" data-hi="नमोकार मंत्र से शुरुआत करें">Start with Namokar Mantra</h2>
+                <p class="m-0 mt-3 text-sm leading-7 text-stone-600" data-en="If you are unsure where to begin, start with Namokar Mantra and then continue into bhajan, stavan, or pravachan." data-hi="यदि आप तय नहीं कर पा रहे हैं कि कहाँ से शुरू करें, तो नमोकार मंत्र से शुरू करें और फिर भजन, स्तवन या प्रवचन सुनें।">If you are unsure where to begin, start with Namokar Mantra and then continue into bhajan, stavan, or pravachan.</p>
+                <a href="/audio.html?search=Namokar%20Mantra" class="jw-btn jw-btn-primary mt-5" data-en="Listen to Namokar Mantra" data-hi="नमोकार मंत्र सुनें">Listen to Namokar Mantra</a>
+              </div>
+              <div class="soft-card p-5">
+                <span class="section-kicker" data-en="Source and permission" data-hi="स्रोत और अनुमति">Source and permission</span>
+                <p class="m-0 mt-3 text-sm leading-7 text-stone-700" data-en="Audio is embedded or listed only with source and permission status. Copyrighted content should not be uploaded without permission." data-hi="ऑडियो केवल स्रोत और अनुमति स्थिति के साथ एम्बेड या सूचीबद्ध किया जाता है। कॉपीराइट सामग्री बिना अनुमति अपलोड नहीं की जानी चाहिए।">Audio is embedded or listed only with source and permission status. Copyrighted content should not be uploaded without permission.</p>
+              </div>
+            </div>
+
+            <form id="audio-filters" class="jw-card p-5" aria-label="Audio filters"><div class="jw-grid-3"><div class="jw-search-shell"><label for="audio-category" class="mb-2 block text-sm font-semibold text-stone-900" data-en="Category" data-hi="श्रेणी">Category</label><select id="audio-category"><option value="">All categories</option></select></div><div class="jw-search-shell"><label for="audio-language" class="mb-2 block text-sm font-semibold text-stone-900" data-en="Language" data-hi="भाषा">Language</label><select id="audio-language"><option value="">All languages</option></select></div><div class="jw-search-shell"><label for="audio-search" class="mb-2 block text-sm font-semibold text-stone-900" data-en="Search" data-hi="खोजें">Search</label><input id="audio-search" type="search" data-placeholder-en="Search mantra, bhajan, pravachan, kids audio..." data-placeholder-hi="मंत्र, भजन, प्रवचन, बच्चों का ऑडियो खोजें..." placeholder="Search mantra, bhajan, pravachan, kids audio..." aria-label="Search audio" /></div></div></form>
+            <div class="mt-8" id="audio-list" aria-live="polite"></div>
+          </div>
+        </section>
       </main>
       <div id="app-footer"></div>
       <div id="app-overlay"></div>

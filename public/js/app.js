@@ -47,32 +47,32 @@ import { initGlobalSearch } from "./search.js";
 
 const HOME_DISCOVERY_ITEMS = [
   {
-    titleEn: "Jain Audio",
-    titleHi: "जैन ऑडियो",
-    summaryEn: "Listen to bhajan, aarti, stavan, pravachan, mantra recitation, and calm reflective audio.",
-    summaryHi: "भजन, आरती, स्तवन, प्रवचन, मंत्र-पाठ और शांत चिंतन के लिए ऑडियो सुनें।",
+    titleEn: "Ask from JainWorld's verified sources",
+    titleHi: "जैनवर्ल्ड के सत्यापित स्रोतों से पूछें",
+    summaryEn: "Use Ask JainWorld carefully for source-based answers across learning, temples, food, festivals, and support topics.",
+    summaryHi: "सीख, मंदिर, भोजन, पर्व और सहायक विषयों पर स्रोत-आधारित उत्तरों के लिए Ask JainWorld का सावधानी से उपयोग करें।",
+    href: "/ask.html"
+  },
+  {
+    titleEn: "Jain audio and reflection",
+    titleHi: "जैन ऑडियो और मनन",
+    summaryEn: "Listen to Namokar Mantra, bhajan, aarti, stavan, pravachan, and reflective audio.",
+    summaryHi: "नमोकार मंत्र, भजन, आरती, स्तवन, प्रवचन और मनन के लिए ऑडियो सुनें।",
     href: "/audio.html"
   },
   {
-    titleEn: "Curated Jain updates",
-    titleHi: "चयनित जैन अपडेट",
-    summaryEn: "Follow festival notices, temple updates, pilgrimages, sangh activities, and community developments.",
-    summaryHi: "त्योहार सूचनाएँ, मंदिर अपडेट, तीर्थ, संघ गतिविधियाँ और समुदाय की खबरें देखें।",
-    href: "/news.html"
+    titleEn: "Temple and tirth guidance",
+    titleHi: "मंदिर और तीर्थ मार्गदर्शन",
+    summaryEn: "Search for temples, tirth destinations, dharamshala, bhojanshala, and planning support.",
+    summaryHi: "मंदिर, तीर्थ स्थल, धर्मशाला, भोजनशाला और यात्रा योजना की जानकारी खोजें।",
+    href: "/temples.html"
   },
   {
-    titleEn: "Scholarships and support",
-    titleHi: "छात्रवृत्ति और सहयोग",
-    summaryEn: "Review scholarships, minority resources, educational directories, and official-ready support links.",
-    summaryHi: "छात्रवृत्ति, अल्पसंख्यक संसाधन, शैक्षणिक निर्देशिका और उपयोगी आधिकारिक लिंक देखें।",
+    titleEn: "Resources and community support",
+    titleHi: "संसाधन और सामुदायिक सहयोग",
+    summaryEn: "Explore scholarships, institutions, minority resources, and practical community guidance.",
+    summaryHi: "छात्रवृत्ति, संस्थान, अल्पसंख्यक संसाधन और सामुदायिक मार्गदर्शन देखें।",
     href: "/resources.html"
-  },
-  {
-    titleEn: "Community and participation",
-    titleHi: "समुदाय और सहभागिता",
-    summaryEn: "Join JainWorld, contribute knowledge, and stay close to families, volunteers, temples, and institutions.",
-    summaryHi: "JainWorld से जुड़ें, ज्ञान साझा करें और परिवारों, स्वयंसेवकों, मंदिरों और संस्थानों के साथ जुड़े रहें।",
-    href: "/community.html"
   }
 ];
 
@@ -84,6 +84,40 @@ const SEARCH_CHIPS = [
   { en: "Samayik", hi: "समायिक" },
   { en: "Temples near me", hi: "मेरे पास के मंदिर" },
   { en: "Scholarships", hi: "छात्रवृत्ति" }
+];
+
+const PRACTICE_DHARMA_ITEMS = [
+  { en: "Ahimsa", hi: "अहिंसा", summaryEn: "Begin with awareness in thought, word, and action.", summaryHi: "विचार, वचन और कर्म में सजगता से शुरुआत करें।", href: "/search.html?q=Ahimsa" },
+  { en: "Samayik", hi: "समायिक", summaryEn: "Pause, reflect, and return to inner steadiness.", summaryHi: "रुकें, मनन करें और भीतर की स्थिरता में लौटें।", href: "/search.html?q=Samayik" },
+  { en: "Pratikraman", hi: "प्रतिक्रमण", summaryEn: "Learn repentance, reflection, and renewal with humility.", summaryHi: "विनम्रता के साथ आत्मचिंतन, क्षमा और सुधार को समझें।", href: "/search.html?q=Pratikraman" },
+  { en: "Fasting", hi: "उपवास", summaryEn: "Explore restraint, self-control, and festival observance.", summaryHi: "संयम, आत्मनियंत्रण और पर्व-अनुष्ठान को समझें।", href: "/food.html" },
+  { en: "Jain Food Discipline", hi: "जैन भोजन अनुशासन", summaryEn: "See how food choices connect with Ahimsa and restraint.", summaryHi: "देखें कि भोजन के चुनाव अहिंसा और संयम से कैसे जुड़े हैं।", href: "/food.html" },
+  { en: "Seva & Compassion", hi: "सेवा और करुणा", summaryEn: "Bring learning into everyday kindness and support.", summaryHi: "सीख को दया, करुणा और सहायता में बदलें।", href: "/community.html" }
+];
+
+const FAMILY_LEARNING_ITEMS = [
+  { en: "Children's Jain Learning", hi: "बच्चों की जैन सीख", summaryEn: "Gentle Jain values, stories, and first prayers for children.", summaryHi: "बच्चों के लिए सरल जैन मूल्य, कहानियाँ और प्रारंभिक प्रार्थना।", href: "/education.html" },
+  { en: "Parents & Teachers", hi: "माता-पिता और शिक्षक", summaryEn: "Support young learners with calm, practical guidance.", summaryHi: "बच्चों की सीख में शांत और व्यावहारिक मार्गदर्शन दें।", href: "/blogs.html" },
+  { en: "Stories and Values", hi: "कहानियाँ और मूल्य", summaryEn: "Use stories to explain compassion, truth, and restraint.", summaryHi: "करुणा, सत्य और संयम को कहानियों के माध्यम से समझाएँ।", href: "/literature.html" },
+  { en: "Festival Learning", hi: "पर्व सीख", summaryEn: "Understand why families observe important Jain festivals.", summaryHi: "समझें कि परिवार महत्वपूर्ण जैन पर्व क्यों मनाते हैं।", href: "/calendar.html" },
+  { en: "Jain Food for Kids", hi: "बच्चों के लिए जैन भोजन", summaryEn: "Family-friendly ways to explain Jain food discipline.", summaryHi: "जैन भोजन अनुशासन को बच्चों को समझाने के सरल तरीके।", href: "/food.html" },
+  { en: "Beginner Path", hi: "शुरुआती मार्ग", summaryEn: "A steady starting point for families new to Jain learning.", summaryHi: "जैन सीख में नए परिवारों के लिए सरल शुरुआत।", href: "/education.html" }
+];
+
+const LISTEN_REFLECT_ITEMS = [
+  { en: "Namokar Mantra", hi: "नमोकार मंत्र", summaryEn: "Begin with the most familiar prayerful starting point.", summaryHi: "सबसे परिचित प्रार्थनामय आरंभ से दिन की शुरुआत करें।", href: "/audio.html?search=Namokar%20Mantra" },
+  { en: "Bhajan", hi: "भजन", summaryEn: "Listen with devotion and family warmth.", summaryHi: "भक्ति और पारिवारिक आत्मीयता के साथ सुनें।", href: "/audio.html?category=Bhajan" },
+  { en: "Aarti", hi: "आरती", summaryEn: "Explore familiar devotional listening moments.", summaryHi: "परिचित भक्तिमय श्रवण के क्षणों से जुड़ें।", href: "/audio.html?category=Aarti" },
+  { en: "Stavan", hi: "स्तवन", summaryEn: "Reflect through praise, reverence, and calm repetition.", summaryHi: "स्तुति, आदर और शांत दोहराव के माध्यम से मनन करें।", href: "/audio.html?category=Stavan" },
+  { en: "Pravachan", hi: "प्रवचन", summaryEn: "Listen to learning-oriented reflections and guidance.", summaryHi: "सीख और चिंतन से जुड़े प्रवचनों को सुनें।", href: "/audio.html?category=Pravachan" },
+  { en: "Meditation", hi: "ध्यान", summaryEn: "Choose quieter listening for inner steadiness.", summaryHi: "भीतर की शांति के लिए शांत श्रवण चुनें।", href: "/audio.html?category=Meditation" }
+];
+
+const TEMPLES_TIRTH_ITEMS = [
+  { en: "Find Temples", hi: "मंदिर खोजें", summaryEn: "Search for nearby temples and trusted listing details.", summaryHi: "निकट के मंदिर और विश्वसनीय सूची विवरण खोजें।", href: "/temples.html" },
+  { en: "Plan a Tirth Yatra", hi: "तीर्थ यात्रा की योजना बनाएँ", summaryEn: "Use temple and calendar information to plan carefully.", summaryHi: "मंदिर और कैलेंडर जानकारी के साथ यात्रा की योजना बनाएँ।", href: "/search.html?q=Pilgrimage%20planning" },
+  { en: "Dharamshala / Bhojanshala", hi: "धर्मशाला / भोजनशाला", summaryEn: "Look for stay and meal support before travelling.", summaryHi: "यात्रा से पहले ठहरने और भोजन सहायता की जानकारी देखें।", href: "/search.html?q=Dharamshala%20Bhojanshala" },
+  { en: "Report Temple Correction", hi: "मंदिर सुधार भेजें", summaryEn: "Help keep addresses, timings, and facilities accurate.", summaryHi: "पते, समय और सुविधाओं की जानकारी सही रखने में मदद करें।", href: "/corrections.html" }
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -209,10 +243,14 @@ async function loadHomePage() {
   renderStartHere();
   renderSearchChips();
   renderDailyJain();
+  renderPracticeDharma();
+  renderFamilyLearning();
   renderEducationLevels();
   renderPilgrimages();
+  renderTemplesTirth();
   renderHomeDiscovery();
   renderLearningPaths();
+  renderListenReflect();
   renderPopularTopics();
   renderFoodRules("#food-guide-rules", FOOD_RESTRICTIONS.slice(0, 4));
   setLoadingState("#featured-literature");
@@ -463,10 +501,15 @@ function renderDailyJain() {
   }
 
   root.innerHTML = `
-    <div class="content-grid" data-columns="3">
+    <div class="content-grid" data-columns="4">
+      <a href="/audio.html?search=Namokar%20Mantra" class="mantra-card">
+        <span class="section-kicker" data-en="Prayer" data-hi="प्रार्थना">Prayer</span>
+        <h3 data-en="Namokar Mantra" data-hi="नमोकार मंत्र">Namokar Mantra</h3>
+        <p data-en="Begin with the title and listening path for a simple daily devotional start." data-hi="एक सरल दैनिक भक्तिमय शुरुआत के लिए शीर्षक और श्रवण मार्ग से आरंभ करें।">Begin with the title and listening path for a simple daily devotional start.</p>
+      </a>
       ${DAILY_JAIN_ITEMS.map(
         (item) => `
-          <article class="daily-card">
+          <article class="${item.titleEn === "Festival highlight" ? "festival-highlight-card" : "daily-dharma-card"}">
             <span class="card-icon" aria-hidden="true">${getCardIcon(item.titleEn)}</span>
             <p class="mt-4 mb-0 text-xs uppercase tracking-[0.16em] text-stone-500" data-en="${item.metaEn}" data-hi="${item.metaHi}">${item.metaEn}</p>
             <h3 class="mt-3 text-xl font-semibold text-stone-900" data-en="${item.titleEn}" data-hi="${item.titleHi}">${item.titleEn}</h3>
@@ -476,6 +519,22 @@ function renderDailyJain() {
       ).join("")}
     </div>
   `;
+}
+
+function renderPracticeDharma() {
+  renderDevotionalCards("#practice-dharma-grid", PRACTICE_DHARMA_ITEMS, "practice-card");
+}
+
+function renderFamilyLearning() {
+  renderDevotionalCards("#family-learning-grid", FAMILY_LEARNING_ITEMS, "family-learning-card");
+}
+
+function renderListenReflect() {
+  renderDevotionalCards("#listen-reflect-grid", LISTEN_REFLECT_ITEMS, "audio-devotion-card");
+}
+
+function renderTemplesTirth() {
+  renderDevotionalCards("#temples-tirth-grid", TEMPLES_TIRTH_ITEMS, "tirth-card");
 }
 
 function renderEducationLevels(targetSelector = "#education-levels") {
@@ -667,6 +726,29 @@ function renderPopularTopics() {
   root.innerHTML = `
     <div class="jw-inline-scroll">
       ${POPULAR_TOPICS.map((item) => `<a href="/search.html?q=${encodeURIComponent(item.en)}" class="topic-chip whitespace-nowrap" data-en="${item.en}" data-hi="${item.hi}">${item.en}</a>`).join("")}
+    </div>
+  `;
+}
+
+function renderDevotionalCards(targetSelector, items, className) {
+  const root = document.querySelector(targetSelector);
+  if (!root) {
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="content-grid" data-columns="3">
+      ${items
+        .map(
+          (item) => `
+            <a href="${item.href}" class="${className}">
+              <span class="card-icon" aria-hidden="true">${getCardIcon(item.en)}</span>
+              <h3 data-en="${item.en}" data-hi="${item.hi}">${item.en}</h3>
+              <p data-en="${item.summaryEn}" data-hi="${item.summaryHi}">${item.summaryEn}</p>
+            </a>
+          `
+        )
+        .join("")}
     </div>
   `;
 }

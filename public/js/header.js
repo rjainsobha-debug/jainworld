@@ -68,7 +68,7 @@ function renderHeader() {
                   <span
                     class="site-logo-tagline"
                     data-en="Learn, practice, and stay connected with Jain life."
-                    data-hi="जैन जीवन से सीखें, जुड़ें और साधना में साथ रहें।"
+                    data-hi="जैन जीवन से सीखें, जुड़े रहें और साधना में साथ बढ़ें।"
                   >
                     Learn, practice, and stay connected with Jain life.
                   </span>
@@ -118,7 +118,5 @@ function renderHeader() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Header loaded");
   renderHeader();
-  console.log("Header injected");
 });
