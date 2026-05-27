@@ -16,7 +16,8 @@ const ALLOWED_TYPES = new Set([
   "directory",
   "speakers",
   "names",
-  "dictionary"
+  "dictionary",
+  "books"
 ]);
 
 const STOP_WORDS = new Set([
@@ -108,7 +109,20 @@ const TOKEN_SYNONYMS = {
   namokar: ["navkar", "namokar mantra", "navkar mantra"],
   temple: ["mandir", "tirth", "pilgrimage"],
   food: ["diet", "eating", "ingredients"],
-  ahimsa: ["non violence", "non-violence"]
+  ahimsa: ["non violence", "non-violence"],
+  books: ["book", "books", "literature", "reading list", "पुस्तकें"],
+  dictionary: ["dictionary", "terms", "glossary", "शब्दकोश"],
+  names: ["names", "baby names", "jain names", "नाम"],
+  speakers: ["speakers", "scholars", "lectures", "प्रवचन", "वक्ता"],
+  directory: ["directory", "resources", "sections", "निर्देशिका"]
+};
+
+const TYPE_INTENT_MAP = {
+  books: new Set(["book", "books", "literature", "reading", "list", "पुस्तकें"]),
+  dictionary: new Set(["dictionary", "term", "terms", "glossary", "शब्दकोश"]),
+  names: new Set(["name", "names", "baby", "jain", "नाम"]),
+  speakers: new Set(["speaker", "speakers", "scholar", "scholars", "lecture", "lectures", "प्रवचन", "वक्ता"]),
+  directory: new Set(["directory", "directories", "resource", "resources", "section", "sections", "निर्देशिका"])
 };
 
 export function normalizeQuery(text) {
@@ -286,6 +300,8 @@ export function scoreItem(query, item) {
     }
   }
 
+  score += getTypeIntentBoost(item.type, normalizedQuery, tokens);
+
   return score;
 }
 
@@ -454,6 +470,9 @@ function buildMeta(type, item) {
   if (type === "dictionary") {
     return [item.category, item.review_status].filter(Boolean);
   }
+  if (type === "books") {
+    return [item.author, item.category, item.publication_status, item.review_status].filter(Boolean);
+  }
   return [item.category, item.tags, item.author].filter(Boolean);
 }
 
@@ -489,6 +508,9 @@ function buildUrl(type, item) {
   if (type === "dictionary") {
     return "/dictionary.html";
   }
+  if (type === "books") {
+    return "/books.html";
+  }
   if (type === "blogs") {
     return `/article.html?type=blogs&slug=${slug}`;
   }
@@ -507,6 +529,26 @@ function typeMap(type) {
     return "education";
   }
   return value || "blogs";
+}
+
+function getTypeIntentBoost(type, normalizedQuery, tokens) {
+  const hints = TYPE_INTENT_MAP[type];
+  if (!hints) {
+    return 0;
+  }
+
+  let boost = 0;
+  if (normalizedQuery && hints.has(normalizedQuery)) {
+    boost += 90;
+  }
+
+  tokens.forEach((token) => {
+    if (hints.has(token)) {
+      boost += 24;
+    }
+  });
+
+  return boost;
 }
 
 function boostRecent(dateValue, amount) {

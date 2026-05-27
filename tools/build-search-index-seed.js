@@ -26,6 +26,14 @@ const SOURCES = [
   { type: "books", file: "sample-books.json", weight: 4, mapper: mapBooks }
 ];
 
+const TYPE_SYNONYMS = {
+  books: ["book", "books", "literature", "reading list", "पुस्तकें"],
+  dictionary: ["dictionary", "terms", "glossary", "शब्दकोश"],
+  names: ["names", "baby names", "Jain names", "नाम"],
+  speakers: ["speakers", "scholars", "lectures", "प्रवचन", "वक्ता"],
+  directory: ["directory", "resources", "sections", "निर्देशिका"]
+};
+
 function main() {
   const rows = [];
   const counts = {};
@@ -102,13 +110,14 @@ function buildSql(rows, transactional = true) {
 
 function baseRow(type, item, weight, title, summary, body, url, extra = {}) {
   const sourceId = item.slug || item.id || `${type}-${title.toLowerCase().replace(/\s+/g, "-")}`;
+  const enrichedBody = buildIndexedBody(type, body);
   return {
     id: `search-index-${type}-${sourceId}`,
     content_type: type,
     source_id: sourceId,
     title: cleanSearchText(title),
     summary: cleanSearchText(summary),
-    body: cleanSearchText(body),
+    body: cleanSearchText(enrichedBody),
     url,
     category: cleanSearchText(extra.category || ""),
     tags: cleanSearchText(extra.tags || ""),
@@ -121,6 +130,11 @@ function baseRow(type, item, weight, title, summary, body, url, extra = {}) {
     search_weight: weight,
     created_at: cleanSearchText(extra.created_at || item.created_at || item.published_at || "2026-01-01")
   };
+}
+
+function buildIndexedBody(type, body) {
+  const synonyms = TYPE_SYNONYMS[type] || [];
+  return [type, ...synonyms, body].filter(Boolean).join(" ");
 }
 
 function mapLiterature(item, weight) {

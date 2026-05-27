@@ -1,7 +1,23 @@
 import { searchAll } from "./api.js";
 import { getLanguage, translate, updateLanguageDOM } from "./language.js";
 
-const SEARCH_TYPES = ["all", "literature", "education", "temples", "food", "news", "blogs", "audio", "resources", "calendar"];
+const SEARCH_TYPES = [
+  "all",
+  "literature",
+  "education",
+  "temples",
+  "food",
+  "news",
+  "blogs",
+  "audio",
+  "resources",
+  "calendar",
+  "books",
+  "dictionary",
+  "directory",
+  "names",
+  "speakers"
+];
 
 const TYPE_LABELS = {
   all: { en: "All", hi: "सभी" },
@@ -13,7 +29,12 @@ const TYPE_LABELS = {
   blogs: { en: "Blogs", hi: "ब्लॉग" },
   audio: { en: "Audio", hi: "ऑडियो" },
   resources: { en: "Resources", hi: "संसाधन" },
-  calendar: { en: "Calendar", hi: "कैलेंडर" }
+  calendar: { en: "Calendar", hi: "कैलेंडर" },
+  books: { en: "Books", hi: "पुस्तकें" },
+  dictionary: { en: "Dictionary", hi: "शब्दकोश" },
+  directory: { en: "Directory", hi: "निर्देशिका" },
+  names: { en: "Names", hi: "नाम" },
+  speakers: { en: "Speakers", hi: "वक्ता" }
 };
 
 const POPULAR_SEARCHES = [
@@ -350,7 +371,7 @@ function copy() {
         loading: "JainWorld में खोज हो रही है...",
         fallbackMode: "नमूना बैकअप मोड",
         searchMode: "JainWorld खोज",
-        noResultsHelp: "छोटी खोज, अलग सामग्री प्रकार, या पर्व, प्रार्थना, स्थान, भोजन नियम या छात्रवृत्ति जैसे विषय से शुरुआत करें।",
+        noResultsHelp: "छोटी खोज करें, सामग्री प्रकार बदलें, या पर्व, प्रार्थना, स्थान, भोजन नियम या छात्रवृत्ति जैसे विषय से शुरुआत करें।",
         introHeading: "किसी विषय, प्रार्थना, स्थान, पर्व या संसाधन से शुरुआत करें",
         introText: "जैन साहित्य, मंदिर, ऑडियो, भोजन मार्गदर्शन, समाचार, छात्रवृत्ति और सीखने के मार्गों में खोजें।",
         noSummary: "सारांश उपलब्ध नहीं है।"
