@@ -1,0 +1,81 @@
+{
+  "generated_at": "2026-05-27T06:23:26.475Z",
+  "files_reviewed": [
+    "public/data/sample-books.json",
+    "public/data/review-external-resources.json",
+    "public/data/sample-image-credits.json",
+    "public/data/sample-audio.json"
+  ],
+  "quality": {
+    "summary": {
+      "total_records": 28,
+      "books_count": 10,
+      "external_resources_count": 5,
+      "image_credits_count": 4,
+      "audio_count": 9,
+      "issues_count": 12
+    },
+    "issues": [
+      {
+        "code": "book_missing_source_url",
+        "slug": "tattvartha-sutra-introduction-reference",
+        "message": "External-link-only book record is missing source_url."
+      },
+      {
+        "code": "book_missing_source_url",
+        "slug": "samayasara-study-reference",
+        "message": "External-link-only book record is missing source_url."
+      },
+      {
+        "code": "book_missing_source_url",
+        "slug": "agamas-overview-reference",
+        "message": "External-link-only book record is missing source_url."
+      },
+      {
+        "code": "book_missing_source_url",
+        "slug": "bhaktamar-stotra-reference",
+        "message": "External-link-only book record is missing source_url."
+      },
+      {
+        "code": "book_missing_source_url",
+        "slug": "jain-stories-for-children-reference",
+        "message": "External-link-only book record is missing source_url."
+      },
+      {
+        "code": "book_missing_source_url",
+        "slug": "jain-history-reading-list-placeholder",
+        "message": "External-link-only book record is missing source_url."
+      },
+      {
+        "code": "book_missing_source_url",
+        "slug": "jain-dictionary-reference-placeholder",
+        "message": "External-link-only book record is missing source_url."
+      },
+      {
+        "code": "book_missing_source_url",
+        "slug": "jain-food-discipline-reading-reference",
+        "message": "External-link-only book record is missing source_url."
+      },
+      {
+        "code": "book_missing_source_url",
+        "slug": "paryushan-reading-reference",
+        "message": "External-link-only book record is missing source_url."
+      },
+      {
+        "code": "book_missing_source_url",
+        "slug": "jain-ethics-beginner-reading-list",
+        "message": "External-link-only book record is missing source_url."
+      },
+      {
+        "code": "external_missing_source_url",
+        "slug": "external-review-3",
+        "message": "External review item needs source_url for the proposed use."
+      },
+      {
+        "code": "external_missing_source_url",
+        "slug": "external-review-4",
+        "message": "External review item needs source_url for the proposed use."
+      }
+    ]
+  }
+}

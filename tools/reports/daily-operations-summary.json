@@ -1,10 +1,22 @@
 {
-  "run_time": "2026-05-26T18:00:57.797Z",
+  "run_time": "2026-05-27T06:23:26.154Z",
   "tools_run": [
     {
       "key": "community-directory-review-preview",
       "label": "Community Directory Review Preview",
       "script_path": "tools/bots/community-directory-review-preview.js",
+      "reason": ""
+    },
+    {
+      "key": "calendar-review-preview",
+      "label": "Calendar Review Preview",
+      "script_path": "tools/bots/calendar-review-preview.js",
+      "reason": ""
+    },
+    {
+      "key": "source-permission-review-preview",
+      "label": "Source Permission Review Preview",
+      "script_path": "tools/bots/source-permission-review-preview.js",
       "reason": ""
     },
     {
@@ -84,14 +96,21 @@
   ],
   "tools_failed": [],
   "generated_files": [
+    "public/data/review-calendar-quality.json",
     "public/data/review-community-directory-quality.json",
     "public/data/review-news-preview.json",
     "public/data/review-resources-monitor-preview.json",
+    "public/data/review-source-permissions.json",
+    "tools/reports/calendar-review-report.json",
     "tools/reports/community-directory-review-report.json",
     "tools/reports/daily-operations-summary.json",
-    "tools/reports/daily-operations-summary.txt"
+    "tools/reports/daily-operations-summary.txt",
+    "tools/reports/source-permission-review-report.json"
   ],
-  "review_items_count": 29,
+  "review_items_count": 80,
+  "calendar_review_items": 0,
+  "calendar_needs_review_count": 13,
+  "source_permission_issues": 12,
   "warnings": [
     "10 tool(s) were skipped because the script file does not exist yet."
   ],

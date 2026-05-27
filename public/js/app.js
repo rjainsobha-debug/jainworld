@@ -333,10 +333,10 @@ async function loadCulturePage() {
   renderStaticInfoCards("#culture-modules", CULTURE_MODULES);
   const festivals = await getCalendar({ limit: 6 });
   const cards = festivals.map((item) => ({
-    title_en: item.festival_en,
-    title_hi: item.festival_hi || item.festival_en,
-    summary_en: item.description_en,
-    summary_hi: item.description_hi || item.description_en
+    title_en: item.title,
+    title_hi: item.title_hi || item.title,
+    summary_en: item.summary,
+    summary_hi: item.summary_hi || item.summary
   }));
   renderStaticInfoCards("#culture-festivals", cards);
 }
@@ -607,18 +607,22 @@ function renderCalendarPreview(items) {
         .map((item) => {
           const title =
             getLanguage() === "hi"
-              ? item.festival_hi || item.festival_en || "जैन पर्व"
-              : item.festival_en || item.festival_hi || "Jain observance";
+              ? item.title_hi || item.title || "जैन पर्व"
+              : item.title || item.title_hi || "Jain observance";
           const description =
             getLanguage() === "hi"
-              ? item.description_hi || item.description_en || "त्योहार और पालन की जानकारी यहाँ दिखाई जाएगी।"
-              : item.description_en || item.description_hi || "Festival and observance detail will appear here.";
+              ? item.summary_hi || item.summary || "पर्व की जानकारी यहाँ दिखाई जाएगी।"
+              : item.summary || item.summary_hi || "Festival and observance detail will appear here.";
+          const metaLine =
+            item.date_confidence === "educational_only"
+              ? translate("educational_overview", "Educational overview")
+              : item.date_display || item.date_display_hi || translate("needs_review", "Needs Review");
           return `
           <article class="daily-card">
-            <span class="jw-badge">${item.category || translate("calendar", "Calendar")}</span>
+            <span class="jw-badge">${translateLabel(item.type || "festival", item.type || translate("calendar", "Calendar"))}</span>
             <h3 class="mt-3 text-lg font-semibold text-stone-900">${title}</h3>
             <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${description}</p>
-            <p class="m-0 mt-3 text-sm text-stone-500">${formatDate(item.date_gregorian)}${item.tithi ? ` | ${item.tithi}` : ""}</p>
+            <p class="m-0 mt-3 text-sm text-stone-500">${metaLine}</p>
           </article>
         `;
         })

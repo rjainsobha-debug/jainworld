@@ -301,6 +301,71 @@ function renderSourceCard(title, summary, href, typeLabel) {
   `;
 }
 
+function formatLicenseStatus(value) {
+  const key = String(value || "").trim().toLowerCase();
+  if (!key) {
+    return "";
+  }
+
+  const labels = {
+    original: translate("curated_by_jainworld", "Curated by JainWorld"),
+    public_domain: translate("public_domain", "Public domain"),
+    creative_commons: translate("creative_commons", "Creative Commons"),
+    permission_received: translate("permission_received", "Permission received"),
+    official_link_only: translate("external_link_only", "External link only"),
+    metadata_only: translate("metadata_only", "Metadata only"),
+    needs_review: translate("permission_review_needed", "Permission review needed"),
+    not_allowed: translate("hosting_not_allowed", "Hosting not allowed")
+  };
+
+  return labels[key] || localizeLabel(value, value);
+}
+
+function renderSourceCreditPanel(item = {}) {
+  const sourceName = item.source_name || item.source || "";
+  const sourceUrl = item.source_url || item.official_url || item.audio_url || "";
+  const license = item.license_name || formatLicenseStatus(item.license_status);
+  const attribution = item.attribution_text || "";
+  const changesMade = item.changes_made || "";
+  const reviewNotes = item.review_notes || item.source_note || "";
+  const permissionBadge =
+    String(item.permission_status || "").toLowerCase() === "needs_review"
+      ? `<span class="jw-badge jw-badge--pending-review">${escapeHtml(
+          translate("permission_review_needed", "Permission review needed")
+        )}</span>`
+      : "";
+
+  if (!sourceName && !sourceUrl && !license && !attribution && !changesMade && !reviewNotes && !permissionBadge) {
+    return "";
+  }
+
+  return `
+    <section class="detail-section">
+      <div class="section-header">
+        <span class="section-kicker">${escapeHtml(translate("credit", "Credit"))}</span>
+        <h2>${escapeHtml(translate("source", "Source"))}</h2>
+      </div>
+      <article class="source-card">
+        <div class="flex flex-wrap gap-2">
+          ${permissionBadge}
+          ${item.external_link_only ? `<span class="jw-badge">${escapeHtml(translate("external_link_only", "External link only"))}</span>` : ""}
+          ${item.hosting_allowed === false ? `<span class="jw-badge">${escapeHtml(translate("hosting_not_allowed", "Hosting not allowed"))}</span>` : ""}
+        </div>
+        ${sourceName ? `<p><strong>${escapeHtml(translate("source", "Source"))}:</strong> ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceName)}</a>` : escapeHtml(sourceName)}</p>` : ""}
+        ${license ? `<p><strong>${escapeHtml(translate("license", "License"))}:</strong> ${escapeHtml(license)}</p>` : ""}
+        ${attribution ? `<p><strong>${escapeHtml(translate("credit", "Credit"))}:</strong> ${escapeHtml(attribution)}</p>` : ""}
+        ${changesMade ? `<p><strong>${escapeHtml(translate("attribution", "Attribution"))}:</strong> ${escapeHtml(changesMade)}</p>` : ""}
+        ${reviewNotes ? `<p>${escapeHtml(reviewNotes)}</p>` : ""}
+        ${
+          item.external_link_only && sourceUrl
+            ? `<div class="detail-cta">${renderActionLink(sourceUrl, translate("open_source", "Open source"), "ghost")}</div>`
+            : ""
+        }
+      </article>
+    </section>
+  `;
+}
+
 function renderRelatedCards(items = []) {
   if (!items.length) {
     return "";
@@ -1021,6 +1086,7 @@ export function renderArticleDetail(target, item, type = "blogs") {
       ${method ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("guide", "Guide"))}</span><h2>${escapeHtml(localizeLabel("Method", "Method"))}</h2></div><div class="detail-body">${normalizeParagraphs(method)}</div></section>` : ""}
       ${spiritualReason ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("philosophy", "Philosophy"))}</span><h2>${escapeHtml(localizeLabel("Spiritual reason", "Spiritual reason"))}</h2></div><div class="detail-body">${normalizeParagraphs(spiritualReason)}</div></section>` : ""}
       ${scientificReason ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("guide", "Guide"))}</span><h2>${escapeHtml(localizeLabel("Scientific or practical reason", "Scientific or practical reason"))}</h2></div><div class="detail-body">${normalizeParagraphs(scientificReason)}</div></section>` : ""}
+      ${renderSourceCreditPanel(item)}
       ${renderDetailActions([
         renderActionLink(`/ask.html?q=${encodeURIComponent(title)}`, translate("ask_topic_cta", "Have a question about this topic? Ask JainWorld."), "primary"),
         renderActionLink("/corrections.html", translate("report_correction", "Report correction"), "secondary"),
@@ -1133,6 +1199,7 @@ export function renderTempleDetail(target, item) {
       </section>
       ${history ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("temple", "Temple"))}</span><h2>${escapeHtml(translate("history", "History"))}</h2></div><div class="detail-body">${normalizeParagraphs(history)}</div></section>` : ""}
       ${rituals ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("devotional", "Devotional"))}</span><h2>${escapeHtml(translate("rituals", "Rituals"))}</h2></div><div class="detail-body">${normalizeParagraphs(rituals)}</div></section>` : ""}
+      ${renderSourceCreditPanel(item)}
       ${renderDetailActions([
         renderActionLink(correctionUrl, translate("report_correction", "Report correction"), "primary"),
         renderActionLink("/contribute.html", translate("contribute_information", "Contribute information"), "secondary"),
@@ -1215,12 +1282,14 @@ export function renderAudioDetail(target, item) {
       </section>
       ${meaning ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("meaning", "Meaning"))}</span><h2>${escapeHtml(translate("meaning", "Meaning"))}</h2></div><div class="detail-body">${normalizeParagraphs(meaning)}</div></section>` : ""}
       ${lyrics ? `<section class="detail-section"><div class="section-header"><span class="section-kicker">${escapeHtml(translate("audio", "Audio"))}</span><h2>${escapeHtml(localizeLabel("Transcript", "Transcript"))}</h2></div><div class="detail-body">${normalizeParagraphs(lyrics)}</div></section>` : ""}
+      ${renderSourceCreditPanel(item)}
       <section class="detail-section">
-        <div class="trust-strip">
-          <strong>${escapeHtml(translate("source", "Source"))}</strong>
-          <span>${escapeHtml(item.audio_url ? displayValue(item.audio_url) : translate("source_details_are_being_reviewed", "Source details are being reviewed."))}</span>
+        <div class="detail-cta">
+          ${item.audio_url ? renderActionLink(item.audio_url, translate("open_external_source", "Open external source"), "ghost") : ""}
+          ${renderActionLink("/corrections.html", translate("report_correction", "Report correction"), "secondary")}
+          ${renderActionLink("/corrections.html?topic=copyright", translate("report_copyright_concern", "Report copyright concern"), "secondary")}
+          ${renderActionLink(`/ask.html?q=${encodeURIComponent(title)}`, translate("ask_jainworld", "Ask JainWorld"), "primary")}
         </div>
-        ${item.audio_url ? `<div class="detail-cta">${renderActionLink(item.audio_url, translate("open_external_source", "Open external source"), "ghost")}${renderActionLink("/corrections.html", translate("report_correction", "Report correction"), "secondary")}${renderActionLink(`/ask.html?q=${encodeURIComponent(title)}`, translate("ask_jainworld", "Ask JainWorld"), "primary")}</div>` : ""}
       </section>
       ${renderRelatedCards(relatedItems)}
     </article>

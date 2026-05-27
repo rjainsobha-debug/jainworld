@@ -19,6 +19,24 @@ const TOOL_RUNNERS = [
     ]
   },
   {
+    key: "calendar-review-preview",
+    label: "Calendar Review Preview",
+    path: path.join(rootDir, "tools", "bots", "calendar-review-preview.js"),
+    expectedOutputs: [
+      path.join(rootDir, "tools", "reports", "calendar-review-report.json"),
+      path.join(rootDir, "public", "data", "review-calendar-quality.json")
+    ]
+  },
+  {
+    key: "source-permission-review-preview",
+    label: "Source Permission Review Preview",
+    path: path.join(rootDir, "tools", "bots", "source-permission-review-preview.js"),
+    expectedOutputs: [
+      path.join(rootDir, "tools", "reports", "source-permission-review-report.json"),
+      path.join(rootDir, "public", "data", "review-source-permissions.json")
+    ]
+  },
+  {
     key: "news-bot-preview",
     label: "News Bot Preview",
     path: path.join(rootDir, "tools", "bots", "news-bot-preview.js")
@@ -181,6 +199,9 @@ function buildSummary(runTime, results, reportsGenerated, reviewItemsCount) {
     nextActions.push("Review today's reports and keep all changes in review-first mode.");
   }
 
+  const calendarMetrics = getCalendarMetrics();
+  const permissionMetrics = getSourcePermissionMetrics();
+
   return {
     run_time: runTime,
     tools_run: toolsRun.map((item) => summarizeTool(item)),
@@ -188,6 +209,9 @@ function buildSummary(runTime, results, reportsGenerated, reviewItemsCount) {
     tools_failed: toolsFailed.map((item) => summarizeTool(item)),
     generated_files: reportsGenerated,
     review_items_count: reviewItemsCount,
+    calendar_review_items: calendarMetrics.calendar_review_items,
+    calendar_needs_review_count: calendarMetrics.calendar_needs_review_count,
+    source_permission_issues: permissionMetrics.source_permission_issues,
     warnings,
     next_actions: nextActions
   };
@@ -263,6 +287,9 @@ function formatTextSummary(summary) {
     ...formatLines(summary.generated_files),
     "",
     `Review items count: ${summary.review_items_count}`,
+    `Calendar review items: ${summary.calendar_review_items}`,
+    `Calendar needs review count: ${summary.calendar_needs_review_count}`,
+    `Source permission issues: ${summary.source_permission_issues}`,
     "",
     "Warnings:",
     ...formatLines(summary.warnings),
@@ -283,6 +310,9 @@ function printConsoleSummary(summary) {
   formatToolLines(summary.tools_failed).forEach((line) => console.log(line));
   console.log("Reports generated:");
   formatLines(summary.generated_files).forEach((line) => console.log(line));
+  console.log(`Calendar review items: ${summary.calendar_review_items}`);
+  console.log(`Calendar needs review count: ${summary.calendar_needs_review_count}`);
+  console.log(`Source permission issues: ${summary.source_permission_issues}`);
   console.log("Next actions:");
   formatLines(summary.next_actions).forEach((line) => console.log(line));
 }
@@ -317,13 +347,16 @@ function buildTelegramSummary(summary) {
     `Tools skipped: ${summary.tools_skipped.length}`,
     `Tools failed: ${summary.tools_failed.length}`,
     `Review items: ${summary.review_items_count}`,
+    `Calendar review items: ${summary.calendar_review_items}`,
+    `Calendar needs review: ${summary.calendar_needs_review_count}`,
+    `Source permission issues: ${summary.source_permission_issues}`,
     "",
     "Reports generated:",
     "- daily-operations-summary.json",
     "- daily-operations-summary.txt",
     "",
     "Next actions:",
-    "- Review pending directory/resource/news/audio items",
+    "- Review pending calendar, directory, resource, news, and audio items",
     "- Do not publish without review",
     "",
     "No content auto-published."
@@ -356,6 +389,49 @@ function parseGeneratedFiles(stdout) {
     .filter((line) => line.startsWith("Wrote "))
     .map((line) => line.replace(/^Wrote\s+/, ""))
     .map((filePath) => relativePath(filePath));
+}
+
+function getCalendarMetrics() {
+  const qualityPath = path.join(rootDir, "public", "data", "review-calendar-quality.json");
+  if (!fs.existsSync(qualityPath)) {
+    return {
+      calendar_review_items: 0,
+      calendar_needs_review_count: 0
+    };
+  }
+
+  try {
+    const data = JSON.parse(fs.readFileSync(qualityPath, "utf8"));
+    return {
+      calendar_review_items: Number(data?.summary?.issues_count || 0),
+      calendar_needs_review_count: Number(data?.summary?.needs_review_count || 0)
+    };
+  } catch (error) {
+    return {
+      calendar_review_items: 0,
+      calendar_needs_review_count: 0
+    };
+  }
+}
+
+function getSourcePermissionMetrics() {
+  const qualityPath = path.join(rootDir, "public", "data", "review-source-permissions.json");
+  if (!fs.existsSync(qualityPath)) {
+    return {
+      source_permission_issues: 0
+    };
+  }
+
+  try {
+    const data = JSON.parse(fs.readFileSync(qualityPath, "utf8"));
+    return {
+      source_permission_issues: Number(data?.summary?.issues_count || 0)
+    };
+  } catch (error) {
+    return {
+      source_permission_issues: 0
+    };
+  }
 }
 
 function sanitizeOutput(text) {

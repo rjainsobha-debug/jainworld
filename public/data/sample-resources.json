@@ -15,7 +15,19 @@
     "source_name": "JainWorld reviewed guide",
     "last_verified_at": "2026-05-26",
     "review_status": "verified",
-    "status": "published"
+    "status": "published",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "JainWorld guide with verification reminders. Check official notices before acting.",
+    "attribution_required": false,
+    "permission_status": "metadata_only",
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Official scheme details, deadlines, and eligibility must be verified from the current authority notice."
   },
   {
     "id": "resource-2",
@@ -33,7 +45,19 @@
     "source_name": "JainWorld reviewed checklist",
     "last_verified_at": "2026-05-26",
     "review_status": "verified",
-    "status": "published"
+    "status": "published",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "JainWorld guide with verification reminders. Check official notices before acting.",
+    "attribution_required": false,
+    "permission_status": "metadata_only",
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Official scheme details, deadlines, and eligibility must be verified from the current authority notice."
   },
   {
     "id": "resource-3",
@@ -51,7 +75,19 @@
     "source_name": "JainWorld reviewed guide",
     "last_verified_at": "2026-05-26",
     "review_status": "verified",
-    "status": "published"
+    "status": "published",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "JainWorld guide with verification reminders. Check official notices before acting.",
+    "attribution_required": false,
+    "permission_status": "metadata_only",
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Official scheme details, deadlines, and eligibility must be verified from the current authority notice."
   },
   {
     "id": "resource-4",
@@ -69,7 +105,19 @@
     "source_name": "Directory in progress",
     "last_verified_at": "2026-05-26",
     "review_status": "needs_review",
-    "status": "published"
+    "status": "published",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "JainWorld guide with verification reminders. Check official notices before acting.",
+    "attribution_required": false,
+    "permission_status": "metadata_only",
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Official scheme details, deadlines, and eligibility must be verified from the current authority notice."
   },
   {
     "id": "resource-5",
@@ -87,7 +135,19 @@
     "source_name": "Directory in progress",
     "last_verified_at": "2026-05-26",
     "review_status": "needs_review",
-    "status": "published"
+    "status": "published",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "JainWorld guide with verification reminders. Check official notices before acting.",
+    "attribution_required": false,
+    "permission_status": "metadata_only",
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Official scheme details, deadlines, and eligibility must be verified from the current authority notice."
   },
   {
     "id": "resource-6",
@@ -105,7 +165,19 @@
     "source_name": "Directory in progress",
     "last_verified_at": "2026-05-26",
     "review_status": "needs_review",
-    "status": "published"
+    "status": "published",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "JainWorld guide with verification reminders. Check official notices before acting.",
+    "attribution_required": false,
+    "permission_status": "metadata_only",
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Official scheme details, deadlines, and eligibility must be verified from the current authority notice."
   },
   {
     "id": "resource-7",
@@ -123,7 +195,19 @@
     "source_name": "JainWorld reviewed guide",
     "last_verified_at": "2026-05-26",
     "review_status": "verified",
-    "status": "published"
+    "status": "published",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "JainWorld guide with verification reminders. Check official notices before acting.",
+    "attribution_required": false,
+    "permission_status": "metadata_only",
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Official scheme details, deadlines, and eligibility must be verified from the current authority notice."
   },
   {
     "id": "resource-8",
@@ -141,7 +225,19 @@
     "source_name": "JainWorld corrections workflow",
     "last_verified_at": "2026-05-26",
     "review_status": "verified",
-    "status": "published"
+    "status": "published",
+    "source_url": "/corrections.html",
+    "source_type": "government",
+    "license_status": "official_link_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "JainWorld guide with verification reminders. Check official notices before acting.",
+    "attribution_required": false,
+    "permission_status": "allowed",
+    "hosting_allowed": false,
+    "external_link_only": true,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Official scheme details, deadlines, and eligibility must be verified from the current authority notice."
   },
   {
     "id": "resource-9",
@@ -159,7 +255,19 @@
     "source_name": "JainWorld learning reference",
     "last_verified_at": "2026-05-26",
     "review_status": "curated",
-    "status": "published"
+    "status": "published",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "JainWorld guide with verification reminders. Check official notices before acting.",
+    "attribution_required": false,
+    "permission_status": "metadata_only",
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Official scheme details, deadlines, and eligibility must be verified from the current authority notice."
   },
   {
     "id": "resource-10",
@@ -177,6 +285,18 @@
     "source_name": "JainWorld learning reference",
     "last_verified_at": "2026-05-26",
     "review_status": "curated",
-    "status": "published"
+    "status": "published",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "JainWorld guide with verification reminders. Check official notices before acting.",
+    "attribution_required": false,
+    "permission_status": "metadata_only",
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Official scheme details, deadlines, and eligibility must be verified from the current authority notice."
   }
 ]

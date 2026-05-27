@@ -295,6 +295,51 @@ const TRANSLATIONS = {
   rituals: { en: "Rituals", hi: "विधि और परंपरा" }
 };
 
+Object.assign(TRANSLATIONS, {
+  jain_calendar_and_festivals: { en: "Jain Calendar and Festivals", hi: "जैन कैलेंडर और पर्व" },
+  dates_may_vary: { en: "Dates may vary", hi: "तिथियाँ भिन्न हो सकती हैं" },
+  verify_with_local_sangh: { en: "Verify with local sangh", hi: "स्थानीय संघ से सत्यापित करें" },
+  tithi_vrat: { en: "Tithi / Vrat", hi: "तिथि / व्रत" },
+  ayambil: { en: "Ayambil", hi: "आयंबिल" },
+  needs_review: { en: "Needs Review", hi: "समीक्षा आवश्यक" },
+  educational_overview: { en: "Educational overview", hi: "शैक्षणिक जानकारी" },
+  date_confidence: { en: "Date confidence", hi: "तिथि भरोसा स्तर" },
+  source_provided: { en: "Source provided", hi: "स्रोत-आधारित" },
+  verified_date: { en: "Verified date", hi: "सत्यापित तिथि" },
+  local_verification_required: { en: "Local verification required", hi: "स्थानीय सत्यापन आवश्यक" },
+  report_calendar_correction: { en: "Report calendar correction", hi: "कैलेंडर सुधार भेजें" },
+  tradition_scope: { en: "Tradition scope", hi: "परंपरा क्षेत्र" },
+  location_scope: { en: "Location scope", hi: "स्थान क्षेत्र" },
+  lunar_month: { en: "Lunar month", hi: "चंद्र मास" },
+  lunar_tithi: { en: "Lunar tithi", hi: "चंद्र तिथि" },
+  all: { en: "All", hi: "सभी" },
+  festival: { en: "Festival", hi: "पर्व" },
+  vrat: { en: "Vrat", hi: "व्रत" },
+  event: { en: "Event", hi: "कार्यक्रम" },
+  learning: { en: "Learning", hi: "शैक्षणिक जानकारी" }
+});
+
+Object.assign(TRANSLATIONS, {
+  books: { en: "Books", hi: "पुस्तकें" },
+  book: { en: "Book", hi: "पुस्तक" },
+  author: { en: "Author", hi: "लेखक" },
+  publisher: { en: "Publisher", hi: "प्रकाशक" },
+  source: { en: "Source", hi: "स्रोत" },
+  license: { en: "License", hi: "लाइसेंस" },
+  credit: { en: "Credit", hi: "श्रेय" },
+  attribution: { en: "Attribution", hi: "श्रेय विवरण" },
+  open_source: { en: "Open source", hi: "स्रोत खोलें" },
+  external_link_only: { en: "External link only", hi: "केवल बाहरी लिंक" },
+  permission_review_needed: { en: "Permission review needed", hi: "अनुमति समीक्षा आवश्यक" },
+  hosting_not_allowed: { en: "Hosting not allowed", hi: "होस्टिंग की अनुमति नहीं" },
+  public_domain: { en: "Public domain", hi: "सार्वजनिक डोमेन" },
+  creative_commons: { en: "Creative Commons", hi: "क्रिएटिव कॉमन्स" },
+  permission_received: { en: "Permission received", hi: "अनुमति प्राप्त" },
+  metadata_only: { en: "Metadata only", hi: "केवल जानकारी" },
+  report_copyright_concern: { en: "Report copyright concern", hi: "कॉपीराइट समस्या बताएं" },
+  suggest_book_resource: { en: "Suggest book/resource", hi: "पुस्तक/संसाधन सुझाएँ" }
+});
+
 function normalizeLabelKey(label) {
   return String(label || "")
     .trim()

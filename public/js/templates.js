@@ -335,6 +335,7 @@ const FOOTER_LINK_GROUPS = [
     headingHi: "ज्ञान और भक्ति",
     links: [
       { href: "/literature.html", label: "Literature", labelHi: "साहित्य" },
+      { href: "/books.html", label: "Books", labelHi: "पुस्तकें" },
       { href: "/dictionary.html", label: "Dictionary", labelHi: "जैन शब्दकोश" },
       { href: "/names.html", label: "Names", labelHi: "जैन नाम" },
       { href: "/speakers.html", label: "Speakers", labelHi: "वक्ता" },

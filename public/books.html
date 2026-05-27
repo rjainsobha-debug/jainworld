@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jain Books and Reading References | JainWorld</title>
+    <meta
+      name="description"
+      content="Browse review-first Jain books and reading references with source, permission, and attribution guidance."
+    />
+    <link rel="canonical" href="https://jainworld.in/books.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Jain Books and Reading References | JainWorld" />
+    <meta
+      property="og:description"
+      content="Metadata-first Jain books and reading references with clear source and permission notes."
+    />
+    <meta property="og:url" content="https://jainworld.in/books.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body data-page="books" class="jw-shell">
+    <div id="app">
+      <div id="app-header"></div>
+      <noscript><div class="jw-noscript">Enable JavaScript to browse JainWorld books and source notes.</div></noscript>
+      <main id="main-content">
+        <section class="page-banner devotional-hero jain-motif-bg">
+          <div class="jw-container jw-page-hero-inner">
+            <div class="breadcrumb">
+              <a href="/index.html" data-en="Home" data-hi="होम">Home</a>
+              <span aria-hidden="true">/</span>
+              <a href="/literature.html" data-en="Literature" data-hi="साहित्य">Literature</a>
+              <span aria-hidden="true">/</span>
+              <span data-en="Books" data-hi="पुस्तकें">Books</span>
+            </div>
+            <div class="page-banner-copy">
+              <span class="section-kicker" data-en="Books and references" data-hi="पुस्तकें और संदर्भ">Books and references</span>
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900" data-en="Jain books with source and permission notes" data-hi="स्रोत और अनुमति नोट्स के साथ जैन पुस्तकें">
+                Jain books with source and permission notes
+              </h1>
+              <p
+                class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-600"
+                data-en="These are metadata-first reading references. JainWorld does not host copyrighted books without clear permission."
+                data-hi="ये केवल जानकारी-आधारित पाठन संदर्भ हैं। स्पष्ट अनुमति के बिना JainWorld कॉपीराइट पुस्तकों की होस्टिंग नहीं करता।"
+              >
+                These are metadata-first reading references. JainWorld does not host copyrighted books without clear permission.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-8">
+          <div class="jw-container jw-page-stack">
+            <div class="soft-card p-5">
+              <div class="jw-grid-2 gap-4">
+                <div>
+                  <label for="books-search" class="mb-2 block text-sm font-semibold text-stone-900" data-en="Search books and topics" data-hi="पुस्तकें और विषय खोजें">Search books and topics</label>
+                  <input
+                    id="books-search"
+                    type="search"
+                    placeholder="Search Tattvartha, Ahimsa, Paryushan..."
+                    data-placeholder-en="Search Tattvartha, Ahimsa, Paryushan..."
+                    data-placeholder-hi="तत्त्वार्थ, अहिंसा, पर्युषण आदि खोजें..."
+                  />
+                </div>
+                <div>
+                  <label for="books-permission-filter" class="mb-2 block text-sm font-semibold text-stone-900" data-en="Permission view" data-hi="अनुमति स्थिति">Permission view</label>
+                  <select id="books-permission-filter">
+                    <option value="all" data-en="All" data-hi="सभी">All</option>
+                    <option value="public_domain" data-en="Public domain" data-hi="सार्वजनिक डोमेन">Public domain</option>
+                    <option value="permission_received" data-en="Permission received" data-hi="अनुमति प्राप्त">Permission received</option>
+                    <option value="external_link_only" data-en="External link only" data-hi="केवल बाहरी लिंक">External link only</option>
+                    <option value="needs_review" data-en="Needs review" data-hi="समीक्षा आवश्यक">Needs review</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="soft-card p-5">
+              <p
+                class="m-0 text-sm leading-7 text-stone-700"
+                data-en="Credit is not the same as permission. Always review source, license, and hosting status before linking or quoting any external content."
+                data-hi="श्रेय देना अनुमति के बराबर नहीं है। किसी भी बाहरी सामग्री को जोड़ने या उद्धृत करने से पहले स्रोत, लाइसेंस और होस्टिंग स्थिति अवश्य देखें।"
+              >
+                Credit is not the same as permission. Always review source, license, and hosting status before linking or quoting any external content.
+              </p>
+            </div>
+
+            <div id="books-list" aria-live="polite"></div>
+
+            <section class="related-content">
+              <div class="jw-grid-3">
+                <a href="/contribute.html" class="feature-card"><h3 data-en="Suggest book/resource" data-hi="पुस्तक/संसाधन सुझाएँ">Suggest book/resource</h3><p data-en="Recommend a trustworthy book, archive, library, or reading guide for review." data-hi="समीक्षा के लिए विश्वसनीय पुस्तक, संग्रह, पुस्तकालय या पाठन मार्गदर्शिका सुझाएँ।">Recommend a trustworthy book, archive, library, or reading guide for review.</p></a>
+                <a href="/corrections.html?topic=copyright" class="feature-card"><h3 data-en="Report copyright concern" data-hi="कॉपीराइट समस्या बताएं">Report copyright concern</h3><p data-en="Tell us if a source, license, or hosting decision looks unsafe or incomplete." data-hi="यदि कोई स्रोत, लाइसेंस या होस्टिंग निर्णय असुरक्षित या अधूरा लगे तो हमें बताएं।">Tell us if a source, license, or hosting decision looks unsafe or incomplete.</p></a>
+                <a href="/ask.html?q=Jain%20books%20for%20beginners" class="feature-card"><h3 data-en="Ask JainWorld" data-hi="जैनवर्ल्ड से पूछें">Ask JainWorld</h3><p data-en="Ask for beginner-safe reading guidance from JainWorld source-backed material." data-hi="जैनवर्ल्ड के स्रोत-आधारित सामग्री से शुरुआती पाठन मार्गदर्शन पूछें।">Ask for beginner-safe reading guidance from JainWorld source-backed material.</p></a>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+      <div id="app-footer"></div>
+      <div id="app-overlay"></div>
+    </div>
+    <script type="module" src="/js/header.js"></script>
+    <script type="module" src="/js/app.js"></script>
+    <script type="module" src="/js/books-page.js"></script>
+  </body>
+</html>

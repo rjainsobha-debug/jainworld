@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-05-27T06:23:26.379Z",
+  "files_reviewed": [
+    "public/data/sample-calendar.json",
+    "public/data/review-calendar-events.json",
+    "public/data/calendar-sources.json"
+  ],
+  "quality": {
+    "summary": {
+      "total_records": 23,
+      "sample_records": 10,
+      "review_records": 13,
+      "source_records": 4,
+      "needs_review_count": 13,
+      "educational_only_count": 10,
+      "issues_count": 0
+    },
+    "issues": []
+  }
+}

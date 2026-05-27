@@ -21,7 +21,19 @@
     "published_at": "2026-05-26",
     "verified_status": "pending_review",
     "review_status": "needs_review",
-    "status": "published"
+    "status": "published",
+    "source_name": "JainWorld devotional reference",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only devotional audio reference. No lyrics or hosted audio are published without permission review.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Audio permissions and reuse rights must be verified before any broader embedding or hosting."
   },
   {
     "id": "audio-2",
@@ -45,7 +57,19 @@
     "published_at": "2026-05-26",
     "verified_status": "pending_review",
     "review_status": "needs_review",
-    "status": "published"
+    "status": "published",
+    "source_name": "JainWorld devotional reference",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only devotional audio reference. No lyrics or hosted audio are published without permission review.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Audio permissions and reuse rights must be verified before any broader embedding or hosting."
   },
   {
     "id": "audio-3",
@@ -69,7 +93,19 @@
     "published_at": "2026-05-26",
     "verified_status": "pending_review",
     "review_status": "needs_review",
-    "status": "published"
+    "status": "published",
+    "source_name": "Collection in progress",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only devotional audio reference. No lyrics or hosted audio are published without permission review.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Audio permissions and reuse rights must be verified before any broader embedding or hosting."
   },
   {
     "id": "audio-4",
@@ -93,7 +129,19 @@
     "published_at": "2026-05-26",
     "verified_status": "pending_review",
     "review_status": "needs_review",
-    "status": "published"
+    "status": "published",
+    "source_name": "Collection in progress",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only devotional audio reference. No lyrics or hosted audio are published without permission review.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Audio permissions and reuse rights must be verified before any broader embedding or hosting."
   },
   {
     "id": "audio-5",
@@ -117,7 +165,19 @@
     "published_at": "2026-05-26",
     "verified_status": "pending_review",
     "review_status": "needs_review",
-    "status": "published"
+    "status": "published",
+    "source_name": "JainWorld devotional reference",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only devotional audio reference. No lyrics or hosted audio are published without permission review.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Audio permissions and reuse rights must be verified before any broader embedding or hosting."
   },
   {
     "id": "audio-6",
@@ -141,7 +201,19 @@
     "published_at": "2026-05-26",
     "verified_status": "pending_review",
     "review_status": "curated",
-    "status": "published"
+    "status": "published",
+    "source_name": "JainWorld learning reference",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only devotional audio reference. No lyrics or hosted audio are published without permission review.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Audio permissions and reuse rights must be verified before any broader embedding or hosting."
   },
   {
     "id": "audio-7",
@@ -165,7 +237,19 @@
     "published_at": "2026-05-26",
     "verified_status": "pending_review",
     "review_status": "curated",
-    "status": "published"
+    "status": "published",
+    "source_name": "JainWorld family learning reference",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only devotional audio reference. No lyrics or hosted audio are published without permission review.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Audio permissions and reuse rights must be verified before any broader embedding or hosting."
   },
   {
     "id": "audio-8",
@@ -189,7 +273,19 @@
     "published_at": "2026-05-26",
     "verified_status": "pending_review",
     "review_status": "curated",
-    "status": "published"
+    "status": "published",
+    "source_name": "JainWorld reflection reference",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only devotional audio reference. No lyrics or hosted audio are published without permission review.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Audio permissions and reuse rights must be verified before any broader embedding or hosting."
   },
   {
     "id": "audio-9",
@@ -213,6 +309,18 @@
     "published_at": "2026-05-26",
     "verified_status": "pending_review",
     "review_status": "needs_review",
-    "status": "published"
+    "status": "published",
+    "source_name": "Collection in progress",
+    "source_url": "",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only devotional audio reference. No lyrics or hosted audio are published without permission review.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-26",
+    "review_notes": "Audio permissions and reuse rights must be verified before any broader embedding or hosting."
   }
 ]

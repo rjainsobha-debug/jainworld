@@ -1,0 +1,313 @@
+[
+  {
+    "id": "book-1",
+    "slug": "tattvartha-sutra-introduction-reference",
+    "title": "Tattvartha Sutra introduction reference",
+    "title_hi": "?????????? ????? ????? ??????",
+    "author": "Author details under review",
+    "author_hi": "???? ????? ??????? ???",
+    "summary": "A metadata-first starting point for readers who want to study Tattvartha Sutra with guidance and source review.",
+    "summary_hi": "?????????? ????? ?? ?????????? ?? ????? ??????? ?? ??? ????? ???? ?????? ?? ??? ???????-?????? ????????? ???????",
+    "category": "Scripture",
+    "language": "Sanskrit / Hindi / English",
+    "tradition_scope": "General",
+    "publication_status": "needs_review",
+    "source_name": "Manual review queue",
+    "source_url": "",
+    "license_status": "needs_review",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only JainWorld reference. Full text is not hosted.",
+    "hosting_allowed": false,
+    "external_link_only": true,
+    "review_status": "needs_review",
+    "tags": [
+      "tattvartha sutra",
+      "scripture",
+      "beginner"
+    ],
+    "related_literature": [
+      "tattvartha-sutra-introduction"
+    ]
+  },
+  {
+    "id": "book-2",
+    "slug": "samayasara-study-reference",
+    "title": "Samayasara study reference",
+    "title_hi": "?????? ?????? ??????",
+    "author": "Author details under review",
+    "author_hi": "???? ????? ??????? ???",
+    "summary": "A cautious study reference for Samayasara readers. Confirm edition, commentary, and access rights before reuse.",
+    "summary_hi": "?????? ?? ?????? ?? ??? ?? ???????????? ?????? ??????? ???? ????? ?? ???? ???????, ???? ?? ?????? ????? ???????",
+    "category": "Philosophy",
+    "language": "Prakrit / Hindi / English",
+    "tradition_scope": "General",
+    "publication_status": "needs_review",
+    "source_name": "Manual review queue",
+    "source_url": "",
+    "license_status": "needs_review",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only JainWorld reference. No hosted text.",
+    "hosting_allowed": false,
+    "external_link_only": true,
+    "review_status": "needs_review",
+    "tags": [
+      "samayasara",
+      "philosophy",
+      "study"
+    ],
+    "related_literature": [
+      "samayasara-introduction"
+    ]
+  },
+  {
+    "id": "book-3",
+    "slug": "agamas-overview-reference",
+    "title": "Agamas overview reference",
+    "title_hi": "??? ????? ??????",
+    "author": "Editorial review pending",
+    "author_hi": "???????? ??????? ?????",
+    "summary": "A metadata-first pointer for readers exploring introductory Agama overviews and study pathways.",
+    "summary_hi": "??? ?? ????????? ????? ?? ?????? ??????? ?? ????? ???? ?????? ?? ??? ???????-?????? ???????",
+    "category": "Scripture",
+    "language": "Hindi / English",
+    "tradition_scope": "General",
+    "publication_status": "needs_review",
+    "source_name": "Manual review queue",
+    "source_url": "",
+    "license_status": "needs_review",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only JainWorld reference.",
+    "hosting_allowed": false,
+    "external_link_only": true,
+    "review_status": "needs_review",
+    "tags": [
+      "agamas",
+      "scripture",
+      "overview"
+    ],
+    "related_literature": [
+      "agamas-overview"
+    ]
+  },
+  {
+    "id": "book-4",
+    "slug": "bhaktamar-stotra-reference",
+    "title": "Bhaktamar Stotra reference",
+    "title_hi": "??????? ??????? ??????",
+    "author": "Author details under review",
+    "author_hi": "???? ????? ??????? ???",
+    "summary": "A review-first metadata record for Bhaktamar study references. Lyrics and full text are not hosted here.",
+    "summary_hi": "??????? ?????? ?????? ?? ??? ???????-????? ??????? ???????? ???? ???-??? ?? ????? ??? ????? ???? ???? ?????",
+    "category": "Devotional",
+    "language": "Sanskrit / Hindi",
+    "tradition_scope": "General",
+    "publication_status": "needs_review",
+    "source_name": "Manual review queue",
+    "source_url": "",
+    "license_status": "needs_review",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only devotional reference.",
+    "hosting_allowed": false,
+    "external_link_only": true,
+    "review_status": "needs_review",
+    "tags": [
+      "bhaktamar",
+      "devotional",
+      "stotra"
+    ],
+    "related_literature": [
+      "bhaktamar-stotra-introduction"
+    ]
+  },
+  {
+    "id": "book-5",
+    "slug": "jain-stories-for-children-reference",
+    "title": "Jain stories for children reference",
+    "title_hi": "?????? ?? ??? ??? ????? ??????",
+    "author": "Multiple sources under review",
+    "author_hi": "?????? ????? ??????? ???",
+    "summary": "A starter reference for child-friendly Jain reading material and story collections.",
+    "summary_hi": "?????? ?? ??? ??? ???? ??????? ?? ???-???????? ?? ????????? ???????",
+    "category": "Children",
+    "language": "Hindi / English",
+    "tradition_scope": "General",
+    "publication_status": "needs_review",
+    "source_name": "Manual review queue",
+    "source_url": "",
+    "license_status": "needs_review",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only reading reference.",
+    "hosting_allowed": false,
+    "external_link_only": true,
+    "review_status": "needs_review",
+    "tags": [
+      "children",
+      "stories",
+      "family"
+    ],
+    "related_literature": [
+      "jain-stories-for-children"
+    ]
+  },
+  {
+    "id": "book-6",
+    "slug": "jain-history-reading-list-placeholder",
+    "title": "Jain history reading list placeholder",
+    "title_hi": "??? ?????? ???? ???? ???????",
+    "author": "Editorial curation pending",
+    "author_hi": "???????? ??? ?????",
+    "summary": "A placeholder for a future reviewed reading list on Jain history and heritage.",
+    "summary_hi": "??? ?????? ?? ?????? ?? ?????? ?? ???????-?????? ???? ???? ?? ??? ????????",
+    "category": "History",
+    "language": "Hindi / English",
+    "tradition_scope": "General",
+    "publication_status": "needs_review",
+    "source_name": "Manual review queue",
+    "source_url": "",
+    "license_status": "needs_review",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Placeholder metadata only.",
+    "hosting_allowed": false,
+    "external_link_only": true,
+    "review_status": "needs_review",
+    "tags": [
+      "history",
+      "reading list"
+    ],
+    "related_literature": [
+      "jain-history-introduction"
+    ]
+  },
+  {
+    "id": "book-7",
+    "slug": "jain-dictionary-reference-placeholder",
+    "title": "Jain dictionary reference placeholder",
+    "title_hi": "??? ??????? ?????? ???????",
+    "author": "Editorial curation pending",
+    "author_hi": "???????? ??? ?????",
+    "summary": "A future home for reviewed dictionary and glossary references.",
+    "summary_hi": "???????? ??????? ?? ???????? ???????? ?? ??? ?????? ?? ????????",
+    "category": "Dictionary",
+    "language": "Hindi / English",
+    "tradition_scope": "General",
+    "publication_status": "needs_review",
+    "source_name": "Manual review queue",
+    "source_url": "",
+    "license_status": "needs_review",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Placeholder metadata only.",
+    "hosting_allowed": false,
+    "external_link_only": true,
+    "review_status": "needs_review",
+    "tags": [
+      "dictionary",
+      "glossary"
+    ],
+    "related_literature": [
+      "jain-symbols-and-their-meaning"
+    ]
+  },
+  {
+    "id": "book-8",
+    "slug": "jain-food-discipline-reading-reference",
+    "title": "Jain food discipline reading reference",
+    "title_hi": "??? ???? ??????? ???? ??????",
+    "author": "Editorial curation pending",
+    "author_hi": "???????? ??? ?????",
+    "summary": "A metadata-first reading note for families exploring food discipline, restraint, and practical observance.",
+    "summary_hi": "???? ???????, ???? ?? ????????? ???? ?? ????? ???? ???????? ?? ??? ???????-?????? ???? ???????",
+    "category": "Food",
+    "language": "Hindi / English",
+    "tradition_scope": "General",
+    "publication_status": "needs_review",
+    "source_name": "Manual review queue",
+    "source_url": "",
+    "license_status": "needs_review",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only reading reference.",
+    "hosting_allowed": false,
+    "external_link_only": true,
+    "review_status": "needs_review",
+    "tags": [
+      "food",
+      "discipline",
+      "family"
+    ],
+    "related_literature": [
+      "basic-jain-principles"
+    ]
+  },
+  {
+    "id": "book-9",
+    "slug": "paryushan-reading-reference",
+    "title": "Paryushan reading reference",
+    "title_hi": "??????? ???? ??????",
+    "author": "Editorial curation pending",
+    "author_hi": "???????? ??? ?????",
+    "summary": "A careful reference point for festival reading around Paryushan, forgiveness, and reflection.",
+    "summary_hi": "???????, ????? ?? ??? ?? ????? ????-??? ?? ??? ?? ???????????? ???????",
+    "category": "Festival",
+    "language": "Hindi / English",
+    "tradition_scope": "General",
+    "publication_status": "needs_review",
+    "source_name": "Manual review queue",
+    "source_url": "",
+    "license_status": "needs_review",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only festival reference.",
+    "hosting_allowed": false,
+    "external_link_only": true,
+    "review_status": "needs_review",
+    "tags": [
+      "paryushan",
+      "festival",
+      "reflection"
+    ],
+    "related_literature": [
+      "paryushan-reading-guide"
+    ]
+  },
+  {
+    "id": "book-10",
+    "slug": "jain-ethics-beginner-reading-list",
+    "title": "Jain ethics beginner reading list",
+    "title_hi": "??? ??????? ??????? ???? ????",
+    "author": "Editorial curation pending",
+    "author_hi": "???????? ??? ?????",
+    "summary": "A starter reading list on Ahimsa, Aparigraha, Anekantavada, and everyday ethics.",
+    "summary_hi": "??????, ????????, ?????????? ?? ????? ??????? ?? ??????? ???? ?????",
+    "category": "Ethics",
+    "language": "Hindi / English",
+    "tradition_scope": "General",
+    "publication_status": "needs_review",
+    "source_name": "Manual review queue",
+    "source_url": "",
+    "license_status": "needs_review",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Metadata-only beginner reading guide.",
+    "hosting_allowed": false,
+    "external_link_only": true,
+    "review_status": "needs_review",
+    "tags": [
+      "ethics",
+      "ahimsa",
+      "aparigraha",
+      "anekantavada"
+    ],
+    "related_literature": [
+      "meaning-of-ahimsa",
+      "aparigraha-introduction",
+      "anekantavada-introduction"
+    ]
+  }
+]

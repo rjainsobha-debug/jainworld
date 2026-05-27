@@ -1,8 +1,10 @@
 JainWorld Daily Operations Summary
-Run time: 2026-05-26T18:00:57.797Z
+Run time: 2026-05-27T06:23:26.154Z
 
 Tools run:
 - Community Directory Review Preview [community-directory-review-preview]
+- Calendar Review Preview [calendar-review-preview]
+- Source Permission Review Preview [source-permission-review-preview]
 - News Ingestion Preview [news-ingestion-preview]
 - Resources Monitor Preview [resources-monitor-preview-root]
 
@@ -22,14 +24,21 @@ Tools failed:
 - none
 
 Reports generated:
+- public/data/review-calendar-quality.json
 - public/data/review-community-directory-quality.json
 - public/data/review-news-preview.json
 - public/data/review-resources-monitor-preview.json
+- public/data/review-source-permissions.json
+- tools/reports/calendar-review-report.json
 - tools/reports/community-directory-review-report.json
 - tools/reports/daily-operations-summary.json
 - tools/reports/daily-operations-summary.txt
+- tools/reports/source-permission-review-report.json
 
-Review items count: 29
+Review items count: 80
+Calendar review items: 0
+Calendar needs review count: 13
+Source permission issues: 12
 
 Warnings:
 - 10 tool(s) were skipped because the script file does not exist yet.

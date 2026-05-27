@@ -525,6 +525,12 @@ summary:focus-visible {
   background: rgba(217, 154, 43, 0.14);
 }
 
+.prayer-chip.is-active {
+  background: rgba(122, 31, 43, 0.14);
+  border-color: rgba(122, 31, 43, 0.28);
+  color: var(--jw-maroon);
+}
+
 .devotional-hero {
   position: relative;
   overflow: hidden;
@@ -1432,6 +1438,19 @@ html[lang="hi"] .daily-card p {
 .jw-empty-state {
   padding: 1.4rem;
   text-align: left;
+}
+
+.calendar-review-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-review-card .jw-meta {
+  row-gap: 0.55rem;
+}
+
+.calendar-review-card .detail-note {
+  background: rgba(255, 248, 234, 0.76);
 }
 
 .jw-soft-surface {

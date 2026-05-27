@@ -12,7 +12,18 @@
     "review_status": "needs_review",
     "permission_status": "needs_review",
     "related_audio": "namokar-mantra-listening-guide",
-    "related_literature": "meaning-of-ahimsa"
+    "related_literature": "meaning-of-ahimsa",
+    "source_name": "JainWorld speaker review queue",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Speaker profile placeholder. Verify source, permission, and representation before publication.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-27",
+    "review_notes": "Do not publish biographies or lecture content without verified source and permission review."
   },
   {
     "id": "speaker-2",
@@ -27,7 +38,18 @@
     "review_status": "needs_review",
     "permission_status": "needs_review",
     "related_audio": "festival-special-audio",
-    "related_literature": "paryushan-reading-guide"
+    "related_literature": "paryushan-reading-guide",
+    "source_name": "JainWorld speaker review queue",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Speaker profile placeholder. Verify source, permission, and representation before publication.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-27",
+    "review_notes": "Do not publish biographies or lecture content without verified source and permission review."
   },
   {
     "id": "speaker-3",
@@ -42,7 +64,18 @@
     "review_status": "needs_review",
     "permission_status": "needs_review",
     "related_audio": "childrens-jain-audio",
-    "related_literature": "jain-stories-for-children"
+    "related_literature": "jain-stories-for-children",
+    "source_name": "JainWorld speaker review queue",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Speaker profile placeholder. Verify source, permission, and representation before publication.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-27",
+    "review_notes": "Do not publish biographies or lecture content without verified source and permission review."
   },
   {
     "id": "speaker-4",
@@ -57,7 +90,18 @@
     "review_status": "needs_review",
     "permission_status": "needs_review",
     "related_audio": "pravachan-for-beginners",
-    "related_literature": "jain-symbols-and-their-meaning"
+    "related_literature": "jain-symbols-and-their-meaning",
+    "source_name": "JainWorld speaker review queue",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Speaker profile placeholder. Verify source, permission, and representation before publication.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-27",
+    "review_notes": "Do not publish biographies or lecture content without verified source and permission review."
   },
   {
     "id": "speaker-5",
@@ -72,6 +116,17 @@
     "review_status": "needs_review",
     "permission_status": "needs_review",
     "related_audio": "meditation-and-reflection-audio",
-    "related_literature": "meaning-of-ahimsa"
+    "related_literature": "meaning-of-ahimsa",
+    "source_name": "JainWorld speaker review queue",
+    "source_type": "manual_review",
+    "license_status": "metadata_only",
+    "license_name": "",
+    "license_url": "",
+    "attribution_text": "Speaker profile placeholder. Verify source, permission, and representation before publication.",
+    "attribution_required": false,
+    "hosting_allowed": false,
+    "external_link_only": false,
+    "last_checked_at": "2026-05-27",
+    "review_notes": "Do not publish biographies or lecture content without verified source and permission review."
   }
 ]

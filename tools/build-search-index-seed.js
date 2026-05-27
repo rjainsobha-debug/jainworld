@@ -22,7 +22,8 @@ const SOURCES = [
   { type: "directory", file: "sample-directory.json", weight: 5, mapper: mapDirectory },
   { type: "speakers", file: "sample-speakers.json", weight: 3, mapper: mapSpeakers },
   { type: "names", file: "sample-names.json", weight: 2, mapper: mapNames },
-  { type: "dictionary", file: "sample-dictionary.json", weight: 4, mapper: mapDictionary }
+  { type: "dictionary", file: "sample-dictionary.json", weight: 4, mapper: mapDictionary },
+  { type: "books", file: "sample-books.json", weight: 4, mapper: mapBooks }
 ];
 
 function main() {
@@ -332,26 +333,38 @@ function mapCalendar(item, weight) {
     "calendar",
     item,
     weight,
-    item.festival_en || item.festival_hi || item.tithi,
-    item.description_en || item.description_hi || item.tithi,
+    item.title || item.title_hi || item.slug,
+    item.summary || item.summary_hi || item.date_display || item.date_display_hi || item.lunar_tithi,
     [
-      item.festival_en,
-      item.festival_hi,
-      item.description_en,
-      item.description_hi,
-      item.tithi,
-      item.category,
-      item.rituals_en,
-      item.rituals_hi
+      item.title,
+      item.title_hi,
+      item.summary,
+      item.summary_hi,
+      item.date_display,
+      item.date_display_hi,
+      item.lunar_month,
+      item.lunar_month_hi,
+      item.lunar_tithi,
+      item.lunar_tithi_hi,
+      item.tradition_scope,
+      item.location_scope,
+      item.source_note,
+      item.source_note_hi,
+      item.caution_note,
+      item.caution_note_hi,
+      Array.isArray(item.tags) ? item.tags.join(" ") : item.tags
     ].filter(Boolean).join(" "),
     "/calendar.html",
     {
-      category: item.category,
-      tags: item.tithi,
-      review_status: "verified",
-      published_at: item.date_gregorian,
-      updated_at: item.date_gregorian,
-      created_at: item.date_gregorian
+      category: item.type,
+      tags: [item.lunar_tithi, item.tradition_scope, item.location_scope, Array.isArray(item.tags) ? item.tags.join(", ") : item.tags]
+        .filter(Boolean)
+        .join(", "),
+      review_status: item.review_status || "needs_review",
+      source_name: item.source_name || "JainWorld Calendar",
+      published_at: item.last_verified_at,
+      updated_at: item.last_verified_at,
+      created_at: item.last_verified_at || "2026-05-26"
     }
   );
 }
@@ -428,6 +441,43 @@ function mapDictionary(item, weight) {
       review_status: item.review_status || "needs_review",
       source_name: "JainWorld Dictionary",
       created_at: "2026-05-26"
+    }
+  );
+}
+
+function mapBooks(item, weight) {
+  if (String(item.license_status || "").toLowerCase() === "not_allowed") {
+    return null;
+  }
+
+  if (String(item.permission_status || "").toLowerCase() === "not_allowed") {
+    return null;
+  }
+
+  return baseRow(
+    "books",
+    item,
+    weight,
+    item.title || item.title_hi,
+    item.summary || item.summary_hi,
+    [
+      item.title,
+      item.title_hi,
+      item.author,
+      item.author_hi,
+      item.summary,
+      item.summary_hi,
+      item.category,
+      item.source_name,
+      Array.isArray(item.tags) ? item.tags.join(" ") : item.tags
+    ].filter(Boolean).join(" "),
+    "/books.html",
+    {
+      category: item.category,
+      tags: Array.isArray(item.tags) ? item.tags.join(", ") : item.tags,
+      review_status: item.review_status || "needs_review",
+      source_name: item.source_name || "JainWorld Books",
+      created_at: item.last_checked_at || "2026-05-27"
     }
   );
 }

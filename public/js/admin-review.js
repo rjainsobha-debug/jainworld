@@ -22,12 +22,18 @@ const FALLBACK_FILES = {
   images: "/data/review-images.json",
   ask: "/data/review-ask.json",
   contentGaps: "/data/review-content-gaps.json",
+  calendarReview: "/data/review-calendar-events.json",
+  calendarQuality: "/data/review-calendar-quality.json",
   communityDirectory: "/data/review-community-directory.json",
   communityDirectoryQuality: "/data/review-community-directory-quality.json",
   speakersReview: "/data/review-speakers.json",
   namesReview: "/data/review-names.json",
   dictionaryReview: "/data/review-dictionary.json",
-  resourceQuality: "/data/review-resource-quality.json"
+  resourceQuality: "/data/review-resource-quality.json",
+  externalResourcesReview: "/data/review-external-resources.json",
+  sourcePermissionReview: "/data/review-source-permissions.json",
+  imageCreditsReview: "/data/sample-image-credits.json",
+  booksReview: "/data/sample-books.json"
 };
 
 const STATUS_ORDER = ["pending_review", "approved", "verified", "needs_update", "rejected", "published", "draft", "archived"];
@@ -154,7 +160,7 @@ async function loadCollectionsFromFallback() {
       try {
         const response = await fetch(path);
         const items = response.ok ? await response.json() : [];
-        return [key, Array.isArray(items) ? items : []];
+        return [key, normalizeReviewCollection(items)];
       } catch (error) {
         console.warn("Review queue fallback failed for", path, error);
         return [key, []];
@@ -163,6 +169,22 @@ async function loadCollectionsFromFallback() {
   );
 
   return Object.fromEntries(entries);
+}
+
+function normalizeReviewCollection(data) {
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  if (Array.isArray(data?.items)) {
+    return data.items;
+  }
+
+  if (Array.isArray(data?.issues)) {
+    return data.issues;
+  }
+
+  return [];
 }
 
 function renderLoading(text) {
@@ -290,6 +312,12 @@ function renderDashboard(collections, isLive) {
     renderSection("Pending Resources", "resources", collections.resources, isLive, {
       subtitle: "Watch for stale links, missing official sources, and needs-update items."
     }),
+    renderSection("Calendar Review", "calendar-review", collections.calendarReview, false, {
+      subtitle: "Review-first festival and tithi date placeholders must stay source-backed before any exact dates are shown publicly."
+    }),
+    renderSection("Calendar Quality", "calendar-quality", collections.calendarQuality, false, {
+      subtitle: "Generated quality checks for missing sources, review status, duplicate slugs, and unsupported exact dates."
+    }),
     renderSection("Community Directory Review", "community-directory", collections.communityDirectory, false, {
       subtitle: "Review-first placeholders for sanghs, centers, events, trusts, and institutional references."
     }),
@@ -304,6 +332,18 @@ function renderDashboard(collections, isLive) {
     }),
     renderSection("Dictionary Review", "dictionary-review", collections.dictionaryReview, false, {
       subtitle: "Starter glossary entries are designed for beginners and still benefit from doctrinal nuance review."
+    }),
+    renderSection("External Resources Review", "external-resources-review", collections.externalResourcesReview, false, {
+      subtitle: "Track future books, images, audio, calendar links, and references before any public publishing or hosting decision."
+    }),
+    renderSection("Source Permission Review", "source-permission-review", collections.sourcePermissionReview, false, {
+      subtitle: "Flag missing source URLs, unclear licenses, and records that still need permission or attribution work."
+    }),
+    renderSection("Image Credits Review", "image-credits-review", collections.imageCreditsReview, false, {
+      subtitle: "Review image attribution, creator notes, and whether placeholders or external visuals are safe to use."
+    }),
+    renderSection("Books Review", "books-review", collections.booksReview, false, {
+      subtitle: "Books are metadata-first unless public domain or permission-received status is clearly documented."
     }),
     renderSection("Resource Quality Review", "resource-quality", collections.resourceQuality, false, {
       subtitle: "Track where official links, document notes, and verification warnings still need work."

@@ -17,7 +17,8 @@ const LOCAL_FILES = {
   directory: "/data/sample-directory.json",
   speakers: "/data/sample-speakers.json",
   names: "/data/sample-names.json",
-  dictionary: "/data/sample-dictionary.json"
+  dictionary: "/data/sample-dictionary.json",
+  books: "/data/sample-books.json"
 };
 
 async function fetchJson(path, params = {}) {
@@ -333,6 +334,10 @@ export async function getDictionary(params = {}) {
   return applyFilters(await readLocalCollection("dictionary"), params);
 }
 
+export async function getBooks(params = {}) {
+  return applyFilters(await readLocalCollection("books"), params);
+}
+
 export async function searchAll(query, params = {}) {
   const lowerQuery = String(query || "").toLowerCase().trim();
   if (!lowerQuery) {
@@ -350,7 +355,7 @@ export async function searchAll(query, params = {}) {
     }
   }
 
-  const [blogs, audio, literature, temples, food, education, news, resources, calendar, directory, speakers, names, dictionary] = await Promise.all([
+  const [blogs, audio, literature, temples, food, education, news, resources, calendar, directory, speakers, names, dictionary, books] = await Promise.all([
     readLocalCollection("blogs"),
     readLocalCollection("audio"),
     readLocalCollection("literature"),
@@ -363,7 +368,8 @@ export async function searchAll(query, params = {}) {
     readLocalCollection("directory"),
     readLocalCollection("speakers"),
     readLocalCollection("names"),
-    readLocalCollection("dictionary")
+    readLocalCollection("dictionary"),
+    readLocalCollection("books")
   ]);
 
   const localCollections = [
@@ -379,7 +385,8 @@ export async function searchAll(query, params = {}) {
     { type: "directory", items: directory },
     { type: "speakers", items: speakers },
     { type: "names", items: names },
-    { type: "dictionary", items: dictionary }
+    { type: "dictionary", items: dictionary },
+    { type: "books", items: books }
   ];
 
   const filteredCollections =
@@ -474,6 +481,9 @@ function buildSearchResultUrl(type, slug, item) {
   if (type === "dictionary") {
     return "/dictionary.html";
   }
+  if (type === "books") {
+    return "/books.html";
+  }
   if (type === "news") {
     return "/news.html";
   }
@@ -497,7 +507,7 @@ function buildSearchMeta(type, item) {
     return [item.category, item.language, item.duration].filter(Boolean);
   }
   if (type === "calendar") {
-    return [item.category, item.date_gregorian, item.tithi].filter(Boolean);
+    return [item.type, item.date_display, item.lunar_tithi, item.tradition_scope].filter(Boolean);
   }
   if (type === "directory") {
     return [item.category, item.priority, item.review_status].filter(Boolean);
@@ -510,6 +520,9 @@ function buildSearchMeta(type, item) {
   }
   if (type === "dictionary") {
     return [item.category, item.simple_meaning, item.review_status].filter(Boolean);
+  }
+  if (type === "books") {
+    return [item.author, item.category, item.publication_status, item.review_status].filter(Boolean);
   }
   return [item.category, item.tags, item.author].filter(Boolean);
 }

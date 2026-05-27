@@ -1,0 +1,12 @@
+{
+  "summary": {
+    "total_records": 23,
+    "sample_records": 10,
+    "review_records": 13,
+    "source_records": 4,
+    "needs_review_count": 13,
+    "educational_only_count": 10,
+    "issues_count": 0
+  },
+  "issues": []
+}

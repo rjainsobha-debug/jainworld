@@ -30,6 +30,8 @@ Use `needs_review` when:
 - Do not add copyrighted books, lyrics, PDFs, periodicals, or lecture transcripts.
 - Do not scrape websites.
 - Keep temple, scholarship, and government-related content explicitly verification-first.
+- Use metadata-only or link-only handling when source permission is still unclear.
+- Record attribution and permission status before displaying external books, images, or audio.
 
 ## Suggested Launch Messaging
 
