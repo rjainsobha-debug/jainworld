@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27T06:23:26.379Z",
+  "generated_at": "2026-05-27T11:24:37.530Z",
   "files_reviewed": [
     "public/data/sample-calendar.json",
     "public/data/review-calendar-events.json",
@@ -7,12 +7,12 @@
   ],
   "quality": {
     "summary": {
-      "total_records": 23,
-      "sample_records": 10,
-      "review_records": 13,
-      "source_records": 4,
-      "needs_review_count": 13,
-      "educational_only_count": 10,
+      "total_records": 27,
+      "sample_records": 12,
+      "review_records": 15,
+      "source_records": 5,
+      "needs_review_count": 15,
+      "educational_only_count": 12,
       "issues_count": 0
     },
     "issues": []

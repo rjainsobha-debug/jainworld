@@ -10,7 +10,7 @@ import {
   getResources,
   getTemples
 } from "./api.js";
-import { initCalendarPage } from "./calendar.js";
+import { initCalendarPage } from "./calendar-page.js";
 import { initCommunityForm } from "./community.js";
 import { getLanguage, initLanguageToggle, translate, translateLabel, updateLanguageDOM } from "./language.js";
 import {
@@ -616,10 +616,10 @@ function renderCalendarPreview(items) {
           const metaLine =
             item.date_confidence === "educational_only"
               ? translate("educational_overview", "Educational overview")
-              : item.date_display || item.date_display_hi || translate("needs_review", "Needs Review");
+              : item.date_display || item.date_display_hi || translate("date_needs_review", "Date needs review");
           return `
           <article class="daily-card">
-            <span class="jw-badge">${translateLabel(item.type || "festival", item.type || translate("calendar", "Calendar"))}</span>
+            <span class="jw-badge">${translateLabel(item.event_type || item.type || "festival", item.event_type || item.type || translate("calendar", "Calendar"))}</span>
             <h3 class="mt-3 text-lg font-semibold text-stone-900">${title}</h3>
             <p class="m-0 mt-2 text-sm leading-7 text-stone-600">${description}</p>
             <p class="m-0 mt-3 text-sm text-stone-500">${metaLine}</p>

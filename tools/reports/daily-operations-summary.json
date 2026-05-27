@@ -1,5 +1,5 @@
 {
-  "run_time": "2026-05-27T06:23:26.154Z",
+  "run_time": "2026-05-27T11:24:37.220Z",
   "tools_run": [
     {
       "key": "community-directory-review-preview",
@@ -107,9 +107,9 @@
     "tools/reports/daily-operations-summary.txt",
     "tools/reports/source-permission-review-report.json"
   ],
-  "review_items_count": 80,
+  "review_items_count": 84,
   "calendar_review_items": 0,
-  "calendar_needs_review_count": 13,
+  "calendar_needs_review_count": 15,
   "source_permission_issues": 12,
   "warnings": [
     "10 tool(s) were skipped because the script file does not exist yet."

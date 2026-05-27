@@ -46,6 +46,11 @@ node .\tools\bots\calendar-review-preview.js
 ```
 
 Use this before publishing or trusting any exact Jain festival or vrat date.
+Calendar records must stay trust-first:
+
+- no invented exact dates
+- no universal date claims when observance can vary
+- verify with local sangh or trusted panchang before using a date for practice
 
 ## Before pushing to GitHub
 

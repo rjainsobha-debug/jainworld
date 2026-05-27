@@ -95,6 +95,43 @@ function localizeLabel(label, fallback = "") {
   return translateLabel(label, fallback || label);
 }
 
+function getLocalizedList(item, base) {
+  if (!item || !base) {
+    return [];
+  }
+
+  const lang = currentLang();
+  const directKeys = [
+    `${base}_${lang}`,
+    `${base}${lang === "hi" ? "Hi" : "En"}`,
+    base
+  ];
+
+  for (const key of directKeys) {
+    const value = item[key];
+    if (Array.isArray(value) && value.length) {
+      return value.filter(Boolean).map((entry) => String(entry).trim()).filter(Boolean);
+    }
+  }
+
+  const fallbackKeys = [
+    `${base}_${lang === "hi" ? "en" : "hi"}`,
+    `${base}${lang === "hi" ? "En" : "Hi"}`
+  ];
+
+  for (const key of fallbackKeys) {
+    const value = item[key];
+    if (Array.isArray(value) && value.length) {
+      return value
+        .filter(Boolean)
+        .map((entry) => (lang === "hi" ? localizeLabel(entry, entry) : String(entry).trim()))
+        .filter(Boolean);
+    }
+  }
+
+  return [];
+}
+
 function isUsableImage(value) {
   const normalized = String(value || "").trim().toLowerCase();
   if (!normalized) {
@@ -130,7 +167,137 @@ function renderCategoryVisual(type, item, title) {
   return renderCategoryVisualClean(type, item, title);
 }
 
+function getLearningVariant(item = {}) {
+  const raw = [
+    item.level,
+    item.course_level,
+    item.category,
+    item.topic,
+    item.lesson_type,
+    item.learning_path,
+    item.title,
+    item.lesson_title_en
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  if (raw.includes("child") || raw.includes("kids")) return "kids";
+  if (raw.includes("value") || raw.includes("ahimsa") || raw.includes("aparigraha")) return "values";
+  if (raw.includes("practice") || raw.includes("samayik") || raw.includes("pratikraman") || raw.includes("daily")) return "practice";
+  if (raw.includes("scripture") || raw.includes("festival") || raw.includes("foundation") || raw.includes("anekant")) return "scripture";
+  if (raw.includes("advanced")) return "advanced";
+  if (raw.includes("intermediate")) return "intermediate";
+  return "beginner";
+}
+
+function getLearningIcon(item, variant) {
+  const lang = currentLang();
+  const icons = {
+    beginner: { en: "Knowledge", hi: "ज्ञान" },
+    intermediate: { en: "Reflection", hi: "मनन" },
+    advanced: { en: "Study", hi: "अध्ययन" },
+    practice: { en: "Practice", hi: "साधना" },
+    kids: { en: "Family", hi: "परिवार" },
+    values: { en: "Values", hi: "अहिंसा" },
+    scripture: { en: "Scripture", hi: "शास्त्र" }
+  };
+  return icons[variant]?.[lang] || icons[variant]?.en || (lang === "hi" ? "ज्ञान" : "Knowledge");
+}
+
+function getLearningPathLabel(item) {
+  const direct = pickLocalized(item, "path_label", currentLang()) || pickLocalized(item, "learning_path", currentLang());
+  if (direct) {
+    return direct;
+  }
+
+  const level = String(item.level || item.course_level || item.difficulty || "").toLowerCase();
+  if (level.includes("advanced")) return translate("advanced_path", "Advanced Path");
+  if (level.includes("intermediate")) return translate("intermediate_path", "Intermediate Path");
+  return translate("beginner_path", "Beginner Path");
+}
+
+function getLearningVisualLabel(item) {
+  return (
+    pickLocalized(item, "visual_label", currentLang()) ||
+    getLocalizedField(item, "topic", "") ||
+    pickLocalized(item, "lesson_type", currentLang()) ||
+    getLocalizedField(item, "category", "") ||
+    pickLocalized(item, "title", currentLang()) ||
+    item.lesson_title_en ||
+    item.title ||
+    ""
+  );
+}
+
+function getLearningLessonType(item) {
+  return (
+    pickLocalized(item, "lesson_type", currentLang()) ||
+    getLocalizedField(item, "category", "") ||
+    getLocalizedField(item, "topic", "") ||
+    ""
+  );
+}
+
+function getLearningLessonNumber(item) {
+  const raw = item.lesson_number || item.order || item.lesson_no || "";
+  if (!raw) {
+    return "";
+  }
+
+  return `${translate("lesson", "Lesson")} ${raw}`;
+}
+
+function getLearningChips(item) {
+  const directChips = getLocalizedList(item, "visual_chips").slice(0, 3);
+  if (directChips.length) {
+    return directChips;
+  }
+
+  const tagChips = getLocalizedList(item, "tags").slice(0, 3);
+  if (tagChips.length) {
+    return tagChips;
+  }
+
+  const fallbacks = [
+    getLearningLessonType(item),
+    translate("read", "Read"),
+    translate("reflect", "Reflect")
+  ].filter(Boolean);
+
+  return fallbacks.slice(0, 3);
+}
+
+function renderLearningVisual(item) {
+  const variant = getLearningVariant(item);
+  const icon = getLearningIcon(item, variant);
+  const visualLabel = getLearningVisualLabel(item);
+  const pathLabel = getLearningPathLabel(item);
+  const lessonType = getLearningLessonType(item);
+  const lessonNumber = getLearningLessonNumber(item);
+  const chips = getLearningChips(item);
+  const compactClass = chips.length < 2 ? " learning-visual--compact" : "";
+
+  return `
+    <div class="learning-visual learning-visual--${variant}${compactClass}" role="img" aria-label="${escapeHtml(visualLabel || pathLabel || item.title || "Learning")}">
+      <div class="learning-visual__meta">
+        <span class="learning-visual__icon">${escapeHtml(icon)}</span>
+        ${lessonNumber ? `<span class="learning-visual__lesson">${escapeHtml(lessonNumber)}</span>` : ""}
+      </div>
+      <div class="learning-visual__title">${escapeHtml(visualLabel || lessonType || pathLabel)}</div>
+      <div class="learning-visual__subtitle">${escapeHtml(pathLabel)}${lessonType ? ` • ${escapeHtml(lessonType)}` : ""}</div>
+      <div class="learning-visual__chips">
+        ${chips.map((chip) => `<span>${escapeHtml(chip)}</span>`).join("")}
+      </div>
+    </div>
+  `;
+}
+
 function renderCardMedia(type, item, title) {
+  if (type === "education" || type === "courses") {
+    return renderLearningVisual(item);
+  }
+
   const imageSrc = getImageSrc(item);
   if (isUsableImage(imageSrc)) {
     const alt = getLocalizedField(item, "title", title) || title;
@@ -579,6 +746,8 @@ export function renderCards(target, items, options = {}) {
     summaryBase = "summary",
     summaryBuilder = null,
     metaBuilder = () => [],
+    mediaBuilder = null,
+    badgesBuilder = null,
     linkBuilder = (item) => buildDetailUrl(type, item),
     layoutClass = "jw-grid-2",
     emptyTitle = "Nothing to show yet",
@@ -607,14 +776,19 @@ export function renderCards(target, items, options = {}) {
             "Structured JainWorld content.";
           const meta = metaBuilder(item).map((entry) => localizeLabel(entry, entry)).filter(Boolean);
           const href = linkBuilder(item);
-          const badges = [
-            getLocalizedField(item, "category", item.category) || localizeLabel(item.category, item.category),
-            getLocalizedField(item, "difficulty", item.difficulty) || localizeLabel(item.difficulty, item.difficulty)
-          ];
+          const badges = (
+            typeof badgesBuilder === "function"
+              ? badgesBuilder(item, lang)
+              : [
+                  getLocalizedField(item, "category", item.category) || localizeLabel(item.category, item.category),
+                  getLocalizedField(item, "difficulty", item.difficulty) || localizeLabel(item.difficulty, item.difficulty)
+                ]
+          ).filter(Boolean);
+          const media = typeof mediaBuilder === "function" ? mediaBuilder(item, title, lang) : renderCardMedia(type, item, title);
 
           return `
             <article class="jw-card p-5">
-              ${renderCardMedia(type, item, title)}
+              ${media}
               ${renderBadges(badges)}
               <h3 class="mt-3 text-lg font-semibold leading-snug text-stone-900">
                 <a href="${escapeHtml(href)}" class="hover:text-amber-800">${escapeHtml(title)}</a>
@@ -823,14 +997,19 @@ export function renderTemples(target, items) {
 export function renderCourses(target, items) {
   renderCards(target, items, {
     type: "education",
-    titleBase: "lesson_title",
-    summaryBase: "content",
+    titleBase: "title",
+    summaryBase: "summary",
     emptyTitle: "No lessons are available yet",
     emptyBody: "Course lessons will appear here once the reviewed curriculum is published.",
+    mediaBuilder: (item) => renderLearningVisual(item),
+    badgesBuilder: (item) => [
+      pickLocalized(item, "level", currentLang()) || item.level || item.course_level || item.difficulty,
+      pickLocalized(item, "category", currentLang()) || item.category,
+      pickLocalized(item, "lesson_type", currentLang()) || item.topic
+    ],
     metaBuilder: (item) => [
-      item.course_level,
-      item.topic,
-      item.difficulty,
+      pickLocalized(item, "learning_path", currentLang()) || item.course_title_en || "",
+      item.lesson_number || item.lesson_no ? `${translate("lesson", "Lesson")} ${item.lesson_number || item.lesson_no}` : "",
       formatDate(item.updated_at || item.created_at)
         ? `Last updated: ${formatDate(item.updated_at || item.created_at)}`
         : ""

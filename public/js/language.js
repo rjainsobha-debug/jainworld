@@ -340,6 +340,61 @@ Object.assign(TRANSLATIONS, {
   suggest_book_resource: { en: "Suggest book/resource", hi: "पुस्तक/संसाधन सुझाएँ" }
 });
 
+Object.assign(TRANSLATIONS, {
+  jain_calendar_and_panchang: { en: "Jain Calendar and Panchang", hi: "जैन कैलेंडर और पंचांग" },
+  festivals: { en: "Festivals", hi: "पर्व" },
+  tithi_vrat: { en: "Tithi / Vrat", hi: "तिथि / व्रत" },
+  ayambil: { en: "Ayambil", hi: "आयंबिल" },
+  ekadashi: { en: "Ekadashi", hi: "एकादशी" },
+  dwadashi: { en: "Dwadashi", hi: "द्वादशी" },
+  chaudas: { en: "Chaudas", hi: "चौदस" },
+  month_view: { en: "Month view", hi: "मासिक दृश्य" },
+  list_view: { en: "List view", hi: "सूची दृश्य" },
+  date_needs_review: { en: "Date needs review", hi: "तिथि समीक्षा आवश्यक" },
+  verified_date: { en: "Verified date", hi: "सत्यापित तिथि" },
+  source_provided: { en: "Source provided", hi: "स्रोत आधारित" },
+  educational_overview: { en: "Educational overview", hi: "शैक्षणिक जानकारी" },
+  local_verification_required: { en: "Local verification required", hi: "स्थानीय सत्यापन आवश्यक" },
+  dates_may_vary: { en: "Dates may vary", hi: "तिथियाँ भिन्न हो सकती हैं" },
+  verify_with_local_sangh: { en: "Verify with local sangh", hi: "स्थानीय संघ से सत्यापित करें" },
+  report_calendar_correction: { en: "Report calendar correction", hi: "कैलेंडर सुधार भेजें" },
+  year: { en: "Year", hi: "वर्ष" },
+  month: { en: "Month", hi: "माह" },
+  all: { en: "All", hi: "सभी" },
+  today: { en: "Today", hi: "आज" },
+  no_calendar_records_found: { en: "No calendar records found", hi: "कोई कैलेंडर रिकॉर्ड नहीं मिला" },
+  tradition_scope: { en: "Tradition scope", hi: "परंपरा क्षेत्र" },
+  location_scope: { en: "Location scope", hi: "स्थान क्षेत्र" },
+  lunar_month: { en: "Lunar month", hi: "चंद्र मास" },
+  lunar_tithi: { en: "Lunar tithi", hi: "चंद्र तिथि" },
+  general: { en: "General", hi: "सामान्य" },
+  local_event: { en: "Local event", hi: "स्थानीय कार्यक्रम" },
+  learning: { en: "Learning", hi: "शैक्षणिक जानकारी" },
+  krishna: { en: "Krishna", hi: "कृष्ण" },
+  shukla: { en: "Shukla", hi: "शुक्ल" },
+  sud: { en: "Sud", hi: "सुद" },
+  vad: { en: "Vad", hi: "वद" }
+});
+
+Object.assign(TRANSLATIONS, {
+  beginner_path: { en: "Beginner Path", hi: "प्रारंभिक मार्ग" },
+  intermediate_path: { en: "Intermediate Path", hi: "मध्यम मार्ग" },
+  advanced_path: { en: "Advanced Path", hi: "उन्नत मार्ग" },
+  start_here: { en: "Start here", hi: "यहाँ से शुरू करें" },
+  foundations: { en: "Foundations", hi: "मूल बातें" },
+  values: { en: "Values", hi: "मूल्य" },
+  practice: { en: "Practice", hi: "अभ्यास" },
+  daily_practice: { en: "Daily Practice", hi: "दैनिक अभ्यास" },
+  childrens_learning: { en: "Children's Learning", hi: "बच्चों की शिक्षा" },
+  family_learning: { en: "Family Learning", hi: "पारिवारिक शिक्षा" },
+  thought: { en: "Thought", hi: "विचार" },
+  word: { en: "Word", hi: "वचन" },
+  action: { en: "Action", hi: "कर्म" },
+  read: { en: "Read", hi: "पढ़ें" },
+  reflect: { en: "Reflect", hi: "मनन करें" },
+  practice_today: { en: "Practice Today", hi: "आज अभ्यास करें" }
+});
+
 function normalizeLabelKey(label) {
   return String(label || "")
     .trim()

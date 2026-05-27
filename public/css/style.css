@@ -238,6 +238,162 @@ li,
     linear-gradient(180deg, rgba(255, 248, 234, 0.98), rgba(242, 236, 220, 0.98));
 }
 
+.learning-visual {
+  position: relative;
+  display: grid;
+  gap: 0.8rem;
+  min-height: 8.8rem;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(122, 31, 43, 0.11);
+  border-radius: 1rem;
+  padding: 1rem 1rem 0.95rem;
+  background:
+    radial-gradient(circle at top right, rgba(217, 154, 43, 0.22), transparent 36%),
+    radial-gradient(circle at left bottom, rgba(122, 31, 43, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(255, 250, 241, 0.99), rgba(248, 239, 220, 0.99));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.learning-visual::before,
+.learning-visual::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.learning-visual::before {
+  inset: auto auto -1.4rem -1.2rem;
+  width: 5.6rem;
+  height: 5.6rem;
+  border: 1px solid rgba(122, 31, 43, 0.1);
+}
+
+.learning-visual::after {
+  inset: 0.9rem 1rem auto auto;
+  width: 2.9rem;
+  height: 2.9rem;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 1px rgba(122, 31, 43, 0.08);
+}
+
+.learning-visual__meta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.learning-visual__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(122, 31, 43, 0.1);
+  color: var(--jw-maroon);
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.learning-visual__lesson {
+  color: var(--jw-muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.learning-visual__title,
+.learning-visual__subtitle,
+.learning-visual__chips {
+  position: relative;
+  z-index: 1;
+}
+
+.learning-visual__title {
+  font-size: 1.18rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--jw-text);
+}
+
+.learning-visual__subtitle {
+  color: var(--jw-muted);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.learning-visual__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.learning-visual__chips span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0.34rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(255, 253, 248, 0.9);
+  border: 1px solid rgba(122, 31, 43, 0.1);
+  color: var(--jw-maroon);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.learning-visual--beginner {
+  background:
+    radial-gradient(circle at top right, rgba(217, 154, 43, 0.24), transparent 34%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.99), rgba(247, 237, 214, 0.99));
+}
+
+.learning-visual--intermediate {
+  background:
+    radial-gradient(circle at top left, rgba(122, 31, 43, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.99), rgba(242, 233, 219, 0.99));
+}
+
+.learning-visual--advanced {
+  background:
+    radial-gradient(circle at top right, rgba(122, 31, 43, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(249, 239, 223, 0.99), rgba(238, 225, 202, 0.99));
+}
+
+.learning-visual--practice {
+  background:
+    radial-gradient(circle at top right, rgba(111, 143, 95, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.99), rgba(240, 236, 221, 0.99));
+}
+
+.learning-visual--kids {
+  background:
+    radial-gradient(circle at top right, rgba(111, 143, 95, 0.2), transparent 36%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.99), rgba(243, 238, 224, 0.99));
+}
+
+.learning-visual--values {
+  background:
+    radial-gradient(circle at top right, rgba(217, 154, 43, 0.22), transparent 36%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.99), rgba(246, 234, 214, 0.99));
+}
+
+.learning-visual--scripture {
+  background:
+    radial-gradient(circle at top left, rgba(122, 31, 43, 0.1), transparent 36%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.99), rgba(244, 232, 214, 0.99));
+}
+
+.learning-visual--compact {
+  min-height: 7.5rem;
+}
+
 .jw-card {
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
@@ -1539,5 +1695,286 @@ html[lang="hi"] .daily-card p {
 
   .jw-container {
     width: min(100%, calc(100% - 1rem));
+  }
+
+  .learning-visual {
+    min-height: 7.6rem;
+    padding: 0.9rem;
+  }
+
+  .learning-visual__title {
+    font-size: 1.06rem;
+  }
+
+  .learning-visual__subtitle {
+    font-size: 0.93rem;
+  }
+
+  .learning-visual__chips span {
+    min-height: 32px;
+    font-size: 0.8rem;
+  }
+}
+
+.calendar-pro-shell {
+  display: grid;
+  gap: 1rem;
+}
+
+.calendar-pro-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.calendar-trust-notice {
+  display: grid;
+  gap: 1rem;
+  padding: 1.3rem;
+  border-radius: 24px;
+  border: 1px solid rgba(122, 31, 43, 0.12);
+  background:
+    radial-gradient(circle at top right, rgba(217, 154, 43, 0.16), transparent 32%),
+    linear-gradient(180deg, rgba(255, 248, 234, 0.96), rgba(255, 253, 248, 0.96));
+  box-shadow: var(--jw-shadow-soft);
+}
+
+.calendar-trust-notice h2 {
+  margin: 0.8rem 0 0;
+  font-size: 1.55rem;
+  color: var(--jw-text);
+}
+
+.calendar-trust-notice p,
+.calendar-source-note p {
+  margin: 0.65rem 0 0;
+  color: var(--jw-muted);
+  line-height: 1.8;
+}
+
+.calendar-controls {
+  display: grid;
+  gap: 1rem;
+}
+
+.calendar-controls__row {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.calendar-controls__search {
+  min-width: 0;
+}
+
+.calendar-view-toggle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(122, 31, 43, 0.12);
+  background: rgba(255, 253, 248, 0.78);
+}
+
+.calendar-view-toggle button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--jw-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 700;
+  padding: 0.72rem 1rem;
+}
+
+.calendar-view-toggle button.is-active {
+  background: var(--jw-maroon);
+  color: #fff8ea;
+}
+
+.calendar-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.calendar-month-grid--weekdays {
+  margin-bottom: 0.75rem;
+}
+
+.calendar-day-cell {
+  min-height: 122px;
+  padding: 0.85rem;
+  border: 1px solid rgba(122, 31, 43, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 253, 248, 0.92);
+  box-shadow: var(--jw-shadow-soft);
+}
+
+.calendar-day-cell--weekday {
+  min-height: auto;
+  padding: 0.7rem 0.85rem;
+  color: var(--jw-maroon);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.calendar-day-cell--muted {
+  background: rgba(244, 231, 208, 0.42);
+  color: rgba(111, 92, 86, 0.7);
+}
+
+.calendar-day-cell--today {
+  border-color: rgba(217, 154, 43, 0.6);
+  box-shadow: 0 0 0 3px rgba(217, 154, 43, 0.12), var(--jw-shadow-soft);
+}
+
+.calendar-day-number {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--jw-text);
+}
+
+.calendar-day-events {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+}
+
+.calendar-event-dot {
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 999px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.calendar-event-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  min-height: 34px;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(122, 31, 43, 0.08);
+  color: var(--jw-maroon);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.calendar-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.calendar-list--compact {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.calendar-event-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.15rem;
+  border-radius: 20px;
+  border: 1px solid rgba(122, 31, 43, 0.1);
+  background: rgba(255, 253, 248, 0.94);
+  box-shadow: var(--jw-shadow-soft);
+}
+
+.calendar-event-card h3 {
+  margin: 0;
+  font-size: 1.26rem;
+  color: var(--jw-text);
+}
+
+.calendar-event-card p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--jw-muted);
+}
+
+.calendar-confidence-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0.42rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.calendar-confidence--verified {
+  background: rgba(111, 143, 95, 0.14);
+  color: #446039;
+}
+
+.calendar-confidence--source {
+  background: rgba(217, 154, 43, 0.14);
+  color: #8f6113;
+}
+
+.calendar-confidence--review {
+  background: rgba(122, 31, 43, 0.12);
+  color: #8f2c3d;
+}
+
+.calendar-confidence--educational {
+  background: rgba(111, 92, 86, 0.08);
+  color: #5a4a45;
+}
+
+.calendar-source-note {
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(122, 31, 43, 0.08);
+  background: rgba(255, 248, 234, 0.72);
+}
+
+.calendar-correction-cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.calendar-empty-state {
+  padding: 1.15rem 1.2rem;
+  border-radius: 18px;
+  border: 1px dashed rgba(122, 31, 43, 0.2);
+  background: rgba(255, 253, 248, 0.9);
+  color: var(--jw-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+@media (min-width: 768px) {
+  .calendar-trust-notice {
+    grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.9fr);
+    align-items: start;
+  }
+
+  .calendar-controls__row:first-child {
+    grid-template-columns: 180px 180px minmax(0, 1fr);
+  }
+
+  .calendar-controls__row:last-child {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .calendar-month-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .calendar-month-grid--weekdays {
+    display: none;
+  }
+
+  .calendar-day-cell {
+    min-height: 96px;
   }
 }

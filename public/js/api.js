@@ -507,7 +507,7 @@ function buildSearchMeta(type, item) {
     return [item.category, item.language, item.duration].filter(Boolean);
   }
   if (type === "calendar") {
-    return [item.type, item.date_display, item.lunar_tithi, item.tradition_scope].filter(Boolean);
+    return [item.event_type || item.type, item.date_display || item.date_display_hi, item.lunar_tithi, item.paksha, item.tradition_scope].filter(Boolean);
   }
   if (type === "directory") {
     return [item.category, item.priority, item.review_status].filter(Boolean);

@@ -105,6 +105,10 @@ This writes:
 - `tools/reports/calendar-review-report.json`
 - `public/data/review-calendar-quality.json`
 
+Calendar records are review-first.
+Do not publish unsupported exact dates.
+Use local sangh or trusted panchang confirmation before relying on observance dates.
+
 ## Source and Permission Review Preview
 
 Validate books, image credits, audio metadata, and external-resource intake records before any publishing decision:

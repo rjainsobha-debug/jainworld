@@ -19,14 +19,12 @@ function main() {
   const sampleItems = readArray(samplePath);
   const reviewItems = readArray(reviewPath);
   const sources = readArray(sourcesPath);
-  const sourceNames = new Set(sources.map((item) => String(item.source_name || "").trim()).filter(Boolean));
   const allItems = [...sampleItems, ...reviewItems];
+  const sourceNames = new Set(sources.map((item) => String(item.source_name || "").trim()).filter(Boolean));
   const slugCounts = countDuplicates(allItems.map((item) => item.slug));
   const findings = [];
 
-  allItems.forEach((item) => {
-    validateItem(item, sourceNames, slugCounts, findings);
-  });
+  allItems.forEach((item) => validateItem(item, sourceNames, slugCounts, findings));
 
   const quality = {
     summary: {
@@ -43,11 +41,7 @@ function main() {
 
   const report = {
     generated_at: new Date().toISOString(),
-    files_reviewed: [
-      relativePath(samplePath),
-      relativePath(reviewPath),
-      relativePath(sourcesPath)
-    ],
+    files_reviewed: [relativePath(samplePath), relativePath(reviewPath), relativePath(sourcesPath)],
     quality
   };
 
@@ -67,6 +61,9 @@ function validateItem(item, sourceNames, slugCounts, findings) {
   const sourceUrl = String(item.source_url || "").trim();
   const sourceNote = String(item.source_note || "").trim();
   const lastVerified = String(item.last_verified_at || "").trim();
+  const cautionNote = String(item.caution_note || "").trim();
+  const traditionScope = String(item.tradition_scope || "").trim();
+  const locationScope = String(item.location_scope || "").trim();
 
   if (!title) {
     findings.push(issue("missing_title", slug, "Calendar record is missing title."));
@@ -89,7 +86,7 @@ function validateItem(item, sourceNames, slugCounts, findings) {
   }
 
   if (item.date_gregorian && !sourceName && !sourceUrl && !sourceNote) {
-    findings.push(issue("date_without_source", slug, "Exact date exists without source_name, source_url, or source_note."));
+    findings.push(issue("exact_date_without_source", slug, "Exact Gregorian date exists without source_name, source_url, or source_note."));
   }
 
   if (sourceName && !sourceUrl && !sourceNote) {
@@ -105,11 +102,27 @@ function validateItem(item, sourceNames, slugCounts, findings) {
   }
 
   if (!item.date_gregorian && !["educational_only", "needs_review"].includes(confidence)) {
-    findings.push(issue("null_date_needs_review", slug, "Null date should usually be educational_only or needs_review."));
+    findings.push(issue("null_date_invalid_confidence", slug, "Null dates should normally be marked educational_only or needs_review."));
   }
 
   if (item.date_gregorian && confidence === "educational_only") {
     findings.push(issue("educational_with_exact_date", slug, "Educational-only record should not carry an exact date."));
+  }
+
+  if (!cautionNote) {
+    findings.push(issue("missing_caution_note", slug, "Calendar record is missing caution_note."));
+  }
+
+  if (!traditionScope) {
+    findings.push(issue("missing_tradition_scope", slug, "Calendar record is missing tradition_scope."));
+  }
+
+  if (!locationScope) {
+    findings.push(issue("missing_location_scope", slug, "Calendar record is missing location_scope."));
+  }
+
+  if (item.date_gregorian && traditionScope === "general" && locationScope === "global" && confidence === "verified") {
+    findings.push(issue("possible_universal_date_claim", slug, "Record looks like a universal exact date claim. Review tradition and location scope carefully."));
   }
 }
 

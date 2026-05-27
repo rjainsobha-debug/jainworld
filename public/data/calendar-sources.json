@@ -8,21 +8,21 @@
     "tradition_scope": "general",
     "trust_level": "medium",
     "notes": "Used only for educational overview records that do not publish exact observance dates.",
-    "notes_hi": "यह केवल उन शैक्षणिक प्रविष्टियों के लिए उपयोग होता है जिनमें सटीक पालन तिथियाँ प्रकाशित नहीं की जातीं।",
-    "last_checked_at": "2026-05-26",
+    "notes_hi": "यह केवल उन शैक्षणिक प्रविष्टियों के लिए उपयोग होता है जिनमें सटीक पालन तिथि प्रकाशित नहीं की जाती।",
+    "last_checked_at": "2026-05-27",
     "review_status": "published"
   },
   {
-    "id": "calendar-source-manual-review",
+    "id": "calendar-source-manual-review-pending",
     "source_name": "Manual review pending",
     "source_url": null,
     "source_type": "manual_review",
     "location": "global",
     "tradition_scope": "needs_review",
     "trust_level": "needs_review",
-    "notes": "Use this placeholder until a trusted sangh, panchang, or official notice is reviewed.",
-    "notes_hi": "विश्वसनीय संघ, पंचांग या आधिकारिक सूचना की समीक्षा होने तक इस स्थानधारक का उपयोग करें।",
-    "last_checked_at": "2026-05-26",
+    "notes": "Use this placeholder until a trusted sangh, panchang, official notice, or local reviewed source is confirmed.",
+    "notes_hi": "इस स्थानधारक का उपयोग तब तक करें जब तक विश्वसनीय संघ, पंचांग, आधिकारिक सूचना या स्थानीय समीक्षित स्रोत की पुष्टि न हो जाए।",
+    "last_checked_at": "2026-05-27",
     "review_status": "needs_review"
   },
   {
@@ -33,8 +33,8 @@
     "location": "local",
     "tradition_scope": "local",
     "trust_level": "medium",
-    "notes": "Local programme and observance confirmation should be added only after manual review.",
-    "notes_hi": "स्थानीय कार्यक्रम और पालन की पुष्टि केवल मैन्युअल समीक्षा के बाद ही जोड़ी जानी चाहिए।",
+    "notes": "Local programme or observance confirmation should be added only after manual review and correction checks.",
+    "notes_hi": "स्थानीय कार्यक्रम या पालन की पुष्टि केवल मैन्युअल समीक्षा और सुधार जाँच के बाद जोड़ें।",
     "last_checked_at": null,
     "review_status": "needs_review"
   },
@@ -47,7 +47,20 @@
     "tradition_scope": "needs_review",
     "trust_level": "needs_review",
     "notes": "Do not add exact dates from this placeholder until a real reviewed source is linked.",
-    "notes_hi": "जब तक वास्तविक समीक्षित स्रोत न जुड़ जाए, इस स्थानधारक से कोई निश्चित तिथि न जोड़ें।",
+    "notes_hi": "जब तक वास्तविक समीक्षित स्रोत न जुड़ जाए, इस स्थानधारक से कोई सटीक तिथि न जोड़ें।",
+    "last_checked_at": null,
+    "review_status": "needs_review"
+  },
+  {
+    "id": "calendar-source-local-calendar-placeholder",
+    "source_name": "Local calendar upload pending",
+    "source_url": null,
+    "source_type": "google_calendar",
+    "location": "local",
+    "tradition_scope": "local",
+    "trust_level": "needs_review",
+    "notes": "Placeholder for future local sangh calendars or event notices after explicit review.",
+    "notes_hi": "स्पष्ट समीक्षा के बाद भविष्य में स्थानीय संघ कैलेंडर या कार्यक्रम सूचना जोड़ने के लिए स्थानधारक।",
     "last_checked_at": null,
     "review_status": "needs_review"
   }

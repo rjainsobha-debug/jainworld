@@ -354,10 +354,15 @@ function mapCalendar(item, weight) {
       item.title_hi,
       item.summary,
       item.summary_hi,
+      item.event_type,
       item.date_display,
       item.date_display_hi,
+      item.month,
+      item.month_hi,
       item.lunar_month,
       item.lunar_month_hi,
+      item.paksha,
+      item.paksha_hi,
       item.lunar_tithi,
       item.lunar_tithi_hi,
       item.tradition_scope,
@@ -370,8 +375,18 @@ function mapCalendar(item, weight) {
     ].filter(Boolean).join(" "),
     "/calendar.html",
     {
-      category: item.type,
-      tags: [item.lunar_tithi, item.tradition_scope, item.location_scope, Array.isArray(item.tags) ? item.tags.join(", ") : item.tags]
+      category: item.event_type || item.type,
+      tags: [
+        item.event_type || item.type,
+        item.date_display,
+        item.date_display_hi,
+        item.lunar_month,
+        item.lunar_tithi,
+        item.paksha,
+        item.tradition_scope,
+        item.location_scope,
+        Array.isArray(item.tags) ? item.tags.join(", ") : item.tags
+      ]
         .filter(Boolean)
         .join(", "),
       review_status: item.review_status || "needs_review",
