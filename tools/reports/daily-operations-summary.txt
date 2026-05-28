@@ -1,14 +1,16 @@
 JainWorld Daily Operations Summary
-Run time: 2026-05-27T12:21:02.726Z
+Run time: 2026-05-28T07:14:55.435Z
 
 Tools run:
 - Community Directory Review Preview [community-directory-review-preview]
 - Calendar Review Preview [calendar-review-preview]
 - Source Permission Review Preview [source-permission-review-preview]
+- OnlineJainPathshala Review Preview [onlinejainpathshala-review-preview]
 - News Ingestion Preview [news-ingestion-preview]
 - Resources Monitor Preview [resources-monitor-preview-root]
 
 Tools skipped:
+- OnlineJainPathshala Intake Preview [onlinejainpathshala-intake-preview] (set RUN_OJP_INTAKE=true to allow a polite public intake crawl)
 - News Bot Preview [news-bot-preview] (tool_not_found)
 - Resources Monitor Preview [resources-monitor-preview] (tool_not_found)
 - Temple Data Review Preview [temple-data-review-preview] (tool_not_found)
@@ -27,21 +29,27 @@ Reports generated:
 - public/data/review-calendar-quality.json
 - public/data/review-community-directory-quality.json
 - public/data/review-news-preview.json
+- public/data/review-onlinejainpathshala-quality.json
 - public/data/review-resources-monitor-preview.json
 - public/data/review-source-permissions.json
 - tools/reports/calendar-review-report.json
 - tools/reports/community-directory-review-report.json
 - tools/reports/daily-operations-summary.json
 - tools/reports/daily-operations-summary.txt
+- tools/reports/onlinejainpathshala-review-report.json
 - tools/reports/source-permission-review-report.json
 
 Review items count: 84
 Calendar review items: 0
 Calendar needs review count: 15
 Source permission issues: 12
+OnlineJainPathshala review items: 5
+OnlineJainPathshala permission issues: 0
+OnlineJainPathshala blocked items: 0
+Panchang extraction pending count: 13
 
 Warnings:
-- 10 tool(s) were skipped because the script file does not exist yet.
+- 11 tool(s) were skipped because the script file does not exist yet.
 
 Next actions:
 - Inspect generated review reports before updating any public data.

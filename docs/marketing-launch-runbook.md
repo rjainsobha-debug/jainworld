@@ -38,3 +38,8 @@ Use `needs_review` when:
 - “Explore JainWorld’s growing Jain directory.”
 - “Search Jain learning, temples, names, and community resources in one place.”
 - “Help improve the directory through review-first suggestions and corrections.”
+## Review-first source expansion
+
+- OnlineJainPathshala intake is metadata-first and review-first.
+- Panchang archive scans should be shown with credit and local-verification reminders.
+- Do not announce new source-backed content publicly until permission and editorial review are clearly documented.

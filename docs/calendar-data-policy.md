@@ -91,3 +91,9 @@ Run the calendar review bot before trusting or publishing calendar changes:
 ```powershell
 node .\tools\bots\calendar-review-preview.js
 ```
+## Panchang archive rule
+
+- Scanned Panchang pages are source references first.
+- Do not OCR dense Panchang pages directly into public dates.
+- Preserve visible publisher and credit information.
+- Use `source_provided` until JainWorld manual extraction and review are complete.

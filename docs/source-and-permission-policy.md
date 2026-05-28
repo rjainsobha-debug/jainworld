@@ -105,3 +105,9 @@ Every external or reusable image record should aim to track:
 3. Remove hosted or displayed content if necessary.
 4. Preserve the review note for audit history.
 5. Rebuild the search seed if public metadata changed.
+## OnlineJainPathshala reminder
+
+- User-reported mutual discussion is not the same as blanket publishing permission.
+- Keep source credit visible.
+- Use metadata, summaries, and review queues first.
+- Do not host full books, PDFs, audio, or video without documented permission.

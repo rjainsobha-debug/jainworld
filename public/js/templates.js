@@ -339,6 +339,7 @@ const FOOTER_LINK_GROUPS = [
       { href: "/dictionary.html", label: "Dictionary", labelHi: "जैन शब्दकोश" },
       { href: "/names.html", label: "Names", labelHi: "जैन नाम" },
       { href: "/speakers.html", label: "Speakers", labelHi: "वक्ता" },
+      { href: "/source-archive.html", label: "Source Archive", labelHi: "स्रोत संग्रह" },
       { href: "/audio.html", label: "Audio", labelHi: "ऑडियो" },
       { href: "/news.html", label: "News", labelHi: "समाचार" },
       { href: "/blogs.html", label: "Blogs", labelHi: "ब्लॉग" }

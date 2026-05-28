@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-05-28T07:14:56.201Z",
+  "summary": {
+    "pages_total": 5,
+    "assets_total": 0,
+    "books_total": 0,
+    "audio_total": 0,
+    "images_total": 0,
+    "pathshala_total": 4,
+    "calendar_total": 0,
+    "permission_issues": 0,
+    "private_content_risks": 0,
+    "ready_for_manual_review": 5,
+    "blocked_items": 0
+  },
+  "issues": [
+    {
+      "type": "pathshala",
+      "id": "about-jain-religion",
+      "code": "duplicate_url",
+      "message": "Duplicate URL detected: https://www.onlinejainpathshala.com/about-jain-religion"
+    },
+    {
+      "type": "pathshala",
+      "id": "jain-ascetism",
+      "code": "duplicate_url",
+      "message": "Duplicate URL detected: https://www.onlinejainpathshala.com/jain-ascetism"
+    },
+    {
+      "type": "pathshala",
+      "id": "principles-of-jainism",
+      "code": "duplicate_url",
+      "message": "Duplicate URL detected: https://www.onlinejainpathshala.com/principles-of-jainism"
+    },
+    {
+      "type": "pathshala",
+      "id": "24-jain-tirthankars",
+      "code": "duplicate_url",
+      "message": "Duplicate URL detected: https://www.onlinejainpathshala.com/24-jain-tirthankars"
+    }
+  ]
+}

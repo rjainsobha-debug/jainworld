@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-05-28T07:14:35.600Z",
+  "source_name": "Online Jain Pathshala / Amar Granthalaya",
+  "base_url": "https://www.onlinejainpathshala.com/",
+  "dry_run": true,
+  "pages_total": 5,
+  "assets_total": 0,
+  "fetch_errors": [],
+  "robots": {
+    "checked": false,
+    "allowed": null,
+    "status": null,
+    "notes": "robots.txt fetch failed: fetch failed"
+  },
+  "warnings": [
+    "Dry run only: inventory is based on known public navigation seeds and safe metadata.",
+    "robots.txt could not be confirmed from this environment.",
+    "Do not auto-publish reviewed pages or assets without permission and manual editorial checks."
+  ]
+}

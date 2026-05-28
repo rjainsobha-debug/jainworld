@@ -33,7 +33,16 @@ const FALLBACK_FILES = {
   externalResourcesReview: "/data/review-external-resources.json",
   sourcePermissionReview: "/data/review-source-permissions.json",
   imageCreditsReview: "/data/sample-image-credits.json",
-  booksReview: "/data/sample-books.json"
+  booksReview: "/data/sample-books.json",
+  ojpPagesReview: "/data/review-onlinejainpathshala-pages.json",
+  ojpAssetsReview: "/data/review-onlinejainpathshala-assets.json",
+  ojpBooksReview: "/data/review-onlinejainpathshala-books.json",
+  ojpAudioReview: "/data/review-onlinejainpathshala-audio.json",
+  ojpImagesReview: "/data/review-onlinejainpathshala-images.json",
+  ojpPathshalaReview: "/data/review-onlinejainpathshala-pathshala.json",
+  ojpCalendarReview: "/data/review-onlinejainpathshala-calendar.json",
+  panchangExtractionQueue: "/data/review-calendar-extraction-queue.json",
+  ojpQualityReview: "/data/review-onlinejainpathshala-quality.json"
 };
 
 const STATUS_ORDER = ["pending_review", "approved", "verified", "needs_update", "rejected", "published", "draft", "archived"];
@@ -344,6 +353,33 @@ function renderDashboard(collections, isLive) {
     }),
     renderSection("Books Review", "books-review", collections.booksReview, false, {
       subtitle: "Books are metadata-first unless public domain or permission-received status is clearly documented."
+    }),
+    renderSection("OnlineJainPathshala Intake Pages", "ojp-pages-review", collections.ojpPagesReview, false, {
+      subtitle: "Public page discoveries stay in review queues until a human maps, summarizes, and approves them."
+    }),
+    renderSection("OnlineJainPathshala Assets", "ojp-assets-review", collections.ojpAssetsReview, false, {
+      subtitle: "Asset metadata tracks source, permission, hosting rules, and whether downloads are still blocked."
+    }),
+    renderSection("OnlineJainPathshala Books", "ojp-books-review", collections.ojpBooksReview, false, {
+      subtitle: "Book and literature references remain metadata-first and should not become public content automatically."
+    }),
+    renderSection("OnlineJainPathshala Audio", "ojp-audio-review", collections.ojpAudioReview, false, {
+      subtitle: "Audio and video references must stay permission-first and no hosting should happen without approval."
+    }),
+    renderSection("OnlineJainPathshala Images", "ojp-images-review", collections.ojpImagesReview, false, {
+      subtitle: "Image candidates should preserve branding, watermarking, and full attribution details."
+    }),
+    renderSection("OnlineJainPathshala Pathshala", "ojp-pathshala-review", collections.ojpPathshalaReview, false, {
+      subtitle: "Pathshala pages belong in structured education review, not direct publishing or blind copying."
+    }),
+    renderSection("OnlineJainPathshala Calendar", "ojp-calendar-review", collections.ojpCalendarReview, false, {
+      subtitle: "Calendar-related source references belong here before any structured festival dates are extracted."
+    }),
+    renderSection("Panchang Extraction Queue", "panchang-extraction-queue", collections.panchangExtractionQueue, false, {
+      subtitle: "Month-wise extraction stays manual. Do not OCR dense Panchang pages directly into public dates."
+    }),
+    renderSection("OnlineJainPathshala Quality Review", "ojp-quality-review", collections.ojpQualityReview, false, {
+      subtitle: "Cross-check permission issues, blocked items, private-content risks, and missing attribution before using anything."
     }),
     renderSection("Resource Quality Review", "resource-quality", collections.resourceQuality, false, {
       subtitle: "Track where official links, document notes, and verification warnings still need work."

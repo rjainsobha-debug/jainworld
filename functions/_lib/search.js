@@ -17,7 +17,9 @@ const ALLOWED_TYPES = new Set([
   "speakers",
   "names",
   "dictionary",
-  "books"
+  "books",
+  "panchang",
+  "sources"
 ]);
 
 const STOP_WORDS = new Set([
@@ -122,7 +124,9 @@ const TYPE_INTENT_MAP = {
   dictionary: new Set(["dictionary", "term", "terms", "glossary", "शब्दकोश"]),
   names: new Set(["name", "names", "baby", "jain", "नाम"]),
   speakers: new Set(["speaker", "speakers", "scholar", "scholars", "lecture", "lectures", "प्रवचन", "वक्ता"]),
-  directory: new Set(["directory", "directories", "resource", "resources", "section", "sections", "निर्देशिका"])
+  directory: new Set(["directory", "directories", "resource", "resources", "section", "sections", "निर्देशिका"]),
+  panchang: new Set(["panchang", "calendar", "festival", "festivals", "तिथि", "पंचांग"]),
+  sources: new Set(["source", "sources", "archive", "credits", "attribution", "स्रोत", "संग्रह"])
 };
 
 export function normalizeQuery(text) {
@@ -473,6 +477,12 @@ function buildMeta(type, item) {
   if (type === "books") {
     return [item.author, item.category, item.publication_status, item.review_status].filter(Boolean);
   }
+  if (type === "panchang") {
+    return [item.year, item.month_name, item.permission_status, item.review_status].filter(Boolean);
+  }
+  if (type === "sources") {
+    return [item.source_type, item.permission_status, item.review_status].filter(Boolean);
+  }
   return [item.category, item.tags, item.author].filter(Boolean);
 }
 
@@ -510,6 +520,12 @@ function buildUrl(type, item) {
   }
   if (type === "books") {
     return "/books.html";
+  }
+  if (type === "panchang") {
+    return "/calendar.html";
+  }
+  if (type === "sources") {
+    return "/source-archive.html";
   }
   if (type === "blogs") {
     return `/article.html?type=blogs&slug=${slug}`;

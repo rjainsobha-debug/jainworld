@@ -37,6 +37,29 @@ const TOOL_RUNNERS = [
     ]
   },
   {
+    key: "onlinejainpathshala-review-preview",
+    label: "OnlineJainPathshala Review Preview",
+    path: path.join(rootDir, "tools", "bots", "onlinejainpathshala-review-preview.js"),
+    expectedOutputs: [
+      path.join(rootDir, "tools", "reports", "onlinejainpathshala-review-report.json"),
+      path.join(rootDir, "public", "data", "review-onlinejainpathshala-quality.json")
+    ]
+  },
+  {
+    key: "onlinejainpathshala-intake-preview",
+    label: "OnlineJainPathshala Intake Preview",
+    path: path.join(rootDir, "tools", "bots", "onlinejainpathshala-intake-preview.js"),
+    expectedOutputs: [
+      path.join(rootDir, "tools", "reports", "onlinejainpathshala-intake-report.json"),
+      path.join(rootDir, "tools", "exports", "onlinejainpathshala-page-inventory.json"),
+      path.join(rootDir, "tools", "exports", "onlinejainpathshala-page-inventory.csv"),
+      path.join(rootDir, "public", "data", "review-onlinejainpathshala-pages.json"),
+      path.join(rootDir, "public", "data", "review-onlinejainpathshala-assets.json")
+    ],
+    shouldRun: () => String(process.env.RUN_OJP_INTAKE || "").toLowerCase() === "true",
+    skipReason: "set RUN_OJP_INTAKE=true to allow a polite public intake crawl"
+  },
+  {
     key: "news-bot-preview",
     label: "News Bot Preview",
     path: path.join(rootDir, "tools", "bots", "news-bot-preview.js")
@@ -116,6 +139,17 @@ async function main() {
 }
 
 function runTool(tool) {
+  if (typeof tool.shouldRun === "function" && !tool.shouldRun()) {
+    return {
+      key: tool.key,
+      label: tool.label,
+      status: "skipped",
+      reason: tool.skipReason || "tool_disabled",
+      script_path: relativePath(tool.path),
+      generated_files: []
+    };
+  }
+
   if (!fs.existsSync(tool.path)) {
     return {
       key: tool.key,
@@ -201,6 +235,7 @@ function buildSummary(runTime, results, reportsGenerated, reviewItemsCount) {
 
   const calendarMetrics = getCalendarMetrics();
   const permissionMetrics = getSourcePermissionMetrics();
+  const ojpMetrics = getOnlineJainPathshalaMetrics();
 
   return {
     run_time: runTime,
@@ -212,6 +247,10 @@ function buildSummary(runTime, results, reportsGenerated, reviewItemsCount) {
     calendar_review_items: calendarMetrics.calendar_review_items,
     calendar_needs_review_count: calendarMetrics.calendar_needs_review_count,
     source_permission_issues: permissionMetrics.source_permission_issues,
+    onlinejainpathshala_review_items: ojpMetrics.onlinejainpathshala_review_items,
+    onlinejainpathshala_permission_issues: ojpMetrics.onlinejainpathshala_permission_issues,
+    onlinejainpathshala_blocked_items: ojpMetrics.onlinejainpathshala_blocked_items,
+    panchang_extraction_pending_count: ojpMetrics.panchang_extraction_pending_count,
     warnings,
     next_actions: nextActions
   };
@@ -290,6 +329,10 @@ function formatTextSummary(summary) {
     `Calendar review items: ${summary.calendar_review_items}`,
     `Calendar needs review count: ${summary.calendar_needs_review_count}`,
     `Source permission issues: ${summary.source_permission_issues}`,
+    `OnlineJainPathshala review items: ${summary.onlinejainpathshala_review_items}`,
+    `OnlineJainPathshala permission issues: ${summary.onlinejainpathshala_permission_issues}`,
+    `OnlineJainPathshala blocked items: ${summary.onlinejainpathshala_blocked_items}`,
+    `Panchang extraction pending count: ${summary.panchang_extraction_pending_count}`,
     "",
     "Warnings:",
     ...formatLines(summary.warnings),
@@ -313,6 +356,10 @@ function printConsoleSummary(summary) {
   console.log(`Calendar review items: ${summary.calendar_review_items}`);
   console.log(`Calendar needs review count: ${summary.calendar_needs_review_count}`);
   console.log(`Source permission issues: ${summary.source_permission_issues}`);
+  console.log(`OnlineJainPathshala review items: ${summary.onlinejainpathshala_review_items}`);
+  console.log(`OnlineJainPathshala permission issues: ${summary.onlinejainpathshala_permission_issues}`);
+  console.log(`OnlineJainPathshala blocked items: ${summary.onlinejainpathshala_blocked_items}`);
+  console.log(`Panchang extraction pending count: ${summary.panchang_extraction_pending_count}`);
   console.log("Next actions:");
   formatLines(summary.next_actions).forEach((line) => console.log(line));
 }
@@ -350,6 +397,10 @@ function buildTelegramSummary(summary) {
     `Calendar review items: ${summary.calendar_review_items}`,
     `Calendar needs review: ${summary.calendar_needs_review_count}`,
     `Source permission issues: ${summary.source_permission_issues}`,
+    `OnlineJainPathshala review items: ${summary.onlinejainpathshala_review_items}`,
+    `OnlineJainPathshala permission issues: ${summary.onlinejainpathshala_permission_issues}`,
+    `OnlineJainPathshala blocked items: ${summary.onlinejainpathshala_blocked_items}`,
+    `Panchang extraction pending: ${summary.panchang_extraction_pending_count}`,
     "",
     "Reports generated:",
     "- daily-operations-summary.json",
@@ -432,6 +483,47 @@ function getSourcePermissionMetrics() {
       source_permission_issues: 0
     };
   }
+}
+
+function getOnlineJainPathshalaMetrics() {
+  const qualityPath = path.join(rootDir, "public", "data", "review-onlinejainpathshala-quality.json");
+  const extractionPath = path.join(rootDir, "public", "data", "review-calendar-extraction-queue.json");
+
+  let quality = {
+    onlinejainpathshala_review_items: 0,
+    onlinejainpathshala_permission_issues: 0,
+    onlinejainpathshala_blocked_items: 0
+  };
+
+  if (fs.existsSync(qualityPath)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(qualityPath, "utf8"));
+      quality = {
+        onlinejainpathshala_review_items: Number((data?.summary?.pages_total || 0) + (data?.summary?.assets_total || 0)),
+        onlinejainpathshala_permission_issues: Number(data?.summary?.permission_issues || 0),
+        onlinejainpathshala_blocked_items: Number(data?.summary?.blocked_items || 0)
+      };
+    } catch (error) {
+      quality = quality;
+    }
+  }
+
+  let pendingCount = 0;
+  if (fs.existsSync(extractionPath)) {
+    try {
+      const items = JSON.parse(fs.readFileSync(extractionPath, "utf8"));
+      pendingCount = Array.isArray(items)
+        ? items.filter((item) => String(item.status || "").toLowerCase() === "pending_manual_extraction").length
+        : 0;
+    } catch (error) {
+      pendingCount = 0;
+    }
+  }
+
+  return {
+    ...quality,
+    panchang_extraction_pending_count: pendingCount
+  };
 }
 
 function sanitizeOutput(text) {

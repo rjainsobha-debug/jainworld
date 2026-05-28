@@ -47,16 +47,23 @@ const IMPORTANT_FESTIVAL_KEYS = [
   "kartik purnima"
 ];
 
+const DEFAULT_CAUTION_EN = "Dates can vary by panchang, location, tradition, and local sangh practice.";
+const DEFAULT_CAUTION_HI = "तिथियाँ पंचांग, स्थान, परंपरा और स्थानीय संघ की परंपरा के अनुसार भिन्न हो सकती हैं।";
+const DEFAULT_SOURCE_NOTE_EN = "Please verify with local sangh or trusted panchang.";
+const DEFAULT_SOURCE_NOTE_HI = "कृपया स्थानीय संघ या विश्वसनीय पंचांग से सत्यापित करें।";
+
 const state = {
   sampleItems: [],
   reviewItems: [],
   sources: [],
+  archiveItems: [],
   mergedItems: [],
   filter: "all",
   view: "list",
   query: "",
   year: new Date().getFullYear(),
-  month: new Date().getMonth() + 1
+  month: new Date().getMonth() + 1,
+  archiveModalIndex: -1
 };
 
 export async function initCalendarPage() {
@@ -65,15 +72,17 @@ export async function initCalendarPage() {
     return;
   }
 
-  const [sampleItems, reviewItems, sources] = await Promise.all([
-    getCalendar({ limit: 200, includeDrafts: true }),
+  const [sampleItems, reviewItems, sources, archiveItems] = await Promise.all([
+    getCalendar({ limit: 300, includeDrafts: true }),
     readLocalArray("/data/review-calendar-events.json"),
-    readLocalArray("/data/calendar-sources.json")
+    readLocalArray("/data/calendar-sources.json"),
+    readLocalArray("/data/panchang-2026.json")
   ]);
 
   state.sampleItems = Array.isArray(sampleItems) ? sampleItems : [];
   state.reviewItems = Array.isArray(reviewItems) ? reviewItems : [];
   state.sources = Array.isArray(sources) ? sources : [];
+  state.archiveItems = Array.isArray(archiveItems) ? archiveItems : [];
   state.mergedItems = mergeCalendarItems(state.sampleItems, state.reviewItems, state.sources);
 
   renderCalendarPage(root);
@@ -83,59 +92,55 @@ export async function initCalendarPage() {
   });
 }
 
-async function readLocalArray(path) {
+async function readLocalArray(filePath) {
   try {
-    const response = await fetch(path);
+    const response = await fetch(filePath);
     if (!response.ok) {
       return [];
     }
     const data = await response.json();
     return Array.isArray(data) ? data : [];
   } catch (error) {
-    console.warn(`Could not load ${path}`, error);
+    console.warn(`Could not load ${filePath}`, error);
     return [];
   }
 }
 
 function mergeCalendarItems(sampleItems, reviewItems, sources) {
   const sourceMap = new Map(
-    sources.map((source) => [String(source.source_name || "").trim().toLowerCase(), source]).filter(([key]) => key)
+    sources
+      .map((source) => [String(source.source_name || "").trim().toLowerCase(), source])
+      .filter(([key]) => key)
   );
-  const merged = [...sampleItems, ...reviewItems].map((item) => enrichCalendarItem(item, sourceMap));
-  return merged.sort((left, right) => {
-    const leftDate = left.date_gregorian || "9999-99-99";
-    const rightDate = right.date_gregorian || "9999-99-99";
-    if (leftDate !== rightDate) {
-      return leftDate.localeCompare(rightDate);
-    }
-    return String(left.title || "").localeCompare(String(right.title || ""));
-  });
+
+  return [...sampleItems, ...reviewItems]
+    .map((item) => enrichCalendarItem(item, sourceMap))
+    .sort((left, right) => {
+      const leftDate = left.date_gregorian || "9999-99-99";
+      const rightDate = right.date_gregorian || "9999-99-99";
+      if (leftDate !== rightDate) {
+        return leftDate.localeCompare(rightDate);
+      }
+      return String(left.title || left.slug || "").localeCompare(String(right.title || right.slug || ""));
+    });
 }
 
 function enrichCalendarItem(item, sourceMap) {
-  const sourceName = String(item.source_name || "").trim().toLowerCase();
-  const source = sourceMap.get(sourceName) || null;
   const next = { ...item };
+  const sourceName = String(next.source_name || "").trim().toLowerCase();
+  const source = sourceMap.get(sourceName) || null;
+
   next.event_type = next.event_type || next.type || "learning";
-  next.source_type = source?.source_type || item.source_type || "manual_review";
+  next.source_type = source?.source_type || next.source_type || "manual_review";
   next.source_trust_level = source?.trust_level || "needs_review";
-  next.source_location = source?.location || item.location_scope || "needs_review";
+  next.source_location = source?.location || next.location_scope || "needs_review";
   next.review_status = next.review_status || "pending_review";
   next.date_confidence = next.date_confidence || "needs_review";
   next.tags = Array.isArray(next.tags) ? next.tags : [];
-
-  if (!next.caution_note) {
-    next.caution_note = "Dates can vary by panchang, location, tradition, and local sangh practice.";
-  }
-  if (!next.caution_note_hi) {
-    next.caution_note_hi = "तिथियाँ पंचांग, स्थान, परंपरा और स्थानीय संघ की परंपरा के अनुसार भिन्न हो सकती हैं।";
-  }
-  if (!next.source_note) {
-    next.source_note = "Please verify with local sangh or trusted panchang.";
-  }
-  if (!next.source_note_hi) {
-    next.source_note_hi = "कृपया स्थानीय संघ या विश्वसनीय पंचांग से सत्यापित करें।";
-  }
+  next.caution_note = next.caution_note || DEFAULT_CAUTION_EN;
+  next.caution_note_hi = next.caution_note_hi || DEFAULT_CAUTION_HI;
+  next.source_note = next.source_note || DEFAULT_SOURCE_NOTE_EN;
+  next.source_note_hi = next.source_note_hi || DEFAULT_SOURCE_NOTE_HI;
 
   return next;
 }
@@ -180,7 +185,9 @@ function renderCalendarPage(root) {
             id="calendar-search-input"
             type="search"
             value="${escapeHtml(state.query)}"
-            placeholder="${escapeHtml(lang === "hi" ? "पर्व, व्रत या तिथि खोजें" : "Search festivals, vrat, or tithi")}"
+            placeholder="${escapeHtml(
+              lang === "hi" ? "पर्व, व्रत या तिथि खोजें" : "Search festivals, vrat, or tithi"
+            )}"
           />
         </label>
       </div>
@@ -220,6 +227,8 @@ function renderCalendarPage(root) {
       </div>
     </section>
 
+    ${renderArchiveSection(lang)}
+
     <section class="detail-section">
       <div class="jw-section-title">
         <div>
@@ -257,6 +266,8 @@ function renderCalendarPage(root) {
         )}
       </div>
     </section>
+
+    ${renderArchiveModal(lang)}
   `;
 
   bindCalendarEvents(root);
@@ -265,7 +276,8 @@ function renderCalendarPage(root) {
 
 function renderMonthView(items, lang) {
   const days = buildMonthGrid(state.year, state.month, items);
-  const monthTitle = `${MONTHS[state.month - 1]?.[lang] || MONTHS[state.month - 1]?.en} ${state.year}`;
+  const monthLabel = MONTHS[state.month - 1] || MONTHS[0];
+  const monthTitle = `${lang === "hi" ? monthLabel.hi : monthLabel.en} ${state.year}`;
   const monthItems = items.filter((item) => matchesGregorianMonth(item, state.year, state.month));
 
   return `
@@ -288,8 +300,8 @@ function renderMonthView(items, lang) {
           ? `<div class="calendar-list calendar-list--compact mt-4">${monthItems.map((item) => renderCompactEventCard(item, lang)).join("")}</div>`
           : `<div class="calendar-empty-state mt-4">${escapeHtml(
               lang === "hi"
-                ? "इस महीने के लिए अभी कोई सत्यापित या स्रोत-आधारित तिथि उपलब्ध नहीं है। स्थानीय सत्यापन के साथ सूची दृश्य देखें।"
-                : "No verified or source-based dates are available for this month yet. Use list view with local verification."
+                ? "इस महीने के लिए अभी कोई सत्यापित या स्रोत-आधारित तिथि उपलब्ध नहीं है।"
+                : "No verified or source-based dates are available for this month yet."
             )}</div>`
       }
     </div>
@@ -353,7 +365,9 @@ function renderEventCard(item, lang) {
   const summary = localizedSummary(item, lang);
   const sourceNote = pickLocalized(item, "source_note", lang) || item.source_note || "";
   const cautionNote = pickLocalized(item, "caution_note", lang) || item.caution_note || "";
-  const sourceLine = item.source_name ? `${translate("source", "Source")}: ${item.source_name}` : translate("source_details_are_being_reviewed", "Source details are being reviewed.");
+  const sourceLine = item.source_name
+    ? `${translate("source", "Source")}: ${item.source_name}`
+    : translate("source_details_are_being_reviewed", "Source details are being reviewed.");
   const dateLine = localizedDateDisplay(item, lang);
   const lunarMonth = lang === "hi" ? item.lunar_month_hi || item.lunar_month : item.lunar_month || item.lunar_month_hi;
   const lunarTithi = lang === "hi" ? item.lunar_tithi_hi || item.lunar_tithi : item.lunar_tithi || item.lunar_tithi_hi;
@@ -417,6 +431,167 @@ function renderEducationBlock(title, body) {
   `;
 }
 
+function renderArchiveSection(lang) {
+  const monthRecords = state.archiveItems.filter((item) => item.asset_type !== "pdf");
+  const backPage = state.archiveItems.find((item) => item.asset_type === "pdf");
+
+  return `
+    <section class="detail-section">
+      <div class="jw-section-title">
+        <div>
+          <span class="jw-kicker">${translate("panchang_archive", "Panchang Archive")}</span>
+          <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">${translate(
+            "jain_panchang_source_archive",
+            "Jain Panchang Source Archive"
+          )}</h2>
+        </div>
+      </div>
+      <p class="m-0 mb-4 text-sm leading-7 text-stone-600">
+        ${escapeHtml(
+          lang === "hi"
+            ? "Tirthankar Vardhman Jain Panchang 2026 के मासिक पृष्ठ यहाँ स्रोत संदर्भ के रूप में दिखाए जाते हैं। महत्वपूर्ण पालन के लिए अभी भी स्थानीय संघ या विश्वसनीय पंचांग से पुष्टि करें।"
+            : "View month-wise pages from Tirthankar Vardhman Jain Panchang 2026. These scans are shown as source reference. Important observances should still be verified with your local sangh or trusted panchang."
+        )}
+      </p>
+      <div class="panchang-archive-grid">
+        ${monthRecords.map((item, index) => renderArchiveCard(item, index, lang)).join("")}
+      </div>
+      ${
+        backPage
+          ? `<div class="calendar-source-note mt-4">
+              <strong>${translate("source_provided_reference", "Source-provided reference")}</strong>
+              <p>${escapeHtml(backPage.credit_text || backPage.notes || "")}</p>
+              <div class="detail-cta">
+                <a class="jw-btn jw-btn-secondary ${backPage.pdf_url ? "" : "is-disabled"}" ${
+                  backPage.pdf_url ? `href="${escapeHtml(backPage.pdf_url)}" target="_blank" rel="noopener noreferrer"` : 'href="#" aria-disabled="true"'
+                }>
+                  ${translate("open_panchang_back_pages", "Open Panchang Back Pages")}
+                </a>
+                <a class="jw-btn" href="/corrections.html?topic=panchang">
+                  ${translate("report_calendar_correction", "Report calendar correction")}
+                </a>
+              </div>
+            </div>`
+          : ""
+      }
+    </section>
+  `;
+}
+
+function renderArchiveCard(item, index, lang) {
+  const imageUrl = item.image_url || "";
+  const expectedPath = item.expected_image_url || "";
+  const title = pickLocalized(item, "title", lang) || item.title || "";
+  const sourceBadge = translate("source_provided_reference", "Source-provided reference");
+  const permissionBadge = translate("permission_review_needed", "Permission review needed");
+  const verifyBadge = translate("verify_with_local_sangh", "Verify with local sangh");
+
+  return `
+    <article class="panchang-archive-card">
+      <div class="panchang-archive-thumb">
+        ${
+          imageUrl
+            ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(title)}" loading="lazy" />`
+            : `<div class="panchang-archive-thumb__placeholder">
+                <span>${escapeHtml(lang === "hi" ? item.month_name_hi || "" : item.month_name || "")}</span>
+                <small>${escapeHtml(
+                  lang === "hi"
+                    ? "स्कैन फ़ाइल की स्थानीय प्रति लंबित"
+                    : "Scan file local copy pending"
+                )}</small>
+              </div>`
+        }
+      </div>
+      <div class="panchang-archive-body">
+        <div class="flex flex-wrap gap-2">
+          <span class="calendar-confidence-badge calendar-confidence--source">${escapeHtml(sourceBadge)}</span>
+          <span class="calendar-confidence-badge calendar-confidence--review">${escapeHtml(permissionBadge)}</span>
+          <span class="calendar-confidence-badge calendar-confidence--educational">${escapeHtml(verifyBadge)}</span>
+        </div>
+        <h3>${escapeHtml(title)}</h3>
+        <p>${escapeHtml(pickLocalized(item, "notes", lang) || item.notes || "")}</p>
+        <div class="detail-cta">
+          <button type="button" class="jw-btn jw-btn-secondary" data-panchang-open="${index}">
+            ${translate("view_panchang_page", "View Panchang Page")}
+          </button>
+          <a class="jw-btn ${imageUrl ? "" : "is-disabled"}" ${
+            imageUrl ? `href="${escapeHtml(imageUrl)}" target="_blank" rel="noopener noreferrer"` : 'href="#" aria-disabled="true"'
+          }>
+            ${translate("open_full_image", "Open full image")}
+          </a>
+          <a class="jw-btn" href="/corrections.html?topic=panchang&month=${encodeURIComponent(item.month_name || item.month_name_hi || "")}">
+            ${translate("report_calendar_correction", "Report calendar correction")}
+          </a>
+        </div>
+        <div class="calendar-source-note">
+          <strong>${escapeHtml(item.source_name || "Tirthankar Vardhman Jain Panchang 2026")}</strong>
+          <p>${escapeHtml(item.credit_text || "")}</p>
+          ${expectedPath && !imageUrl ? `<p class="m-0 text-xs text-stone-500">${escapeHtml(expectedPath)}</p>` : ""}
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function renderArchiveModal(lang) {
+  const activeItem = state.archiveItems.filter((item) => item.asset_type !== "pdf")[state.archiveModalIndex] || null;
+  const isOpen = Boolean(activeItem);
+  const imageUrl = activeItem?.image_url || "";
+  const sourceUrl = activeItem?.source_url || "";
+  const expectedPath = activeItem?.expected_image_url || "";
+  const title = activeItem ? pickLocalized(activeItem, "title", lang) || activeItem.title || "" : "";
+
+  return `
+    <div class="panchang-archive-modal ${isOpen ? "is-open" : ""}" id="panchang-archive-modal" aria-hidden="${isOpen ? "false" : "true"}">
+      <div class="panchang-archive-modal__backdrop" data-panchang-close="true"></div>
+      <div class="panchang-archive-modal__dialog" role="dialog" aria-modal="true" aria-label="${escapeHtml(title || translate("panchang_archive", "Panchang Archive"))}">
+        <div class="panchang-archive-modal__header">
+          <div>
+            <span class="jw-kicker">${translate("panchang_archive", "Panchang Archive")}</span>
+            <h2>${escapeHtml(title || translate("jain_panchang_source_archive", "Jain Panchang Source Archive"))}</h2>
+          </div>
+          <button type="button" class="jw-btn" data-panchang-close="true">Close</button>
+        </div>
+        <div class="panchang-archive-modal__content">
+          ${
+            activeItem
+              ? imageUrl
+                ? `<img class="panchang-archive-modal__image" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(title)}" />`
+                : `<div class="panchang-archive-modal__missing">
+                    <strong>${escapeHtml(lang === "hi" ? "स्थानीय फ़ाइल की प्रतीक्षा" : "Waiting for local file copy")}</strong>
+                    <p>${escapeHtml(
+                      lang === "hi"
+                        ? "स्कैन संरचना तैयार है, लेकिन वास्तविक छवि फ़ाइल अभी इस प्रोजेक्ट में कॉपी नहीं की गई है।"
+                        : "The archive structure is ready, but the real scan file has not been copied into this project yet."
+                    )}</p>
+                    ${expectedPath ? `<p class="jw-mono">${escapeHtml(expectedPath)}</p>` : ""}
+                  </div>`
+              : ""
+          }
+          ${
+            activeItem
+              ? `<div class="calendar-source-note">
+                  <strong>${escapeHtml(activeItem.source_name || "")}</strong>
+                  <p>${escapeHtml(activeItem.credit_text || "")}</p>
+                  <p>${escapeHtml(pickLocalized(activeItem, "notes", lang) || activeItem.notes || "")}</p>
+                </div>`
+              : ""
+          }
+        </div>
+        <div class="panchang-archive-modal__footer">
+          <button type="button" class="jw-btn jw-btn-secondary" data-panchang-nav="prev">${translate("previous", "Previous")}</button>
+          <button type="button" class="jw-btn jw-btn-secondary" data-panchang-nav="next">${translate("next", "Next")}</button>
+          <a class="jw-btn ${sourceUrl ? "" : "is-disabled"}" ${
+            sourceUrl ? `href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer"` : 'href="#" aria-disabled="true"'
+          }>
+            ${translate("open_original_source", "Open Original Source")}
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function renderFilterButton(filter) {
   const isActive = state.filter === filter.key;
   return `
@@ -455,6 +630,57 @@ function bindCalendarEvents(root) {
     state.query = String(event.target.value || "").trim();
     renderCalendarPage(root);
   });
+
+  root.querySelectorAll("[data-panchang-open]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.archiveModalIndex = Number(button.getAttribute("data-panchang-open"));
+      renderCalendarPage(root);
+    });
+  });
+
+  root.querySelectorAll("[data-panchang-close]").forEach((element) => {
+    element.addEventListener("click", () => {
+      state.archiveModalIndex = -1;
+      renderCalendarPage(root);
+    });
+  });
+
+  root.querySelectorAll("[data-panchang-nav]").forEach((button) => {
+    button.addEventListener("click", () => {
+      moveArchiveModal(button.getAttribute("data-panchang-nav"));
+      renderCalendarPage(root);
+    });
+  });
+
+  bindEscapeClose(root);
+}
+
+let escapeBound = false;
+
+function bindEscapeClose(root) {
+  if (escapeBound) {
+    return;
+  }
+
+  escapeBound = true;
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && state.archiveModalIndex >= 0) {
+      state.archiveModalIndex = -1;
+      renderCalendarPage(root);
+    }
+  });
+}
+
+function moveArchiveModal(direction) {
+  const items = state.archiveItems.filter((item) => item.asset_type !== "pdf");
+  if (!items.length || state.archiveModalIndex < 0) {
+    return;
+  }
+  if (direction === "prev") {
+    state.archiveModalIndex = (state.archiveModalIndex - 1 + items.length) % items.length;
+    return;
+  }
+  state.archiveModalIndex = (state.archiveModalIndex + 1) % items.length;
 }
 
 function getFilteredItems() {
@@ -555,10 +781,12 @@ function getImportantFestivalItems() {
     if (!matched) {
       return false;
     }
+
     const dedupeKey = IMPORTANT_FESTIVAL_KEYS.find((key) => normalized.includes(key));
     if (seen.has(dedupeKey)) {
       return false;
     }
+
     seen.add(dedupeKey);
     return true;
   });
@@ -566,11 +794,18 @@ function getImportantFestivalItems() {
 
 function buildYearOptions() {
   const years = new Set([new Date().getFullYear()]);
+
   state.mergedItems.forEach((item) => {
     if (item.year) {
       years.add(Number(item.year));
     } else if (item.date_gregorian) {
       years.add(Number(String(item.date_gregorian).slice(0, 4)));
+    }
+  });
+
+  state.archiveItems.forEach((item) => {
+    if (item.year) {
+      years.add(Number(item.year));
     }
   });
 
@@ -676,3 +911,5 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 }
+
+initCalendarPage();

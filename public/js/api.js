@@ -18,7 +18,9 @@ const LOCAL_FILES = {
   speakers: "/data/sample-speakers.json",
   names: "/data/sample-names.json",
   dictionary: "/data/sample-dictionary.json",
-  books: "/data/sample-books.json"
+  books: "/data/sample-books.json",
+  panchang: "/data/panchang-2026.json",
+  sources: "/data/source-archive.json"
 };
 
 async function fetchJson(path, params = {}) {
@@ -338,6 +340,14 @@ export async function getBooks(params = {}) {
   return applyFilters(await readLocalCollection("books"), params);
 }
 
+export async function getPanchangArchive(params = {}) {
+  return applyFilters(await readLocalCollection("panchang"), params);
+}
+
+export async function getSourceArchive(params = {}) {
+  return applyFilters(await readLocalCollection("sources"), params);
+}
+
 export async function searchAll(query, params = {}) {
   const lowerQuery = String(query || "").toLowerCase().trim();
   if (!lowerQuery) {
@@ -355,7 +365,7 @@ export async function searchAll(query, params = {}) {
     }
   }
 
-  const [blogs, audio, literature, temples, food, education, news, resources, calendar, directory, speakers, names, dictionary, books] = await Promise.all([
+  const [blogs, audio, literature, temples, food, education, news, resources, calendar, directory, speakers, names, dictionary, books, panchang, sources] = await Promise.all([
     readLocalCollection("blogs"),
     readLocalCollection("audio"),
     readLocalCollection("literature"),
@@ -369,7 +379,9 @@ export async function searchAll(query, params = {}) {
     readLocalCollection("speakers"),
     readLocalCollection("names"),
     readLocalCollection("dictionary"),
-    readLocalCollection("books")
+    readLocalCollection("books"),
+    readLocalCollection("panchang"),
+    readLocalCollection("sources")
   ]);
 
   const localCollections = [
@@ -386,7 +398,9 @@ export async function searchAll(query, params = {}) {
     { type: "speakers", items: speakers },
     { type: "names", items: names },
     { type: "dictionary", items: dictionary },
-    { type: "books", items: books }
+    { type: "books", items: books },
+    { type: "panchang", items: panchang },
+    { type: "sources", items: sources }
   ];
 
   const filteredCollections =
@@ -484,6 +498,12 @@ function buildSearchResultUrl(type, slug, item) {
   if (type === "books") {
     return "/books.html";
   }
+  if (type === "panchang") {
+    return "/calendar.html";
+  }
+  if (type === "sources") {
+    return "/source-archive.html";
+  }
   if (type === "news") {
     return "/news.html";
   }
@@ -523,6 +543,12 @@ function buildSearchMeta(type, item) {
   }
   if (type === "books") {
     return [item.author, item.category, item.publication_status, item.review_status].filter(Boolean);
+  }
+  if (type === "panchang") {
+    return [item.year, item.month_name, item.permission_status, item.review_status].filter(Boolean);
+  }
+  if (type === "sources") {
+    return [item.source_type, item.permission_status, item.review_status].filter(Boolean);
   }
   return [item.category, item.tags, item.author].filter(Boolean);
 }

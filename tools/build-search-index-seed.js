@@ -23,7 +23,9 @@ const SOURCES = [
   { type: "speakers", file: "sample-speakers.json", weight: 3, mapper: mapSpeakers },
   { type: "names", file: "sample-names.json", weight: 2, mapper: mapNames },
   { type: "dictionary", file: "sample-dictionary.json", weight: 4, mapper: mapDictionary },
-  { type: "books", file: "sample-books.json", weight: 4, mapper: mapBooks }
+  { type: "books", file: "sample-books.json", weight: 4, mapper: mapBooks },
+  { type: "panchang", file: "panchang-2026.json", weight: 3, mapper: mapPanchang },
+  { type: "sources", file: "source-archive.json", weight: 2, mapper: mapSources }
 ];
 
 const TYPE_SYNONYMS = {
@@ -31,7 +33,9 @@ const TYPE_SYNONYMS = {
   dictionary: ["dictionary", "terms", "glossary", "शब्दकोश"],
   names: ["names", "baby names", "Jain names", "नाम"],
   speakers: ["speakers", "scholars", "lectures", "प्रवचन", "वक्ता"],
-  directory: ["directory", "resources", "sections", "निर्देशिका"]
+  directory: ["directory", "resources", "sections", "निर्देशिका"],
+  panchang: ["panchang", "calendar archive", "festival reference", "पंचांग", "जैन पंचांग"],
+  sources: ["source archive", "source credit", "attribution", "स्रोत संग्रह", "स्रोत श्रेय"]
 };
 
 function main() {
@@ -507,6 +511,72 @@ function mapBooks(item, weight) {
       review_status: item.review_status || "needs_review",
       source_name: item.source_name || "JainWorld Books",
       created_at: item.last_checked_at || "2026-05-27"
+    }
+  );
+}
+
+function mapPanchang(item, weight) {
+  if (String(item.review_status || "").toLowerCase() === "rejected") {
+    return null;
+  }
+
+  return baseRow(
+    "panchang",
+    item,
+    weight,
+    item.title || item.title_hi,
+    item.notes || item.notes_hi || item.credit_text,
+    [
+      item.title,
+      item.title_hi,
+      item.month_name,
+      item.month_name_hi,
+      item.credit_text,
+      item.source_name,
+      item.publisher,
+      item.permission_status,
+      Array.isArray(item.tags) ? item.tags.join(" ") : item.tags
+    ].filter(Boolean).join(" "),
+    "/calendar.html",
+    {
+      category: "panchang",
+      tags: [
+        item.month_name,
+        item.month_name_hi,
+        item.permission_status,
+        Array.isArray(item.tags) ? item.tags.join(", ") : item.tags
+      ].filter(Boolean).join(", "),
+      review_status: item.review_status || "pending_review",
+      source_name: item.source_name || "Tirthankar Vardhman Jain Panchang 2026",
+      created_at: "2026-05-28"
+    }
+  );
+}
+
+function mapSources(item, weight) {
+  return baseRow(
+    "sources",
+    item,
+    weight,
+    item.source_name || item.source_name_hi,
+    item.notes || item.notes_hi || item.attribution_text,
+    [
+      item.source_name,
+      item.source_name_hi,
+      item.attribution_text,
+      item.permission_status,
+      item.review_status,
+      item.source_type,
+      item.source_site,
+      item.publisher
+    ].filter(Boolean).join(" "),
+    "/source-archive.html",
+    {
+      category: item.source_type,
+      tags: [item.permission_status, item.review_status, item.source_site].filter(Boolean).join(", "),
+      review_status: item.review_status || "pending_review",
+      source_name: item.source_name || "JainWorld Source Archive",
+      created_at: item.last_checked_at || "2026-05-28"
     }
   );
 }

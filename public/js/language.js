@@ -395,6 +395,28 @@ Object.assign(TRANSLATIONS, {
   practice_today: { en: "Practice Today", hi: "आज अभ्यास करें" }
 });
 
+Object.assign(TRANSLATIONS, {
+  online_jain_pathshala: { en: "Online Jain Pathshala", hi: "ऑनलाइन जैन पाठशाला" },
+  amar_granthalaya: { en: "Amar Granthalaya", hi: "अमर ग्रंथालय" },
+  source_archive: { en: "Source Archive", hi: "स्रोत संग्रह" },
+  source_credit: { en: "Source Credit", hi: "स्रोत श्रेय" },
+  open_original_source: { en: "Open Original Source", hi: "मूल स्रोत खोलें" },
+  permission_pending: { en: "Permission pending", hi: "अनुमति लंबित" },
+  permission_documented: { en: "Permission documented", hi: "अनुमति दर्ज" },
+  manual_review_required: { en: "Manual review required", hi: "मैन्युअल समीक्षा आवश्यक" },
+  panchang_archive: { en: "Panchang Archive", hi: "पंचांग संग्रह" },
+  jain_panchang_source_archive: { en: "Jain Panchang Source Archive", hi: "जैन पंचांग स्रोत संग्रह" },
+  view_panchang_page: { en: "View Panchang Page", hi: "पंचांग पृष्ठ देखें" },
+  open_full_image: { en: "Open full image", hi: "पूरी छवि खोलें" },
+  open_panchang_back_pages: { en: "Open Panchang Back Pages", hi: "पंचांग के पीछे के पृष्ठ खोलें" },
+  manual_extraction_pending: { en: "Manual extraction pending", hi: "मैन्युअल तिथि निकासी लंबित" },
+  source_provided_reference: { en: "Source-provided reference", hi: "स्रोत-आधारित संदर्भ" },
+  do_not_publish_without_review: { en: "Do not publish without review", hi: "समीक्षा के बिना प्रकाशित न करें" },
+  report_source_concern: { en: "Report source concern", hi: "स्रोत संबंधी समस्या बताएं" },
+  previous: { en: "Previous", hi: "पिछला" },
+  next: { en: "Next", hi: "अगला" }
+});
+
 function normalizeLabelKey(label) {
   return String(label || "")
     .trim()

@@ -1,5 +1,5 @@
 {
-  "run_time": "2026-05-27T12:21:02.726Z",
+  "run_time": "2026-05-28T07:14:55.435Z",
   "tools_run": [
     {
       "key": "community-directory-review-preview",
@@ -20,6 +20,12 @@
       "reason": ""
     },
     {
+      "key": "onlinejainpathshala-review-preview",
+      "label": "OnlineJainPathshala Review Preview",
+      "script_path": "tools/bots/onlinejainpathshala-review-preview.js",
+      "reason": ""
+    },
+    {
       "key": "news-ingestion-preview",
       "label": "News Ingestion Preview",
       "script_path": "tools/news-ingestion-preview.js",
@@ -33,6 +39,12 @@
     }
   ],
   "tools_skipped": [
+    {
+      "key": "onlinejainpathshala-intake-preview",
+      "label": "OnlineJainPathshala Intake Preview",
+      "script_path": "tools/bots/onlinejainpathshala-intake-preview.js",
+      "reason": "set RUN_OJP_INTAKE=true to allow a polite public intake crawl"
+    },
     {
       "key": "news-bot-preview",
       "label": "News Bot Preview",
@@ -99,20 +111,26 @@
     "public/data/review-calendar-quality.json",
     "public/data/review-community-directory-quality.json",
     "public/data/review-news-preview.json",
+    "public/data/review-onlinejainpathshala-quality.json",
     "public/data/review-resources-monitor-preview.json",
     "public/data/review-source-permissions.json",
     "tools/reports/calendar-review-report.json",
     "tools/reports/community-directory-review-report.json",
     "tools/reports/daily-operations-summary.json",
     "tools/reports/daily-operations-summary.txt",
+    "tools/reports/onlinejainpathshala-review-report.json",
     "tools/reports/source-permission-review-report.json"
   ],
   "review_items_count": 84,
   "calendar_review_items": 0,
   "calendar_needs_review_count": 15,
   "source_permission_issues": 12,
+  "onlinejainpathshala_review_items": 5,
+  "onlinejainpathshala_permission_issues": 0,
+  "onlinejainpathshala_blocked_items": 0,
+  "panchang_extraction_pending_count": 13,
   "warnings": [
-    "10 tool(s) were skipped because the script file does not exist yet."
+    "11 tool(s) were skipped because the script file does not exist yet."
   ],
   "next_actions": [
     "Inspect generated review reports before updating any public data.",

@@ -20,9 +20,9 @@ Telegram stays optional and inactive unless you set the env vars yourself.
 Optional Telegram environment variables:
 
 ```powershell
-TELEGRAM_BOT_TOKEN=
-TELEGRAM_CHAT_ID=
-TELEGRAM_DRY_RUN=true
+TELEGRAM_BOT_TOKEN <set locally>
+TELEGRAM_CHAT_ID <set locally>
+TELEGRAM_DRY_RUN true
 ```
 
 Set these locally in your shell or local environment.
@@ -39,8 +39,8 @@ node .\tools\run-all-review-bots.js
 PowerShell real send:
 
 ```powershell
-$env:TELEGRAM_BOT_TOKEN="YOUR_TOKEN"
-$env:TELEGRAM_CHAT_ID="YOUR_CHAT_ID"
+Set-Item Env:TELEGRAM_BOT_TOKEN "YOUR_TOKEN"
+Set-Item Env:TELEGRAM_CHAT_ID "YOUR_CHAT_ID"
 $env:TELEGRAM_DRY_RUN="false"
 node .\tools\run-all-review-bots.js
 ```
@@ -108,6 +108,44 @@ This writes:
 Calendar records are review-first.
 Do not publish unsupported exact dates.
 Use local sangh or trusted panchang confirmation before relying on observance dates.
+
+## OnlineJainPathshala Intake Preview
+
+Dry run the public-source intake flow safely:
+
+```powershell
+node .\tools\bots\onlinejainpathshala-intake-preview.js --dry-run
+node .\tools\bots\onlinejainpathshala-intake-preview.js --max-pages 150 --download-assets=false
+```
+
+This writes:
+
+- `tools/reports/onlinejainpathshala-intake-report.json`
+- `tools/exports/onlinejainpathshala-page-inventory.json`
+- `tools/exports/onlinejainpathshala-page-inventory.csv`
+- `public/data/review-onlinejainpathshala-pages.json`
+- `public/data/review-onlinejainpathshala-assets.json`
+
+Daily runner does not crawl this source automatically.
+To allow the polite intake preview during a daily run, set:
+
+```powershell
+$env:RUN_OJP_INTAKE="true"
+node .\tools\run-all-review-bots.js
+```
+
+## OnlineJainPathshala Review Preview
+
+Validate permission, attribution, archive, extraction queue, and private-content safety:
+
+```powershell
+node .\tools\bots\onlinejainpathshala-review-preview.js
+```
+
+This writes:
+
+- `tools/reports/onlinejainpathshala-review-report.json`
+- `public/data/review-onlinejainpathshala-quality.json`
 
 ## Source and Permission Review Preview
 

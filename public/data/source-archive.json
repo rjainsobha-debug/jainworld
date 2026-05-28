@@ -1,0 +1,41 @@
+[
+  {
+    "id": "source-online-jain-pathshala",
+    "source_name": "Online Jain Pathshala / Amar Granthalaya",
+    "source_name_hi": "ऑनलाइन जैन पाठशाला / अमर ग्रंथालय",
+    "source_type": "educational",
+    "source_site": "onlinejainpathshala.com",
+    "source_url": "https://www.onlinejainpathshala.com/",
+    "permission_status": "needs_documented_confirmation",
+    "review_status": "pending_review",
+    "attribution_text": "Source: Online Jain Pathshala / Amar Granthalaya, Indore. Used with source credit for JainWorld review and educational reference.",
+    "notes": "Used for source-linked metadata, review-first summaries, and future manual review queues. Do not auto-publish copied content.",
+    "notes_hi": "इस स्रोत का उपयोग स्रोत-आधारित मेटाडेटा, समीक्षा-प्रथम सारांश और भविष्य की मैन्युअल समीक्षा सूचियों के लिए किया जाता है। कॉपी की गई सामग्री को स्वतः प्रकाशित न करें।"
+  },
+  {
+    "id": "source-panchang-2026",
+    "source_name": "Tirthankar Vardhman Jain Panchang 2026",
+    "source_name_hi": "तीर्थंकर वर्धमान जैन पंचांग 2026",
+    "source_type": "panchang",
+    "source_site": "onlinejainpathshala.com",
+    "source_url": "https://www.onlinejainpathshala.com/",
+    "permission_status": "needs_documented_confirmation",
+    "review_status": "pending_review",
+    "attribution_text": "Source: Tirthankar Vardhman Jain Panchang 2026 / Amar Granthalaya / Online Jain Pathshala.",
+    "notes": "Month-wise scans are source-provided references only. Exact structured dates require manual extraction and review before verification.",
+    "notes_hi": "मासिक स्कैन केवल स्रोत-आधारित संदर्भ हैं। सत्यापित संरचित तिथियों से पहले मैन्युअल निकासी और समीक्षा आवश्यक है।"
+  },
+  {
+    "id": "source-jainworld-manual-review",
+    "source_name": "JainWorld Manual Editorial Review",
+    "source_name_hi": "जैनवर्ल्ड मैन्युअल संपादकीय समीक्षा",
+    "source_type": "manual_review",
+    "source_site": "jainworld.in",
+    "source_url": "https://jainworld.in/",
+    "permission_status": "allowed",
+    "review_status": "published",
+    "attribution_text": "Reviewed and structured by JainWorld editorial workflow.",
+    "notes": "Used for safe summaries, categorisation, and review-first metadata after source checks.",
+    "notes_hi": "स्रोत जाँच के बाद सुरक्षित सारांश, वर्गीकरण और समीक्षा-प्रथम मेटाडेटा के लिए उपयोग किया जाता है।"
+  }
+]

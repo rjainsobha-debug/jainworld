@@ -63,5 +63,18 @@
     "notes_hi": "स्पष्ट समीक्षा के बाद भविष्य में स्थानीय संघ कैलेंडर या कार्यक्रम सूचना जोड़ने के लिए स्थानधारक।",
     "last_checked_at": null,
     "review_status": "needs_review"
+  },
+  {
+    "id": "onlinejainpathshala-panchang-2026",
+    "source_name": "Tirthankar Vardhman Jain Panchang 2026",
+    "source_url": "https://www.onlinejainpathshala.com/",
+    "source_type": "panchang",
+    "location": "India",
+    "tradition_scope": "needs_review",
+    "trust_level": "medium",
+    "notes": "User provided month-wise scans and back-page PDF. Use as source-provided reference. Manual extraction and JainWorld review are required before structured dates are marked verified.",
+    "notes_hi": "उपयोगकर्ता द्वारा मासिक स्कैन और पीछे के पृष्ठ प्रदान किए गए हैं। संरचित तिथि को सत्यापित मानने से पहले मैन्युअल निकासी और जैनवर्ल्ड समीक्षा आवश्यक है।",
+    "last_checked_at": "2026-05-28",
+    "review_status": "pending_review"
   }
 ]

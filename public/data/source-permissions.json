@@ -1,0 +1,28 @@
+[
+  {
+    "id": "onlinejainpathshala-amar-granthalaya",
+    "source_name": "Online Jain Pathshala / Amar Granthalaya",
+    "source_site": "onlinejainpathshala.com",
+    "source_url": "https://www.onlinejainpathshala.com/",
+    "publisher": "Amar Granthalaya, Indore",
+    "contact_public": "(0731) 254 5744 / info@onlinejainpathshala.com",
+    "permission_basis": "User states mutual discussion exists. Written permission record should be attached before marking permission_received.",
+    "permission_status": "needs_documented_confirmation",
+    "allowed_use": [
+      "source-linked metadata",
+      "review-first summaries",
+      "Panchang archive display with credit if permission confirmed",
+      "manual extraction into structured records after review"
+    ],
+    "not_allowed_without_confirmation": [
+      "removing credits",
+      "hosting full copyrighted books",
+      "hosting audio/video downloads",
+      "copying login/private content",
+      "copying matrimonial/classified personal data"
+    ],
+    "attribution_text": "Source: Online Jain Pathshala / Amar Granthalaya, Indore. Used with source credit for JainWorld review and educational reference.",
+    "last_checked_at": "2026-05-28",
+    "review_status": "pending_review"
+  }
+]

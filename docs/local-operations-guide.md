@@ -52,6 +52,21 @@ Calendar records must stay trust-first:
 - no universal date claims when observance can vary
 - verify with local sangh or trusted panchang before using a date for practice
 
+For OnlineJainPathshala source intake and review:
+
+```powershell
+node .\tools\bots\onlinejainpathshala-intake-preview.js --dry-run
+node .\tools\bots\onlinejainpathshala-review-preview.js
+```
+
+The daily operations runner does not crawl that source automatically.
+If you want the polite intake preview to run during the daily bot run, use:
+
+```powershell
+$env:RUN_OJP_INTAKE="true"
+node .\tools\run-all-review-bots.js
+```
+
 ## Before pushing to GitHub
 
 1. Run `git status`

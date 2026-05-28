@@ -86,6 +86,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://jainworld.in/source-archive.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://jainworld.in/search.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
