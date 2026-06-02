@@ -1,5 +1,5 @@
 {
-  "run_time": "2026-05-28T07:14:55.435Z",
+  "run_time": "2026-06-02T06:59:07.183Z",
   "tools_run": [
     {
       "key": "community-directory-review-preview",
@@ -39,6 +39,24 @@
     }
   ],
   "tools_skipped": [
+    {
+      "key": "build-panchang-digital-skeleton",
+      "label": "Build Panchang Digital Skeleton",
+      "script_path": "tools/bots/build-panchang-digital-skeleton.js",
+      "reason": "digital panchang skeleton already exists"
+    },
+    {
+      "key": "panchang-ocr-assist",
+      "label": "Panchang OCR Assist",
+      "script_path": "tools/bots/panchang-ocr-assist.js",
+      "reason": "set RUN_PANCHANG_OCR=true to allow local OCR assistance"
+    },
+    {
+      "key": "apply-panchang-manual-extraction",
+      "label": "Apply Panchang Manual Extraction",
+      "script_path": "tools/bots/apply-panchang-manual-extraction.js",
+      "reason": "set RUN_PANCHANG_MERGE=true to apply reviewed manual extraction"
+    },
     {
       "key": "onlinejainpathshala-intake-preview",
       "label": "OnlineJainPathshala Intake Preview",
@@ -122,15 +140,20 @@
     "tools/reports/source-permission-review-report.json"
   ],
   "review_items_count": 84,
-  "calendar_review_items": 0,
+  "calendar_review_items": 365,
   "calendar_needs_review_count": 15,
+  "panchang_digital_days": 365,
+  "panchang_pending_details": 365,
+  "panchang_reviewed_days": 0,
+  "panchang_manual_queue_count": 13,
+  "panchang_ocr_queue_count": 12,
   "source_permission_issues": 12,
   "onlinejainpathshala_review_items": 5,
   "onlinejainpathshala_permission_issues": 0,
   "onlinejainpathshala_blocked_items": 0,
   "panchang_extraction_pending_count": 13,
   "warnings": [
-    "11 tool(s) were skipped because the script file does not exist yet."
+    "14 tool(s) were skipped because the script file does not exist yet."
   ],
   "next_actions": [
     "Inspect generated review reports before updating any public data.",

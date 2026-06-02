@@ -24,6 +24,9 @@ const FALLBACK_FILES = {
   contentGaps: "/data/review-content-gaps.json",
   calendarReview: "/data/review-calendar-events.json",
   calendarQuality: "/data/review-calendar-quality.json",
+  digitalPanchang: "/data/panchang-digital-2026.json",
+  panchangOcrExtraction: "/data/review-panchang-ocr-extraction.json",
+  panchangManualExtraction: "/data/review-panchang-manual-extraction.json",
   communityDirectory: "/data/review-community-directory.json",
   communityDirectoryQuality: "/data/review-community-directory-quality.json",
   speakersReview: "/data/review-speakers.json",
@@ -326,6 +329,15 @@ function renderDashboard(collections, isLive) {
     }),
     renderSection("Calendar Quality", "calendar-quality", collections.calendarQuality, false, {
       subtitle: "Generated quality checks for missing sources, review status, duplicate slugs, and unsupported exact dates."
+    }),
+    renderSection("Digital Panchang Review", "digital-panchang", collections.digitalPanchang, false, {
+      subtitle: "Month-by-month digital Panchang skeleton records stay source-first until manual extraction is reviewed."
+    }),
+    renderSection("Panchang OCR Extraction Review", "panchang-ocr-extraction", collections.panchangOcrExtraction, false, {
+      subtitle: "OCR-assisted text stays in review queues only and must never auto-publish into public dates."
+    }),
+    renderSection("Panchang Manual Extraction Queue", "panchang-manual-extraction", collections.panchangManualExtraction, false, {
+      subtitle: "Manual extraction records capture the work needed before any date can be considered reliable."
     }),
     renderSection("Community Directory Review", "community-directory", collections.communityDirectory, false, {
       subtitle: "Review-first placeholders for sanghs, centers, events, trusts, and institutional references."

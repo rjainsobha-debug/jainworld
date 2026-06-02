@@ -1,19 +1,19 @@
-import { getCalendar } from "./api.js";
-import { getLanguage, pickLocalized, translate, translateLabel, updateLanguageDOM } from "./language.js";
+import { getLanguage, pickLocalized, translate, updateLanguageDOM } from "./language.js";
 
+const YEAR_OPTIONS = [2026];
 const MONTHS = [
-  { value: 1, en: "January", hi: "जनवरी" },
-  { value: 2, en: "February", hi: "फ़रवरी" },
-  { value: 3, en: "March", hi: "मार्च" },
-  { value: 4, en: "April", hi: "अप्रैल" },
-  { value: 5, en: "May", hi: "मई" },
-  { value: 6, en: "June", hi: "जून" },
-  { value: 7, en: "July", hi: "जुलाई" },
-  { value: 8, en: "August", hi: "अगस्त" },
-  { value: 9, en: "September", hi: "सितंबर" },
-  { value: 10, en: "October", hi: "अक्टूबर" },
-  { value: 11, en: "November", hi: "नवंबर" },
-  { value: 12, en: "December", hi: "दिसंबर" }
+  { value: 1, en: "January", hi: "जनवरी", slug: "january" },
+  { value: 2, en: "February", hi: "फरवरी", slug: "february" },
+  { value: 3, en: "March", hi: "मार्च", slug: "march" },
+  { value: 4, en: "April", hi: "अप्रैल", slug: "april" },
+  { value: 5, en: "May", hi: "मई", slug: "may" },
+  { value: 6, en: "June", hi: "जून", slug: "june" },
+  { value: 7, en: "July", hi: "जुलाई", slug: "july" },
+  { value: 8, en: "August", hi: "अगस्त", slug: "august" },
+  { value: 9, en: "September", hi: "सितंबर", slug: "september" },
+  { value: 10, en: "October", hi: "अक्टूबर", slug: "october" },
+  { value: 11, en: "November", hi: "नवंबर", slug: "november" },
+  { value: 12, en: "December", hi: "दिसंबर", slug: "december" }
 ];
 
 const WEEKDAYS = [
@@ -27,380 +27,537 @@ const WEEKDAYS = [
 ];
 
 const FILTERS = [
-  { key: "all", translation: "all", fallback: "All" },
-  { key: "festival", translation: "festivals", fallback: "Festivals" },
-  { key: "tithi_vrat", translation: "tithi_vrat", fallback: "Tithi / Vrat" },
-  { key: "ayambil", translation: "ayambil", fallback: "Ayambil" },
-  { key: "ekadashi", translation: "ekadashi", fallback: "Ekadashi" },
-  { key: "dwadashi", translation: "dwadashi", fallback: "Dwadashi" },
-  { key: "chaudas", translation: "chaudas", fallback: "Chaudas" },
-  { key: "learning", translation: "learning", fallback: "Learning" },
-  { key: "needs_review", translation: "needs_review", fallback: "Needs Review" }
+  { key: "all", label: "All", labelHi: "सभी" },
+  { key: "festival", label: "Festivals", labelHi: "पर्व" },
+  { key: "tithi_vrat", label: "Tithi / Vrat", labelHi: "तिथि / व्रत" },
+  { key: "ayambil", label: "Ayambil", labelHi: "आयंबिल" },
+  { key: "ekadashi", label: "Ekadashi", labelHi: "एकादशी" },
+  { key: "dwadashi", label: "Dwadashi", labelHi: "द्वादशी" },
+  { key: "chaudas", label: "Chaudas", labelHi: "चौदस" },
+  { key: "learning", label: "Learning", labelHi: "शिक्षा" },
+  { key: "needs_review", label: "Needs Review", labelHi: "समीक्षा आवश्यक" }
 ];
 
-const IMPORTANT_FESTIVAL_KEYS = [
-  "paryushan",
-  "samvatsari",
-  "das lakshan",
-  "mahavir jayanti",
-  "ayambil oli",
-  "kartik purnima"
+const DETAIL_TABS = [
+  { key: "day", label: "Day details", labelHi: "दिन विवरण" },
+  { key: "muhurat", label: "Muhurat", labelHi: "मुहूर्त" },
+  { key: "nakshatra", label: "Nakshatra", labelHi: "नक्षत्र" },
+  { key: "hora", label: "Hora", labelHi: "होरा" },
+  { key: "source", label: "Source", labelHi: "स्रोत" }
 ];
 
-const DEFAULT_CAUTION_EN = "Dates can vary by panchang, location, tradition, and local sangh practice.";
-const DEFAULT_CAUTION_HI = "तिथियाँ पंचांग, स्थान, परंपरा और स्थानीय संघ की परंपरा के अनुसार भिन्न हो सकती हैं।";
-const DEFAULT_SOURCE_NOTE_EN = "Please verify with local sangh or trusted panchang.";
+const DEFAULT_CAUTION_EN = "Dates may vary by panchang, location, tradition, and local sangh verification.";
+const DEFAULT_CAUTION_HI = "तिथियाँ पंचांग, स्थान, परंपरा और स्थानीय संघ सत्यापन के अनुसार भिन्न हो सकती हैं।";
+const DEFAULT_SOURCE_NOTE_EN = "Please verify with local sangh or a trusted panchang.";
 const DEFAULT_SOURCE_NOTE_HI = "कृपया स्थानीय संघ या विश्वसनीय पंचांग से सत्यापित करें।";
 
 const state = {
-  sampleItems: [],
-  reviewItems: [],
-  sources: [],
-  archiveItems: [],
-  mergedItems: [],
+  year: 2026,
+  month: 6,
+  view: "month",
   filter: "all",
-  view: "list",
   query: "",
-  year: new Date().getFullYear(),
-  month: new Date().getMonth() + 1,
-  archiveModalIndex: -1
+  activeTab: "day",
+  digital: null,
+  archive: [],
+  overview: [],
+  reviewEvents: [],
+  sources: [],
+  manualQueue: [],
+  ocrQueue: [],
+  archiveImageIndex: -1,
+  selectedDayKey: null
 };
 
-export async function initCalendarPage() {
+initCalendarPage();
+
+async function initCalendarPage() {
   const root = document.getElementById("calendar-app");
   if (!root) {
     return;
   }
 
-  const [sampleItems, reviewItems, sources, archiveItems] = await Promise.all([
-    getCalendar({ limit: 300, includeDrafts: true }),
-    readLocalArray("/data/review-calendar-events.json"),
-    readLocalArray("/data/calendar-sources.json"),
-    readLocalArray("/data/panchang-2026.json")
+  const [digital, archive, overview, reviewEvents, sources, manualQueue, ocrQueue] = await Promise.all([
+    readJson("/data/panchang-digital-2026.json"),
+    readJson("/data/panchang-2026.json"),
+    readJson("/data/sample-calendar.json"),
+    readJson("/data/review-calendar-events.json"),
+    readJson("/data/calendar-sources.json"),
+    readJson("/data/review-panchang-manual-extraction.json"),
+    readJson("/data/review-panchang-ocr-extraction.json")
   ]);
 
-  state.sampleItems = Array.isArray(sampleItems) ? sampleItems : [];
-  state.reviewItems = Array.isArray(reviewItems) ? reviewItems : [];
-  state.sources = Array.isArray(sources) ? sources : [];
-  state.archiveItems = Array.isArray(archiveItems) ? archiveItems : [];
-  state.mergedItems = mergeCalendarItems(state.sampleItems, state.reviewItems, state.sources);
+  state.digital = normalizeDigital(digital);
+  state.archive = Array.isArray(archive) ? archive : [];
+  state.overview = [...toArray(overview), ...toArray(reviewEvents)];
+  state.reviewEvents = toArray(reviewEvents);
+  state.sources = toArray(sources);
+  state.manualQueue = toArray(manualQueue);
+  state.ocrQueue = toArray(ocrQueue);
+  const initial = getInitialSelectionFromQuery();
+  state.month = initial.month || pickInitialMonth(state.digital);
+  state.selectedDayKey = initial.date || getInitialSelectedDayKey(state.digital, state.month);
 
   renderCalendarPage(root);
+  wireEvents(root);
+
+  if (!window.__jainworldPanchangKeydownBound) {
+    window.__jainworldPanchangKeydownBound = true;
+    document.addEventListener("keydown", handleDocumentKeydown);
+  }
 
   window.addEventListener("jainworld:language-change", () => {
     renderCalendarPage(root);
+    wireEvents(root);
   });
 }
 
-async function readLocalArray(filePath) {
+async function readJson(filePath) {
   try {
     const response = await fetch(filePath);
     if (!response.ok) {
-      return [];
+      return null;
     }
-    const data = await response.json();
-    return Array.isArray(data) ? data : [];
+    return response.json();
   } catch (error) {
     console.warn(`Could not load ${filePath}`, error);
-    return [];
+    return null;
   }
 }
 
-function mergeCalendarItems(sampleItems, reviewItems, sources) {
-  const sourceMap = new Map(
-    sources
-      .map((source) => [String(source.source_name || "").trim().toLowerCase(), source])
-      .filter(([key]) => key)
-  );
+function normalizeDigital(digital) {
+  if (!digital || typeof digital !== "object") {
+    return { months: [] };
+  }
 
-  return [...sampleItems, ...reviewItems]
-    .map((item) => enrichCalendarItem(item, sourceMap))
-    .sort((left, right) => {
-      const leftDate = left.date_gregorian || "9999-99-99";
-      const rightDate = right.date_gregorian || "9999-99-99";
-      if (leftDate !== rightDate) {
-        return leftDate.localeCompare(rightDate);
-      }
-      return String(left.title || left.slug || "").localeCompare(String(right.title || right.slug || ""));
-    });
+  const months = Array.isArray(digital.months) ? digital.months.map((month) => normalizeMonth(month)) : [];
+  return { ...digital, months };
 }
 
-function enrichCalendarItem(item, sourceMap) {
-  const next = { ...item };
-  const sourceName = String(next.source_name || "").trim().toLowerCase();
-  const source = sourceMap.get(sourceName) || null;
+function normalizeMonth(month) {
+  const monthNumber = Number(month.month_number || month.number || 0);
+  const sourceImage = month.source_image || month.image_url || `/assets/calendar/panchang-2026/${getMonthSlug(monthNumber)}-2026.jpg`;
+  const sourcePdf = month.source_pdf || month.pdf_url || "/assets/calendar/panchang-2026/panchang-back-page-2026.pdf";
+  const days = Array.isArray(month.days) ? month.days.map((day) => normalizeDay(day, monthNumber, sourceImage, sourcePdf)) : [];
 
-  next.event_type = next.event_type || next.type || "learning";
-  next.source_type = source?.source_type || next.source_type || "manual_review";
-  next.source_trust_level = source?.trust_level || "needs_review";
-  next.source_location = source?.location || next.location_scope || "needs_review";
-  next.review_status = next.review_status || "pending_review";
-  next.date_confidence = next.date_confidence || "needs_review";
-  next.tags = Array.isArray(next.tags) ? next.tags : [];
-  next.caution_note = next.caution_note || DEFAULT_CAUTION_EN;
-  next.caution_note_hi = next.caution_note_hi || DEFAULT_CAUTION_HI;
-  next.source_note = next.source_note || DEFAULT_SOURCE_NOTE_EN;
-  next.source_note_hi = next.source_note_hi || DEFAULT_SOURCE_NOTE_HI;
+  return {
+    ...month,
+    month_number: monthNumber,
+    month_name: month.month_name || getMonthName(monthNumber).en,
+    month_name_hi: month.month_name_hi || getMonthName(monthNumber).hi,
+    month_slug: month.month_slug || getMonthSlug(monthNumber),
+    source_image: sourceImage,
+    source_pdf: sourcePdf,
+    image_url: month.image_url || sourceImage,
+    pdf_url: month.pdf_url || sourcePdf,
+    days
+  };
+}
 
-  return next;
+function normalizeDay(day, monthNumber, sourceImage, sourcePdf) {
+  const date = String(day.gregorian_date || "").trim();
+  const parsed = date ? new Date(`${date}T00:00:00`) : null;
+  const dayNumber = Number(day.day_number || (parsed && !Number.isNaN(parsed.getTime()) ? parsed.getDate() : 0));
+  const month = getMonthName(monthNumber);
+  const weekday = parsed && !Number.isNaN(parsed.getTime()) ? WEEKDAYS[parsed.getDay()] : { en: "", hi: "" };
+  const shortLabel = String(day.short_label || "").trim();
+  const shortLabelHi = String(day.short_label_hi || "").trim();
+
+  return {
+    ...day,
+    id: day.id || `panchang-digital-${date || `${monthNumber}-${dayNumber}`}`,
+    gregorian_date: date || null,
+    day_number: dayNumber,
+    month_number: monthNumber,
+    month_name: day.month_name || month.en,
+    month_name_hi: day.month_name_hi || month.hi,
+    weekday: day.weekday || weekday.en,
+    weekday_hi: day.weekday_hi || weekday.hi,
+    date_display: day.date_display || (date ? formatDateDisplay(dayNumber, month.en) : `${month.en} ${dayNumber}`),
+    date_display_hi: day.date_display_hi || (date ? formatDateDisplay(dayNumber, month.hi) : `${month.hi} ${dayNumber}`),
+    title: day.title || formatDayTitle(dayNumber, weekday.en, month.en),
+    title_hi: day.title_hi || formatDayTitle(dayNumber, weekday.hi, month.hi),
+    source_image: day.source_image || sourceImage,
+    source_pdf: day.source_pdf || sourcePdf,
+    source_name: day.source_name || state?.digital?.source_name || "Tirthankar Vardhman Jain Panchang 2026",
+    source_url: day.source_url || state?.digital?.source_url || "https://www.onlinejainpathshala.com/",
+    source_site: day.source_site || state?.digital?.source_site || "onlinejainpathshala.com",
+    source_note: day.source_note || DEFAULT_SOURCE_NOTE_EN,
+    source_note_hi: day.source_note_hi || DEFAULT_SOURCE_NOTE_HI,
+    caution_note: day.caution_note || DEFAULT_CAUTION_EN,
+    caution_note_hi: day.caution_note_hi || DEFAULT_CAUTION_HI,
+    date_confidence: day.date_confidence || "needs_review",
+    review_status: day.review_status || "pending_review",
+    extraction_status: day.extraction_status || "pending_manual_extraction",
+    event_type: day.event_type || "local_event",
+    short_label: shortLabel,
+    short_label_hi: shortLabelHi,
+    chips: Array.isArray(day.chips) ? day.chips : [],
+    muhurat: day.muhurat || {
+      sunrise: null,
+      sunset: null,
+      navkarsi: null,
+      porshi: null,
+      sadha_porshi: null,
+      purimaddha: null,
+      avaddha: null
+    },
+    lunar_month: day.lunar_month || null,
+    lunar_month_hi: day.lunar_month_hi || null,
+    lunar_tithi: day.lunar_tithi || null,
+    lunar_tithi_hi: day.lunar_tithi_hi || null,
+    paksha: day.paksha || "needs_review",
+    paksha_hi: day.paksha_hi || translate("needs_review", "Needs Review"),
+    nakshatra: day.nakshatra || null,
+    nakshatra_hi: day.nakshatra_hi || null,
+    hora: day.hora || null,
+    hora_hi: day.hora_hi || null,
+    summary: day.summary || "",
+    summary_hi: day.summary_hi || "",
+    details_pending: !shortLabel && String(day.extraction_status || "").includes("pending")
+  };
+}
+
+function pickInitialMonth(digital) {
+  const current = new Date();
+  if (digital?.year === current.getFullYear()) {
+    return current.getMonth() + 1;
+  }
+  return 1;
+}
+
+function getInitialSelectionFromQuery() {
+  try {
+    const url = new URL(window.location.href);
+    const dateParam = String(url.searchParams.get("date") || "").trim();
+    const monthParam = Number(url.searchParams.get("month") || 0);
+
+    if (dateParam && !Number.isNaN(new Date(`${dateParam}T00:00:00`).getTime())) {
+      const date = new Date(`${dateParam}T00:00:00`);
+      return {
+        month: date.getMonth() + 1,
+        date: toDateKey(date)
+      };
+    }
+
+    if (monthParam >= 1 && monthParam <= 12) {
+      return { month: monthParam, date: null };
+    }
+  } catch (error) {
+    return { month: null, date: null };
+  }
+
+  return { month: null, date: null };
+}
+
+function getInitialSelectedDayKey(digital, monthNumber) {
+  const current = new Date();
+  if (digital?.year === current.getFullYear() && current.getMonth() + 1 === monthNumber) {
+    return toDateKey(current);
+  }
+
+  const month = getMonthRecord(digital, monthNumber);
+  return month?.days?.[0]?.gregorian_date || null;
 }
 
 function renderCalendarPage(root) {
   const lang = getLanguage();
-  const filteredItems = getFilteredItems();
-  const featuredItems = getImportantFestivalItems();
+  const month = getMonthRecord(state.digital, state.month);
+  const days = getVisibleDays(month);
+  const selectedDay = getSelectedDay(month);
+  const sourceMonth = getSourceMonthRecord(state.archive, state.month);
+  const archiveImages = state.archive.filter((item) => item.image_url);
+  const backPage = state.archive.find((item) => item.asset_type === "pdf" && item.pdf_url);
 
   root.innerHTML = `
-    <section class="calendar-trust-notice">
-      <div>
-        <span class="jw-kicker">${translate("jain_calendar_and_panchang", "Jain Calendar and Panchang")}</span>
-        <h2>${translate("dates_may_vary", "Dates may vary")}</h2>
-        <p>${escapeHtml(getTrustNotice(lang))}</p>
-      </div>
-      <div class="calendar-source-note">
-        <strong>${translate("verify_with_local_sangh", "Verify with local sangh")}</strong>
-        <p>${escapeHtml(getVerificationSupport(lang))}</p>
-      </div>
-    </section>
-
-    <section class="calendar-controls jw-card p-5">
-      <div class="calendar-controls__row">
-        <label class="jw-search-shell">
-          <span class="jw-kicker">${translate("year", "Year")}</span>
-          <select id="calendar-year-select">
-            ${buildYearOptions().join("")}
-          </select>
-        </label>
-        <label class="jw-search-shell">
-          <span class="jw-kicker">${translate("month", "Month")}</span>
-          <select id="calendar-month-select">
-            ${MONTHS.map((month) => `<option value="${month.value}" ${month.value === state.month ? "selected" : ""}>${escapeHtml(
-              lang === "hi" ? month.hi : month.en
-            )}</option>`).join("")}
-          </select>
-        </label>
-        <label class="jw-search-shell calendar-controls__search">
-          <span class="jw-kicker">${translate("search", "Search")}</span>
-          <input
-            id="calendar-search-input"
-            type="search"
-            value="${escapeHtml(state.query)}"
-            placeholder="${escapeHtml(
-              lang === "hi" ? "पर्व, व्रत या तिथि खोजें" : "Search festivals, vrat, or tithi"
-            )}"
-          />
-        </label>
-      </div>
-      <div class="calendar-controls__row">
-        <div class="jw-inline-scroll">
-          ${FILTERS.map((filter) => renderFilterButton(filter)).join("")}
+    <section class="digital-panchang">
+      <header class="digital-panchang__header devotional-hero">
+        <div class="jw-page-hero-inner jw-container">
+          <div class="breadcrumb">
+            <a href="/index.html">${translate("home", "Home")}</a>
+            <span aria-hidden="true">/</span>
+            <span>${translate("jain_calendar_and_panchang", "Jain Calendar and Panchang")}</span>
+          </div>
+          <span class="section-kicker">${translate("digital_jain_panchang_2026", "Digital Jain Panchang 2026")}</span>
+          <h1 class="mt-4 text-4xl font-bold tracking-tight text-stone-900">
+            ${translate("digital_jain_panchang_2026", "Digital Jain Panchang 2026")}
+          </h1>
+          <p class="m-0 mt-4 max-w-3xl text-base leading-8 text-stone-700">
+            ${escapeHtml(
+              lang === "hi"
+                ? "दिन-वार विवरण, मुहूर्त, नक्षत्र, होरा और स्रोत पृष्ठों के साथ एक trust-first जैन पंचांग अनुभव।"
+                : "A trust-first Jain Panchang experience with day details, muhurat, nakshatra, hora, and source pages."
+            )}
+          </p>
         </div>
-        <div class="calendar-view-toggle" role="tablist" aria-label="${escapeHtml(
-          lang === "hi" ? "दृश्य बदलें" : "Change calendar view"
-        )}">
-          <button type="button" class="${state.view === "month" ? "is-active" : ""}" data-calendar-view="month">
-            ${translate("month_view", "Month view")}
-          </button>
-          <button type="button" class="${state.view === "list" ? "is-active" : ""}" data-calendar-view="list">
-            ${translate("list_view", "List view")}
-          </button>
-        </div>
-      </div>
-    </section>
+      </header>
 
-    <section class="calendar-pro-panel">
-      ${state.view === "month" ? renderMonthView(filteredItems, lang) : renderListView(filteredItems, lang)}
-    </section>
-
-    <section class="detail-section">
-      <div class="jw-section-title">
+      <section class="calendar-trust-notice jw-container">
         <div>
-          <span class="jw-kicker">${translate("festivals", "Festivals")}</span>
-          <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">${translate(
-            "festival_learning",
-            "Festival Learning"
-          )}</h2>
+          <h2>${translate("dates_may_vary", "Dates may vary")}</h2>
+          <p>${escapeHtml(getTrustNotice(lang))}</p>
         </div>
-      </div>
-      <div class="related-grid">
-        ${featuredItems.map((item) => renderImportantFestivalCard(item, lang)).join("")}
-      </div>
-    </section>
-
-    ${renderArchiveSection(lang)}
-
-    <section class="detail-section">
-      <div class="jw-section-title">
-        <div>
-          <span class="jw-kicker">${translate("educational_overview", "Educational overview")}</span>
-          <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">${translate(
-            "jain_calendar_and_panchang",
-            "Jain Calendar and Panchang"
-          )}</h2>
+        <div class="calendar-source-note">
+          <strong>${translate("verify_with_local_sangh", "Verify with local sangh")}</strong>
+          <p>${escapeHtml(
+            lang === "hi"
+              ? "महत्वपूर्ण धार्मिक निर्णयों के लिए स्थानीय संघ या विश्वसनीय पंचांग से सत्यापन करें।"
+              : "Please verify important observances with your local sangh or a trusted panchang before making religious decisions."
+          )}</p>
         </div>
-      </div>
-      <div class="jw-grid-2">
-        ${renderEducationBlock(
-          translate("festival_learning", "Festival overview"),
-          lang === "hi"
-            ? "पर्व कार्ड सामान्य जानकारी के लिए हैं। सटीक तिथि केवल तब दिखाई जाती है जब स्रोत और स्थानीय संदर्भ की समीक्षा हो।"
-            : "Festival cards are for general learning first. Exact dates appear only when source and local context have been reviewed."
-        )}
-        ${renderEducationBlock(
-          translate("tithi_vrat", "Tithi / Vrat"),
-          lang === "hi"
-            ? "तिथि, व्रत, एकादशी, द्वादशी और चौदस का पालन पंचांग और स्थानीय परंपरा के अनुसार भिन्न हो सकता है।"
-            : "Tithi, vrat, Ekadashi, Dwadashi, and Chaudas observance can vary by panchang and local tradition."
-        )}
-        ${renderEducationBlock(
-          translate("ayambil", "Ayambil"),
-          lang === "hi"
-            ? "आयंबिल के पालन में परिवार, परंपरा और स्थानीय मार्गदर्शन का महत्व रहता है।"
-            : "Ayambil observance often depends on family practice, tradition, and local guidance."
-        )}
-        ${renderEducationBlock(
-          translate("verify_with_local_sangh", "Verify with local sangh"),
-          lang === "hi"
-            ? "धार्मिक निर्णय, उपवास, यात्रा, या विशेष कार्यक्रम के लिए स्थानीय संघ या विश्वसनीय पंचांग से पुष्टि करें।"
-            : "For religious decisions, fasting, travel, or special programmes, confirm with your local sangh or a trusted panchang."
-        )}
-      </div>
-    </section>
+      </section>
 
-    ${renderArchiveModal(lang)}
+      <section class="calendar-controls jw-container jw-card">
+        <div class="calendar-controls__row">
+          <label class="jw-search-shell">
+            <span class="jw-kicker">${translate("year", "Year")}</span>
+            <select id="calendar-year-select">
+              ${YEAR_OPTIONS.map((year) => `<option value="${year}" ${year === state.year ? "selected" : ""}>${year}</option>`).join("")}
+            </select>
+          </label>
+          <label class="jw-search-shell">
+            <span class="jw-kicker">${translate("month", "Month")}</span>
+            <select id="calendar-month-select">
+              ${MONTHS.map((monthItem) => `<option value="${monthItem.value}" ${monthItem.value === state.month ? "selected" : ""}>${escapeHtml(
+                lang === "hi" ? monthItem.hi : monthItem.en
+              )}</option>`).join("")}
+            </select>
+          </label>
+          <label class="jw-search-shell calendar-controls__search">
+            <span class="jw-kicker">${translate("search", "Search")}</span>
+            <input
+              id="calendar-search-input"
+              type="search"
+              value="${escapeHtml(state.query)}"
+              placeholder="${escapeHtml(
+                lang === "hi" ? "दिन, व्रत, तिथि, या मुहूर्त खोजें" : "Search day, vrat, tithi, or muhurat"
+              )}"
+            />
+          </label>
+        </div>
+
+        <div class="calendar-controls__row">
+          <div class="jw-inline-scroll">
+            ${FILTERS.map((filter) => renderFilterButton(filter, lang)).join("")}
+          </div>
+          <div class="calendar-view-toggle" role="tablist" aria-label="${escapeHtml(
+            lang === "hi" ? "कैलेंडर दृश्य" : "Calendar view"
+          )}">
+            <button type="button" class="${state.view === "month" ? "is-active" : ""}" data-action="view" data-value="month">
+              ${translate("month_view", "Month view")}
+            </button>
+            <button type="button" class="${state.view === "list" ? "is-active" : ""}" data-action="view" data-value="list">
+              ${translate("list_view", "List view")}
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="jw-container digital-panchang__shell">
+        <div class="digital-panchang__topbar">
+          <div>
+            <span class="jw-kicker">${translate("calendar_month", "Calendar month")}</span>
+            <h2>${escapeHtml(month ? localizedMonthTitle(month, lang) : translate("no_calendar_records_found", "No calendar records found"))}</h2>
+            <p class="m-0 text-sm leading-7 text-stone-600">
+              ${escapeHtml(
+                lang === "hi"
+                  ? "नीचे के दिन-कार्ड स्रोत स्कैन पर आधारित हैं। शेष विवरण मैन्युअल निकासी पर निर्भर हैं।"
+                  : "The day cards below are source-scan based. Remaining details depend on manual extraction."
+              )}
+            </p>
+          </div>
+          <div class="digital-panchang__month-nav">
+            ${MONTHS.map((monthItem) => renderMonthButton(monthItem, lang)).join("")}
+          </div>
+        </div>
+
+        <div class="panchang-layout">
+          <section class="panchang-month-card">
+            ${state.view === "month" ? renderMonthGrid(month, days, selectedDay, lang, sourceMonth) : renderMonthList(month, days, selectedDay, lang, sourceMonth)}
+          </section>
+
+          <aside class="panchang-detail-panel">
+            ${renderDayDetailPanel(selectedDay, month, lang)}
+          </aside>
+        </div>
+      </section>
+
+      <section class="jw-container">
+        <div class="jw-section-title">
+          <div>
+            <span class="jw-kicker">${translate("jain_panchang_source_archive", "Jain Panchang Source Archive")}</span>
+            <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">
+              ${translate("jain_panchang_source_archive", "Jain Panchang Source Archive")}
+            </h2>
+          </div>
+          <a class="jw-btn jw-btn-secondary" href="/source-archive.html">
+            ${translate("source_archive", "Source Archive")}
+          </a>
+        </div>
+
+        <div class="panchang-archive-grid">
+          ${archiveImages.map((item, index) => renderArchiveCard(item, index, backPage, lang)).join("")}
+        </div>
+      </section>
+
+      <section class="jw-container panchang-explanation">
+        <div class="jw-section-title">
+          <div>
+            <span class="jw-kicker">${translate("educational_overview", "Educational overview")}</span>
+            <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">
+              ${translate("educational_overview", "Educational overview")}
+            </h2>
+          </div>
+        </div>
+        <div class="panchang-explanation__grid">
+          ${renderExplanationCards(lang)}
+        </div>
+      </section>
+
+      <section class="jw-container panchang-overview">
+        <div class="jw-section-title">
+          <div>
+            <span class="jw-kicker">${translate("festivals", "Festivals")}</span>
+            <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">
+              ${translate("festivals", "Festivals")}
+            </h2>
+          </div>
+        </div>
+        <div class="calendar-list calendar-list--compact">
+          ${renderOverviewCards(lang)}
+        </div>
+      </section>
+
+      ${renderSourceModal(archiveImages, lang)}
+    </section>
   `;
 
-  bindCalendarEvents(root);
   updateLanguageDOM(lang);
 }
 
-function renderMonthView(items, lang) {
-  const days = buildMonthGrid(state.year, state.month, items);
-  const monthLabel = MONTHS[state.month - 1] || MONTHS[0];
-  const monthTitle = `${lang === "hi" ? monthLabel.hi : monthLabel.en} ${state.year}`;
-  const monthItems = items.filter((item) => matchesGregorianMonth(item, state.year, state.month));
+function renderFilterButton(filter, lang) {
+  const active = state.filter === filter.key ? "is-active" : "";
+  return `
+    <button
+      type="button"
+      class="calendar-filter ${active}"
+      data-action="filter"
+      data-value="${escapeHtml(filter.key)}"
+    >
+      ${escapeHtml(lang === "hi" ? filter.labelHi : filter.label)}
+    </button>
+  `;
+}
+
+function renderMonthButton(month, lang) {
+  const active = month.value === state.month ? "is-active" : "";
+  return `
+    <button
+      type="button"
+      class="panchang-month-nav__button ${active}"
+      data-action="month"
+      data-value="${month.value}"
+    >
+      <span>${escapeHtml(lang === "hi" ? month.hi : month.en)}</span>
+      <small>${month.value}</small>
+    </button>
+  `;
+}
+
+function renderMonthGrid(month, days, selectedDay, lang, sourceMonth) {
+  if (!month) {
+    return renderEmptyState(lang);
+  }
+
+  const visibleDays = days.filter((day) => matchesFilter(day, state.filter) && matchesQuery(day, state.query));
+  if (!visibleDays.length) {
+    return renderEmptyState(lang);
+  }
+
+  const firstDayIndex = new Date(state.year, month.month_number - 1, 1).getDay();
+  const blanks = Array.from({ length: firstDayIndex }, () => `<div class="panchang-day panchang-day--blank" aria-hidden="true"></div>`);
+  const selectedKey = selectedDay?.gregorian_date || state.selectedDayKey;
+
+  const dayCells = days.map((day) => {
+    const isSelected = day.gregorian_date === selectedKey;
+    const isToday = isTodayKey(day.gregorian_date);
+    const isMatch = matchesQuery(day, state.query);
+    return `
+      <button
+        type="button"
+        class="panchang-day ${isSelected ? "panchang-day--selected" : ""} ${isToday ? "panchang-day--today" : ""} ${day.date_confidence === "needs_review" ? "panchang-day--review" : ""} ${isMatch ? "panchang-day--match" : ""}"
+        data-action="select-day"
+        data-date="${escapeHtml(day.gregorian_date || "")}"
+        aria-label="${escapeHtml(day.title || day.date_display || "")}"
+      >
+        <span class="panchang-day__number">${escapeHtml(String(day.day_number || ""))}</span>
+        <span class="panchang-day__label">${escapeHtml(lang === "hi" ? day.weekday_hi : day.weekday)}</span>
+        <span class="panchang-day__meta">${escapeHtml(day.short_label || translate("manual_extraction_pending", "Manual extraction pending"))}</span>
+        <div class="panchang-chip-row">
+          ${renderDayChips(day, lang)}
+        </div>
+      </button>
+    `;
+  });
 
   return `
-    <div class="detail-section">
-      <div class="jw-section-title">
-        <div>
-          <span class="jw-kicker">${translate("month_view", "Month view")}</span>
-          <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">${escapeHtml(monthTitle)}</h2>
-        </div>
-        <span class="jw-badge">${monthItems.length}</span>
+    <div class="panchang-grid-wrap">
+      <div class="panchang-legend">
+        <span class="panchang-chip panchang-chip--review">${translate("date_needs_review", "Date needs review")}</span>
+        <span class="panchang-chip panchang-chip--source">${translate("source_provided", "Source provided")}</span>
+        <span class="panchang-chip panchang-chip--festival">${translate("local_verification_required", "Local verification required")}</span>
       </div>
-      <div class="calendar-month-grid calendar-month-grid--weekdays">
-        ${WEEKDAYS.map((day) => `<div class="calendar-day-cell calendar-day-cell--weekday">${escapeHtml(lang === "hi" ? day.hi : day.en)}</div>`).join("")}
+      <div class="panchang-grid">
+        ${WEEKDAYS.map((weekday) => `<div class="panchang-weekday">${escapeHtml(lang === "hi" ? weekday.hi : weekday.en)}</div>`).join("")}
+        ${blanks.join("")}
+        ${dayCells.join("")}
       </div>
-      <div class="calendar-month-grid">
-        ${days.map((day) => renderDayCell(day, lang)).join("")}
-      </div>
-      ${
-        monthItems.length
-          ? `<div class="calendar-list calendar-list--compact mt-4">${monthItems.map((item) => renderCompactEventCard(item, lang)).join("")}</div>`
-          : `<div class="calendar-empty-state mt-4">${escapeHtml(
-              lang === "hi"
-                ? "इस महीने के लिए अभी कोई सत्यापित या स्रोत-आधारित तिथि उपलब्ध नहीं है।"
-                : "No verified or source-based dates are available for this month yet."
-            )}</div>`
-      }
     </div>
   `;
 }
 
-function renderListView(items, lang) {
-  if (!items.length) {
-    return `<div class="calendar-empty-state">${translate("no_calendar_records_found", "No calendar records found")}</div>`;
+function renderMonthList(month, days, selectedDay, lang) {
+  if (!month) {
+    return renderEmptyState(lang);
   }
 
-  return `<div class="calendar-list">${items.map((item) => renderEventCard(item, lang)).join("")}</div>`;
-}
+  const visibleDays = days.filter((day) => matchesFilter(day, state.filter) && matchesQuery(day, state.query));
+  if (!visibleDays.length) {
+    return renderEmptyState(lang);
+  }
 
-function renderDayCell(day, lang) {
-  const classes = ["calendar-day-cell"];
-  if (!day.isCurrentMonth) {
-    classes.push("calendar-day-cell--muted");
-  }
-  if (day.isToday) {
-    classes.push("calendar-day-cell--today");
-  }
+  const selectedKey = selectedDay?.gregorian_date || state.selectedDayKey;
 
   return `
-    <article class="${classes.join(" ")}">
-      <div class="calendar-day-number">${day.dayNumber || ""}</div>
-      <div class="calendar-day-events">
-        ${day.items
-          .slice(0, 3)
-          .map((item) => {
-            const confidenceClass = getConfidenceClass(item.date_confidence);
-            return `
-              <span class="calendar-event-chip ${confidenceClass}">
-                <span class="calendar-event-dot" aria-hidden="true"></span>
-                ${escapeHtml(shortTitle(item, lang))}
-                ${String(item.date_confidence || "").toLowerCase() === "needs_review" ? '<span aria-hidden="true">!</span>' : ""}
-              </span>
-            `;
-          })
-          .join("")}
-      </div>
-    </article>
+    <div class="calendar-list">
+      ${visibleDays.map((day) => renderDayListCard(day, day.gregorian_date === selectedKey, lang)).join("")}
+    </div>
   `;
 }
 
-function renderCompactEventCard(item, lang) {
+function renderDayListCard(day, isSelected, lang) {
   return `
-    <article class="calendar-event-card">
+    <article class="calendar-event-card ${isSelected ? "is-selected" : ""}">
       <div class="flex flex-wrap items-center gap-2">
-        <span class="jw-badge">${escapeHtml(eventTypeLabel(item.event_type))}</span>
-        ${renderConfidenceBadge(item.date_confidence)}
+        <span class="jw-badge jw-badge--pending-review">${escapeHtml(lang === "hi" ? "दिन" : "Day")} ${escapeHtml(String(day.day_number || ""))}</span>
+        <span class="calendar-confidence-badge ${confidenceClass(day.date_confidence)}">${escapeHtml(confidenceLabel(day.date_confidence, lang))}</span>
+        <span class="jw-badge">${escapeHtml(lang === "hi" ? day.weekday_hi : day.weekday)}</span>
       </div>
-      <h3>${escapeHtml(localizedTitle(item, lang))}</h3>
-      <p>${escapeHtml(localizedDateDisplay(item, lang))}</p>
-    </article>
-  `;
-}
-
-function renderEventCard(item, lang) {
-  const title = localizedTitle(item, lang);
-  const summary = localizedSummary(item, lang);
-  const sourceNote = pickLocalized(item, "source_note", lang) || item.source_note || "";
-  const cautionNote = pickLocalized(item, "caution_note", lang) || item.caution_note || "";
-  const sourceLine = item.source_name
-    ? `${translate("source", "Source")}: ${item.source_name}`
-    : translate("source_details_are_being_reviewed", "Source details are being reviewed.");
-  const dateLine = localizedDateDisplay(item, lang);
-  const lunarMonth = lang === "hi" ? item.lunar_month_hi || item.lunar_month : item.lunar_month || item.lunar_month_hi;
-  const lunarTithi = lang === "hi" ? item.lunar_tithi_hi || item.lunar_tithi : item.lunar_tithi || item.lunar_tithi_hi;
-  const monthName = lang === "hi" ? item.month_hi || item.month : item.month || item.month_hi;
-
-  return `
-    <article class="calendar-event-card">
-      <div class="flex flex-wrap items-center gap-2">
-        <span class="jw-badge">${escapeHtml(eventTypeLabel(item.event_type))}</span>
-        ${renderConfidenceBadge(item.date_confidence)}
+      <h3>${escapeHtml(lang === "hi" ? (day.title_hi || day.title) : (day.title || day.title_hi || ""))}</h3>
+      <p>${escapeHtml(day.short_label || day.summary || day.source_note || (lang === "hi" ? "मैन्युअल निकासी लंबित" : "Manual extraction pending"))}</p>
+      <div class="jw-meta">
+        <span>${translate("source", "Source")}: ${escapeHtml(day.source_name || "")}</span>
+        <span>${translate("extraction_status", "Extraction status")}: ${escapeHtml(day.extraction_status || "")}</span>
       </div>
-      <h3>${escapeHtml(title)}</h3>
-      <p>${escapeHtml(summary)}</p>
-      <div class="jw-meta mt-3">
-        <span>${escapeHtml(dateLine)}</span>
-        ${lunarTithi ? `<span>${translate("lunar_tithi", "Lunar tithi")}: ${escapeHtml(lunarTithi)}</span>` : ""}
-        ${lunarMonth ? `<span>${translate("lunar_month", "Lunar month")}: ${escapeHtml(lunarMonth)}</span>` : ""}
-        ${monthName ? `<span>${translate("month", "Month")}: ${escapeHtml(monthName)}</span>` : ""}
+      <div class="panchang-source-note">
+        <strong>${translate("local_verification_required", "Local verification required")}</strong>
+        <p>${escapeHtml(day.caution_note || DEFAULT_CAUTION_EN)}</p>
       </div>
-      <div class="calendar-source-note">
-        <strong>${escapeHtml(sourceLine)}</strong>
-        <p>${escapeHtml(sourceNote)}</p>
-      </div>
-      <div class="jw-meta mt-3">
-        <span>${translate("tradition_scope", "Tradition scope")}: ${escapeHtml(scopeLabel(item.tradition_scope))}</span>
-        <span>${translate("location_scope", "Location scope")}: ${escapeHtml(scopeLabel(item.location_scope))}</span>
-      </div>
-      <p class="calendar-source-note"><strong>${translate("verify_with_local_sangh", "Verify with local sangh")}:</strong> ${escapeHtml(cautionNote)}</p>
       <div class="detail-cta">
-        <a class="jw-btn jw-btn-secondary" href="${escapeHtml(buildVerificationLink(item, lang))}">
-          ${translate("verify_with_local_sangh", "Verify with local sangh")}
-        </a>
-        <a class="jw-btn" href="/corrections.html?topic=calendar">
+        <button type="button" class="jw-btn jw-btn-primary" data-action="select-day" data-date="${escapeHtml(day.gregorian_date || "")}">
+          ${translate("day_details", "Day details")}
+        </button>
+        <a class="jw-btn" href="/corrections.html?topic=panchang">
           ${translate("report_calendar_correction", "Report calendar correction")}
         </a>
       </div>
@@ -408,499 +565,701 @@ function renderEventCard(item, lang) {
   `;
 }
 
-function renderImportantFestivalCard(item, lang) {
-  return `
-    <article class="calendar-event-card">
-      <div class="flex flex-wrap items-center gap-2">
-        <span class="jw-badge">${escapeHtml(eventTypeLabel(item.event_type))}</span>
-        ${renderConfidenceBadge(item.date_confidence)}
-      </div>
-      <h3>${escapeHtml(localizedTitle(item, lang))}</h3>
-      <p>${escapeHtml(localizedSummary(item, lang))}</p>
-      <p class="calendar-source-note">${escapeHtml(localizedDateDisplay(item, lang))}</p>
-    </article>
-  `;
-}
-
-function renderEducationBlock(title, body) {
-  return `
-    <article class="calendar-event-card">
-      <h3>${escapeHtml(title)}</h3>
-      <p>${escapeHtml(body)}</p>
-    </article>
-  `;
-}
-
-function renderArchiveSection(lang) {
-  const monthRecords = state.archiveItems.filter((item) => item.asset_type !== "pdf");
-  const backPage = state.archiveItems.find((item) => item.asset_type === "pdf");
-
-  return `
-    <section class="detail-section">
-      <div class="jw-section-title">
-        <div>
-          <span class="jw-kicker">${translate("panchang_archive", "Panchang Archive")}</span>
-          <h2 class="mt-3 text-2xl font-semibold tracking-tight text-stone-900">${translate(
-            "jain_panchang_source_archive",
-            "Jain Panchang Source Archive"
-          )}</h2>
-        </div>
-      </div>
-      <p class="m-0 mb-4 text-sm leading-7 text-stone-600">
-        ${escapeHtml(
+function renderDayDetailPanel(day, month, lang) {
+  if (!day) {
+    return `
+      <div class="panchang-detail-panel__empty">
+        <h2>${translate("date_needs_review", "Date needs review")}</h2>
+        <p>${escapeHtml(
           lang === "hi"
-            ? "Tirthankar Vardhman Jain Panchang 2026 के मासिक पृष्ठ यहाँ स्रोत संदर्भ के रूप में दिखाए जाते हैं। महत्वपूर्ण पालन के लिए अभी भी स्थानीय संघ या विश्वसनीय पंचांग से पुष्टि करें।"
-            : "View month-wise pages from Tirthankar Vardhman Jain Panchang 2026. These scans are shown as source reference. Important observances should still be verified with your local sangh or trusted panchang."
-        )}
-      </p>
-      <div class="panchang-archive-grid">
-        ${monthRecords.map((item, index) => renderArchiveCard(item, index, lang)).join("")}
+            ? "किसी दिन पर क्लिक करके विवरण खोलें। मैन्युअल निकासी पूरी होने तक यह डेटाबेस स्रोत-साक्ष्य के रूप में रहेगा।"
+            : "Click any date to open details. This remains a source reference until manual extraction is complete."
+        )}</p>
       </div>
-      ${
-        backPage
-          ? `<div class="calendar-source-note mt-4">
-              <strong>${translate("source_provided_reference", "Source-provided reference")}</strong>
-              <p>${escapeHtml(backPage.credit_text || backPage.notes || "")}</p>
-              <div class="detail-cta">
-                <a class="jw-btn jw-btn-secondary ${backPage.pdf_url ? "" : "is-disabled"}" ${
-                  backPage.pdf_url ? `href="${escapeHtml(backPage.pdf_url)}" target="_blank" rel="noopener noreferrer"` : 'href="#" aria-disabled="true"'
-                }>
-                  ${translate("open_panchang_back_pages", "Open Panchang Back Pages")}
-                </a>
-                <a class="jw-btn" href="/corrections.html?topic=panchang">
-                  ${translate("report_calendar_correction", "Report calendar correction")}
-                </a>
-              </div>
-            </div>`
-          : ""
-      }
-    </section>
+    `;
+  }
+
+  const activeTab = DETAIL_TABS.find((tab) => tab.key === state.activeTab) ? state.activeTab : "day";
+  const tabs = DETAIL_TABS.map((tab) => {
+    const active = activeTab === tab.key ? "is-active" : "";
+    return `
+      <button type="button" class="panchang-detail-tabs__button ${active}" data-action="tab" data-value="${escapeHtml(tab.key)}">
+        ${escapeHtml(lang === "hi" ? tab.labelHi : tab.label)}
+      </button>
+    `;
+  }).join("");
+
+  return `
+    <div class="panchang-detail-panel__header">
+      <div>
+        <span class="jw-kicker">${translate("selected_day", "Selected day")}</span>
+        <h2>${escapeHtml(lang === "hi" ? day.title_hi || day.title : day.title || day.title_hi || "")}</h2>
+        <p>${escapeHtml(day.date_display_hi || day.date_display || "")}</p>
+      </div>
+      <div class="panchang-source-actions">
+        <span class="calendar-confidence-badge ${confidenceClass(day.date_confidence)}">${escapeHtml(confidenceLabel(day.date_confidence, lang))}</span>
+        <span class="jw-badge">${escapeHtml(lang === "hi" ? day.weekday_hi : day.weekday)}</span>
+      </div>
+    </div>
+
+    <div class="panchang-detail-tabs" role="tablist" aria-label="${escapeHtml(lang === "hi" ? "दिन विवरण टैब" : "Day detail tabs")}">
+      ${tabs}
+    </div>
+
+    <div class="panchang-detail-body">
+      ${renderDetailTabBody(day, month, activeTab, lang)}
+    </div>
   `;
 }
 
-function renderArchiveCard(item, index, lang) {
-  const imageUrl = item.image_url || "";
-  const expectedPath = item.expected_image_url || "";
-  const title = pickLocalized(item, "title", lang) || item.title || "";
-  const sourceBadge = translate("source_provided_reference", "Source-provided reference");
-  const permissionBadge = translate("permission_review_needed", "Permission review needed");
-  const verifyBadge = translate("verify_with_local_sangh", "Verify with local sangh");
+function renderDetailTabBody(day, month, tab, lang) {
+  if (tab === "muhurat") {
+    return renderDetailRows([
+      ["Sunrise", day.muhurat?.sunrise],
+      ["Sunset", day.muhurat?.sunset],
+      ["Navkarsi", day.muhurat?.navkarsi],
+      ["Porshi", day.muhurat?.porshi],
+      ["Sadha Porshi", day.muhurat?.sadha_porshi],
+      ["Purimaddha", day.muhurat?.purimaddha],
+      ["Avaddha", day.muhurat?.avaddha]
+    ], lang);
+  }
+
+  if (tab === "nakshatra") {
+    return renderDetailRows([
+      ["Jain lunar date", day.lunar_tithi || day.short_label],
+      ["Lunar month", day.lunar_month],
+      ["Paksha", day.paksha],
+      ["Nakshatra", day.nakshatra]
+    ], lang, true);
+  }
+
+  if (tab === "hora") {
+    return `
+      <div class="panchang-detail-row">
+        <strong>${translate("hora", "Hora")}</strong>
+        <p>${escapeHtml(day.hora || (lang === "hi" ? "मैन्युअल निकासी लंबित" : "Manual extraction pending"))}</p>
+      </div>
+      <div class="panchang-detail-row">
+        <strong>${translate("details_pending_manual_extraction", "Details pending manual extraction")}</strong>
+        <p>${escapeHtml(
+          lang === "hi"
+            ? "होरा, नक्षत्र और सूक्ष्म मुहूर्त विवरण अभी समीक्षा पर हैं।"
+            : "Hora, nakshatra, and fine-grained muhurat details are still under review."
+        )}</p>
+      </div>
+    `;
+  }
+
+  if (tab === "source") {
+    const monthImage = month?.source_image || day.source_image;
+    const backPdf = month?.source_pdf || day.source_pdf;
+    return `
+      <div class="panchang-detail-row">
+        <strong>${translate("source", "Source")}</strong>
+        <p>${escapeHtml(day.source_name || "")}</p>
+      </div>
+      <div class="panchang-detail-row">
+        <strong>${translate("source_credit", "Source Credit")}</strong>
+        <p>${escapeHtml(day.source_note || DEFAULT_SOURCE_NOTE_EN)}</p>
+      </div>
+      <div class="panchang-detail-row">
+        <strong>${translate("permission_review_needed", "Permission review needed")}</strong>
+        <p>${escapeHtml(
+          lang === "hi"
+            ? "यह स्रोत-आधारित संदर्भ है। प्रकाशित उपयोग से पहले अनुमति और समीक्षा की पुष्टि करें।"
+            : "This is a source-based reference. Confirm permission and review before publication."
+        )}</p>
+      </div>
+      <div class="panchang-source-actions">
+        ${
+          monthImage
+            ? `<button type="button" class="jw-btn jw-btn-primary" data-action="open-source-modal" data-index="${escapeHtml(String(getArchiveImageIndex(monthImage)))}">
+                ${translate("view_panchang_page", "View Panchang Page")}
+              </button>`
+            : ""
+        }
+        ${
+          monthImage
+            ? `<a class="jw-btn jw-btn-secondary" href="${escapeHtml(monthImage)}" target="_blank" rel="noopener noreferrer">
+                ${translate("open_full_image", "Open full image")}
+              </a>`
+            : ""
+        }
+        ${
+          backPdf
+            ? `<a class="jw-btn" href="${escapeHtml(backPdf)}" target="_blank" rel="noopener noreferrer">
+                ${translate("open_panchang_back_pages", "Open Panchang Back Pages")}
+              </a>`
+            : ""
+        }
+      </div>
+    `;
+  }
 
   return `
-    <article class="panchang-archive-card">
-      <div class="panchang-archive-thumb">
+    <div class="panchang-detail-row">
+      <strong>${translate("day_details", "Day details")}</strong>
+      <p>${escapeHtml(day.date_display_hi || day.date_display || "")}</p>
+    </div>
+    <div class="panchang-detail-row">
+      <strong>${translate("extraction_status", "Extraction status")}</strong>
+      <p>${escapeHtml(day.extraction_status || "")}</p>
+    </div>
+    <div class="panchang-detail-row">
+      <strong>${translate("review_status", "Review status")}</strong>
+      <p>${escapeHtml(day.review_status || "")}</p>
+    </div>
+    <div class="panchang-detail-row">
+      <strong>${translate("source_provided_reference", "Source-provided reference")}</strong>
+      <p>${escapeHtml(day.short_label || day.summary || day.source_note || (lang === "hi" ? "मैन्युअल निकासी लंबित" : "Manual extraction pending"))}</p>
+    </div>
+  `;
+}
+
+function renderDetailRows(rows, lang, showPendingMessage = false) {
+  const body = rows
+    .map(([label, value]) => {
+      const translatedLabel = translate(normalizeTranslationKey(label), label);
+      return `
+        <div class="panchang-detail-row">
+          <strong>${escapeHtml(translatedLabel)}</strong>
+          <p>${escapeHtml(value || (lang === "hi" ? "मैन्युअल निकासी लंबित" : "Manual extraction pending"))}</p>
+        </div>
+      `;
+    })
+    .join("");
+
+  if (!showPendingMessage) {
+    return body;
+  }
+
+  return `
+    ${body}
+    <div class="panchang-review-warning">
+      ${translate("manual_extraction_pending", "Manual extraction pending")}
+    </div>
+  `;
+}
+
+function renderArchiveCard(item, index, backPage, lang) {
+  const permission = item.permission_status || "needs_documented_confirmation";
+  const openImageLabel = translate("open_full_image", "Open full image");
+  const viewPageLabel = translate("view_panchang_page", "View Panchang Page");
+  const backPdfUrl = backPage?.pdf_url || item.pdf_url || "";
+
+  return `
+    <article class="panchang-month-card">
+      <div class="panchang-month-card__thumb">
         ${
-          imageUrl
-            ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(title)}" loading="lazy" />`
-            : `<div class="panchang-archive-thumb__placeholder">
-                <span>${escapeHtml(lang === "hi" ? item.month_name_hi || "" : item.month_name || "")}</span>
-                <small>${escapeHtml(
-                  lang === "hi"
-                    ? "स्कैन फ़ाइल की स्थानीय प्रति लंबित"
-                    : "Scan file local copy pending"
-                )}</small>
+          item.image_url
+            ? `<img src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.title || "")}" loading="lazy" />`
+            : `<div class="panchang-month-card__placeholder">
+                <span>${escapeHtml(lang === "hi" ? "स्रोत छवि अनुपलब्ध" : "Source image unavailable")}</span>
               </div>`
         }
       </div>
-      <div class="panchang-archive-body">
-        <div class="flex flex-wrap gap-2">
-          <span class="calendar-confidence-badge calendar-confidence--source">${escapeHtml(sourceBadge)}</span>
-          <span class="calendar-confidence-badge calendar-confidence--review">${escapeHtml(permissionBadge)}</span>
-          <span class="calendar-confidence-badge calendar-confidence--educational">${escapeHtml(verifyBadge)}</span>
+      <div class="panchang-month-card__body">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="jw-badge">${escapeHtml(item.month_name_hi || item.month_name || "")}</span>
+          <span class="calendar-confidence-badge calendar-confidence--source">${translate("source_provided_reference", "Source-provided reference")}</span>
+          <span class="calendar-confidence-badge ${permission === "needs_documented_confirmation" ? "calendar-confidence--review" : "calendar-confidence--source"}">
+            ${escapeHtml(lang === "hi" ? "अनुमति समीक्षा आवश्यक" : "Permission review needed")}
+          </span>
         </div>
-        <h3>${escapeHtml(title)}</h3>
-        <p>${escapeHtml(pickLocalized(item, "notes", lang) || item.notes || "")}</p>
+        <h3>${escapeHtml(item.title_hi || item.title || "")}</h3>
+        <p>${escapeHtml(item.notes_hi || item.notes || "")}</p>
         <div class="detail-cta">
-          <button type="button" class="jw-btn jw-btn-secondary" data-panchang-open="${index}">
-            ${translate("view_panchang_page", "View Panchang Page")}
+          <button type="button" class="jw-btn jw-btn-primary" data-action="open-source-modal" data-index="${index}">
+            ${escapeHtml(viewPageLabel)}
           </button>
-          <a class="jw-btn ${imageUrl ? "" : "is-disabled"}" ${
-            imageUrl ? `href="${escapeHtml(imageUrl)}" target="_blank" rel="noopener noreferrer"` : 'href="#" aria-disabled="true"'
-          }>
-            ${translate("open_full_image", "Open full image")}
+          <a class="jw-btn jw-btn-secondary" href="${escapeHtml(item.image_url || "#")}" target="_blank" rel="noopener noreferrer">
+            ${escapeHtml(openImageLabel)}
           </a>
-          <a class="jw-btn" href="/corrections.html?topic=panchang&month=${encodeURIComponent(item.month_name || item.month_name_hi || "")}">
-            ${translate("report_calendar_correction", "Report calendar correction")}
-          </a>
-        </div>
-        <div class="calendar-source-note">
-          <strong>${escapeHtml(item.source_name || "Tirthankar Vardhman Jain Panchang 2026")}</strong>
-          <p>${escapeHtml(item.credit_text || "")}</p>
-          ${expectedPath && !imageUrl ? `<p class="m-0 text-xs text-stone-500">${escapeHtml(expectedPath)}</p>` : ""}
+          ${
+            backPdfUrl
+              ? `<a class="jw-btn" href="${escapeHtml(backPdfUrl)}" target="_blank" rel="noopener noreferrer">
+                  ${translate("open_panchang_back_pages", "Open Panchang Back Pages")}
+                </a>`
+              : ""
+          }
         </div>
       </div>
     </article>
   `;
 }
 
-function renderArchiveModal(lang) {
-  const activeItem = state.archiveItems.filter((item) => item.asset_type !== "pdf")[state.archiveModalIndex] || null;
-  const isOpen = Boolean(activeItem);
-  const imageUrl = activeItem?.image_url || "";
-  const sourceUrl = activeItem?.source_url || "";
-  const expectedPath = activeItem?.expected_image_url || "";
-  const title = activeItem ? pickLocalized(activeItem, "title", lang) || activeItem.title || "" : "";
+function renderExplanationCards(lang) {
+  const cards = [
+    {
+      title: "Festival overview",
+      titleHi: "पर्व अवलोकन",
+      body: "High-level observances like Paryushan, Samvatsari, Das Lakshan, Mahavir Jayanti, and Diwali in Jain tradition are shown as learning references first.",
+      bodyHi: "पर्युषण, संवत्सरी, दशलक्षण, महावीर जयंती और जैन परंपरा की दिवाली जैसे अवलोकन पहले शैक्षिक संदर्भ के रूप में दिखाए जाते हैं।"
+    },
+    {
+      title: "Tithi / Vrat",
+      titleHi: "तिथि / व्रत",
+      body: "Exact tithis and vrat observances can vary by panchang, local sangh, and tradition, so they stay review-first until verified.",
+      bodyHi: "सटीक तिथि और व्रत पालन पंचांग, स्थानीय संघ और परंपरा के अनुसार भिन्न हो सकते हैं, इसलिए वे सत्यापन तक समीक्षा-प्रथम रहते हैं।"
+    },
+    {
+      title: "Ayambil",
+      titleHi: "आयंबिल",
+      body: "Ayambil entries should remain family-friendly, concise, and carefully reviewed before any exact date is published.",
+      bodyHi: "आयंबिल प्रविष्टियाँ परिवार-उपयुक्त, संक्षिप्त और किसी भी सटीक तिथि के प्रकाशन से पहले सावधानीपूर्वक समीक्षा की हुई रहनी चाहिए।"
+    },
+    {
+      title: "Local verification",
+      titleHi: "स्थानीय सत्यापन",
+      body: "For important religious decisions, users should check the local sangh or a trusted panchang.",
+      bodyHi: "महत्वपूर्ण धार्मिक निर्णयों के लिए उपयोगकर्ताओं को स्थानीय संघ या विश्वसनीय पंचांग से जाँच करनी चाहिए।"
+    }
+  ];
+
+  return cards
+    .map((card) => `
+      <article class="jw-card jw-card-flat p-5">
+        <span class="jw-kicker">${escapeHtml(lang === "hi" ? card.titleHi : card.title)}</span>
+        <h3 class="mt-3 text-lg font-semibold text-stone-900">${escapeHtml(lang === "hi" ? card.titleHi : card.title)}</h3>
+        <p class="m-0 mt-3 text-sm leading-7 text-stone-600">${escapeHtml(lang === "hi" ? card.bodyHi : card.body)}</p>
+      </article>
+    `)
+    .join("");
+}
+
+function renderOverviewCards(lang) {
+  const overviewItems = state.overview.slice(0, 8);
+  if (!overviewItems.length) {
+    return `
+      <article class="calendar-event-card">
+        <h3>${translate("no_calendar_records_found", "No calendar records found")}</h3>
+        <p>${escapeHtml(lang === "hi" ? "शिक्षात्मक पर्व अवलोकन अभी उपलब्ध नहीं है।" : "Educational festival overview is not available yet.")}</p>
+      </article>
+    `;
+  }
+
+  return overviewItems.map((item) => {
+    const title = pickLocalized(item, "title", lang) || item.title || item.title_hi || "";
+    const summary = pickLocalized(item, "summary", lang) || item.summary || item.summary_hi || "";
+    const caution = pickLocalized(item, "caution_note", lang) || item.caution_note || item.caution_note_hi || DEFAULT_CAUTION_EN;
+    return `
+      <article class="calendar-event-card">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="jw-badge">${escapeHtml(item.event_type || item.type || "learning")}</span>
+          <span class="calendar-confidence-badge ${confidenceClass(item.date_confidence)}">${escapeHtml(confidenceLabel(item.date_confidence, lang))}</span>
+        </div>
+        <h3>${escapeHtml(title)}</h3>
+        <p>${escapeHtml(summary)}</p>
+        <div class="panchang-source-note">
+          <strong>${translate("source", "Source")}</strong>
+          <p>${escapeHtml(item.source_name || "")}</p>
+        </div>
+        <div class="panchang-source-note">
+          <strong>${translate("local_verification_required", "Local verification required")}</strong>
+          <p>${escapeHtml(caution)}</p>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function renderSourceModal(archiveImages, lang) {
+  const active = state.archiveImageIndex >= 0 ? "is-open" : "";
+  const current = state.archiveImageIndex >= 0 ? archiveImages[state.archiveImageIndex] : null;
+  const backPage = state.archive.find((item) => item.asset_type === "pdf" && item.pdf_url);
 
   return `
-    <div class="panchang-archive-modal ${isOpen ? "is-open" : ""}" id="panchang-archive-modal" aria-hidden="${isOpen ? "false" : "true"}">
-      <div class="panchang-archive-modal__backdrop" data-panchang-close="true"></div>
-      <div class="panchang-archive-modal__dialog" role="dialog" aria-modal="true" aria-label="${escapeHtml(title || translate("panchang_archive", "Panchang Archive"))}">
+    <div class="panchang-archive-modal ${active}" role="dialog" aria-modal="true" aria-hidden="${state.archiveImageIndex >= 0 ? "false" : "true"}">
+      <div class="panchang-archive-modal__backdrop" data-action="close-source-modal"></div>
+      <div class="panchang-archive-modal__dialog">
         <div class="panchang-archive-modal__header">
-          <div>
-            <span class="jw-kicker">${translate("panchang_archive", "Panchang Archive")}</span>
-            <h2>${escapeHtml(title || translate("jain_panchang_source_archive", "Jain Panchang Source Archive"))}</h2>
-          </div>
-          <button type="button" class="jw-btn" data-panchang-close="true">Close</button>
+          <h2>${escapeHtml(current?.title_hi || current?.title || translate("view_panchang_page", "View Panchang Page"))}</h2>
+          <button type="button" class="jw-btn" data-action="close-source-modal" aria-label="${escapeHtml(translate("close", "Close"))}">&times;</button>
         </div>
         <div class="panchang-archive-modal__content">
           ${
-            activeItem
-              ? imageUrl
-                ? `<img class="panchang-archive-modal__image" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(title)}" />`
-                : `<div class="panchang-archive-modal__missing">
-                    <strong>${escapeHtml(lang === "hi" ? "स्थानीय फ़ाइल की प्रतीक्षा" : "Waiting for local file copy")}</strong>
-                    <p>${escapeHtml(
-                      lang === "hi"
-                        ? "स्कैन संरचना तैयार है, लेकिन वास्तविक छवि फ़ाइल अभी इस प्रोजेक्ट में कॉपी नहीं की गई है।"
-                        : "The archive structure is ready, but the real scan file has not been copied into this project yet."
-                    )}</p>
-                    ${expectedPath ? `<p class="jw-mono">${escapeHtml(expectedPath)}</p>` : ""}
-                  </div>`
-              : ""
-          }
-          ${
-            activeItem
-              ? `<div class="calendar-source-note">
-                  <strong>${escapeHtml(activeItem.source_name || "")}</strong>
-                  <p>${escapeHtml(activeItem.credit_text || "")}</p>
-                  <p>${escapeHtml(pickLocalized(activeItem, "notes", lang) || activeItem.notes || "")}</p>
+            current?.image_url
+              ? `<img class="panchang-archive-modal__image" src="${escapeHtml(current.image_url)}" alt="${escapeHtml(current.title || "")}" />`
+              : `<div class="panchang-archive-modal__missing">
+                  <p>${escapeHtml(lang === "hi" ? "इस स्रोत के लिए छवि उपलब्ध नहीं है।" : "No image is available for this source.")}</p>
                 </div>`
-              : ""
           }
         </div>
         <div class="panchang-archive-modal__footer">
-          <button type="button" class="jw-btn jw-btn-secondary" data-panchang-nav="prev">${translate("previous", "Previous")}</button>
-          <button type="button" class="jw-btn jw-btn-secondary" data-panchang-nav="next">${translate("next", "Next")}</button>
-          <a class="jw-btn ${sourceUrl ? "" : "is-disabled"}" ${
-            sourceUrl ? `href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer"` : 'href="#" aria-disabled="true"'
-          }>
-            ${translate("open_original_source", "Open Original Source")}
-          </a>
+          <div class="panchang-source-actions">
+            <button type="button" class="jw-btn jw-btn-secondary" data-action="prev-source">${translate("previous", "Previous")}</button>
+            <button type="button" class="jw-btn jw-btn-secondary" data-action="next-source">${translate("next", "Next")}</button>
+          </div>
+          <div class="panchang-source-actions">
+            ${
+              current?.image_url
+                ? `<a class="jw-btn jw-btn-primary" href="${escapeHtml(current.image_url)}" target="_blank" rel="noopener noreferrer">
+                    ${translate("open_full_image", "Open full image")}
+                  </a>`
+                : ""
+            }
+            ${
+              backPage?.pdf_url
+                ? `<a class="jw-btn" href="${escapeHtml(backPage.pdf_url)}" target="_blank" rel="noopener noreferrer">
+                    ${translate("open_panchang_back_pages", "Open Panchang Back Pages")}
+                  </a>`
+                : ""
+            }
+          </div>
+        </div>
+        <div class="panchang-source-note">
+          <strong>${translate("source_credit", "Source Credit")}</strong>
+          <p>${escapeHtml(current?.credit_text || current?.attribution_text || "")}</p>
         </div>
       </div>
     </div>
   `;
 }
 
-function renderFilterButton(filter) {
-  const isActive = state.filter === filter.key;
+function renderEmptyState(lang) {
   return `
-    <button type="button" class="prayer-chip ${isActive ? "is-active" : ""}" data-calendar-filter="${filter.key}">
-      ${escapeHtml(translate(filter.translation, filter.fallback))}
-    </button>
+    <div class="calendar-empty-state">
+      <h3>${translate("no_calendar_records_found", "No calendar records found")}</h3>
+      <p>${escapeHtml(lang === "hi" ? "इस माह के लिए अभी कोई दिखाने योग्य रिकॉर्ड नहीं है।" : "There are no displayable records for this month yet.")}</p>
+    </div>
   `;
 }
 
-function bindCalendarEvents(root) {
-  root.querySelectorAll("[data-calendar-filter]").forEach((button) => {
-    button.addEventListener("click", () => {
-      state.filter = button.getAttribute("data-calendar-filter") || "all";
-      renderCalendarPage(root);
+function wireEvents(root) {
+  root.querySelectorAll("[data-action]").forEach((element) => {
+    element.addEventListener("click", handleAction);
+  });
+
+  const yearSelect = root.querySelector("#calendar-year-select");
+  if (yearSelect) {
+    yearSelect.addEventListener("change", (event) => {
+      state.year = Number(event.target.value) || 2026;
+      renderAndBind(root);
     });
-  });
+  }
 
-  root.querySelectorAll("[data-calendar-view]").forEach((button) => {
-    button.addEventListener("click", () => {
-      state.view = button.getAttribute("data-calendar-view") || "list";
-      renderCalendarPage(root);
+  const monthSelect = root.querySelector("#calendar-month-select");
+  if (monthSelect) {
+    monthSelect.addEventListener("change", (event) => {
+      state.month = Number(event.target.value) || 1;
+      state.selectedDayKey = getInitialSelectedDayKey(state.digital, state.month);
+      renderAndBind(root);
     });
-  });
+  }
 
-  root.querySelector("#calendar-year-select")?.addEventListener("change", (event) => {
-    state.year = Number(event.target.value) || new Date().getFullYear();
-    renderCalendarPage(root);
-  });
-
-  root.querySelector("#calendar-month-select")?.addEventListener("change", (event) => {
-    state.month = Number(event.target.value) || new Date().getMonth() + 1;
-    renderCalendarPage(root);
-  });
-
-  root.querySelector("#calendar-search-input")?.addEventListener("input", (event) => {
-    state.query = String(event.target.value || "").trim();
-    renderCalendarPage(root);
-  });
-
-  root.querySelectorAll("[data-panchang-open]").forEach((button) => {
-    button.addEventListener("click", () => {
-      state.archiveModalIndex = Number(button.getAttribute("data-panchang-open"));
-      renderCalendarPage(root);
+  const searchInput = root.querySelector("#calendar-search-input");
+  if (searchInput) {
+    searchInput.addEventListener("input", (event) => {
+      state.query = event.target.value || "";
+      renderAndBind(root);
     });
-  });
-
-  root.querySelectorAll("[data-panchang-close]").forEach((element) => {
-    element.addEventListener("click", () => {
-      state.archiveModalIndex = -1;
-      renderCalendarPage(root);
-    });
-  });
-
-  root.querySelectorAll("[data-panchang-nav]").forEach((button) => {
-    button.addEventListener("click", () => {
-      moveArchiveModal(button.getAttribute("data-panchang-nav"));
-      renderCalendarPage(root);
-    });
-  });
-
-  bindEscapeClose(root);
+  }
 }
 
-let escapeBound = false;
+function handleAction(event) {
+  const target = event.currentTarget;
+  const action = target.getAttribute("data-action");
+  const value = target.getAttribute("data-value");
+  const date = target.getAttribute("data-date");
+  const index = target.getAttribute("data-index");
 
-function bindEscapeClose(root) {
-  if (escapeBound) {
+  if (action === "filter") {
+    state.filter = value || "all";
+    renderRerender();
     return;
   }
 
-  escapeBound = true;
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && state.archiveModalIndex >= 0) {
-      state.archiveModalIndex = -1;
-      renderCalendarPage(root);
-    }
-  });
-}
-
-function moveArchiveModal(direction) {
-  const items = state.archiveItems.filter((item) => item.asset_type !== "pdf");
-  if (!items.length || state.archiveModalIndex < 0) {
+  if (action === "view") {
+    state.view = value === "list" ? "list" : "month";
+    renderRerender();
     return;
   }
-  if (direction === "prev") {
-    state.archiveModalIndex = (state.archiveModalIndex - 1 + items.length) % items.length;
+
+  if (action === "month") {
+    state.month = Number(value) || state.month;
+    state.selectedDayKey = getInitialSelectedDayKey(state.digital, state.month);
+    renderRerender();
     return;
   }
-  state.archiveModalIndex = (state.archiveModalIndex + 1) % items.length;
+
+  if (action === "tab") {
+    state.activeTab = value || "day";
+    renderRerender();
+    return;
+  }
+
+  if (action === "select-day" && date) {
+    state.selectedDayKey = date;
+    state.activeTab = "day";
+    renderRerender();
+    return;
+  }
+
+  if (action === "open-source-modal") {
+    state.archiveImageIndex = Number(index) || 0;
+    renderRerender();
+    return;
+  }
+
+  if (action === "close-source-modal") {
+    state.archiveImageIndex = -1;
+    renderRerender();
+    return;
+  }
+
+  if (action === "prev-source") {
+    state.archiveImageIndex = getWrappedArchiveIndex(-1);
+    renderRerender();
+    return;
+  }
+
+  if (action === "next-source") {
+    state.archiveImageIndex = getWrappedArchiveIndex(1);
+    renderRerender();
+    return;
+  }
 }
 
-function getFilteredItems() {
-  return state.mergedItems.filter((item) => {
-    if (!matchesFilter(item)) {
-      return false;
-    }
+function handleDocumentKeydown(event) {
+  if (event.key !== "Escape") {
+    return;
+  }
 
-    if (state.query) {
-      const haystack = [
-        item.title,
-        item.title_hi,
-        item.summary,
-        item.summary_hi,
-        item.lunar_tithi,
-        item.lunar_tithi_hi,
-        item.lunar_month,
-        item.lunar_month_hi,
-        Array.isArray(item.tags) ? item.tags.join(" ") : ""
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
+  if (state.archiveImageIndex < 0) {
+    return;
+  }
 
-      if (!haystack.includes(state.query.toLowerCase())) {
-        return false;
-      }
-    }
+  state.archiveImageIndex = -1;
+  renderRerender();
+}
 
+function renderRerender() {
+  const root = document.getElementById("calendar-app");
+  if (!root) {
+    return;
+  }
+  renderCalendarPage(root);
+  wireEvents(root);
+}
+
+function getWrappedArchiveIndex(delta) {
+  const archiveImages = state.archive.filter((item) => item.image_url);
+  if (!archiveImages.length) {
+    return -1;
+  }
+  const current = state.archiveImageIndex < 0 ? 0 : state.archiveImageIndex;
+  const next = (current + delta + archiveImages.length) % archiveImages.length;
+  return next;
+}
+
+function getMonthRecord(digital, monthNumber) {
+  if (!digital || !Array.isArray(digital.months)) {
+    return null;
+  }
+  return digital.months.find((month) => Number(month.month_number) === Number(monthNumber)) || null;
+}
+
+function getVisibleDays(month) {
+  const days = Array.isArray(month?.days) ? month.days : [];
+  return days.filter((day) => matchesFilter(day, state.filter) && matchesQuery(day, state.query));
+}
+
+function matchesFilter(day, filter) {
+  if (!filter || filter === "all") {
     return true;
-  });
-}
-
-function matchesFilter(item) {
-  const type = String(item.event_type || "").toLowerCase();
-  const confidence = String(item.date_confidence || "").toLowerCase();
-  const tithi = String(item.lunar_tithi || "").toLowerCase();
-
-  switch (state.filter) {
-    case "festival":
-      return type === "festival" || type === "local_event";
-    case "tithi_vrat":
-      return ["tithi", "vrat", "ekadashi", "dwadashi", "chaudas"].includes(type);
-    case "ayambil":
-      return type === "ayambil";
-    case "ekadashi":
-      return type === "ekadashi" || tithi.includes("ekadashi");
-    case "dwadashi":
-      return type === "dwadashi" || tithi.includes("dwadashi");
-    case "chaudas":
-      return type === "chaudas" || tithi.includes("chaudas") || tithi.includes("chaudash");
-    case "learning":
-      return confidence === "educational_only" || type === "learning";
-    case "needs_review":
-      return confidence === "needs_review" || String(item.review_status || "").toLowerCase() === "pending_review";
-    default:
-      return true;
-  }
-}
-
-function buildMonthGrid(year, month, items) {
-  const firstDay = new Date(year, month - 1, 1);
-  const lastDay = new Date(year, month, 0);
-  const startWeekday = firstDay.getDay();
-  const totalDays = lastDay.getDate();
-  const today = new Date();
-  const cells = [];
-
-  for (let index = 0; index < startWeekday; index += 1) {
-    cells.push({ dayNumber: "", items: [], isCurrentMonth: false, isToday: false });
   }
 
-  for (let day = 1; day <= totalDays; day += 1) {
-    const isoDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-    cells.push({
-      dayNumber: day,
-      items: items.filter((item) => item.date_gregorian === isoDate),
-      isCurrentMonth: true,
-      isToday:
-        year === today.getFullYear() &&
-        month === today.getMonth() + 1 &&
-        day === today.getDate()
+  const value = String(day.event_type || day.type || day.category || "").toLowerCase();
+  const chips = Array.isArray(day.chips) ? day.chips.flatMap((chip) => [String(chip.label || "").toLowerCase(), String(chip.label_hi || "").toLowerCase()]) : [];
+  const label = `${value} ${chips.join(" ")}`;
+
+  if (filter === "needs_review") {
+    return String(day.date_confidence || "").toLowerCase() === "needs_review" || String(day.review_status || "").toLowerCase() === "pending_review";
+  }
+
+  if (filter === "tithi_vrat") {
+    return ["tithi", "vrat", "ekadashi", "dwadashi", "chaudas"].some((term) => label.includes(term));
+  }
+
+  return label.includes(filter);
+}
+
+function matchesQuery(day, query) {
+  const needle = String(query || "").trim().toLowerCase();
+  if (!needle) {
+    return true;
+  }
+
+  const haystack = [
+    day.title,
+    day.title_hi,
+    day.date_display,
+    day.date_display_hi,
+    day.weekday,
+    day.weekday_hi,
+    day.lunar_month,
+    day.lunar_month_hi,
+    day.lunar_tithi,
+    day.lunar_tithi_hi,
+    day.paksha,
+    day.paksha_hi,
+    day.nakshatra,
+    day.nakshatra_hi,
+    day.hora,
+    day.hora_hi,
+    day.short_label,
+    day.short_label_hi,
+    day.summary,
+    day.summary_hi,
+    day.source_name,
+    day.source_note,
+    day.source_note_hi,
+    day.caution_note,
+    day.caution_note_hi,
+    Array.isArray(day.chips) ? day.chips.map((chip) => `${chip.label || ""} ${chip.label_hi || ""}`).join(" ") : ""
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  return haystack.includes(needle);
+}
+
+function getSelectedDay(month) {
+  if (!month || !Array.isArray(month.days)) {
+    return null;
+  }
+
+  const selected = month.days.find((day) => day.gregorian_date === state.selectedDayKey);
+  if (selected) {
+    return selected;
+  }
+
+  return month.days[0] || null;
+}
+
+function localizedMonthTitle(month, lang) {
+  return lang === "hi" ? `${month.month_name_hi || month.month_name} ${state.year}` : `${month.month_name || month.month_name_hi} ${state.year}`;
+}
+
+function getMonthName(monthNumber) {
+  return MONTHS.find((month) => month.value === Number(monthNumber)) || MONTHS[0];
+}
+
+function getMonthSlug(monthNumber) {
+  return getMonthName(monthNumber)?.slug || "january";
+}
+
+function formatDateDisplay(dayNumber, monthName) {
+  return `${dayNumber} ${monthName}`;
+}
+
+function formatDayTitle(dayNumber, weekday, monthName) {
+  return `${weekday}, ${formatDateDisplay(dayNumber, monthName)}`;
+}
+
+function renderDayChips(day, lang) {
+  const chips = [];
+
+  if (day.short_label || day.short_label_hi) {
+    chips.push({ label: day.short_label || day.short_label_hi, className: "panchang-chip--festival" });
+  }
+
+  if (day.date_confidence === "needs_review" || day.review_status === "pending_review") {
+    chips.push({
+      label: translate("date_needs_review", "Date needs review"),
+      className: "panchang-chip--review"
     });
   }
 
-  while (cells.length % 7 !== 0) {
-    cells.push({ dayNumber: "", items: [], isCurrentMonth: false, isToday: false });
+  if (day.source_name) {
+    chips.push({
+      label: translate("source_provided", "Source provided"),
+      className: "panchang-chip--source"
+    });
   }
 
-  return cells;
+  if (!chips.length) {
+    chips.push({
+      label: translate("manual_extraction_pending", "Manual extraction pending"),
+      className: "panchang-chip--review"
+    });
+  }
+
+  return chips
+    .slice(0, 3)
+    .map((chip) => `<span class="panchang-chip ${chip.className}">${escapeHtml(lang === "hi" && chip.label_hi ? chip.label_hi : chip.label)}</span>`)
+    .join("");
 }
 
-function getImportantFestivalItems() {
-  const seen = new Set();
-  return state.mergedItems.filter((item) => {
-    const normalized = String(item.title || "").toLowerCase();
-    const matched = IMPORTANT_FESTIVAL_KEYS.some((key) => normalized.includes(key));
-    if (!matched) {
-      return false;
-    }
-
-    const dedupeKey = IMPORTANT_FESTIVAL_KEYS.find((key) => normalized.includes(key));
-    if (seen.has(dedupeKey)) {
-      return false;
-    }
-
-    seen.add(dedupeKey);
-    return true;
-  });
-}
-
-function buildYearOptions() {
-  const years = new Set([new Date().getFullYear()]);
-
-  state.mergedItems.forEach((item) => {
-    if (item.year) {
-      years.add(Number(item.year));
-    } else if (item.date_gregorian) {
-      years.add(Number(String(item.date_gregorian).slice(0, 4)));
-    }
-  });
-
-  state.archiveItems.forEach((item) => {
-    if (item.year) {
-      years.add(Number(item.year));
-    }
-  });
-
-  return [...years]
-    .filter((year) => Number.isFinite(year))
-    .sort((left, right) => left - right)
-    .map((year) => `<option value="${year}" ${year === state.year ? "selected" : ""}>${year}</option>`);
-}
-
-function localizedTitle(item, lang) {
-  return pickLocalized(item, "title", lang) || item.title || translate("jain_calendar_and_panchang", "Jain Calendar and Panchang");
-}
-
-function localizedSummary(item, lang) {
-  return pickLocalized(item, "summary", lang) || item.summary || translate("educational_overview", "Educational overview");
-}
-
-function localizedDateDisplay(item, lang) {
-  if (String(item.date_confidence || "").toLowerCase() === "educational_only") {
+function confidenceLabel(confidence, lang) {
+  const value = String(confidence || "").toLowerCase();
+  if (value === "verified") {
+    return translate("verified_date", "Verified date");
+  }
+  if (value === "source_provided") {
+    return translate("source_provided", "Source provided");
+  }
+  if (value === "educational_only") {
     return translate("educational_overview", "Educational overview");
   }
-
-  const display = lang === "hi" ? item.date_display_hi || item.date_display : item.date_display || item.date_display_hi;
-  return display || translate("date_needs_review", "Date needs review");
+  return translate("date_needs_review", "Date needs review");
 }
 
-function shortTitle(item, lang) {
-  const title = localizedTitle(item, lang);
-  return title.length > 24 ? `${title.slice(0, 21)}...` : title;
-}
-
-function eventTypeLabel(type) {
-  const key = String(type || "learning");
-  return translateLabel(key, translate(key.replace(/\s+/g, "_"), key));
-}
-
-function scopeLabel(value) {
-  return translateLabel(value || "", value || translate("not_available_yet", "Not available yet"));
-}
-
-function renderConfidenceBadge(confidence) {
-  const key = String(confidence || "needs_review").toLowerCase();
-  const className = getConfidenceClass(key);
-
-  if (key === "verified") {
-    return `<span class="calendar-confidence-badge ${className}">${translate("verified_date", "Verified date")}</span>`;
-  }
-  if (key === "source_provided") {
-    return `<span class="calendar-confidence-badge ${className}">${translate("source_provided", "Source provided")}</span>`;
-  }
-  if (key === "educational_only") {
-    return `<span class="calendar-confidence-badge ${className}">${translate("educational_overview", "Educational overview")}</span>`;
-  }
-  return `<span class="calendar-confidence-badge ${className}">${translate("date_needs_review", "Date needs review")}</span>`;
-}
-
-function getConfidenceClass(confidence) {
-  const key = String(confidence || "needs_review").toLowerCase();
-  if (key === "verified") {
+function confidenceClass(confidence) {
+  const value = String(confidence || "").toLowerCase();
+  if (value === "verified") {
     return "calendar-confidence--verified";
   }
-  if (key === "source_provided") {
+  if (value === "source_provided") {
     return "calendar-confidence--source";
   }
-  if (key === "educational_only") {
+  if (value === "educational_only") {
     return "calendar-confidence--educational";
   }
   return "calendar-confidence--review";
 }
 
-function matchesGregorianMonth(item, year, month) {
-  if (!item.date_gregorian) {
-    return false;
-  }
-  const [itemYear, itemMonth] = String(item.date_gregorian).split("-").map(Number);
-  return itemYear === year && itemMonth === month;
+function isTodayKey(gregorianDate) {
+  const today = new Date();
+  return gregorianDate === toDateKey(today);
 }
 
-function buildVerificationLink(item, lang) {
-  const query = lang === "hi" ? `${item.title_hi || item.title} तिथि सत्यापन` : `${item.title} date verification`;
-  return `/search.html?q=${encodeURIComponent(query)}`;
+function getSourceMonthRecord(archive, monthNumber) {
+  const monthName = getMonthName(monthNumber);
+  return archive.find((item) => String(item.month_name || "").toLowerCase() === monthName.en.toLowerCase()) || archive.find((item) => Number(item.month_number) === Number(monthNumber)) || null;
+}
+
+function getArchiveImageIndex(imageUrl) {
+  const archiveImages = state.archive.filter((item) => item.image_url);
+  return archiveImages.findIndex((item) => item.image_url === imageUrl);
+}
+
+function normalizeTranslationKey(label) {
+  return String(label || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[.,:;!?()[\]{}"']/g, "")
+    .replace(/\s*\/\s*/g, " / ")
+    .replace(/\s+/g, "_");
+}
+
+function toArray(value) {
+  return Array.isArray(value) ? value : [];
+}
+
+function toDateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 function getTrustNotice(lang) {
-  if (lang === "hi") {
-    return "जैन तिथियाँ पंचांग, स्थान, परंपरा और स्थानीय संघ की परंपरा के अनुसार भिन्न हो सकती हैं। महत्वपूर्ण पालन के लिए कृपया अपने स्थानीय संघ या विश्वसनीय पंचांग से सत्यापित करें।";
-  }
-  return "Dates can vary by panchang, location, tradition, and local sangh. Please verify important observances with your local sangh or trusted panchang.";
-}
-
-function getVerificationSupport(lang) {
-  if (lang === "hi") {
-    return "JainWorld शैक्षणिक पर्व जानकारी और समीक्षा-आधारित तिथि प्रविष्टियों को अलग रखता है। किसी भी धार्मिक निर्णय से पहले स्थानीय पुष्टि करें।";
-  }
-  return "JainWorld separates educational festival guidance from reviewed date records. Confirm locally before making any religious decision.";
+  return lang === "hi"
+    ? "तिथियाँ पंचांग, स्थान, परंपरा और स्थानीय संघ परंपरा के अनुसार भिन्न हो सकती हैं। महत्वपूर्ण पालन के लिए स्थानीय संघ या विश्वसनीय पंचांग से जाँच करें।"
+    : "Dates may vary by panchang, location, tradition, and local sangh practice. Please verify important observances with your local sangh or a trusted panchang.";
 }
 
 function escapeHtml(value) {
@@ -911,5 +1270,3 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 }
-
-initCalendarPage();

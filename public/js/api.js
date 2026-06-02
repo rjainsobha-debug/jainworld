@@ -19,6 +19,7 @@ const LOCAL_FILES = {
   names: "/data/sample-names.json",
   dictionary: "/data/sample-dictionary.json",
   books: "/data/sample-books.json",
+  panchangDigital: "/data/panchang-digital-2026.json",
   panchang: "/data/panchang-2026.json",
   sources: "/data/source-archive.json"
 };
@@ -63,6 +64,31 @@ async function readLocalCollection(key) {
   }
 
   return response.json();
+}
+
+async function readLocalDigitalPanchangDays() {
+  const response = await fetch(LOCAL_FILES.panchangDigital);
+  if (!response.ok) {
+    return [];
+  }
+
+  const data = await response.json().catch(() => ({}));
+  const months = Array.isArray(data?.months) ? data.months : [];
+
+  return months.flatMap((month) =>
+    Array.isArray(month.days)
+      ? month.days.map((day) => ({
+          ...day,
+          digital_month_number: month.month_number,
+          digital_month_name: month.month_name,
+          digital_month_name_hi: month.month_name_hi,
+          digital_source_image: month.source_image,
+          digital_source_pdf: month.source_pdf,
+          digital_source_name: month.source_name,
+          digital_source_url: month.source_url
+        }))
+      : []
+  );
 }
 
 function shouldUseLocalFallback() {
@@ -344,6 +370,16 @@ export async function getPanchangArchive(params = {}) {
   return applyFilters(await readLocalCollection("panchang"), params);
 }
 
+export async function getPanchangDigital() {
+  const response = await fetch(LOCAL_FILES.panchangDigital);
+  if (!response.ok) {
+    return { months: [] };
+  }
+
+  const data = await response.json().catch(() => ({}));
+  return data && typeof data === "object" ? data : { months: [] };
+}
+
 export async function getSourceArchive(params = {}) {
   return applyFilters(await readLocalCollection("sources"), params);
 }
@@ -365,7 +401,7 @@ export async function searchAll(query, params = {}) {
     }
   }
 
-  const [blogs, audio, literature, temples, food, education, news, resources, calendar, directory, speakers, names, dictionary, books, panchang, sources] = await Promise.all([
+  const [blogs, audio, literature, temples, food, education, news, resources, calendar, directory, speakers, names, dictionary, books, panchang, panchangDigital, sources] = await Promise.all([
     readLocalCollection("blogs"),
     readLocalCollection("audio"),
     readLocalCollection("literature"),
@@ -381,6 +417,7 @@ export async function searchAll(query, params = {}) {
     readLocalCollection("dictionary"),
     readLocalCollection("books"),
     readLocalCollection("panchang"),
+    readLocalDigitalPanchangDays(),
     readLocalCollection("sources")
   ]);
 
@@ -400,6 +437,7 @@ export async function searchAll(query, params = {}) {
     { type: "dictionary", items: dictionary },
     { type: "books", items: books },
     { type: "panchang", items: panchang },
+    { type: "panchang_dates", items: panchangDigital },
     { type: "sources", items: sources }
   ];
 
@@ -501,6 +539,9 @@ function buildSearchResultUrl(type, slug, item) {
   if (type === "panchang") {
     return "/calendar.html";
   }
+  if (type === "panchang_dates") {
+    return "/calendar.html";
+  }
   if (type === "sources") {
     return "/source-archive.html";
   }
@@ -546,6 +587,9 @@ function buildSearchMeta(type, item) {
   }
   if (type === "panchang") {
     return [item.year, item.month_name, item.permission_status, item.review_status].filter(Boolean);
+  }
+  if (type === "panchang_dates") {
+    return [item.digital_month_name || item.month_name, item.date_display, item.source_name, item.extraction_status].filter(Boolean);
   }
   if (type === "sources") {
     return [item.source_type, item.permission_status, item.review_status].filter(Boolean);

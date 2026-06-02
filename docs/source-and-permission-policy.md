@@ -81,6 +81,13 @@ Every external or reusable image record should aim to track:
 - Use link-only or metadata-only handling when source verification is incomplete.
 - Keep review notes visible for future editorial checks.
 
+## Panchang source handling
+
+- Scanned Panchang pages are source references first.
+- Do not remove visible credit lines, publisher marks, or branding.
+- Do not OCR dense panchang pages directly into final public dates.
+- Use source-provided and pending-review records until manual extraction is complete.
+
 ## Status Definitions
 
 ### `review_status`

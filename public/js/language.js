@@ -413,8 +413,37 @@ Object.assign(TRANSLATIONS, {
   source_provided_reference: { en: "Source-provided reference", hi: "स्रोत-आधारित संदर्भ" },
   do_not_publish_without_review: { en: "Do not publish without review", hi: "समीक्षा के बिना प्रकाशित न करें" },
   report_source_concern: { en: "Report source concern", hi: "स्रोत संबंधी समस्या बताएं" },
+  close: { en: "Close", hi: "बंद करें" },
   previous: { en: "Previous", hi: "पिछला" },
   next: { en: "Next", hi: "अगला" }
+});
+
+Object.assign(TRANSLATIONS, {
+  digital_jain_panchang_2026: { en: "Digital Jain Panchang 2026", hi: "डिजिटल जैन पंचांग 2026" },
+  day_details: { en: "Day details", hi: "दिन विवरण" },
+  muhurat: { en: "Muhurat", hi: "मुहूर्त" },
+  nakshatra: { en: "Nakshatra", hi: "नक्षत्र" },
+  hora: { en: "Hora", hi: "होरा" },
+  festival: { en: "Festival", hi: "पर्व" },
+  vrat: { en: "Vrat", hi: "व्रत" },
+  needs_review: { en: "Needs Review", hi: "समीक्षा आवश्यक" },
+  details_pending_manual_extraction: { en: "Details pending manual extraction", hi: "विवरण मैन्युअल निकासी पर लंबित हैं" },
+  view_source_page_for_this_month: { en: "View source page for this month", hi: "इस माह का स्रोत पृष्ठ देखें" },
+  open_back_page_pdf: { en: "Open back-page PDF", hi: "पीछे के पृष्ठ का PDF खोलें" },
+  sunrise: { en: "Sunrise", hi: "सूर्योदय" },
+  sunset: { en: "Sunset", hi: "सूर्यास्त" },
+  navkarsi: { en: "Navkarsi", hi: "नवकारसी" },
+  porshi: { en: "Porshi", hi: "पोरसी" },
+  sadha_porshi: { en: "Sadha Porshi", hi: "साधा पोरसी" },
+  purimaddha: { en: "Purimaddha", hi: "पुरीमद्धा" },
+  avaddha: { en: "Avaddha", hi: "अवद्धा" },
+  jain_lunar_date: { en: "Jain lunar date", hi: "जैन चंद्र तिथि" },
+  extraction_status: { en: "Extraction status", hi: "निकासी स्थिति" },
+  review_status: { en: "Review status", hi: "समीक्षा स्थिति" },
+  selected_day: { en: "Selected day", hi: "चयनित दिन" },
+  calendar_month: { en: "Calendar month", hi: "कैलेंडर माह" },
+  permission_review_needed: { en: "Permission review needed", hi: "अनुमति समीक्षा आवश्यक" },
+  manual_extraction_pending: { en: "Manual extraction pending", hi: "मैन्युअल निकासी लंबित" }
 });
 
 function normalizeLabelKey(label) {

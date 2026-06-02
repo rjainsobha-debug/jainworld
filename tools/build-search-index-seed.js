@@ -25,6 +25,7 @@ const SOURCES = [
   { type: "dictionary", file: "sample-dictionary.json", weight: 4, mapper: mapDictionary },
   { type: "books", file: "sample-books.json", weight: 4, mapper: mapBooks },
   { type: "panchang", file: "panchang-2026.json", weight: 3, mapper: mapPanchang },
+  { type: "panchang_dates", file: "panchang-digital-2026.json", weight: 3, mapper: mapPanchangDigital },
   { type: "sources", file: "source-archive.json", weight: 2, mapper: mapSources }
 ];
 
@@ -35,6 +36,7 @@ const TYPE_SYNONYMS = {
   speakers: ["speakers", "scholars", "lectures", "प्रवचन", "वक्ता"],
   directory: ["directory", "resources", "sections", "निर्देशिका"],
   panchang: ["panchang", "calendar archive", "festival reference", "पंचांग", "जैन पंचांग"],
+  panchang_dates: ["panchang date", "digital panchang", "date grid", "दिन पंचांग", "पंचांग दिन"],
   sources: ["source archive", "source credit", "attribution", "स्रोत संग्रह", "स्रोत श्रेय"]
 };
 
@@ -55,13 +57,14 @@ function main() {
     }
 
     items.forEach((item, index) => {
-      const row = source.mapper(item, source.weight, index);
-      if (!row) {
+      const mapped = source.mapper(item, source.weight, index);
+      const rowsToAdd = Array.isArray(mapped) ? mapped.filter(Boolean) : mapped ? [mapped] : [];
+      if (!rowsToAdd.length) {
         return;
       }
 
-      rows.push(row);
-      counts[source.type] = (counts[source.type] || 0) + 1;
+      rows.push(...rowsToAdd);
+      counts[source.type] = (counts[source.type] || 0) + rowsToAdd.length;
     });
   });
 
@@ -553,6 +556,87 @@ function mapPanchang(item, weight) {
   );
 }
 
+function mapPanchangDigital(digital, weight) {
+  const months = Array.isArray(digital?.months) ? digital.months : [];
+  return months.flatMap((month) => {
+    const days = Array.isArray(month.days) ? month.days : [];
+    return days
+      .filter((day) => isMeaningfulPanchangDay(day))
+      .map((day) => {
+        const monthName = month.month_name || month.month_name_hi || "Panchang";
+        const slug = day.gregorian_date || day.id || `${month.month_slug || monthName.toLowerCase()}-${day.day_number || "day"}`;
+        const title = day.short_label || day.short_label_hi || day.title || day.date_display || day.date_display_hi || `${monthName} ${day.day_number || ""}`.trim();
+        const summary = [
+          day.summary,
+          day.summary_hi,
+          day.lunar_tithi,
+          day.lunar_tithi_hi,
+          day.paksha,
+          day.paksha_hi,
+          day.nakshatra,
+          day.nakshatra_hi,
+          day.hora,
+          day.hora_hi
+        ]
+          .filter(Boolean)
+          .join(" ");
+        const body = [
+          day.date_display,
+          day.date_display_hi,
+          day.weekday,
+          day.weekday_hi,
+          day.lunar_month,
+          day.lunar_month_hi,
+          day.lunar_tithi,
+          day.lunar_tithi_hi,
+          day.paksha,
+          day.paksha_hi,
+          day.nakshatra,
+          day.nakshatra_hi,
+          day.hora,
+          day.hora_hi,
+          day.source_note,
+          day.source_note_hi,
+          day.caution_note,
+          day.caution_note_hi,
+          Array.isArray(day.chips) ? day.chips.map((chip) => `${chip.label || ""} ${chip.label_hi || ""}`).join(" ") : ""
+        ]
+          .filter(Boolean)
+          .join(" ");
+
+        return baseRow(
+          "panchang_dates",
+          { ...day, slug },
+          weight,
+          title,
+          summary || title,
+          body,
+          `/calendar.html?date=${encodeURIComponent(day.gregorian_date || "")}`,
+          {
+            category: "panchang",
+            tags: [
+              month.month_name,
+              month.month_name_hi,
+              day.weekday,
+              day.weekday_hi,
+              day.event_type,
+              day.date_confidence,
+              day.review_status,
+              day.extraction_status,
+              day.short_label,
+              day.short_label_hi
+            ]
+              .filter(Boolean)
+              .join(", "),
+            review_status: day.review_status || "pending_review",
+            source_name: day.source_name || digital.source_name || "Tirthankar Vardhman Jain Panchang 2026",
+            created_at: digital.last_checked_at || month.last_checked_at || "2026-05-28"
+          }
+        );
+      });
+  });
+}
+
 function mapSources(item, weight) {
   return baseRow(
     "sources",
@@ -579,6 +663,31 @@ function mapSources(item, weight) {
       created_at: item.last_checked_at || "2026-05-28"
     }
   );
+}
+
+function isMeaningfulPanchangDay(day) {
+  if (!day || typeof day !== "object") {
+    return false;
+  }
+
+  const reviewStatus = String(day.review_status || "").toLowerCase();
+  const confidence = String(day.date_confidence || "").toLowerCase();
+  const meaningfulText = [
+    day.short_label,
+    day.short_label_hi,
+    day.summary,
+    day.summary_hi,
+    day.lunar_tithi,
+    day.lunar_tithi_hi,
+    day.paksha,
+    day.paksha_hi,
+    day.nakshatra,
+    day.nakshatra_hi,
+    day.hora,
+    day.hora_hi
+  ].some((value) => clean(value));
+
+  return meaningfulText || ["verified", "source_provided", "approved"].includes(reviewStatus) || ["verified", "source_provided"].includes(confidence) || Array.isArray(day.chips) && day.chips.length > 0;
 }
 
 function sqlValue(value) {

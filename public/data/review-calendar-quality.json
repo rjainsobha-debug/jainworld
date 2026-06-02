@@ -4,9 +4,1843 @@
     "sample_records": 12,
     "review_records": 15,
     "source_records": 6,
+    "digital_panchang_months": 12,
+    "digital_panchang_days": 365,
+    "digital_panchang_pending_details": 365,
+    "digital_panchang_reviewed_days": 0,
+    "digital_panchang_missing_sources": 0,
+    "digital_panchang_duplicate_days": 0,
     "needs_review_count": 15,
     "educational_only_count": 12,
-    "issues_count": 0
+    "issues_count": 365,
+    "manual_queue_count": 13,
+    "ocr_queue_count": 12
   },
-  "issues": []
+  "issues": [
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-29",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-30",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-01-31",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-02-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-29",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-30",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-03-31",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-29",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-04-30",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-29",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-30",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-05-31",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-29",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-06-30",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-29",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-30",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-07-31",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-29",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-30",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-08-31",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-29",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-09-30",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-29",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-30",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-10-31",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-29",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-11-30",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-01",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-02",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-03",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-04",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-05",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-06",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-07",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-08",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-09",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-10",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-11",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-12",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-13",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-14",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-15",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-16",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-17",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-18",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-19",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-20",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-21",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-22",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-23",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-24",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-25",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-26",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-27",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-28",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-29",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-30",
+      "message": "Digital day with chips should also provide a short label."
+    },
+    {
+      "code": "chips_without_short_label",
+      "slug": "panchang-digital-2026-12-31",
+      "message": "Digital day with chips should also provide a short label."
+    }
+  ]
 }

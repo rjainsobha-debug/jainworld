@@ -1,5 +1,5 @@
 JainWorld Daily Operations Summary
-Run time: 2026-05-28T07:14:55.435Z
+Run time: 2026-06-02T06:59:07.183Z
 
 Tools run:
 - Community Directory Review Preview [community-directory-review-preview]
@@ -10,6 +10,9 @@ Tools run:
 - Resources Monitor Preview [resources-monitor-preview-root]
 
 Tools skipped:
+- Build Panchang Digital Skeleton [build-panchang-digital-skeleton] (digital panchang skeleton already exists)
+- Panchang OCR Assist [panchang-ocr-assist] (set RUN_PANCHANG_OCR=true to allow local OCR assistance)
+- Apply Panchang Manual Extraction [apply-panchang-manual-extraction] (set RUN_PANCHANG_MERGE=true to apply reviewed manual extraction)
 - OnlineJainPathshala Intake Preview [onlinejainpathshala-intake-preview] (set RUN_OJP_INTAKE=true to allow a polite public intake crawl)
 - News Bot Preview [news-bot-preview] (tool_not_found)
 - Resources Monitor Preview [resources-monitor-preview] (tool_not_found)
@@ -40,8 +43,13 @@ Reports generated:
 - tools/reports/source-permission-review-report.json
 
 Review items count: 84
-Calendar review items: 0
+Calendar review items: 365
 Calendar needs review count: 15
+Digital panchang days: 365
+Digital panchang pending details: 365
+Digital panchang reviewed days: 0
+Panchang manual queue count: 13
+Panchang OCR queue count: 12
 Source permission issues: 12
 OnlineJainPathshala review items: 5
 OnlineJainPathshala permission issues: 0
@@ -49,7 +57,7 @@ OnlineJainPathshala blocked items: 0
 Panchang extraction pending count: 13
 
 Warnings:
-- 11 tool(s) were skipped because the script file does not exist yet.
+- 14 tool(s) were skipped because the script file does not exist yet.
 
 Next actions:
 - Inspect generated review reports before updating any public data.

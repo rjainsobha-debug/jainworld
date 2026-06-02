@@ -28,6 +28,37 @@ const TOOL_RUNNERS = [
     ]
   },
   {
+    key: "build-panchang-digital-skeleton",
+    label: "Build Panchang Digital Skeleton",
+    path: path.join(rootDir, "tools", "bots", "build-panchang-digital-skeleton.js"),
+    expectedOutputs: [
+      path.join(rootDir, "public", "data", "panchang-digital-2026.json"),
+      path.join(rootDir, "public", "data", "review-panchang-manual-extraction.json"),
+      path.join(rootDir, "public", "data", "review-panchang-ocr-extraction.json")
+    ],
+    shouldRun: () => !fs.existsSync(path.join(rootDir, "public", "data", "panchang-digital-2026.json")),
+    skipReason: "digital panchang skeleton already exists"
+  },
+  {
+    key: "panchang-ocr-assist",
+    label: "Panchang OCR Assist",
+    path: path.join(rootDir, "tools", "bots", "panchang-ocr-assist.js"),
+    expectedOutputs: [
+      path.join(rootDir, "tools", "reports", "panchang-ocr-summary.json"),
+      path.join(rootDir, "public", "data", "review-panchang-ocr-extraction.json")
+    ],
+    shouldRun: () => String(process.env.RUN_PANCHANG_OCR || "").toLowerCase() === "true",
+    skipReason: "set RUN_PANCHANG_OCR=true to allow local OCR assistance"
+  },
+  {
+    key: "apply-panchang-manual-extraction",
+    label: "Apply Panchang Manual Extraction",
+    path: path.join(rootDir, "tools", "bots", "apply-panchang-manual-extraction.js"),
+    expectedOutputs: [path.join(rootDir, "tools", "reports", "panchang-manual-merge-report.json")],
+    shouldRun: () => String(process.env.RUN_PANCHANG_MERGE || "").toLowerCase() === "true",
+    skipReason: "set RUN_PANCHANG_MERGE=true to apply reviewed manual extraction"
+  },
+  {
     key: "source-permission-review-preview",
     label: "Source Permission Review Preview",
     path: path.join(rootDir, "tools", "bots", "source-permission-review-preview.js"),
@@ -234,6 +265,7 @@ function buildSummary(runTime, results, reportsGenerated, reviewItemsCount) {
   }
 
   const calendarMetrics = getCalendarMetrics();
+  const panchangMetrics = getPanchangMetrics();
   const permissionMetrics = getSourcePermissionMetrics();
   const ojpMetrics = getOnlineJainPathshalaMetrics();
 
@@ -246,11 +278,16 @@ function buildSummary(runTime, results, reportsGenerated, reviewItemsCount) {
     review_items_count: reviewItemsCount,
     calendar_review_items: calendarMetrics.calendar_review_items,
     calendar_needs_review_count: calendarMetrics.calendar_needs_review_count,
+    panchang_digital_days: panchangMetrics.panchang_digital_days,
+    panchang_pending_details: panchangMetrics.panchang_pending_details,
+    panchang_reviewed_days: panchangMetrics.panchang_reviewed_days,
+    panchang_manual_queue_count: panchangMetrics.panchang_manual_queue_count,
+    panchang_ocr_queue_count: panchangMetrics.panchang_ocr_queue_count,
     source_permission_issues: permissionMetrics.source_permission_issues,
     onlinejainpathshala_review_items: ojpMetrics.onlinejainpathshala_review_items,
     onlinejainpathshala_permission_issues: ojpMetrics.onlinejainpathshala_permission_issues,
     onlinejainpathshala_blocked_items: ojpMetrics.onlinejainpathshala_blocked_items,
-    panchang_extraction_pending_count: ojpMetrics.panchang_extraction_pending_count,
+    panchang_extraction_pending_count: panchangMetrics.panchang_manual_queue_count,
     warnings,
     next_actions: nextActions
   };
@@ -328,6 +365,11 @@ function formatTextSummary(summary) {
     `Review items count: ${summary.review_items_count}`,
     `Calendar review items: ${summary.calendar_review_items}`,
     `Calendar needs review count: ${summary.calendar_needs_review_count}`,
+    `Digital panchang days: ${summary.panchang_digital_days}`,
+    `Digital panchang pending details: ${summary.panchang_pending_details}`,
+    `Digital panchang reviewed days: ${summary.panchang_reviewed_days}`,
+    `Panchang manual queue count: ${summary.panchang_manual_queue_count}`,
+    `Panchang OCR queue count: ${summary.panchang_ocr_queue_count}`,
     `Source permission issues: ${summary.source_permission_issues}`,
     `OnlineJainPathshala review items: ${summary.onlinejainpathshala_review_items}`,
     `OnlineJainPathshala permission issues: ${summary.onlinejainpathshala_permission_issues}`,
@@ -355,6 +397,11 @@ function printConsoleSummary(summary) {
   formatLines(summary.generated_files).forEach((line) => console.log(line));
   console.log(`Calendar review items: ${summary.calendar_review_items}`);
   console.log(`Calendar needs review count: ${summary.calendar_needs_review_count}`);
+  console.log(`Digital panchang days: ${summary.panchang_digital_days}`);
+  console.log(`Digital panchang pending details: ${summary.panchang_pending_details}`);
+  console.log(`Digital panchang reviewed days: ${summary.panchang_reviewed_days}`);
+  console.log(`Panchang manual queue count: ${summary.panchang_manual_queue_count}`);
+  console.log(`Panchang OCR queue count: ${summary.panchang_ocr_queue_count}`);
   console.log(`Source permission issues: ${summary.source_permission_issues}`);
   console.log(`OnlineJainPathshala review items: ${summary.onlinejainpathshala_review_items}`);
   console.log(`OnlineJainPathshala permission issues: ${summary.onlinejainpathshala_permission_issues}`);
@@ -396,6 +443,11 @@ function buildTelegramSummary(summary) {
     `Review items: ${summary.review_items_count}`,
     `Calendar review items: ${summary.calendar_review_items}`,
     `Calendar needs review: ${summary.calendar_needs_review_count}`,
+    `Digital panchang days: ${summary.panchang_digital_days}`,
+    `Digital panchang pending details: ${summary.panchang_pending_details}`,
+    `Digital panchang reviewed days: ${summary.panchang_reviewed_days}`,
+    `Panchang manual queue: ${summary.panchang_manual_queue_count}`,
+    `Panchang OCR queue: ${summary.panchang_ocr_queue_count}`,
     `Source permission issues: ${summary.source_permission_issues}`,
     `OnlineJainPathshala review items: ${summary.onlinejainpathshala_review_items}`,
     `OnlineJainPathshala permission issues: ${summary.onlinejainpathshala_permission_issues}`,
@@ -465,6 +517,26 @@ function getCalendarMetrics() {
   }
 }
 
+function getPanchangMetrics() {
+  const digitalPath = path.join(rootDir, "public", "data", "panchang-digital-2026.json");
+  const manualPath = path.join(rootDir, "public", "data", "review-panchang-manual-extraction.json");
+  const ocrPath = path.join(rootDir, "public", "data", "review-panchang-ocr-extraction.json");
+
+  const digital = readJson(digitalPath);
+  const months = Array.isArray(digital?.months) ? digital.months : [];
+  const days = months.flatMap((month) => (Array.isArray(month.days) ? month.days : []));
+  const manualQueue = readJsonArray(manualPath);
+  const ocrQueue = readJsonArray(ocrPath);
+
+  return {
+    panchang_digital_days: days.length,
+    panchang_pending_details: days.filter((day) => String(day.date_confidence || "").toLowerCase() === "needs_review" || String(day.extraction_status || "").toLowerCase().includes("pending")).length,
+    panchang_reviewed_days: days.filter((day) => ["verified", "source_provided"].includes(String(day.date_confidence || "").toLowerCase()) || ["approved", "verified", "source_provided"].includes(String(day.review_status || "").toLowerCase())).length,
+    panchang_manual_queue_count: manualQueue.length,
+    panchang_ocr_queue_count: ocrQueue.length
+  };
+}
+
 function getSourcePermissionMetrics() {
   const qualityPath = path.join(rootDir, "public", "data", "review-source-permissions.json");
   if (!fs.existsSync(qualityPath)) {
@@ -482,6 +554,23 @@ function getSourcePermissionMetrics() {
     return {
       source_permission_issues: 0
     };
+  }
+}
+
+function readJsonArray(filePath) {
+  const data = readJson(filePath);
+  return Array.isArray(data) ? data : [];
+}
+
+function readJson(filePath) {
+  if (!fs.existsSync(filePath)) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(fs.readFileSync(filePath, "utf8"));
+  } catch (error) {
+    return null;
   }
 }
 

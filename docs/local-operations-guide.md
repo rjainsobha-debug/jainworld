@@ -45,12 +45,22 @@ For calendar-specific review:
 node .\tools\bots\calendar-review-preview.js
 ```
 
+For the digital Panchang workflow:
+
+```powershell
+node .\tools\bots\build-panchang-digital-skeleton.js
+node .\tools\bots\panchang-ocr-assist.js
+node .\tools\bots\apply-panchang-manual-extraction.js
+```
+
 Use this before publishing or trusting any exact Jain festival or vrat date.
 Calendar records must stay trust-first:
 
 - no invented exact dates
 - no universal date claims when observance can vary
 - verify with local sangh or trusted panchang before using a date for practice
+
+The digital Panchang archive stays source-provided until manual extraction and review are complete.
 
 For OnlineJainPathshala source intake and review:
 

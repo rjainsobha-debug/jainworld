@@ -109,6 +109,31 @@ Calendar records are review-first.
 Do not publish unsupported exact dates.
 Use local sangh or trusted panchang confirmation before relying on observance dates.
 
+## Digital Panchang Workflow
+
+The digital Panchang workflow is source-first and review-first.
+
+Build the 365-day skeleton if needed:
+
+```powershell
+node .\tools\bots\build-panchang-digital-skeleton.js
+```
+
+Run OCR assist only if a local OCR engine is available:
+
+```powershell
+node .\tools\bots\panchang-ocr-assist.js
+```
+
+Apply reviewed manual extraction only after human review:
+
+```powershell
+node .\tools\bots\apply-panchang-manual-extraction.js
+```
+
+Daily runner does not OCR unless `RUN_PANCHANG_OCR=true`.
+Daily runner does not merge manual extraction unless `RUN_PANCHANG_MERGE=true`.
+
 ## OnlineJainPathshala Intake Preview
 
 Dry run the public-source intake flow safely:

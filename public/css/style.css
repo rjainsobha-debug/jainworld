@@ -2139,3 +2139,512 @@ html[lang="hi"] .daily-card p {
     max-height: calc(100vh - 0.75rem);
   }
 }
+
+.digital-panchang {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.digital-panchang__header {
+  border-bottom: 1px solid rgba(120, 53, 15, 0.08);
+}
+
+.digital-panchang__shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.digital-panchang__topbar {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.digital-panchang__topbar h2 {
+  margin: 0;
+  color: #1c1917;
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  line-height: 1.25;
+}
+
+.digital-panchang__month-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  max-width: 100%;
+}
+
+.panchang-month-nav__button {
+  min-width: 108px;
+  border: 1px solid rgba(120, 53, 15, 0.16);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fffaf0 0%, #fffbf4 100%);
+  color: #451a03;
+  padding: 0.7rem 0.85rem;
+  box-shadow: 0 10px 24px rgba(120, 53, 15, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  text-align: left;
+}
+
+.panchang-month-nav__button:hover,
+.panchang-month-nav__button:focus-visible,
+.panchang-month-nav__button.is-active {
+  transform: translateY(-1px);
+  border-color: rgba(153, 27, 27, 0.36);
+  box-shadow: 0 14px 30px rgba(120, 53, 15, 0.14);
+}
+
+.panchang-month-nav__button span,
+.panchang-month-nav__button small {
+  display: block;
+}
+
+.panchang-month-nav__button span {
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.panchang-month-nav__button small {
+  margin-top: 0.15rem;
+  color: #78716c;
+  font-size: 0.72rem;
+}
+
+.panchang-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.95fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .panchang-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panchang-month-card {
+  background: linear-gradient(180deg, rgba(255, 250, 240, 0.96) 0%, rgba(255, 255, 255, 0.98) 100%);
+  border: 1px solid rgba(120, 53, 15, 0.12);
+  border-radius: 30px;
+  box-shadow: 0 24px 55px rgba(120, 53, 15, 0.08);
+  padding: 1rem;
+}
+
+.panchang-grid-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.panchang-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.panchang-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.panchang-weekday {
+  border-radius: 14px;
+  background: rgba(254, 243, 199, 0.55);
+  color: #7c2d12;
+  padding: 0.55rem 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.panchang-day {
+  min-height: 130px;
+  border: 1px solid rgba(120, 53, 15, 0.12);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #fffdf8 0%, #fff7ed 100%);
+  box-shadow: 0 10px 22px rgba(120, 53, 15, 0.06);
+  padding: 0.75rem 0.75rem 0.7rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.panchang-day:hover,
+.panchang-day:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(153, 27, 27, 0.34);
+  box-shadow: 0 16px 30px rgba(120, 53, 15, 0.1);
+}
+
+.panchang-day--blank {
+  visibility: hidden;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.panchang-day--selected {
+  border-color: rgba(153, 27, 27, 0.45);
+  background: linear-gradient(180deg, #fff7ed 0%, #fde68a 100%);
+}
+
+.panchang-day--today {
+  box-shadow: 0 0 0 2px rgba(180, 83, 9, 0.14), 0 16px 30px rgba(120, 53, 15, 0.1);
+}
+
+.panchang-day--review {
+  background: linear-gradient(180deg, #fffaf0 0%, #fff1f2 100%);
+}
+
+.panchang-day--match {
+  outline: 2px solid rgba(153, 27, 27, 0.14);
+}
+
+.panchang-day__number {
+  color: #431407;
+  font-size: 1.4rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.panchang-day__label {
+  color: #92400e;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.panchang-day__meta {
+  color: #57534e;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.panchang-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: auto;
+}
+
+.panchang-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1;
+  background: rgba(254, 243, 199, 0.9);
+  color: #7c2d12;
+}
+
+.panchang-chip--review {
+  background: rgba(254, 226, 226, 0.96);
+  color: #991b1b;
+}
+
+.panchang-chip--source {
+  background: rgba(255, 237, 213, 0.95);
+  color: #9a3412;
+}
+
+.panchang-chip--festival {
+  background: rgba(254, 249, 195, 0.92);
+  color: #854d0e;
+}
+
+.panchang-chip--chaudas {
+  background: rgba(233, 213, 255, 0.85);
+  color: #6b21a8;
+}
+
+.panchang-chip--pancham {
+  background: rgba(254, 249, 195, 0.9);
+  color: #854d0e;
+}
+
+.panchang-chip--atham {
+  background: rgba(219, 234, 254, 0.9);
+  color: #1d4ed8;
+}
+
+.panchang-chip--ekadashi {
+  background: rgba(220, 252, 231, 0.95);
+  color: #166534;
+}
+
+.panchang-chip--dwadashi {
+  background: rgba(254, 215, 170, 0.95);
+  color: #9a3412;
+}
+
+.panchang-detail-panel {
+  position: sticky;
+  top: 1rem;
+  background: linear-gradient(180deg, rgba(255, 250, 240, 0.98) 0%, rgba(255, 255, 255, 0.98) 100%);
+  border: 1px solid rgba(120, 53, 15, 0.12);
+  border-radius: 30px;
+  padding: 1rem;
+  box-shadow: 0 24px 55px rgba(120, 53, 15, 0.08);
+}
+
+@media (max-width: 1024px) {
+  .panchang-detail-panel {
+    position: static;
+  }
+}
+
+.panchang-detail-panel__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.panchang-detail-panel__header h2 {
+  margin: 0.35rem 0 0;
+  color: #1c1917;
+  font-size: 1.4rem;
+  line-height: 1.25;
+}
+
+.panchang-detail-panel__header p {
+  margin: 0.45rem 0 0;
+  color: #78716c;
+}
+
+.panchang-detail-panel__empty {
+  background: rgba(255, 251, 235, 0.85);
+  border-radius: 22px;
+  border: 1px dashed rgba(120, 53, 15, 0.18);
+  padding: 1rem;
+}
+
+.panchang-detail-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 1rem;
+}
+
+.panchang-detail-tabs__button {
+  border: 1px solid rgba(120, 53, 15, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #57534e;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.panchang-detail-tabs__button.is-active {
+  background: linear-gradient(180deg, #fef3c7 0%, #fed7aa 100%);
+  color: #7c2d12;
+  border-color: rgba(153, 27, 27, 0.3);
+}
+
+.panchang-detail-body {
+  margin-top: 1rem;
+}
+
+.panchang-detail-row {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(120, 53, 15, 0.08);
+}
+
+.panchang-detail-row:last-child {
+  border-bottom: 0;
+}
+
+.panchang-detail-row strong {
+  display: block;
+  color: #431407;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.panchang-detail-row p {
+  margin: 0;
+  color: #57534e;
+  line-height: 1.7;
+}
+
+.panchang-source-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.panchang-review-warning {
+  margin-top: 0.75rem;
+  border-radius: 16px;
+  background: rgba(254, 226, 226, 0.95);
+  color: #991b1b;
+  font-weight: 700;
+  padding: 0.8rem 1rem;
+}
+
+.calendar-confidence-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: none;
+}
+
+.calendar-confidence--verified {
+  background: rgba(220, 252, 231, 0.92);
+  color: #166534;
+}
+
+.calendar-confidence--source {
+  background: rgba(255, 237, 213, 0.94);
+  color: #9a3412;
+}
+
+.calendar-confidence--review {
+  background: rgba(254, 226, 226, 0.95);
+  color: #991b1b;
+}
+
+.calendar-confidence--educational {
+  background: rgba(219, 234, 254, 0.95);
+  color: #1d4ed8;
+}
+
+.panchang-source-note {
+  margin-top: 0.8rem;
+  border-radius: 18px;
+  background: rgba(255, 251, 235, 0.9);
+  border: 1px solid rgba(120, 53, 15, 0.1);
+  padding: 0.8rem 0.9rem;
+}
+
+.panchang-source-note strong {
+  display: block;
+  color: #7c2d12;
+  margin-bottom: 0.25rem;
+}
+
+.panchang-source-note p {
+  margin: 0;
+  color: #57534e;
+  line-height: 1.7;
+}
+
+.panchang-explanation__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .panchang-explanation__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .panchang-explanation__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panchang-overview .calendar-event-card {
+  min-height: 100%;
+}
+
+.panchang-archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.panchang-month-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panchang-month-card__thumb {
+  aspect-ratio: 3 / 4;
+  background: linear-gradient(180deg, #fff7ed 0%, #fde68a 100%);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(120, 53, 15, 0.08);
+}
+
+.panchang-month-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.panchang-month-card__placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #7c2d12;
+  text-align: center;
+  padding: 1rem;
+}
+
+.panchang-month-card__placeholder span {
+  font-weight: 800;
+}
+
+.panchang-month-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding-top: 0.8rem;
+}
+
+.panchang-month-card__body h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #1c1917;
+}
+
+.panchang-month-card__body p {
+  margin: 0;
+  color: #57534e;
+  line-height: 1.65;
+}
+
+.calendar-empty-state {
+  border-radius: 20px;
+  border: 1px dashed rgba(120, 53, 15, 0.18);
+  background: rgba(255, 251, 235, 0.88);
+  padding: 1rem;
+}
+
+.calendar-empty-state h3 {
+  margin: 0 0 0.3rem;
+  color: #431407;
+}
+
+.calendar-empty-state p {
+  margin: 0;
+  color: #57534e;
+  line-height: 1.7;
+}

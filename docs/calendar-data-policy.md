@@ -91,6 +91,15 @@ Run the calendar review bot before trusting or publishing calendar changes:
 ```powershell
 node .\tools\bots\calendar-review-preview.js
 ```
+
+## Digital Panchang archive
+
+- Treat the 2026 digital Panchang archive as source-provided reference material.
+- Do not OCR dense pages directly into public dates.
+- Keep `permission_status` and `review_status` visible until documentation is complete.
+- Use the digital skeleton and extraction queue to guide manual review.
+- Only move records toward `verified` after a human reviewer checks the extracted dates against the source scans.
+
 ## Panchang archive rule
 
 - Scanned Panchang pages are source references first.
